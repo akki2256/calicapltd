@@ -28,7 +28,7 @@ export function SiteHeader() {
             strokeWidth={2}
             aria-hidden
           />
-          Calicap
+          Calicon
         </Link>
         <nav
           className="hidden items-center gap-8 md:flex"

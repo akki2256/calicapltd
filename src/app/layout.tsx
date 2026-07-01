@@ -21,13 +21,13 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   ),
   title: {
-    default: "Calicap · Websites & digital growth",
-    template: "%s · Calicap",
+    default: "Calicon · Websites & digital growth",
+    template: "%s · Calicon",
   },
   description:
     "Web and mobile delivery with React, Node.js, Spring, and AI integrations; native iOS and Android or React Native; cloud on AWS and Azure—plus digital marketing that compounds.",
   openGraph: {
-    title: "Calicap · Websites & digital growth",
+    title: "Calicon · Websites & digital growth",
     description:
       "Web and mobile with React, Node.js, Spring, AI, and cloud on AWS or Azure—plus growth marketing.",
     type: "website",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Calicap · Websites & digital growth",
+    title: "Calicon · Websites & digital growth",
     description:
       "React, Node.js, Spring, mobile native & React Native, AWS/Azure—plus growth marketing.",
   },

@@ -130,7 +130,7 @@ export default function HomePage() {
                   <span className="text-gradient">expensive</span>—and converts.
                 </h1>
                 <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
-                  Calicap partners with ambitious operators on high-craft websites and
+                  Calicon partners with ambitious operators on high-craft websites and
                   measurable marketing. Strategy first, execution without theatre. We
                   ship with current stacks—
                   <span className="text-slate-800">
