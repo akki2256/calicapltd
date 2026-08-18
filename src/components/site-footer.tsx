@@ -39,7 +39,7 @@ export function SiteFooter() {
                 strokeWidth={2}
                 aria-hidden
               />
-              Calicap
+              Calicon
             </p>
             <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-600">
               Websites and digital marketing with a modern stack—React, Node.js,
@@ -64,7 +64,7 @@ export function SiteFooter() {
           </nav>
         </div>
         <p className="mt-10 text-xs text-slate-500">
-          © {new Date().getFullYear()} Calicap. All rights reserved.
+          © {new Date().getFullYear()} Calicon. All rights reserved.
         </p>
       </div>
     </footer>

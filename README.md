@@ -1,4 +1,4 @@
-# Calicap marketing site
+# Calicon marketing site
 
 Next.js (App Router) + MDX + Tailwind — optimised for **local development** and **Vercel**.
 

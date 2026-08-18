@@ -25,7 +25,7 @@ export default function AboutPage() {
           <div className="mt-10 max-w-2xl space-y-6 text-slate-600 leading-relaxed">
             <p className="relative pl-5">
               <Target className="absolute left-0 top-1 h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-              Calicap sits at the intersection of engineering taste and commercial
+              Calicon sits at the intersection of engineering taste and commercial
               reality. We work in the stacks clients actually hire for—
               <span className="text-slate-800">
                 React for product UIs, Node.js and Spring for services and APIs,
