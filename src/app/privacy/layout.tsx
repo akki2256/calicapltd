@@ -5,7 +5,7 @@ import { ArrowLeft, Home } from "lucide-react";
 export const metadata: Metadata = {
   title: "Privacy",
   description:
-    "How Calicap collects, uses, and protects personal information submitted through this website.",
+    "How Calicon collects, uses, and protects personal information submitted through this website.",
 };
 
 export default function PrivacyLayout({

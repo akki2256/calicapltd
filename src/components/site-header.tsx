@@ -3,6 +3,7 @@ import { CircleUser, Phone, Sparkles } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { MobileNav } from "@/components/mobile-nav";
 import { ServicesMenuDesktop } from "@/components/services-menu-desktop";
+import { ThemeSelector } from "@/components/theme-selector";
 
 const serviceLinks = [
   {
@@ -28,7 +29,7 @@ export function SiteHeader() {
             strokeWidth={2}
             aria-hidden
           />
-          Calicap
+          Calicon
         </Link>
         <nav
           className="hidden items-center gap-8 md:flex"
@@ -44,6 +45,7 @@ export function SiteHeader() {
           <ServicesMenuDesktop serviceLinks={serviceLinks} />
         </nav>
         <div className="flex items-center gap-3">
+          <ThemeSelector className="hidden sm:inline-flex" compact />
           <ButtonLink
             href="/contact"
             variant="primary"

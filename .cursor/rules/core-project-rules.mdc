@@ -1,0 +1,35 @@
+---
+description: Core standards for Calicon — clarity, restraint, and craft
+alwaysApply: true
+---
+
+# Calicon Project Standards
+
+These rules govern every change in this repository. Optimize for clarity, consistency, and a premium end result.
+
+## Code quality
+
+- Write code that is simple, readable, and easy to maintain.
+- Match the tone, patterns, and abstractions already present in the codebase.
+- Prefer small, focused diffs over broad refactors.
+
+## Scope & architecture
+
+- Change only what the task requires; leave unrelated files untouched.
+- Extend existing architecture and conventions before introducing new ones.
+- Do not change public APIs, contracts, or user-facing behavior unless explicitly requested.
+
+## Dependencies
+
+- Before adding a package, confirm that an existing dependency cannot solve the problem.
+- Favor built-in language, framework, and project utilities over new third-party additions.
+
+## Communication
+
+- When a decision involves meaningful tradeoffs, state them briefly and recommend a path.
+- Be direct and precise; avoid unnecessary verbosity.
+
+## Verification
+
+- Run relevant tests, lint checks, or builds after making changes.
+- Confirm the change works as intended before considering the task complete.
