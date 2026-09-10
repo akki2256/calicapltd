@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, FileText, Rocket, ShoppingBag, type LucideIcon } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  FileText,
+  Rocket,
+  ShoppingBag,
+  type LucideIcon,
+} from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { siteImages } from "@/lib/site-images";
 
@@ -19,6 +26,15 @@ const studies: {
   icon: LucideIcon;
   image: (typeof siteImages)[keyof typeof siteImages];
 }[] = [
+  {
+    slug: "calicap-india",
+    label: "Product · CRM · ops",
+    title: "Calicap India Pvt. Ltd.",
+    excerpt:
+      "A process-fit CRM in 60 days—clearer delegation, smarter follow-ups, 23% lower ops cost and 37% higher average sales.",
+    icon: Building2,
+    image: siteImages.calicapIndiaCrm,
+  },
   {
     slug: "retail-growth",
     label: "Retail · organic",
@@ -71,7 +87,7 @@ export default function WorkIndexPage() {
         </ButtonLink>
       </div>
 
-      <div className="mt-16 grid gap-8 md:grid-cols-2">
+      <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {studies.map((s) => {
           const Icon = s.icon;
           return (
