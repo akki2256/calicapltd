@@ -4,17 +4,6 @@
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
 
-<<<<<<< HEAD
-  /* Light steel-grey base + gold accents (gold scale unchanged) */
-  --color-surface: #d4d9e0;
-  --color-surface-elevated: #e4e8ee;
-  --color-border-subtle: rgba(71, 85, 105, 0.18);
-  --color-accent: #d4af37;
-  --color-accent-soft: rgba(212, 175, 55, 0.18);
-  --color-accent-muted: rgba(184, 148, 42, 0.28);
-
-=======
->>>>>>> 4c896421623002b20fad236becc872417032659e
   --color-gold-50: #faf8f0;
   --color-gold-100: #f5eed9;
   --color-gold-200: #ead8a8;
@@ -24,8 +13,6 @@
   --color-gold-600: #927821;
 }
 
-<<<<<<< HEAD
-=======
 :root,
 [data-theme="calicon"] {
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
@@ -105,22 +92,12 @@
   color-scheme: dark;
 }
 
->>>>>>> 4c896421623002b20fad236becc872417032659e
 html {
   scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--color-surface);
-<<<<<<< HEAD
-  color: #334155;
-  font-family: var(--font-sans);
-}
-
-::selection {
-  background-color: rgba(212, 175, 55, 0.45);
-  color: #0f172a;
-=======
   color: var(--color-text);
   font-family: var(--font-sans);
   font-weight: 400;
@@ -138,21 +115,11 @@ body {
 ::selection {
   background-color: var(--color-selection-bg);
   color: var(--color-selection-text);
->>>>>>> 4c896421623002b20fad236becc872417032659e
 }
 
 .surface-card {
   background: linear-gradient(
     155deg,
-<<<<<<< HEAD
-    rgba(255, 255, 255, 0.94) 0%,
-    rgba(232, 236, 242, 0.88) 100%
-  );
-  border: 1px solid var(--color-border-subtle);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
-    0 18px 50px rgba(15, 23, 42, 0.08);
-=======
     var(--color-card-start) 0%,
     var(--color-card-end) 100%
   );
@@ -160,21 +127,14 @@ body {
   box-shadow:
     0 0 0 1px var(--color-card-inset) inset,
     0 18px 50px var(--color-card-shadow);
->>>>>>> 4c896421623002b20fad236becc872417032659e
 }
 
 .text-gradient {
   background: linear-gradient(
     125deg,
-<<<<<<< HEAD
-    #927821 0%,
-    #d4af37 45%,
-    #c9a227 78%
-=======
     var(--color-gradient-start) 0%,
     var(--color-gradient-mid) 45%,
     var(--color-gradient-end) 78%
->>>>>>> 4c896421623002b20fad236becc872417032659e
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -185,12 +145,6 @@ body {
   pointer-events: none;
   position: fixed;
   inset: 0;
-<<<<<<< HEAD
-  opacity: 0.028;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  z-index: 50;
-}
-=======
   opacity: var(--color-noise-opacity);
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   z-index: 50;
@@ -510,4 +464,3 @@ html.menu-visible .canvas-menu-item {
   }
 }
 
->>>>>>> 4c896421623002b20fad236becc872417032659e

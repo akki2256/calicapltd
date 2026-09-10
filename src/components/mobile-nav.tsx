@@ -10,10 +10,7 @@ import {
 } from "lucide-react";
 import { useRef } from "react";
 import { serviceHrefIcon } from "@/lib/service-link-icon";
-<<<<<<< HEAD
-=======
 import { ThemeSelector } from "@/components/theme-selector";
->>>>>>> 4c896421623002b20fad236becc872417032659e
 
 export type MobileNavLink = { href: string; label: string };
 
@@ -86,12 +83,9 @@ export function MobileNav({ serviceLinks }: Props) {
           <Phone className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           Book a call
         </Link>
-<<<<<<< HEAD
-=======
         <div className="mt-2 border-t border-[var(--color-border-subtle)] pt-2">
           <ThemeSelector className="w-full justify-between" />
         </div>
->>>>>>> 4c896421623002b20fad236becc872417032659e
       </div>
     </details>
   );

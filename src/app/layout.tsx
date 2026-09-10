@@ -1,16 +1,9 @@
 import type { Metadata } from "next";
-<<<<<<< HEAD
-import { DM_Sans, Fraunces } from "next/font/google";
-import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-=======
 import { DM_Sans, Fraunces, Outfit } from "next/font/google";
 import "./globals.css";
 import { SiteShell } from "@/components/site-shell";
 import { ThemeProvider } from "@/components/theme-provider";
 import { DEFAULT_THEME, THEME_STORAGE_KEY } from "@/lib/themes";
->>>>>>> 4c896421623002b20fad236becc872417032659e
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -24,8 +17,6 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
-<<<<<<< HEAD
-=======
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
@@ -34,7 +25,6 @@ const outfit = Outfit({
 
 const themeInitScript = `(function(){try{var k=${JSON.stringify(THEME_STORAGE_KEY)};var lk="calicap-theme";var d=${JSON.stringify(DEFAULT_THEME)};var t=localStorage.getItem(k);if(!t){var legacy=localStorage.getItem(lk);if(legacy==="calicap"){t="calicon";localStorage.setItem(k,t);localStorage.removeItem(lk)}else if(legacy==="canvas"||legacy==="calicon"){t=legacy;localStorage.setItem(k,t);localStorage.removeItem(lk)}}document.documentElement.setAttribute("data-theme",t==="canvas"||t==="calicon"?t:d)}catch(e){document.documentElement.setAttribute("data-theme",${JSON.stringify(DEFAULT_THEME)})}})();`;
 
->>>>>>> 4c896421623002b20fad236becc872417032659e
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
@@ -66,16 +56,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-<<<<<<< HEAD
-    <html lang="en-GB" className={`${dmSans.variable} ${fraunces.variable}`}>
-      <body className="min-h-dvh antialiased">
-        <div className="noise-overlay" aria-hidden />
-        <div className="relative z-10 flex min-h-dvh flex-col">
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </div>
-=======
     <html
       lang="en-GB"
       className={`${dmSans.variable} ${fraunces.variable} ${outfit.variable}`}
@@ -92,7 +72,6 @@ export default function RootLayout({
             <SiteShell>{children}</SiteShell>
           </div>
         </ThemeProvider>
->>>>>>> 4c896421623002b20fad236becc872417032659e
       </body>
     </html>
   );

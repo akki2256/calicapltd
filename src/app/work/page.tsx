@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-<<<<<<< HEAD
-import { ArrowRight, FileText, Rocket, ShoppingBag, type LucideIcon } from "lucide-react";
-=======
 import {
   ArrowRight,
   Building2,
@@ -12,7 +9,6 @@ import {
   ShoppingBag,
   type LucideIcon,
 } from "lucide-react";
->>>>>>> 4c896421623002b20fad236becc872417032659e
 import { ButtonLink } from "@/components/button-link";
 import { siteImages } from "@/lib/site-images";
 
@@ -31,8 +27,6 @@ const studies: {
   image: (typeof siteImages)[keyof typeof siteImages];
 }[] = [
   {
-<<<<<<< HEAD
-=======
     slug: "calicap-india",
     label: "Product · CRM · ops",
     title: "Calicap India Pvt. Ltd.",
@@ -42,7 +36,6 @@ const studies: {
     image: siteImages.calicapIndiaCrm,
   },
   {
->>>>>>> 4c896421623002b20fad236becc872417032659e
     slug: "retail-growth",
     label: "Retail · organic",
     title: "Retail brand lift",
@@ -94,11 +87,7 @@ export default function WorkIndexPage() {
         </ButtonLink>
       </div>
 
-<<<<<<< HEAD
-      <div className="mt-16 grid gap-8 md:grid-cols-2">
-=======
       <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
->>>>>>> 4c896421623002b20fad236becc872417032659e
         {studies.map((s) => {
           const Icon = s.icon;
           return (

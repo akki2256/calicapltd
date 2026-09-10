@@ -3,10 +3,7 @@ import { CircleUser, Phone, Sparkles } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { MobileNav } from "@/components/mobile-nav";
 import { ServicesMenuDesktop } from "@/components/services-menu-desktop";
-<<<<<<< HEAD
-=======
 import { ThemeSelector } from "@/components/theme-selector";
->>>>>>> 4c896421623002b20fad236becc872417032659e
 
 const serviceLinks = [
   {
@@ -48,10 +45,7 @@ export function SiteHeader() {
           <ServicesMenuDesktop serviceLinks={serviceLinks} />
         </nav>
         <div className="flex items-center gap-3">
-<<<<<<< HEAD
-=======
           <ThemeSelector className="hidden sm:inline-flex" compact />
->>>>>>> 4c896421623002b20fad236becc872417032659e
           <ButtonLink
             href="/contact"
             variant="primary"
