@@ -19,6 +19,10 @@ import {
   Smartphone,
   TrendingUp,
   UsersRound,
+<<<<<<< HEAD
+=======
+  Building2,
+>>>>>>> 4c896421623002b20fad236becc872417032659e
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { siteImages } from "@/lib/site-images";
@@ -40,6 +44,16 @@ const services = [
 
 const workTeaser = [
   {
+<<<<<<< HEAD
+=======
+    slug: "calicap-india",
+    title: "Calicap India Pvt. Ltd.",
+    result: "23% lower ops cost · 37% higher average sales",
+    icon: Building2,
+    image: siteImages.calicapIndiaCrm,
+  },
+  {
+>>>>>>> 4c896421623002b20fad236becc872417032659e
     slug: "retail-growth",
     title: "Retail brand lift",
     result: "Organic visibility up, clearer path to enquiry",
@@ -309,7 +323,11 @@ export default function HomePage() {
               All case studies
             </ButtonLink>
           </div>
+<<<<<<< HEAD
           <div className="mt-12 grid gap-6 md:grid-cols-2">
+=======
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+>>>>>>> 4c896421623002b20fad236becc872417032659e
             {workTeaser.map((w) => {
               const Icon = w.icon;
               return (
