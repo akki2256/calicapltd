@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { CANVAS_NAV_LINKS } from "@/lib/themes";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 import { CanvasBurger } from "@/components/canvas/canvas-burger";
-import { ThemeSelector } from "@/components/theme-selector";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 function CanvasCloseIcon({ visible }: { visible: boolean }) {
   return (
@@ -26,10 +26,10 @@ export function CanvasNav() {
 
   return (
     <nav className="canvas-nav fixed inset-y-0 right-0 z-[600]" aria-label="Primary">
-      <div className="canvas-nav-rail fixed inset-y-0 right-0 w-[78px] border-l border-white/[0.06] bg-[#141414] shadow-[-10px_0_24px_rgba(0,0,0,0.45)]">
+      <div className="canvas-nav-rail fixed inset-y-0 right-0 border-l border-white/[0.06] bg-[#141414] shadow-[-10px_0_24px_rgba(0,0,0,0.45)]">
         <button
           type="button"
-          className="canvas-nav-trigger group flex h-[78px] w-[78px] items-center justify-center"
+          className="canvas-nav-trigger group flex items-center justify-center"
           aria-expanded={open}
           aria-controls="canvas-menubar"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -37,8 +37,8 @@ export function CanvasNav() {
         >
           <CanvasBurger open={open} />
         </button>
-        <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 sm:block">
-          <ThemeSelector variant="rail" />
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+          <ThemeToggle variant="rail" />
         </div>
       </div>
 
@@ -47,8 +47,8 @@ export function CanvasNav() {
         className={`canvas-menubar fixed inset-0 bg-[#141414]/98 backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
         aria-hidden={!open}
       >
-        <div className="canvas-menubar-top absolute left-0 top-0 h-[78px] w-full border-b border-white/[0.04] shadow-[0_10px_24px_rgba(0,0,0,0.35)]" />
-        <ul className="canvas-menu-list absolute inset-0 flex flex-col pt-[78px] md:flex-row md:pt-[78px]">
+        <div className="canvas-menubar-top absolute left-0 top-0 w-full border-b border-white/[0.04] shadow-[0_10px_24px_rgba(0,0,0,0.35)]" />
+        <ul className="canvas-menu-list absolute inset-0 flex flex-col md:flex-row">
           {CANVAS_NAV_LINKS.map((item, index) => {
             const active =
               pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -62,7 +62,7 @@ export function CanvasNav() {
                 <Link
                   href={item.href}
                   onClick={closeMenu}
-                  className={`group flex h-full min-h-[88px] w-full flex-col justify-start px-[26px] py-[26px] font-[family-name:var(--font-display)] text-[15px] font-extralight tracking-[0.04em] transition-colors duration-300 md:min-h-0 md:text-[23px] md:leading-[1.15] ${active ? "text-white" : "text-[#7d7d7d] hover:text-white"}`}
+                  className={`group flex h-full min-h-[72px] w-full flex-col justify-start px-5 py-5 font-[family-name:var(--font-display)] text-[15px] font-extralight tracking-[0.04em] transition-colors duration-300 sm:min-h-[88px] sm:px-[26px] sm:py-[26px] md:min-h-0 md:text-[23px] md:leading-[1.15] ${active ? "text-white" : "text-[#7d7d7d] hover:text-white"}`}
                 >
                   <span className="relative inline-block">
                     {item.label}
@@ -74,16 +74,10 @@ export function CanvasNav() {
               </li>
             );
           })}
-          <li
-            className="canvas-menu-item border-t border-white/[0.06] px-[26px] py-5 md:hidden"
-            style={{ transitionDelay: open ? "0.34s" : "0s" }}
-          >
-            <ThemeSelector className="w-full justify-between" />
-          </li>
         </ul>
         <button
           type="button"
-          className="absolute right-0 top-0 flex h-[78px] w-[78px] items-center justify-center text-white transition-opacity duration-300 hover:opacity-60"
+          className="canvas-nav-close absolute right-0 top-0 flex items-center justify-center text-white transition-opacity duration-300 hover:opacity-60"
           aria-label="Close menu"
           onClick={closeMenu}
         >

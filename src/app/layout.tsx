@@ -1,9 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fraunces, Outfit } from "next/font/google";
 import "./globals.css";
+import { JsonLd } from "@/components/JsonLd";
 import { SiteShell } from "@/components/site-shell";
 import { ThemeProvider } from "@/components/theme-provider";
 import { DEFAULT_THEME, THEME_STORAGE_KEY } from "@/lib/themes";
+import { rootMetadata } from "@/lib/seo";
+import {
+  localBusinessJsonLd,
+  organizationJsonLd,
+  websiteJsonLd,
+} from "@/lib/structured-data";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -25,29 +32,12 @@ const outfit = Outfit({
 
 const themeInitScript = `(function(){try{var k=${JSON.stringify(THEME_STORAGE_KEY)};var lk="calicap-theme";var d=${JSON.stringify(DEFAULT_THEME)};var t=localStorage.getItem(k);if(!t){var legacy=localStorage.getItem(lk);if(legacy==="calicap"){t="calicon";localStorage.setItem(k,t);localStorage.removeItem(lk)}else if(legacy==="canvas"||legacy==="calicon"){t=legacy;localStorage.setItem(k,t);localStorage.removeItem(lk)}}document.documentElement.setAttribute("data-theme",t==="canvas"||t==="calicon"?t:d)}catch(e){document.documentElement.setAttribute("data-theme",${JSON.stringify(DEFAULT_THEME)})}})();`;
 
-export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
-  title: {
-    default: "Calicon · Websites & digital growth",
-    template: "%s · Calicon",
-  },
-  description:
-    "Web and mobile delivery with React, Node.js, Spring, and AI integrations; native iOS and Android or React Native; cloud on AWS and Azure—plus digital marketing that compounds.",
-  openGraph: {
-    title: "Calicon · Websites & digital growth",
-    description:
-      "Web and mobile with React, Node.js, Spring, AI, and cloud on AWS or Azure—plus growth marketing.",
-    type: "website",
-    locale: "en_GB",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Calicon · Websites & digital growth",
-    description:
-      "React, Node.js, Spring, mobile native & React Native, AWS/Azure—plus growth marketing.",
-  },
+export const metadata: Metadata = rootMetadata;
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -64,6 +54,9 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <JsonLd
+          data={[organizationJsonLd(), localBusinessJsonLd(), websiteJsonLd()]}
+        />
       </head>
       <body className="min-h-dvh antialiased">
         <ThemeProvider>

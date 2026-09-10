@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { useRef } from "react";
 import { serviceHrefIcon } from "@/lib/service-link-icon";
-import { ThemeSelector } from "@/components/theme-selector";
 
 export type MobileNavLink = { href: string; label: string };
 
@@ -30,13 +29,13 @@ export function MobileNav({ serviceLinks }: Props) {
 
   return (
     <details ref={detailsRef} className="relative md:hidden">
-      <summary className="list-none cursor-pointer rounded-lg border border-[var(--color-border-subtle)] bg-white/70 px-3 py-2 text-sm text-slate-700 shadow-sm [&::-webkit-details-marker]:hidden">
-        <span className="flex items-center gap-2">
+      <summary className="list-none flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-[var(--color-border-subtle)] bg-white/70 text-sm text-slate-700 shadow-sm [&::-webkit-details-marker]:hidden">
+        <span className="flex items-center justify-center">
           <Menu className="h-4 w-4 shrink-0 text-slate-600" strokeWidth={2} aria-hidden />
-          Menu
+          <span className="sr-only">Menu</span>
         </span>
       </summary>
-      <div className="absolute right-0 mt-2 w-60 surface-card rounded-xl p-2 shadow-xl">
+      <div className="absolute right-0 z-50 mt-2 w-[min(16rem,calc(100vw-2rem))] surface-card rounded-xl p-2 shadow-xl">
         <Link
           href="/about"
           onClick={closeMenu}
@@ -83,9 +82,6 @@ export function MobileNav({ serviceLinks }: Props) {
           <Phone className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           Book a call
         </Link>
-        <div className="mt-2 border-t border-[var(--color-border-subtle)] pt-2">
-          <ThemeSelector className="w-full justify-between" />
-        </div>
       </div>
     </details>
   );

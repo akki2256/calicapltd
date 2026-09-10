@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -16,12 +15,20 @@ import {
   Workflow,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
+import { JsonLd } from "@/components/JsonLd";
+import { getWorkStudyBySlug, getWorkStudyImage } from "@/lib/calicap-work";
+import { pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, creativeWorkJsonLd } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
-  title: "Calicap India · operations CRM",
-  description:
-    "Case study: Calicap India Pvt. Ltd.—a custom CRM delivered in 60 days that cut operational cost 23% and lifted average sales 37%.",
-};
+const study = getWorkStudyBySlug("calicap-india")!;
+const studyImage = getWorkStudyImage(study);
+
+export const metadata = pageMetadata({
+  title: study.metaTitle,
+  description: study.metaDescription,
+  path: `/work/${study.slug}`,
+  imagePath: studyImage.src,
+});
 
 const snapshots = [
   {
@@ -44,27 +51,24 @@ const snapshots = [
   },
 ] as const;
 
-const outcomes = [
-  {
-    value: "60 days",
-    label: "Design to delivery",
-    icon: Clock3,
-  },
-  {
-    value: "23%",
-    label: "Operational cost reduction",
-    icon: Gauge,
-  },
-  {
-    value: "37%",
-    label: "Average sales increase",
-    icon: TrendingUp,
-  },
-] as const;
-
 export default function CalicapIndiaCasePage() {
   return (
     <article className="mx-auto max-w-3xl px-6 py-16 lg:px-8 lg:py-20">
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Work", path: "/work" },
+            { name: study.title, path: `/work/${study.slug}` },
+          ]),
+          creativeWorkJsonLd({
+            name: study.title,
+            description: study.metaDescription,
+            path: `/work/${study.slug}`,
+            imagePath: studyImage.src,
+          }),
+        ]}
+      />
       <Link
         href="/work"
         className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gold-700/90 hover:text-gold-600"
@@ -105,43 +109,6 @@ export default function CalicapIndiaCasePage() {
         A process-fit CRM that turned scattered follow-ups into a system the team
         could run—and customers could feel.
       </p>
-
-      <dl className="mt-8 grid gap-4 sm:grid-cols-3">
-        <div className="surface-card rounded-2xl p-4">
-          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            Engagement
-          </dt>
-          <dd className="mt-2 text-sm font-medium text-slate-800">
-            Discovery, product design, build
-          </dd>
-        </div>
-        <div className="surface-card rounded-2xl p-4">
-          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            Timeline
-          </dt>
-          <dd className="mt-2 text-sm font-medium text-slate-800">60 days to delivery</dd>
-        </div>
-        <div className="surface-card rounded-2xl p-4">
-          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            Role
-          </dt>
-          <dd className="mt-2 text-sm font-medium text-slate-800">
-            Strategy, UX, engineering
-          </dd>
-        </div>
-      </dl>
-
-      <div className="mt-10 grid gap-4 sm:grid-cols-3">
-        {outcomes.map(({ value, label, icon: Icon }) => (
-          <div key={label} className="surface-card rounded-2xl p-5 text-center sm:text-left">
-            <Icon className="mx-auto h-5 w-5 text-gold-600 sm:mx-0" strokeWidth={2} aria-hidden />
-            <p className="mt-3 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
-              {value}
-            </p>
-            <p className="mt-1 text-sm text-slate-600">{label}</p>
-          </div>
-        ))}
-      </div>
 
       <h2 className="mt-14 font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
         Challenge
@@ -256,15 +223,6 @@ export default function CalicapIndiaCasePage() {
         Retention improved when the system could see who needed attention—and the
         team spent their hours on conversations, not coordination.
       </blockquote>
-
-      <h2 className="mt-14 font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-        What we would do next
-      </h2>
-      <p className="mt-4 text-base leading-relaxed text-slate-600">
-        Layer experiment-ready messaging templates by segment, connect settled
-        outcomes back to source attribution, and tighten SLA alerts so managers
-        intervene before deals go cold.
-      </p>
 
       <div className="mt-12 flex flex-wrap gap-4">
         <ButtonLink href="/contact">

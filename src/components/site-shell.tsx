@@ -8,6 +8,7 @@ import { CanvasHeader } from "@/components/canvas/canvas-header";
 import { CanvasNav } from "@/components/canvas/canvas-nav";
 import { CanvasMain } from "@/components/canvas/canvas-main";
 import { CanvasFooter } from "@/components/canvas/canvas-footer";
+import { FloatingActions } from "@/components/floating-actions";
 
 type Props = {
   children: React.ReactNode;
@@ -23,6 +24,7 @@ export function SiteShell({ children }: Props) {
         <CanvasNav />
         <CanvasMain>{children}</CanvasMain>
         <CanvasFooter />
+        <FloatingActions />
       </CanvasMenuProvider>
     );
   }
@@ -30,8 +32,9 @@ export function SiteShell({ children }: Props) {
   return (
     <>
       <SiteHeader />
-      <main className="flex-1">{children}</main>
+      <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
       <SiteFooter />
+      <FloatingActions />
     </>
   );
 }

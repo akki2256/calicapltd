@@ -1,57 +1,26 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
   Check,
-  Megaphone,
   Monitor,
   PhoneForwarded,
   Smartphone,
-  Store,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
-import { siteImages } from "@/lib/site-images";
+import { calicapMobileAppService } from "@/lib/calicap-services";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Mobile app development",
-  description:
-    "Native iOS, Android, and React Native—with APIs on Node.js or Spring and cloud on AWS or Azure.",
-};
-
-const offerings: { title: string; icon: LucideIcon; points: string[] }[] = [
-  {
-    title: "Mobile product design & build",
-    icon: Smartphone,
-    points: [
-      "Product definition, IA, and UX patterns tuned for iOS and Android—native Swift and Kotlin where performance and platform APIs matter, or React Native when delivery speed and shared logic win",
-      "Backend contracts that align with your web estate: Node.js or Spring services, versioning, and CI so app releases are boring on purpose",
-      "Instrumentation, consent-aware analytics, and release pipelines from day one—artifacts deployed through AWS or Azure alongside your existing cloud footprint",
-    ],
-  },
-  {
-    title: "Organic discovery",
-    icon: Store,
-    points: [
-      "App store positioning and keyword strategy tied to category reality—not generic ASO lists",
-      "Creative and editorial rhythm for ratings, featuring, and lifecycle engagement",
-      "Technical health of listings, deep links, and share surfaces as part of growth hygiene",
-    ],
-  },
-  {
-    title: "Performance marketing",
-    icon: Megaphone,
-    points: [
-      "Paid acquisition when product–market signals are ready: meta search, UAC, and partner networks",
-      "Attribution and incrementality with privacy constraints—offline and SKAN where relevant",
-      "Creative and cohort testing with guardrails on CAC, payback, and retention",
-    ],
-  },
-];
+export const metadata = pageMetadata({
+  title: calicapMobileAppService.metaTitle,
+  description: calicapMobileAppService.metaDescription,
+  path: calicapMobileAppService.path,
+});
 
 export default function MobileAppDevelopmentPage() {
+  const service = calicapMobileAppService;
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
       <Link
@@ -65,41 +34,41 @@ export default function MobileAppDevelopmentPage() {
         <div>
           <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold-700/95">
             <Smartphone className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-            Mobile app development
+            {service.eyebrow}
           </p>
           <h1 className="mt-4 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-medium tracking-tight text-slate-900">
-            Mobile products with the same commercial rigour as web.
+            {service.title}
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-slate-600">
-            We mirror the web playbook—clarity of offer, disciplined build, and
-            distribution that rolls up to numbers you can defend. Delivery spans{" "}
+            {service.introLead}{" "}
             <span className="font-medium text-slate-800">
-              native iOS and Android
+              {service.introStacks.native}
             </span>
             ,{" "}
-            <span className="font-medium text-slate-800">
-              React Native
-            </span>{" "}
+            <span className="font-medium text-slate-800">{service.introStacks.rn}</span>{" "}
             when appropriate, and the same{" "}
-            <span className="font-medium text-slate-800">Node.js / Spring</span> and{" "}
-            <span className="font-medium text-slate-800">AWS / Azure</span> patterns
-            your web teams already run.
+            <span className="font-medium text-slate-800">
+              {service.introStacks.backend}
+            </span>{" "}
+            and{" "}
+            <span className="font-medium text-slate-800">{service.introStacks.cloud}</span>{" "}
+            patterns your web teams already run.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <ButtonLink href="/contact">
               <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
               Discuss scope
             </ButtonLink>
-            <ButtonLink href="/services/web-app-development" variant="ghost">
+            <ButtonLink href={service.siblingHref} variant="ghost">
               <Monitor className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-              Web app development
+              {service.siblingLabel}
             </ButtonLink>
           </div>
         </div>
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
           <Image
-            src={siteImages.mobileHands.src}
-            alt={siteImages.mobileHands.alt}
+            src={service.image.src}
+            alt={service.image.alt}
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 50vw"
@@ -109,7 +78,7 @@ export default function MobileAppDevelopmentPage() {
       </div>
 
       <div className="mt-16 space-y-8">
-        {offerings.map((o) => {
+        {service.offerings.map((o) => {
           const Icon = o.icon;
           return (
             <div key={o.title} className="surface-card rounded-2xl p-8 md:p-10">
@@ -135,12 +104,12 @@ export default function MobileAppDevelopmentPage() {
       </div>
 
       <p className="mt-14 text-sm text-slate-600">
-        Shipping web and mobile together?{" "}
+        {service.footerPrompt}{" "}
         <Link
           href="/contact"
           className="inline-flex items-center gap-1 font-semibold text-gold-600 hover:text-gold-700"
         >
-          Outline your constraints
+          {service.footerCta}
           <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
         </Link>
         .
