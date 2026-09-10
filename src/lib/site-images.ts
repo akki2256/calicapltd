@@ -39,6 +39,10 @@ export const siteImages = {
     src: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=85",
     alt: "Planning session with notes and sticky walls",
   },
+  calicapIndiaCrm: {
+    src: "/images/case-studies/crm-dashboard.png",
+    alt: "Calicap India CRM dashboard with sensitive details redacted",
+  },
 } as const;
 
 export type SiteImageKey = keyof typeof siteImages;

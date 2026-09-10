@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/services/web-app-development",
     "/services/mobile-app-development",
     "/work",
+    "/work/calicap-india",
     "/work/retail-growth",
     "/work/saas-launch",
     "/about",
