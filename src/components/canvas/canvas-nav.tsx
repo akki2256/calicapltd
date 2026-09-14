@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { CANVAS_NAV_LINKS } from "@/lib/themes";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 import { CanvasBurger } from "@/components/canvas/canvas-burger";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 function CanvasCloseIcon({ visible }: { visible: boolean }) {
   return (
@@ -37,9 +36,6 @@ export function CanvasNav() {
         >
           <CanvasBurger open={open} />
         </button>
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-          <ThemeToggle variant="rail" />
-        </div>
       </div>
 
       <div

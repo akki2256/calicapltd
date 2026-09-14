@@ -10,18 +10,19 @@ export const SITE_URL = (
 ).replace(/\/$/, "");
 
 export const DEFAULT_DESCRIPTION =
-  "Web and mobile delivery with React, Node.js, Spring, and AI integrations; native iOS and Android or React Native; cloud on AWS and Azure—plus digital marketing that compounds.";
+  "Turn business ideas and challenges into digital products, custom software, and AI in the workflow — then stay after launch.";
 
 export const DEFAULT_KEYWORDS = [
   "Calicon",
-  "web app development",
+  "custom software development",
+  "web application development",
   "mobile app development",
+  "website development",
+  "AI automation",
+  "digital products",
   "React",
   "Node.js",
   "Spring",
-  "digital marketing",
-  "AWS",
-  "Azure",
 ] as const;
 
 export function absoluteUrl(path = "/"): string {
@@ -80,7 +81,7 @@ export function pageMetadata({
 export const rootMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} · Websites & digital growth`,
+    default: `${SITE_NAME} · Build what's next.`,
     template: `%s · ${SITE_NAME}`,
   },
   description: DEFAULT_DESCRIPTION,
@@ -89,9 +90,8 @@ export const rootMetadata: Metadata = {
   authors: [{ name: SITE_NAME }],
   creator: SITE_NAME,
   openGraph: {
-    title: `${SITE_NAME} · Websites & digital growth`,
-    description:
-      "Web and mobile with React, Node.js, Spring, AI, and cloud on AWS or Azure—plus growth marketing.",
+    title: `${SITE_NAME} · Build what's next.`,
+    description: DEFAULT_DESCRIPTION,
     type: "website",
     locale: "en_GB",
     siteName: SITE_NAME,
@@ -99,9 +99,8 @@ export const rootMetadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} · Websites & digital growth`,
-    description:
-      "React, Node.js, Spring, mobile native & React Native, AWS/Azure—plus growth marketing.",
+    title: `${SITE_NAME} · Build what's next.`,
+    description: DEFAULT_DESCRIPTION,
   },
   robots: {
     index: true,

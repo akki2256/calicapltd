@@ -33,3 +33,4 @@ These rules govern every change in this repository. Optimize for clarity, consis
 
 - Run relevant tests, lint checks, or builds after making changes.
 - Confirm the change works as intended before considering the task complete.
+- For anything user-facing, confirm **both** themes (Calicon and Canvas) unless the owner has removed one.

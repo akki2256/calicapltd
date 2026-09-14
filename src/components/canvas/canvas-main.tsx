@@ -64,7 +64,10 @@ export function CanvasMain({ children }: Props) {
     >
       <div key={pathname} className="canvas-page">
         {isHome ? (
-          <CanvasHome />
+          <>
+            <CanvasHome />
+            <div className="canvas-home-chapter canvas-main-inner">{children}</div>
+          </>
         ) : (
           <div className="canvas-inner-content">{children}</div>
         )}

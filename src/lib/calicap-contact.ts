@@ -8,7 +8,7 @@ export const calicapContact = {
   email: process.env.CONTACT_INBOX_EMAIL ?? "",
   locale: "en_GB",
   footerBlurb:
-    "Websites and digital marketing with a modern stack—React, Node.js, Spring, mobile native and React Native, AI where it earns its keep, and cloud on AWS or Azure.",
+    "Turn business ideas and challenges into digital products, custom software, and AI — then stay after launch.",
   page: {
     eyebrow: "Contact",
     title: "Start with context.",

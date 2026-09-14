@@ -1,16 +1,16 @@
-import { Building2, Rocket, ShoppingBag, type LucideIcon } from "lucide-react";
+import { Building2, Flower2, type LucideIcon } from "lucide-react";
 import { siteImages, type SiteImageKey } from "@/lib/site-images";
 
 export const calicapWorkIndex = {
   eyebrow: "Work",
-  title: "Narratives backed by numbers.",
+  title: "Selected work.",
   intro:
-    "Each study outlines the brief, the trade-offs, and what moved—so you can judge fit before we speak.",
+    "Real engagements—challenge, approach, and result. Written so you can judge fit before we speak.",
   ctaLabel: "Talk about your roadmap",
   heroImage: siteImages.strategySession,
   metaTitle: "Work",
   metaDescription:
-    "Selected case studies in web, organic search, and growth campaigns.",
+    "Selected Calicon case studies: custom software and digital products with real constraints and outcomes.",
 } as const;
 
 export type CalicapWorkStudy = {
@@ -32,39 +32,26 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     label: "Product · CRM · ops",
     title: "Calicap India Pvt. Ltd.",
     excerpt:
-      "A process-fit CRM in 60 days—clearer delegation, smarter follow-ups, 23% lower ops cost and 37% higher average sales.",
+      "Custom CRM around their loan workflow—shipped in 60 days. 23% lower ops cost, 37% higher average sales.",
     result: "23% lower ops cost · 37% higher average sales",
     icon: Building2,
     imageKey: "calicapIndiaCrm",
-    metaTitle: "Calicap India · operations CRM",
+    metaTitle: "Calicap India · custom CRM",
     metaDescription:
-      "Case study: Calicap India Pvt. Ltd.—a custom CRM delivered in 60 days that cut operational cost 23% and lifted average sales 37%.",
+      "Case study: Calicap India Pvt. Ltd.—a custom CRM built around their process in 60 days, cutting operational cost 23% and lifting average sales 37%.",
   },
   {
-    slug: "retail-growth",
-    label: "Retail · organic",
-    title: "Retail brand lift",
+    slug: "yog-mantram",
+    label: "Web · brand · local SEO",
+    title: "Yog Mantram",
     excerpt:
-      "Rebuilt the story-led site experience, fixed technical debt, and installed a publishing cadence that matched inventory seasons.",
-    result: "Organic visibility up, clearer path to enquiry",
-    icon: ShoppingBag,
-    imageKey: "retailStore",
-    metaTitle: "Retail brand lift",
+      "A cinematic, mobile-first studio site—25+ programs, WhatsApp enquire, and Bareilly pages built to turn seekers into students.",
+    result: "25+ program pages · local search · enquire on every class",
+    icon: Flower2,
+    imageKey: "yogMantramStudio",
+    metaTitle: "Yog Mantram — studio website & local SEO",
     metaDescription:
-      "Case study: retail brand organic lift with technical SEO and a rebuilt story-led experience.",
-  },
-  {
-    slug: "saas-launch",
-    label: "SaaS · launch",
-    title: "SaaS launch site",
-    excerpt:
-      "Positioning sprint, rapid UI system, and GTM landing architecture for a category-creating product.",
-    result: "Launch-ready positioning in six weeks",
-    icon: Rocket,
-    imageKey: "productLaunch",
-    metaTitle: "SaaS launch site",
-    metaDescription:
-      "Case study: SaaS launch positioning, design system, and GTM landing architecture.",
+      "Case study: Yog Mantram in Bareilly—a conversion-first website with 25+ programs, WhatsApp enquire, and local search pages that turn seekers into students.",
   },
 ];
 
