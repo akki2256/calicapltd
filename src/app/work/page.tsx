@@ -46,7 +46,7 @@ export default function WorkIndexPage() {
         </ButtonLink>
       </div>
 
-      <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-16 grid gap-8 md:grid-cols-2">
         {calicapWorkStudies.map((s) => {
           const Icon = s.icon;
           const image = getWorkStudyImage(s);

@@ -3,10 +3,10 @@ import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${SITE_NAME} · Websites & digital growth`,
+    name: `${SITE_NAME} · Build what's next.`,
     short_name: SITE_NAME,
     description:
-      "Web and mobile delivery with React, Node.js, Spring, AI, and cloud on AWS or Azure—plus growth marketing.",
+      "Turn business ideas and challenges into digital products, custom software, and AI — then stay after launch.",
     start_url: "/",
     display: "standalone",
     background_color: "#141414",

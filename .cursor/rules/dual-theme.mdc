@@ -1,0 +1,23 @@
+---
+description: Dual-theme rule — every user-facing change must work in Calicon and Canvas until one theme is removed
+alwaysApply: true
+---
+
+# Dual theme requirement
+
+The site has two live themes until the owner explicitly removes one:
+
+- **Calicon** — steel-grey + gold marketing chrome (`data-theme="calicon"`)
+- **Canvas Group** — dark editorial shell with hamburger rail (`data-theme="canvas"`)
+
+Default theme is Canvas. Users can switch. Do not treat either as disposable.
+
+## Do this on every UI, content, routing, or layout change
+
+- Implement the change so **both** themes show the correct result — not only the theme currently on screen.
+- Prefer **one shared page/content source** styled through existing tokens and theme CSS. Do not fork duplicate pages per theme unless the shells truly cannot share markup.
+- If chrome differs (header, nav, home, footer), update **both shells**: Calicon `SiteHeader` / `SiteFooter` and Canvas `src/components/canvas/*`.
+- After the change, **verify both themes** (switch the selector, check the same routes and states). A single-theme check is incomplete.
+- Watch for regressions: hardcoded `slate-*` / gold-only styles, Calicon-only headers, Canvas homepage replacing inner pages, missing nav links, unredacted assets.
+
+This rule stands until the user says a theme is removed.

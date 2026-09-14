@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { SITE_NAME } from "@/lib/seo";
 
-export const alt = `${SITE_NAME} · Websites & digital growth`;
+export const alt = `${SITE_NAME} · Build what's next.`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -44,7 +44,7 @@ export default function OpenGraphImage() {
               maxWidth: 900,
             }}
           >
-            Websites & digital growth
+            Build what&apos;s next.
           </div>
           <div
             style={{
@@ -56,7 +56,7 @@ export default function OpenGraphImage() {
               lineHeight: 1.4,
             }}
           >
-            React · Node.js · Spring · mobile · AWS / Azure
+            Digital products · custom software · AI in the workflow
           </div>
         </div>
       </div>

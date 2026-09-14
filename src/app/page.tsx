@@ -3,21 +3,24 @@ import Link from "next/link";
 import {
   ArrowRight,
   Briefcase,
-  Cloud,
   Compass,
   FileText,
+  Handshake,
   Layers,
   MessageCircle,
   PhoneForwarded,
-  UsersRound,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { SITE_NAME, pageMetadata } from "@/lib/seo";
 import {
+  HOME_BUILD_ID,
+  HOME_POSITIONING_ID,
   calicapHomeCta,
+  calicapHomeEntryDoors,
   calicapHomeHero,
-  calicapHomeHeroStats,
+  calicapHomeOutcomes,
   calicapHomeProcess,
+  calicapHomeRecognition,
   calicapHomeServices,
   calicapHomeServicesSection,
   calicapHomeWorkSection,
@@ -27,18 +30,19 @@ import { siteImages } from "@/lib/site-images";
 
 export const metadata = {
   ...pageMetadata({
-    title: "Websites & digital growth",
+    title: "Build what's next",
     description:
-      "Web and mobile delivery with React, Node.js, Spring, and AI integrations; native iOS and Android or React Native; cloud on AWS and Azure—plus digital marketing that compounds.",
+      "Turn business ideas and challenges into digital products, custom software, and AI in the workflow — then stay after launch.",
     path: "/",
   }),
   title: {
-    absolute: `${SITE_NAME} · Websites & digital growth`,
+    absolute: `${SITE_NAME} · Build what's next.`,
   },
 };
 
 export default function HomePage() {
   const hero = calicapHomeHero;
+  const recognition = calicapHomeRecognition;
   const servicesSection = calicapHomeServicesSection;
   const workSection = calicapHomeWorkSection;
   const process = calicapHomeProcess;
@@ -46,9 +50,9 @@ export default function HomePage() {
 
   return (
     <>
-      <section>
+      <section id={HOME_POSITIONING_ID} className="scroll-mt-0">
         <div className="relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 z-0">
+          <div className="home-hero-media pointer-events-none absolute inset-0 z-0">
             <Image
               src={hero.bannerSrc}
               alt=""
@@ -73,7 +77,7 @@ export default function HomePage() {
             />
           </div>
           <div className="relative z-10 mx-auto w-full min-w-0 max-w-6xl px-4 pb-12 pt-16 sm:px-6 md:pb-14 md:pt-20 lg:px-8">
-            <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-14">
+            <div className="home-hero-layout grid items-start gap-12 lg:grid-cols-2 lg:gap-14">
               <div>
                 <p className="flex min-w-0 flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-gold-700/95 sm:tracking-[0.2em]">
                   <Layers className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
@@ -85,25 +89,23 @@ export default function HomePage() {
                   {hero.headlineAfter}
                 </h1>
                 <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
-                  {hero.bodyLead}
-                  <span className="text-slate-800">{hero.bodyStack}</span>
-                  {hero.bodyMid}{" "}
-                  <span className="text-slate-800">{hero.bodyCloud[0]}</span> or{" "}
-                  <span className="text-slate-800">{hero.bodyCloud[1]}</span>{" "}
-                  {hero.bodyTail}
+                  {hero.body}
                 </p>
                 <div className="mt-10 flex flex-wrap items-center gap-4">
                   <ButtonLink href="/contact">
                     <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
                     {hero.primaryCta}
                   </ButtonLink>
-                  <ButtonLink href="/work" variant="ghost">
-                    <FileText className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+                  <a
+                    href={`#${HOME_BUILD_ID}`}
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border-subtle)] px-5 py-2.5 text-sm font-semibold text-[var(--color-btn-ghost-text)] transition hover:border-[var(--color-btn-ghost-hover-border)] hover:bg-[var(--color-btn-ghost-hover-bg)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+                  >
+                    <Layers className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
                     {hero.secondaryCta}
-                  </ButtonLink>
+                  </a>
                 </div>
               </div>
-              <div className="relative mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none lg:pt-2">
+              <div className="home-brochure-figure relative mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none lg:pt-2">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl shadow-slate-900/12 ring-1 ring-slate-200/90">
                   <Image
                     src={hero.sideImage.src}
@@ -116,40 +118,60 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="mt-12 surface-card max-w-3xl rounded-2xl p-6 md:p-8">
-              <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-slate-500">
-                <Cloud className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-                {hero.engineeringTitle}
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                <span className="font-medium text-slate-800">{hero.engineeringWebLabel}</span>{" "}
-                {hero.engineeringWeb}{" "}
-                <span className="font-medium text-slate-800">{hero.engineeringMobileLabel}</span>{" "}
-                {hero.engineeringMobile}{" "}
-                <span className="font-medium text-slate-800">{hero.engineeringCloudLabel}</span>{" "}
-                {hero.engineeringCloud}
-              </p>
-            </div>
           </div>
         </div>
-        <div className="mx-auto w-full min-w-0 max-w-6xl border-t border-[var(--color-border-subtle)] px-4 pb-24 pt-10 sm:px-6 md:pb-28 lg:px-8">
-          <dl className="grid gap-8 sm:grid-cols-3">
-            {calicapHomeHeroStats.map(({ label, value, icon: Icon }) => (
+      </section>
+
+      <section className="border-t border-[var(--color-border-subtle)]">
+        <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
+          <h2 className="max-w-3xl font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
+            {recognition.title}
+          </h2>
+          <p className="mt-4 max-w-2xl text-slate-600">{recognition.body}</p>
+          <p className="mt-8 max-w-2xl text-lg font-medium leading-relaxed text-slate-800">
+            {recognition.differentiator}
+          </p>
+
+          <dl className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {calicapHomeOutcomes.map(({ label, value, icon: Icon }) => (
               <div key={label}>
                 <dt className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-slate-500">
                   <Icon className="h-3.5 w-3.5 text-gold-600" strokeWidth={2} aria-hidden />
                   {label}
                 </dt>
-                <dd className="mt-2 text-2xl font-semibold text-slate-800">{value}</dd>
+                <dd className="mt-2 text-base font-medium leading-relaxed text-slate-800">
+                  {value}
+                </dd>
               </div>
             ))}
           </dl>
+
+          <div className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
+            <h3 className="max-w-2xl font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+              {recognition.bridgeTitle}
+            </h3>
+            <p className="mt-4 max-w-2xl text-slate-600">{recognition.bridgeBody}</p>
+            <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {calicapHomeEntryDoors.map(({ label, value, icon: Icon }) => (
+                <li key={label} className="surface-card rounded-2xl p-6">
+                  <p className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-slate-500">
+                    <Icon className="h-3.5 w-3.5 text-gold-600" strokeWidth={2} aria-hidden />
+                    {label}
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{value}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section className="border-t border-[var(--color-border-subtle)] bg-slate-400/35">
+      <section
+        id={HOME_BUILD_ID}
+        className="home-band scroll-mt-8 border-t border-[var(--color-border-subtle)] bg-slate-400/35"
+      >
         <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[1fr_minmax(0,440px)] lg:items-center lg:gap-12">
+          <div className="home-split grid gap-10 lg:grid-cols-[1fr_minmax(0,440px)] lg:items-center lg:gap-12">
             <div>
               <h2 className="flex min-w-0 flex-wrap items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
                 <Briefcase className="h-8 w-8 text-gold-600" strokeWidth={1.75} aria-hidden />
@@ -157,7 +179,7 @@ export default function HomePage() {
               </h2>
               <p className="mt-4 text-slate-600">{servicesSection.intro}</p>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg shadow-slate-900/10 ring-1 ring-slate-200/80">
+            <div className="home-brochure-figure relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg shadow-slate-900/10 ring-1 ring-slate-200/80">
               <Image
                 src={servicesSection.image.src}
                 alt={servicesSection.image.alt}
@@ -167,7 +189,7 @@ export default function HomePage() {
               />
             </div>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
             {calicapHomeServices.map((s) => {
               const Icon = s.icon;
               return (
@@ -186,7 +208,7 @@ export default function HomePage() {
                       </h3>
                       <p className="mt-3 text-sm leading-relaxed text-slate-600">{s.body}</p>
                       <p className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-gold-600">
-                        Learn more
+                        Explore
                         <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
                       </p>
                     </div>
@@ -195,7 +217,11 @@ export default function HomePage() {
               );
             })}
           </div>
-          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-2">
+          <p className="mt-10 max-w-2xl text-sm leading-relaxed text-slate-500">
+            <Handshake className="mb-0.5 mr-1.5 inline h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
+            {hero.stayOn}
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-2">
             <Link
               href="/services"
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-600 hover:text-gold-700"
@@ -213,6 +239,41 @@ export default function HomePage() {
               <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="border-t border-[var(--color-border-subtle)]">
+        <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
+          <h2 className="flex min-w-0 flex-wrap items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
+            <Compass className="h-8 w-8 text-gold-600" strokeWidth={1.75} aria-hidden />
+            {process.title}
+          </h2>
+          <p className="mt-4 max-w-2xl text-slate-600">{process.intro}</p>
+          <ol className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-5">
+            {process.steps.map((s) => {
+              const Icon = s.icon;
+              return (
+                <li key={s.n} className="surface-card rounded-2xl p-6">
+                  <div className="flex items-center gap-2">
+                    <Icon className="h-5 w-5 text-gold-600" strokeWidth={2} aria-hidden />
+                    <span className="text-xs font-mono text-gold-600">{s.n}</span>
+                  </div>
+                  <p className="mt-3 font-medium text-slate-800">{s.t}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-500">{s.d}</p>
+                </li>
+              );
+            })}
+          </ol>
+          <dl className="mt-12 grid gap-8 border-t border-[var(--color-border-subtle)] pt-10 sm:grid-cols-3">
+            {process.traits.map(({ label, value }) => (
+              <div key={label}>
+                <dt className="text-xs font-medium uppercase tracking-wider text-slate-500">
+                  {label}
+                </dt>
+                <dd className="mt-2 text-sm leading-relaxed text-slate-600">{value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
@@ -251,7 +312,7 @@ export default function HomePage() {
               {workSection.allLabel}
             </ButtonLink>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
             {calicapHomeWorkTeasers.map((w) => {
               const Icon = w.icon;
               const image = siteImages[w.imageKey];
@@ -288,44 +349,6 @@ export default function HomePage() {
                 </Link>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-[var(--color-border-subtle)] bg-slate-400/35">
-        <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
-            <div>
-              <h2 className="flex min-w-0 flex-wrap items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
-                <Compass className="h-8 w-8 text-gold-600" strokeWidth={1.75} aria-hidden />
-                {process.title}
-              </h2>
-              <p className="mt-4 max-w-2xl text-slate-600">{process.intro}</p>
-              <ol className="mt-12 grid gap-6 sm:grid-cols-2">
-                {process.steps.map((s) => {
-                  const Icon = s.icon;
-                  return (
-                    <li key={s.n} className="surface-card rounded-2xl p-6">
-                      <div className="flex items-center gap-2">
-                        <Icon className="h-5 w-5 text-gold-600" strokeWidth={2} aria-hidden />
-                        <span className="text-xs font-mono text-gold-600">{s.n}</span>
-                      </div>
-                      <p className="mt-3 font-medium text-slate-800">{s.t}</p>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-500">{s.d}</p>
-                    </li>
-                  );
-                })}
-              </ol>
-            </div>
-            <div className="relative aspect-[3/4] max-h-[560px] overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80 lg:sticky lg:top-24">
-              <Image
-                src={process.image.src}
-                alt={process.image.alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 420px"
-              />
-            </div>
           </div>
         </div>
       </section>
@@ -376,8 +399,8 @@ export default function HomePage() {
                   <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
                   {cta.primaryCta}
                 </ButtonLink>
-                <ButtonLink href="/about" variant="ghost">
-                  <UsersRound className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+                <ButtonLink href="/contact" variant="ghost">
+                  <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
                   {cta.secondaryCta}
                 </ButtonLink>
               </div>

@@ -36,13 +36,13 @@ export function FloatingActions() {
   }, [showCall]);
 
   return (
-    <div className="floating-actions pointer-events-none fixed z-[550] flex flex-col items-end gap-2">
-      <div className="pointer-events-auto">
+    <div className="floating-actions pointer-events-none fixed z-[650] flex shrink-0 flex-col items-end gap-2">
+      <div className="pointer-events-auto shrink-0">
         <ThemeToggle />
       </div>
       <Link
         href="/contact"
-        className={`floating-actions-btn floating-actions-btn-primary pointer-events-auto transition-all duration-300 ease-out ${
+        className={`floating-actions-btn floating-actions-btn-primary pointer-events-auto shrink-0 transition-all duration-300 ease-out ${
           callVisible
             ? "translate-y-0 opacity-100"
             : "pointer-events-none translate-y-3 opacity-0"
