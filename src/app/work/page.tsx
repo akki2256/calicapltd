@@ -1,67 +1,29 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Building2,
-  FileText,
-  Rocket,
-  ShoppingBag,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, FileText, ShoppingBag } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
-import { siteImages } from "@/lib/site-images";
+import { pageMetadata } from "@/lib/seo";
+import {
+  calicapWorkIndex,
+  calicapWorkStudies,
+  getWorkStudyImage,
+} from "@/lib/calicap-work";
 
-export const metadata: Metadata = {
-  title: "Work",
-  description:
-    "Selected case studies in web, organic search, and growth campaigns.",
-};
-
-const studies: {
-  slug: string;
-  label: string;
-  title: string;
-  excerpt: string;
-  icon: LucideIcon;
-  image: (typeof siteImages)[keyof typeof siteImages];
-}[] = [
-  {
-    slug: "calicap-india",
-    label: "Product · CRM · ops",
-    title: "Calicap India Pvt. Ltd.",
-    excerpt:
-      "A process-fit CRM in 60 days—clearer delegation, smarter follow-ups, 23% lower ops cost and 37% higher average sales.",
-    icon: Building2,
-    image: siteImages.calicapIndiaCrm,
-  },
-  {
-    slug: "retail-growth",
-    label: "Retail · organic",
-    title: "Retail brand lift",
-    excerpt:
-      "Rebuilt the story-led site experience, fixed technical debt, and installed a publishing cadence that matched inventory seasons.",
-    icon: ShoppingBag,
-    image: siteImages.retailStore,
-  },
-  {
-    slug: "saas-launch",
-    label: "SaaS · launch",
-    title: "SaaS launch site",
-    excerpt:
-      "Positioning sprint, rapid UI system, and GTM landing architecture for a category-creating product.",
-    icon: Rocket,
-    image: siteImages.productLaunch,
-  },
-];
+export const metadata = pageMetadata({
+  title: calicapWorkIndex.metaTitle,
+  description: calicapWorkIndex.metaDescription,
+  path: "/work",
+});
 
 export default function WorkIndexPage() {
+  const index = calicapWorkIndex;
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
       <div className="relative mb-12 aspect-[2.5/1] w-full max-h-64 overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80 sm:max-h-80">
         <Image
-          src={siteImages.strategySession.src}
-          alt={siteImages.strategySession.alt}
+          src={index.heroImage.src}
+          alt={index.heroImage.alt}
           fill
           className="object-cover"
           sizes="(max-width: 1152px) 100vw, 1152px"
@@ -71,25 +33,23 @@ export default function WorkIndexPage() {
       </div>
       <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold-700/95">
         <FileText className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-        Work
+        {index.eyebrow}
       </p>
       <h1 className="mt-4 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-medium tracking-tight text-slate-900">
-        Narratives backed by numbers.
+        {index.title}
       </h1>
-      <p className="mt-6 max-w-2xl text-lg text-slate-600">
-        Each study outlines the brief, the trade-offs, and what moved—so you can
-        judge fit before we speak.
-      </p>
+      <p className="mt-6 max-w-2xl text-lg text-slate-600">{index.intro}</p>
       <div className="mt-10">
         <ButtonLink href="/contact">
           <ShoppingBag className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-          Talk about your roadmap
+          {index.ctaLabel}
         </ButtonLink>
       </div>
 
       <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {studies.map((s) => {
+        {calicapWorkStudies.map((s) => {
           const Icon = s.icon;
+          const image = getWorkStudyImage(s);
           return (
             <Link
               key={s.slug}
@@ -98,8 +58,8 @@ export default function WorkIndexPage() {
             >
               <div className="relative aspect-[16/10] w-full overflow-hidden">
                 <Image
-                  src={s.image.src}
-                  alt={s.image.alt}
+                  src={image.src}
+                  alt={image.alt}
                   fill
                   className="object-cover transition duration-300 group-hover:scale-[1.02]"
                   sizes="(max-width: 768px) 100vw, 50vw"

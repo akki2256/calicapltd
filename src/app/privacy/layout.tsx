@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Home } from "lucide-react";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Privacy",
   description:
     "How Calicon collects, uses, and protects personal information submitted through this website.",
-};
+  path: "/privacy",
+});
 
 export default function PrivacyLayout({
   children,

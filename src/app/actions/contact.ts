@@ -1,39 +1,26 @@
 "use server";
 
+import { validateContactForm, type ContactFieldErrors } from "@/lib/contact-form-validation";
+import { sendContactEmail } from "@/lib/send-contact-email";
+
 export type ContactState =
-  | { ok?: undefined; error?: undefined }
+  | { ok?: undefined; error?: undefined; fieldErrors?: undefined }
   | { ok: true }
-  | { error: string };
+  | { error: string; fieldErrors?: ContactFieldErrors };
 
 export async function submitContact(
   _prev: ContactState,
   formData: FormData,
 ): Promise<ContactState> {
-  const name = String(formData.get("name") ?? "").trim();
-  const email = String(formData.get("email") ?? "").trim();
-  const company = String(formData.get("company") ?? "").trim();
-  const budget = String(formData.get("budget") ?? "").trim();
-  const message = String(formData.get("message") ?? "").trim();
-
-  if (!name || !email || !message) {
-    return { error: "Please fill in name, email, and how we can help." };
+  const validated = validateContactForm(formData);
+  if (!validated.ok) {
+    return { error: validated.error, fieldErrors: validated.fieldErrors };
   }
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { error: "Please enter a valid email address." };
+  const sent = await sendContactEmail(validated.data);
+  if (!sent.ok) {
+    return { error: sent.error };
   }
-
-  const payload = {
-    name,
-    email,
-    company: company || null,
-    budget: budget || null,
-    message,
-    at: new Date().toISOString(),
-  };
-
-  // Swap for Resend, Slack webhook, etc. on Vercel — logs locally for development.
-  console.info("[contact enquiry]", payload);
 
   return { ok: true };
 }

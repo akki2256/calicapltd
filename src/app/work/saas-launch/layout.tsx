@@ -1,14 +1,20 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, FileText } from "lucide-react";
-import { siteImages } from "@/lib/site-images";
+import { JsonLd } from "@/components/JsonLd";
+import { getWorkStudyBySlug, getWorkStudyImage } from "@/lib/calicap-work";
+import { pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, creativeWorkJsonLd } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
-  title: "SaaS launch site",
-  description:
-    "Case study: SaaS launch positioning, design system, and GTM landing architecture.",
-};
+const study = getWorkStudyBySlug("saas-launch")!;
+const studyImage = getWorkStudyImage(study);
+
+export const metadata = pageMetadata({
+  title: study.metaTitle,
+  description: study.metaDescription,
+  path: `/work/${study.slug}`,
+  imagePath: studyImage.src,
+});
 
 export default function SaasCaseLayout({
   children,
@@ -17,6 +23,21 @@ export default function SaasCaseLayout({
 }) {
   return (
     <div className="mx-auto max-w-3xl px-6 py-16 lg:px-8 lg:py-20">
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Work", path: "/work" },
+            { name: study.title, path: `/work/${study.slug}` },
+          ]),
+          creativeWorkJsonLd({
+            name: study.title,
+            description: study.metaDescription,
+            path: `/work/${study.slug}`,
+            imagePath: studyImage.src,
+          }),
+        ]}
+      />
       <Link
         href="/work"
         className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gold-700/90 hover:text-gold-600"
@@ -27,8 +48,8 @@ export default function SaasCaseLayout({
       </Link>
       <div className="relative mb-10 mt-8 aspect-[2.2/1] w-full max-h-56 overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80 sm:max-h-64">
         <Image
-          src={siteImages.productLaunch.src}
-          alt={siteImages.productLaunch.alt}
+          src={studyImage.src}
+          alt={studyImage.alt}
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 720px"

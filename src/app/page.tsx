@@ -4,106 +4,53 @@ import {
   ArrowRight,
   Briefcase,
   Cloud,
-  Code2,
   Compass,
   FileText,
-  Gauge,
-  Handshake,
   Layers,
   MessageCircle,
-  Monitor,
-  Palette,
   PhoneForwarded,
-  Rocket,
-  ShoppingBag,
-  Smartphone,
-  TrendingUp,
   UsersRound,
-  Building2,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
+import { SITE_NAME, pageMetadata } from "@/lib/seo";
+import {
+  calicapHomeCta,
+  calicapHomeHero,
+  calicapHomeHeroStats,
+  calicapHomeProcess,
+  calicapHomeServices,
+  calicapHomeServicesSection,
+  calicapHomeWorkSection,
+  calicapHomeWorkTeasers,
+} from "@/lib/calicap-home";
 import { siteImages } from "@/lib/site-images";
 
-const services = [
-  {
-    title: "Web app development",
-    body: "React-led UIs, Node.js and Spring services, AI integrations where they earn their place—and cloud on AWS or Azure. Built for conversion and iteration.",
-    href: "/services/web-app-development",
-    icon: Monitor,
+export const metadata = {
+  ...pageMetadata({
+    title: "Websites & digital growth",
+    description:
+      "Web and mobile delivery with React, Node.js, Spring, and AI integrations; native iOS and Android or React Native; cloud on AWS and Azure—plus digital marketing that compounds.",
+    path: "/",
+  }),
+  title: {
+    absolute: `${SITE_NAME} · Websites & digital growth`,
   },
-  {
-    title: "Mobile app development",
-    body: "Native iOS and Android, plus React Native when one codebase should carry both stores—wired to the same API and cloud patterns as web.",
-    href: "/services/mobile-app-development",
-    icon: Smartphone,
-  },
-];
-
-const workTeaser = [
-  {
-    slug: "calicap-india",
-    title: "Calicap India Pvt. Ltd.",
-    result: "23% lower ops cost · 37% higher average sales",
-    icon: Building2,
-    image: siteImages.calicapIndiaCrm,
-  },
-  {
-    slug: "retail-growth",
-    title: "Retail brand lift",
-    result: "Organic visibility up, clearer path to enquiry",
-    icon: ShoppingBag,
-    image: siteImages.retailStore,
-  },
-  {
-    slug: "saas-launch",
-    title: "SaaS launch site",
-    result: "Launch-ready positioning in six weeks",
-    icon: Rocket,
-    image: siteImages.productLaunch,
-  },
-];
-
-const steps = [
-  {
-    n: "01",
-    t: "Discovery",
-    d: "Goals, audience, constraints, and success metrics—locked early.",
-    icon: Compass,
-  },
-  {
-    n: "02",
-    t: "Design",
-    d: "Typography, motion, and UX that match the calibre of your offer.",
-    icon: Palette,
-  },
-  {
-    n: "03",
-    t: "Build",
-    d: "React and modern web tooling, Node.js and Spring for APIs, intentional AI integrations, and hardened AWS or Azure environments.",
-    icon: Code2,
-  },
-  {
-    n: "04",
-    t: "Grow",
-    d: "Content, campaigns, and experiments with reporting you can trust.",
-    icon: TrendingUp,
-  },
-];
-
-const heroStats = [
-  { label: "Core Web Vitals", value: "Built-in", icon: Gauge },
-  { label: "Engagement model", value: "Project + growth", icon: Handshake },
-  { label: "Delivery", value: "Senior-led, no bait-and-switch", icon: UsersRound },
-];
+};
 
 export default function HomePage() {
+  const hero = calicapHomeHero;
+  const servicesSection = calicapHomeServicesSection;
+  const workSection = calicapHomeWorkSection;
+  const process = calicapHomeProcess;
+  const cta = calicapHomeCta;
+
   return (
     <>
       <section>
         <div className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 z-0">
             <Image
-              src="/images/home-hero-banner.png"
+              src={hero.bannerSrc}
               alt=""
               fill
               quality={92}
@@ -112,7 +59,6 @@ export default function HomePage() {
               priority
               aria-hidden
             />
-            {/* Lighter wash on the right so the photo stays crisp; stronger on the left for headline contrast */}
             <div
               className="absolute inset-0 bg-gradient-to-r from-[var(--color-surface)]/78 via-[var(--color-surface)]/42 to-[var(--color-surface)]/14"
               aria-hidden
@@ -122,49 +68,46 @@ export default function HomePage() {
               aria-hidden
             />
             <div
-              className="absolute inset-0 bg-gradient-to-r from-gold-500/[0.06] via-transparent to-gold-400/[0.04]"
+              className="absolute inset-0 bg-gradient-to-r from-[var(--color-accent)]/[0.06] via-transparent to-[var(--color-accent)]/[0.04]"
               aria-hidden
             />
           </div>
-          <div className="relative z-10 mx-auto max-w-6xl px-6 pb-12 pt-16 md:pb-14 md:pt-20 lg:px-8">
+          <div className="relative z-10 mx-auto w-full min-w-0 max-w-6xl px-4 pb-12 pt-16 sm:px-6 md:pb-14 md:pt-20 lg:px-8">
             <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-14">
               <div>
-                <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold-700/95">
+                <p className="flex min-w-0 flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-gold-700/95 sm:tracking-[0.2em]">
                   <Layers className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-                  Websites · organic · paid
+                  {hero.eyebrow}
                 </p>
                 <h1 className="mt-6 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-medium leading-tight tracking-tight text-slate-900 sm:text-5xl sm:leading-[1.08]">
-                  Digital presence that feels{" "}
-                  <span className="text-gradient">expensive</span>—and converts.
+                  {hero.headlineBefore}{" "}
+                  <span className="text-gradient">{hero.headlineAccent}</span>
+                  {hero.headlineAfter}
                 </h1>
                 <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
-                  Calicon partners with ambitious operators on high-craft websites and
-                  measurable marketing. Strategy first, execution without theatre. We
-                  ship with current stacks—
-                  <span className="text-slate-800">
-                    React, Node.js, Spring, AI features where they make sense, and
-                    mobile via native iOS and Android or React Native
-                  </span>
-                  —hosted on <span className="text-slate-800">AWS</span> or{" "}
-                  <span className="text-slate-800">Azure</span> to match your
-                  security and scale needs.
+                  {hero.bodyLead}
+                  <span className="text-slate-800">{hero.bodyStack}</span>
+                  {hero.bodyMid}{" "}
+                  <span className="text-slate-800">{hero.bodyCloud[0]}</span> or{" "}
+                  <span className="text-slate-800">{hero.bodyCloud[1]}</span>{" "}
+                  {hero.bodyTail}
                 </p>
                 <div className="mt-10 flex flex-wrap items-center gap-4">
                   <ButtonLink href="/contact">
                     <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-                    Start a project
+                    {hero.primaryCta}
                   </ButtonLink>
                   <ButtonLink href="/work" variant="ghost">
                     <FileText className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-                    View selected work
+                    {hero.secondaryCta}
                   </ButtonLink>
                 </div>
               </div>
               <div className="relative mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none lg:pt-2">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl shadow-slate-900/12 ring-1 ring-slate-200/90">
                   <Image
-                    src={siteImages.heroWorkspace.src}
-                    alt={siteImages.heroWorkspace.alt}
+                    src={hero.sideImage.src}
+                    alt={hero.sideImage.alt}
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 45vw"
@@ -176,25 +119,22 @@ export default function HomePage() {
             <div className="mt-12 surface-card max-w-3xl rounded-2xl p-6 md:p-8">
               <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-slate-500">
                 <Cloud className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-                Engineering footprint
+                {hero.engineeringTitle}
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                <span className="font-medium text-slate-800">Web &amp; APIs:</span>{" "}
-                React ecosystems, Node.js and Java/Spring services, and
-                product-grade AI integrations (assistants, retrieval, automation)
-                grounded in your data policies.{" "}
-                <span className="font-medium text-slate-800">Mobile:</span> native
-                SDKs for iOS and Android, or React Native for shared business logic.{" "}
-                <span className="font-medium text-slate-800">Cloud:</span> AWS and
-                Azure—networking, observability, and releases tuned to how your
-                team operates.
+                <span className="font-medium text-slate-800">{hero.engineeringWebLabel}</span>{" "}
+                {hero.engineeringWeb}{" "}
+                <span className="font-medium text-slate-800">{hero.engineeringMobileLabel}</span>{" "}
+                {hero.engineeringMobile}{" "}
+                <span className="font-medium text-slate-800">{hero.engineeringCloudLabel}</span>{" "}
+                {hero.engineeringCloud}
               </p>
             </div>
           </div>
         </div>
-        <div className="mx-auto max-w-6xl border-t border-[var(--color-border-subtle)] px-6 pb-24 pt-10 md:pb-28 lg:px-8">
+        <div className="mx-auto w-full min-w-0 max-w-6xl border-t border-[var(--color-border-subtle)] px-4 pb-24 pt-10 sm:px-6 md:pb-28 lg:px-8">
           <dl className="grid gap-8 sm:grid-cols-3">
-            {heroStats.map(({ label, value, icon: Icon }) => (
+            {calicapHomeHeroStats.map(({ label, value, icon: Icon }) => (
               <div key={label}>
                 <dt className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-slate-500">
                   <Icon className="h-3.5 w-3.5 text-gold-600" strokeWidth={2} aria-hidden />
@@ -208,22 +148,19 @@ export default function HomePage() {
       </section>
 
       <section className="border-t border-[var(--color-border-subtle)] bg-slate-400/35">
-        <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8">
+        <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[1fr_minmax(0,440px)] lg:items-center lg:gap-12">
             <div>
-              <h2 className="inline-flex items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
+              <h2 className="flex min-w-0 flex-wrap items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
                 <Briefcase className="h-8 w-8 text-gold-600" strokeWidth={1.75} aria-hidden />
-                Capability across the full funnel
+                {servicesSection.title}
               </h2>
-              <p className="mt-4 text-slate-600">
-                Everything tied to acquisition—so design decisions do not fight
-                distribution.
-              </p>
+              <p className="mt-4 text-slate-600">{servicesSection.intro}</p>
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg shadow-slate-900/10 ring-1 ring-slate-200/80">
               <Image
-                src={siteImages.analyticsDashboard.src}
-                alt={siteImages.analyticsDashboard.alt}
+                src={servicesSection.image.src}
+                alt={servicesSection.image.alt}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 400px"
@@ -231,7 +168,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {services.map((s) => {
+            {calicapHomeServices.map((s) => {
               const Icon = s.icon;
               return (
                 <Link
@@ -247,9 +184,7 @@ export default function HomePage() {
                       <h3 className="font-[family-name:var(--font-display)] text-lg text-slate-900 group-hover:text-slate-950">
                         {s.title}
                       </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                        {s.body}
-                      </p>
+                      <p className="mt-3 text-sm leading-relaxed text-slate-600">{s.body}</p>
                       <p className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-gold-600">
                         Learn more
                         <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
@@ -266,7 +201,7 @@ export default function HomePage() {
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-600 hover:text-gold-700"
             >
               <Layers className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-              Services overview
+              {servicesSection.overviewLabel}
               <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
             </Link>
             <Link
@@ -274,7 +209,7 @@ export default function HomePage() {
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-slate-900"
             >
               <FileText className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-              Case studies
+              {servicesSection.workLabel}
               <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
             </Link>
           </div>
@@ -282,11 +217,11 @@ export default function HomePage() {
       </section>
 
       <section className="border-t border-[var(--color-border-subtle)]">
-        <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8">
+        <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="relative mb-12 aspect-[2.4/1] w-full max-h-60 overflow-hidden rounded-2xl shadow-md ring-1 ring-slate-200/80 sm:max-h-72">
             <Image
-              src={siteImages.teamCollaboration.src}
-              alt={siteImages.teamCollaboration.alt}
+              src={workSection.banner.src}
+              alt={workSection.banner.alt}
               fill
               className="object-cover"
               sizes="(max-width: 1152px) 100vw, 1152px"
@@ -295,18 +230,17 @@ export default function HomePage() {
           </div>
           <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
             <div>
-              <h2 className="inline-flex items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
+              <h2 className="flex min-w-0 flex-wrap items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
                 <FileText className="h-8 w-8 text-gold-600" strokeWidth={1.75} aria-hidden />
-                Proof, not posturing
+                {workSection.title}
               </h2>
               <p className="mt-4 max-w-xl text-slate-600">
-                Case studies written for decision-makers—constraints, decisions,
-                and outcomes.{" "}
+                {workSection.intro}{" "}
                 <Link
                   href="/work"
                   className="inline-flex items-center gap-1 font-semibold text-gold-600 hover:text-gold-700"
                 >
-                  Browse all case studies
+                  {workSection.browseLabel}
                   <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
                 </Link>
                 .
@@ -314,12 +248,13 @@ export default function HomePage() {
             </div>
             <ButtonLink href="/work" variant="ghost">
               <FileText className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-              All case studies
+              {workSection.allLabel}
             </ButtonLink>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {workTeaser.map((w) => {
+            {calicapHomeWorkTeasers.map((w) => {
               const Icon = w.icon;
+              const image = siteImages[w.imageKey];
               return (
                 <Link
                   key={w.slug}
@@ -328,8 +263,8 @@ export default function HomePage() {
                 >
                   <div className="relative aspect-[2/1] w-full overflow-hidden">
                     <Image
-                      src={w.image.src}
-                      alt={w.image.alt}
+                      src={image.src}
+                      alt={image.alt}
                       fill
                       className="object-cover transition duration-300 group-hover:scale-[1.03]"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -337,18 +272,18 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/10 to-transparent" aria-hidden />
                   </div>
                   <div className="p-8">
-                  <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-gold-700/95">
-                    <Icon className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-                    Case study
-                  </span>
-                  <h3 className="mt-3 font-[family-name:var(--font-display)] text-xl text-slate-900 group-hover:text-slate-900">
-                    {w.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-slate-600">{w.result}</p>
-                  <p className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-gold-600">
-                    Read the narrative
-                    <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" strokeWidth={2} aria-hidden />
-                  </p>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-gold-700/95">
+                      <Icon className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
+                      Case study
+                    </span>
+                    <h3 className="mt-3 font-[family-name:var(--font-display)] text-xl text-slate-900 group-hover:text-slate-900">
+                      {w.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-slate-600">{w.result}</p>
+                    <p className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-gold-600">
+                      Read the narrative
+                      <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" strokeWidth={2} aria-hidden />
+                    </p>
                   </div>
                 </Link>
               );
@@ -358,19 +293,16 @@ export default function HomePage() {
       </section>
 
       <section className="border-t border-[var(--color-border-subtle)] bg-slate-400/35">
-        <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8">
+        <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
             <div>
-              <h2 className="inline-flex items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
+              <h2 className="flex min-w-0 flex-wrap items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
                 <Compass className="h-8 w-8 text-gold-600" strokeWidth={1.75} aria-hidden />
-                How we work
+                {process.title}
               </h2>
-              <p className="mt-4 max-w-2xl text-slate-600">
-                Predictable phases, async by default, with live sessions when they
-                save time.
-              </p>
+              <p className="mt-4 max-w-2xl text-slate-600">{process.intro}</p>
               <ol className="mt-12 grid gap-6 sm:grid-cols-2">
-                {steps.map((s) => {
+                {process.steps.map((s) => {
                   const Icon = s.icon;
                   return (
                     <li key={s.n} className="surface-card rounded-2xl p-6">
@@ -379,9 +311,7 @@ export default function HomePage() {
                         <span className="text-xs font-mono text-gold-600">{s.n}</span>
                       </div>
                       <p className="mt-3 font-medium text-slate-800">{s.t}</p>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-500">
-                        {s.d}
-                      </p>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-500">{s.d}</p>
                     </li>
                   );
                 })}
@@ -389,8 +319,8 @@ export default function HomePage() {
             </div>
             <div className="relative aspect-[3/4] max-h-[560px] overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80 lg:sticky lg:top-24">
               <Image
-                src={siteImages.strategySession.src}
-                alt={siteImages.strategySession.alt}
+                src={process.image.src}
+                alt={process.image.alt}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 420px"
@@ -401,10 +331,10 @@ export default function HomePage() {
       </section>
 
       <section className="border-t border-[var(--color-border-subtle)]">
-        <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8">
+        <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="surface-card relative min-h-[280px] overflow-hidden rounded-3xl px-8 py-14 md:min-h-0 md:px-14 md:py-16">
             <Image
-              src={siteImages.cloudNetwork.src}
+              src={cta.backdrop.src}
               alt=""
               fill
               className="object-cover opacity-[0.18]"
@@ -415,40 +345,40 @@ export default function HomePage() {
               className="absolute inset-0 bg-gradient-to-r from-[var(--color-surface-elevated)] via-[var(--color-surface-elevated)]/95 to-[var(--color-surface-elevated)]/75"
               aria-hidden
             />
-            <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 translate-x-1/3 -translate-y-1/3 rounded-full bg-gold-500/20 blur-3xl" />
+            <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 translate-x-1/3 -translate-y-1/3 rounded-full bg-[var(--color-accent)]/20 blur-3xl" />
             <div className="relative z-10 max-w-2xl">
-              <h2 className="inline-flex items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900 md:text-4xl">
+              <h2 className="flex min-w-0 flex-wrap items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900 md:text-4xl">
                 <MessageCircle
                   className="h-9 w-9 text-gold-600 md:h-10 md:w-10"
                   strokeWidth={1.75}
                   aria-hidden
                 />
-                Tell us what you are building next.
+                {cta.title}
               </h2>
               <p className="mt-4 text-slate-600">
-                Share context in a few lines—we reply with{" "}
+                {cta.bodyLead}{" "}
                 <span className="inline-flex items-center gap-1 font-medium text-slate-800">
                   <PhoneForwarded className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-                  honest fit
+                  {cta.fitLabel}
                 </span>
-                , timeline, and a suggested path forward. See{" "}
+                {cta.bodyMid}{" "}
                 <Link
                   href="/work"
                   className="inline-flex items-center gap-1 font-semibold text-gold-600 hover:text-gold-700"
                 >
-                  selected work
+                  {cta.workLabel}
                   <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
                 </Link>{" "}
-                for how we have helped similar teams.
+                {cta.bodyTail}
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <ButtonLink href="/contact">
                   <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-                  Request a call
+                  {cta.primaryCta}
                 </ButtonLink>
                 <ButtonLink href="/about" variant="ghost">
                   <UsersRound className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-                  About the practice
+                  {cta.secondaryCta}
                 </ButtonLink>
               </div>
             </div>
