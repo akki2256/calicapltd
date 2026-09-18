@@ -24,11 +24,11 @@ export default function WebAppDevelopmentPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
       <Link
-        href="/services"
+        href="/build"
         className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gold-700/90 hover:text-gold-600"
       >
         <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-        Services
+        Build
       </Link>
       <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
         <div>
@@ -39,20 +39,11 @@ export default function WebAppDevelopmentPage() {
           <h1 className="mt-4 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-medium tracking-tight text-slate-900">
             {service.title}
           </h1>
-          <p className="mt-6 max-w-2xl text-lg text-slate-600">
-            {service.introLead}{" "}
-            <span className="font-medium text-slate-800">{service.introStacks.core}</span>
-            , adopt{" "}
-            <span className="font-medium text-slate-800">{service.introStacks.ai}</span>{" "}
-            {service.introMid}{" "}
-            <span className="font-medium text-slate-800">{service.introCloud[0]}</span> or{" "}
-            <span className="font-medium text-slate-800">{service.introCloud[1]}</span>{" "}
-            {service.introTail}
-          </p>
+          <p className="mt-6 max-w-2xl text-lg text-slate-600">{service.body}</p>
           <div className="mt-10 flex flex-wrap gap-4">
             <ButtonLink href="/contact">
               <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-              Discuss scope
+              {service.cta}
             </ButtonLink>
             <ButtonLink href={service.siblingHref} variant="ghost">
               <Smartphone className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
@@ -72,30 +63,49 @@ export default function WebAppDevelopmentPage() {
         </div>
       </div>
 
-      <div className="mt-16 space-y-8">
-        {service.offerings.map((o) => {
-          const Icon = o.icon;
-          return (
-            <div key={o.title} className="surface-card rounded-2xl p-8 md:p-10">
-              <h2 className="flex items-center gap-2 font-[family-name:var(--font-display)] text-2xl text-slate-900">
-                <Icon className="h-7 w-7 text-gold-600" strokeWidth={1.75} aria-hidden />
-                {o.title}
-              </h2>
-              <ul className="mt-6 space-y-3 text-sm leading-relaxed text-slate-600">
-                {o.points.map((p) => (
-                  <li key={p} className="flex gap-3">
-                    <Check
-                      className="mt-0.5 h-4 w-4 shrink-0 text-gold-600"
-                      strokeWidth={2}
-                      aria-hidden
-                    />
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
+      <div className="mt-16">
+        <h2 className="font-[family-name:var(--font-display)] text-2xl text-slate-900">
+          What we can help with
+        </h2>
+        <div className="mt-8 space-y-8">
+          {service.offerings.map((o) => {
+            const Icon = o.icon;
+            return (
+              <div key={o.title} className="surface-card rounded-2xl p-8 md:p-10">
+                <h3 className="flex items-center gap-2 font-[family-name:var(--font-display)] text-xl text-slate-900">
+                  <Icon className="h-6 w-6 text-gold-600" strokeWidth={1.75} aria-hidden />
+                  {o.title}
+                </h3>
+                <ul className="mt-6 space-y-3 text-sm leading-relaxed text-slate-600">
+                  {o.points.map((p) => (
+                    <li key={p} className="flex gap-3">
+                      <Check
+                        className="mt-0.5 h-4 w-4 shrink-0 text-gold-600"
+                        strokeWidth={2}
+                        aria-hidden
+                      />
+                      <span>{p}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-16">
+        <h2 className="font-[family-name:var(--font-display)] text-2xl text-slate-900">
+          Typical use cases
+        </h2>
+        <ul className="mt-6 space-y-3 text-sm leading-relaxed text-slate-600">
+          {service.useCases.map((u) => (
+            <li key={u} className="flex gap-3">
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-600" strokeWidth={2} aria-hidden />
+              <span>{u}</span>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <p className="mt-14 text-sm text-slate-600">

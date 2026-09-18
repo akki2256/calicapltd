@@ -9,7 +9,7 @@ import {
   Gauge,
   GitMerge,
   LayoutDashboard,
-  PhoneForwarded,
+  MessageCircle,
   Shield,
   Target,
   TrendingUp,
@@ -17,6 +17,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
+import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { JsonLd } from "@/components/JsonLd";
 import { getWorkStudyBySlug, getWorkStudyImage } from "@/lib/calicap-work";
 import { pageMetadata } from "@/lib/seo";
@@ -226,7 +227,7 @@ export default function CalicapIndiaCasePage() {
         day hunting for context and chasing status. Warm customers went quiet
         because follow-up lived in someone’s head. Managers could not see
         pipeline, load, or risk without assembling a report by hand. Useful
-        knowledge sat with individuals instead of the organisation.
+        knowledge sat with individuals instead of the organization.
       </p>
       <ul className="mt-6 space-y-3 text-slate-600">
         <li className="flex gap-2 leading-relaxed">
@@ -288,7 +289,7 @@ export default function CalicapIndiaCasePage() {
       </ul>
       <p className="mt-6 text-base leading-relaxed text-slate-600">
         Dashboards, access control, and an activity history sit on top of that
-        core—so the organisation keeps a record of work as it scales, rather than
+        core—so the organization keeps a record of work as it scales, rather than
         depending on whoever is in the room.
       </p>
 
@@ -391,10 +392,10 @@ export default function CalicapIndiaCasePage() {
       </p>
 
       <div className="mt-12 flex flex-wrap gap-4">
-        <ButtonLink href="/contact">
-          <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-          Start a similar project
-        </ButtonLink>
+        <ProblemCtaButton>
+          <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+          {study.ctaLabel}
+        </ProblemCtaButton>
         <ButtonLink href="/work" variant="ghost">
           <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           More case studies

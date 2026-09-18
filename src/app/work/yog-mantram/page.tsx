@@ -9,12 +9,12 @@ import {
   LayoutGrid,
   MapPin,
   MessageCircle,
-  PhoneForwarded,
   Search,
   Smartphone,
   Target,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
+import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { JsonLd } from "@/components/JsonLd";
 import { getWorkStudyBySlug, getWorkStudyImage } from "@/lib/calicap-work";
 import { pageMetadata } from "@/lib/seo";
@@ -336,10 +336,10 @@ export default function YogMantramCasePage() {
       </p>
 
       <div className="mt-12 flex flex-wrap gap-4">
-        <ButtonLink href="/contact">
-          <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-          Start a similar project
-        </ButtonLink>
+        <ProblemCtaButton>
+          <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+          {study.ctaLabel}
+        </ProblemCtaButton>
         <ButtonLink href={liveUrl} target="_blank" rel="noopener noreferrer" variant="ghost">
           <ExternalLink className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           View live site

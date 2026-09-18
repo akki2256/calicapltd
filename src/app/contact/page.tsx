@@ -1,8 +1,10 @@
 import Image from "next/image";
+import { Suspense } from "react";
 import { Clock, Mail, MapPin, PhoneForwarded } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { JsonLd } from "@/components/JsonLd";
 import { calicapContact } from "@/lib/calicap-contact";
+import { parseContactMode } from "@/lib/calicap-discovery";
 import { siteImages } from "@/lib/site-images";
 import { pageMetadata } from "@/lib/seo";
 import { breadcrumbJsonLd } from "@/lib/structured-data";
@@ -12,12 +14,18 @@ const bulletIcons = [Clock, PhoneForwarded, MapPin] as const;
 export const metadata = pageMetadata({
   title: "Contact",
   description:
-    "Tell us about your website or growth goals—we respond with fit, timeline, and next steps.",
+    "Tell us what you're trying to achieve — or start the guided path if you're not sure what you need yet.",
   path: "/contact",
 });
 
-export default function ContactPage() {
+type Props = {
+  searchParams?: Promise<{ mode?: string }>;
+};
+
+export default async function ContactPage({ searchParams }: Props) {
   const page = calicapContact.page;
+  const params = searchParams ? await searchParams : {};
+  const initialMode = parseContactMode(params.mode);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
@@ -58,7 +66,13 @@ export default function ContactPage() {
             />
           </div>
         </div>
-        <ContactForm />
+        <Suspense
+          fallback={
+            <div className="surface-card min-h-[24rem] animate-pulse rounded-2xl p-8 md:p-10" />
+          }
+        >
+          <ContactForm initialMode={initialMode} />
+        </Suspense>
       </div>
     </div>
   );

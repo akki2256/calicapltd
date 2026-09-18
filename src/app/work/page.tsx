@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, FileText, ShoppingBag } from "lucide-react";
-import { ButtonLink } from "@/components/button-link";
+import { ArrowRight, FileText, MessageCircle } from "lucide-react";
+import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { pageMetadata } from "@/lib/seo";
 import {
   calicapWorkIndex,
@@ -40,10 +40,10 @@ export default function WorkIndexPage() {
       </h1>
       <p className="mt-6 max-w-2xl text-lg text-slate-600">{index.intro}</p>
       <div className="mt-10">
-        <ButtonLink href="/contact">
-          <ShoppingBag className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+        <ProblemCtaButton>
+          <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           {index.ctaLabel}
-        </ButtonLink>
+        </ProblemCtaButton>
       </div>
 
       <div className="mt-16 grid gap-8 md:grid-cols-2">
@@ -74,9 +74,18 @@ export default function WorkIndexPage() {
                 <h2 className="mt-3 font-[family-name:var(--font-display)] text-2xl text-slate-900 group-hover:text-slate-900">
                   {s.title}
                 </h2>
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-slate-600">
-                  {s.excerpt}
+                <p className="mt-4 text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Challenge
                 </p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-600">{s.context}</p>
+                <p className="mt-3 text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Solution
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-700">{s.built}</p>
+                <p className="mt-3 text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Outcome
+                </p>
+                <p className="mt-1 text-sm font-medium text-slate-800">{s.result}</p>
                 <span className="mt-8 inline-flex items-center gap-1 text-sm font-semibold text-gold-600">
                   Open case study
                   <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" strokeWidth={2} aria-hidden />

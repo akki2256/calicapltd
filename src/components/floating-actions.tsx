@@ -1,13 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import { Phone } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useContactPathChooser } from "@/components/contact-path-chooser";
 
 const IDLE_MS = 5000;
 
 export function FloatingActions() {
+  const { openChooser } = useContactPathChooser();
   const [callVisible, setCallVisible] = useState(true);
   const hoveringRef = useRef(false);
   const timerRef = useRef<number | null>(null);
@@ -40,15 +41,16 @@ export function FloatingActions() {
       <div className="pointer-events-auto shrink-0">
         <ThemeToggle />
       </div>
-      <Link
-        href="/contact"
+      <button
+        type="button"
+        onClick={openChooser}
         className={`floating-actions-btn floating-actions-btn-primary pointer-events-auto shrink-0 transition-all duration-300 ease-out ${
           callVisible
             ? "translate-y-0 opacity-100"
             : "pointer-events-none translate-y-3 opacity-0"
         }`}
-        aria-label="Book a call"
-        title="Book a call"
+        aria-label="Tell us your problem"
+        title="Tell us your problem"
         onPointerEnter={() => {
           hoveringRef.current = true;
           setCallVisible(true);
@@ -59,8 +61,8 @@ export function FloatingActions() {
           scheduleHide();
         }}
       >
-        <Phone className="h-5 w-5" strokeWidth={1.75} aria-hidden />
-      </Link>
+        <MessageCircle className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+      </button>
     </div>
   );
 }

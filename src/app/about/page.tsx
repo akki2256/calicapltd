@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { FileText, Lightbulb, PhoneForwarded } from "lucide-react";
+import { FileText, Lightbulb, MessageCircle, PhoneForwarded } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
+import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { calicapAbout } from "@/lib/calicap-about";
 import { pageMetadata } from "@/lib/seo";
 
@@ -24,7 +25,66 @@ export default function AboutPage() {
           <h1 className="mt-4 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-medium tracking-tight text-slate-900">
             {about.title}
           </h1>
-          <div className="mt-10 max-w-2xl space-y-6 text-slate-600 leading-relaxed">
+
+          <section className="mt-10 max-w-2xl">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+              {about.visionTitle}
+            </h2>
+            <p className="mt-3 text-slate-600 leading-relaxed">{about.visionBody}</p>
+          </section>
+
+          <section className="mt-10 max-w-2xl">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+              {about.philosophyTitle}
+            </h2>
+            <p className="mt-3 text-slate-600 leading-relaxed">{about.philosophyBody}</p>
+          </section>
+
+          <section className="mt-10 max-w-2xl">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+              {about.howWeWorkTitle}
+            </h2>
+            <p className="mt-3 text-sm text-slate-500">{about.howWeWorkIntro}</p>
+            <ol className="mt-6 space-y-4">
+              {about.howWeWorkSteps.map((step) => (
+                <li key={step.n} className="flex gap-3">
+                  <span className="text-xs font-mono text-gold-600">{step.n}</span>
+                  <div>
+                    <p className="font-medium text-slate-800">{step.t}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-slate-600">{step.d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section className="mt-10 max-w-2xl">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+              {about.whereTitle}
+            </h2>
+            <p className="mt-3 text-slate-600 leading-relaxed">{about.whereBody}</p>
+          </section>
+
+          <section className="mt-10 max-w-2xl">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+              {about.beliefsTitle}
+            </h2>
+            <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+              {about.beliefs.map((belief) => (
+                <li
+                  key={belief}
+                  className="text-sm leading-relaxed text-slate-600 before:mr-2 before:text-gold-600 before:content-['·']"
+                >
+                  {belief}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="mt-10 max-w-2xl space-y-6 text-slate-600 leading-relaxed">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+              {about.teamTitle}
+            </h2>
             {about.paragraphs.map((paragraph, index) => {
               const Icon = paragraph.icon;
               return (
@@ -46,9 +106,10 @@ export default function AboutPage() {
                 </p>
               );
             })}
-          </div>
+          </section>
+
           <div className="mt-12 flex flex-wrap gap-4">
-            <ButtonLink href="/contact">
+            <ButtonLink href={about.primaryHref}>
               <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
               {about.primaryCta}
             </ButtonLink>
@@ -56,6 +117,17 @@ export default function AboutPage() {
               <FileText className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
               {about.secondaryCta}
             </ButtonLink>
+          </div>
+          <div className="mt-14 border-t border-[var(--color-border-subtle)] pt-10">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+              {about.aboutCloseTitle}
+            </h2>
+            <div className="mt-6">
+              <ProblemCtaButton>
+                <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+                {about.aboutCloseCta}
+              </ProblemCtaButton>
+            </div>
           </div>
         </div>
         <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-xl shadow-slate-900/12 ring-1 ring-slate-200/90 lg:sticky lg:top-24 lg:aspect-[3/4]">

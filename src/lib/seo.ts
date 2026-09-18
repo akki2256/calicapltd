@@ -10,7 +10,7 @@ export const SITE_URL = (
 ).replace(/\/$/, "");
 
 export const DEFAULT_DESCRIPTION =
-  "Turn business ideas and challenges into digital products, custom software, and AI in the workflow — then stay after launch.";
+  "Turn ideas and challenges into digital products, software, and technology that moves things forward. We understand before we build.";
 
 export const DEFAULT_KEYWORDS = [
   "Calicon",
@@ -62,7 +62,7 @@ export function pageMetadata({
       description,
       url,
       siteName: SITE_NAME,
-      locale: "en_GB",
+      locale: "en_US",
       type: "website",
       images: [{ url: ogImage }],
     },
@@ -93,7 +93,7 @@ export const rootMetadata: Metadata = {
     title: `${SITE_NAME} · Build what's next.`,
     description: DEFAULT_DESCRIPTION,
     type: "website",
-    locale: "en_GB",
+    locale: "en_US",
     siteName: SITE_NAME,
     url: SITE_URL,
   },
