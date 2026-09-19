@@ -20,56 +20,128 @@ export const HOME_BUILD_ID = "what-we-build";
 
 export const calicapHomeHero = {
   splash: "Build what's next",
-  eyebrow: "Software · Digital products · AI & automation · Transformation",
+  eyebrow: "Software · Digital products · Systems · Automation",
   headlineBefore: "Build",
   headlineAccent: "what's next",
   headlineAfter: ".",
   body:
-    "We turn business ideas and operational challenges into digital products, custom software, and technology that fits how the business already works — then stay as it evolves.",
-  primaryCta: "Start a project",
-  secondaryCta: "Explore what we build",
+    "Turn ideas and challenges into digital products, software, intelligent solutions, and technology that moves things forward.",
+  primaryCta: "Tell us your problem",
+  /** Opens two-path chooser — not a direct form dump */
+  primaryOpensChooser: true,
+  secondaryCta: "Explore services",
+  secondaryHref: "/build",
   stayOn:
-    "Consulting and ongoing maintenance sit behind the work — architecture when you need a plan, support when the product is live.",
+    "Consulting sits with Transform when a plan is needed. Evolve covers support and continuous improvement after launch.",
   bannerSrc: "/images/home-hero-banner.png",
   sideImage: siteImages.heroWorkspace,
 } as const;
 
-/** Recognition + clarity chapter immediately after the hero */
+/** Problem recognition + differentiation */
 export const calicapHomeRecognition = {
-  title: "Your business shouldn't have to work around its technology.",
-  body:
-    "Businesses often outgrow spreadsheets, manual processes, disconnected tools, and software that no longer fits how they operate. When that happens, the cost shows up as wasted time, slow operations, and friction that gets harder to grow past.",
-  differentiator:
+  title: "Your business is moving forward. Your technology should too.",
+  intro:
+    "Technology becomes a constraint when it no longer matches how work actually happens.",
+  examples: [
+    "Too much manual work",
+    "Outdated software",
+    "Disconnected systems",
+    "Processes spread across spreadsheets, email, and multiple tools",
+  ],
+  differentiator: "We understand before we build.",
+  differentiatorLead:
     "You don't need to know exactly what technology you need. You just need to know what you want to achieve.",
-  bridgeTitle: "Bring us the problem. We'll help build the solution.",
+  differentiatorBody:
+    "Goals, workflows, and direction come first — then the approach that fits. No rigid packages.",
+  bridgeTitle: "Bring the problem. Build the solution.",
   bridgeBody:
-    "Whether you have a clear specification, an early idea, or simply know that something needs to work better — we help define the approach and turn it into working technology.",
+    "A clear brief, an early idea, something inefficient, or a system that needs to change — the approach adapts to where things start.",
+  problemCtaTitle: "Not sure what the solution should be?",
+  problemCtaBody:
+    "Tell us what's happening. We'll help figure out what comes next.",
+  problemCtaLabel: "Tell us your problem",
+  problemCtaOpensChooser: true,
 } as const;
 
-export const calicapHomeOutcomes: {
+export const calicapHomePrinciples: {
   label: string;
   value: string;
   icon: LucideIcon;
 }[] = [
   {
-    label: "Automate",
-    value: "Reduce repetitive and manual work that eats the day.",
-    icon: Cpu,
+    label: "Understand",
+    value: "Goals, problems, workflows, and future direction — before deciding what to build.",
+    icon: Compass,
   },
   {
-    label: "Modernize",
-    value: "Replace outdated systems and processes that no longer fit.",
+    label: "Find the right approach",
+    value: "Use existing technology where it makes sense. Build custom where it creates real value.",
+    icon: ListChecks,
+  },
+  {
+    label: "Build around the real need",
+    value: "Technology should fit the way things actually work.",
     icon: Workflow,
   },
   {
+    label: "Move & evolve",
+    value: "Start with what matters, move efficiently, and adapt as needs change.",
+    icon: Rocket,
+  },
+];
+
+export const calicapHomeDiscovery = {
+  title: "What do you need to move forward?",
+  intro: "Technology built around what needs to happen next.",
+} as const;
+
+export const calicapHomeOutcomes: {
+  label: string;
+  value: string;
+  examples: readonly string[];
+  href: string;
+  linkLabel: string;
+  icon: LucideIcon;
+}[] = [
+  {
+    label: "Create",
+    value: "Build something new.",
+    examples: ["Applications", "Software", "Digital products", "Platforms"],
+    href: "/build",
+    linkLabel: "Explore Build",
+    icon: LayoutTemplate,
+  },
+  {
+    label: "Modernize",
+    value: "Improve technology that no longer fits.",
+    examples: ["Existing software", "Websites", "Business systems", "Digital operations"],
+    href: "/transform",
+    linkLabel: "Explore Transform",
+    icon: Workflow,
+  },
+  {
+    label: "Automate",
+    value: "Remove repetitive work.",
+    examples: ["Workflows", "Manual processes", "Customer interactions", "Routine operations"],
+    href: "/automate",
+    linkLabel: "Explore Automate",
+    icon: Cpu,
+  },
+  {
     label: "Connect",
-    value: "Bring disconnected tools and workflows into one picture.",
+    value: "Bring systems, data, and workflows together.",
+    examples: ["APIs", "Integrations", "Connected systems", "Data flows"],
+    href: "/build",
+    linkLabel: "Explore integrations",
     icon: Link2,
   },
   {
-    label: "Build",
-    value: "Turn ideas and opportunities into products that ship.",
-    icon: LayoutTemplate,
+    label: "Scale",
+    value: "Grow with changing needs.",
+    examples: ["Continuous development", "Improved systems", "Expanded functionality", "Ongoing support"],
+    href: "/evolve",
+    linkLabel: "Explore Evolve",
+    icon: Rocket,
   },
 ];
 
@@ -80,12 +152,12 @@ export const calicapHomeEntryDoors: {
 }[] = [
   {
     label: "An idea",
-    value: "You want to build something — site, app, platform, or system.",
+    value: "Something new to build — a site, app, platform, or system.",
     icon: Sparkles,
   },
   {
     label: "A requirement",
-    value: "You know exactly what you need and need it built well.",
+    value: "What's needed is clear — it just needs to be built well.",
     icon: ListChecks,
   },
   {
@@ -95,17 +167,17 @@ export const calicapHomeEntryDoors: {
   },
   {
     label: "An existing system",
-    value: "Improve, replace, or connect what you already have.",
+    value: "Improve, replace, or connect what already exists.",
     icon: RefreshCw,
   },
 ];
 
 export const calicapHomeServicesSection = {
-  title: "What we take on",
+  title: "We build technology around your business.",
   intro:
-    "What we can actually build for you. Consulting and after-launch support sit with the engagement — not as a separate shop window.",
+    "Four ways in — create what's needed, modernize what exists, remove manual work, and keep systems moving as requirements change.",
   image: siteImages.analyticsDashboard,
-  overviewLabel: "Services overview",
+  overviewLabel: "Explore Build",
   workLabel: "Case studies",
 } as const;
 
@@ -116,104 +188,135 @@ export const calicapHomeServices: {
   icon: LucideIcon;
 }[] = [
   {
-    title: "Digital products",
-    body: "Websites, web apps, and mobile — designed to convert and built to iterate. Marketing sites and product UIs in the same craft.",
-    href: "/services",
+    title: "Build",
+    body: "Applications, software, digital products, and integrations — from a defined requirement, a rough idea, or a real-world problem.",
+    href: "/build",
     icon: LayoutTemplate,
   },
   {
-    title: "Custom software",
-    body: "Business systems shaped to how the floor already works — CRM, workflows, integrations — not a generic package the team has to bend around.",
-    href: "/work/calicap-india",
+    title: "Transform",
+    body: "Modernize websites, systems, workflows, and digital operations so technology works better for how things operate today.",
+    href: "/transform",
     icon: Workflow,
   },
   {
-    title: "AI & automation",
-    body: "Follow-ups, intake, and the repetitive steps inside a real process. AI where it removes work — not a chatbot bolted on for the slide.",
-    href: "/services/web-app-development",
+    title: "Automate",
+    body: "Remove repetitive work through workflow automation, practical AI applications, chatbots, and integrations.",
+    href: "/automate",
     icon: Cpu,
+  },
+  {
+    title: "Evolve",
+    body: "Maintain, improve, extend, and continuously develop technology as requirements change.",
+    href: "/evolve",
+    icon: RefreshCw,
   },
 ];
 
 export const calicapHomeWorkSection = {
-  title: "Proof, not posturing",
-  intro:
-    "Two recent engagements, written for decision-makers — constraints, decisions, and outcomes.",
-  browseLabel: "Browse case studies",
-  allLabel: "All case studies",
+  title: "What we've built.",
+  intro: "Evidence from real projects — challenge, solution, and outcome.",
+  browseLabel: "View all work",
+  allLabel: "View all work",
   banner: siteImages.teamCollaboration,
+} as const;
+
+export const calicapHomeOutcomesSection = {
+  title: "Documented outcomes",
+  intro: "Results from engagements where the numbers are real and attributable.",
+} as const;
+
+export const calicapHomeTestimonialsSection = {
+  title: "Trusted by the businesses we work with.",
+  intro: "Feedback from people we've built with.",
 } as const;
 
 /** Home teaser cards — shared study list with short result lines */
 export const calicapHomeWorkTeasers = calicapWorkStudies.map((s) => ({
   slug: s.slug,
   title: s.title,
+  label: s.label,
+  context: s.context,
+  built: s.built,
   result: s.result,
+  beforeAfter: s.beforeAfter,
   icon: s.icon,
   imageKey: s.imageKey,
 }));
 
 export const calicapHomeProcess = {
   title: "How we work",
-  intro:
-    "You do not need a perfect technical brief to start. We understand the business, define the right approach, build it, launch it, and stay as it evolves.",
+  intro: "Problem → Strategy → Solution → Launch → Growth.",
   steps: [
     {
       n: "01",
-      t: "Understand",
-      d: "Business, requirements, and what success actually looks like.",
+      t: "Problem",
+      d: "Understand what needs to change and why.",
       icon: Compass,
     },
     {
       n: "02",
-      t: "Define",
-      d: "The right solution, scope, and technology approach — honest about what we will not build.",
+      t: "Strategy",
+      d: "Determine the right technology approach.",
       icon: ListChecks,
     },
     {
       n: "03",
-      t: "Build",
-      d: "Design, develop, integrate, and test until it fits how the team already works.",
+      t: "Solution",
+      d: "Design and build what is actually needed.",
       icon: Code2,
     },
     {
       n: "04",
       t: "Launch",
-      d: "Deploy and get it into operation — not a handoff that leaves you guessing.",
+      d: "Put the solution into use.",
       icon: Rocket,
     },
     {
       n: "05",
-      t: "Evolve",
-      d: "Maintain, improve, automate, and scale as the business grows.",
+      t: "Growth",
+      d: "Improve, expand, and evolve as needs change.",
       icon: RefreshCw,
     },
   ],
+  traitsTitle: "The difference is how we approach the problem.",
   traits: [
     {
       label: "Understand",
-      value: "We take the time to hear what the business actually needs.",
+      value: "Understand before deciding what to build.",
     },
     {
-      label: "Flexible",
-      value: "Solutions shaped around the work — not rigid packages.",
+      label: "Solve",
+      value: "Focus on the actual problem, not unnecessary technology.",
+    },
+    {
+      label: "Move",
+      value: "Keep work moving without adding unnecessary complexity.",
+    },
+    {
+      label: "Adapt",
+      value: "Stay flexible when requirements change.",
+    },
+    {
+      label: "Communicate",
+      value: "Keep communication clear.",
     },
     {
       label: "Stay",
-      value: "Maintenance and continuous improvement after launch.",
+      value: "Continue supporting and improving what gets built.",
     },
   ],
 } as const;
 
 export const calicapHomeCta = {
-  title: "Have an idea? A problem? Let's build what's next.",
+  title: "Technology that moves your business forward.",
   bodyLead:
-    "Whether you know exactly what you need or only know that something needs to change — a few lines of context is enough. We reply with",
-  fitLabel: "honest fit",
-  bodyMid: ", timeline, and a suggested path. See",
+    "No technical specification required to start. Share what you're trying to achieve, what's not working, or what you have in mind.",
+  primaryCta: "Tell us your problem",
+  primaryOpensChooser: true,
+  secondaryCta: "Explore services",
+  secondaryHref: "/build",
   workLabel: "selected work",
-  bodyTail: "for how we have helped similar teams.",
-  primaryCta: "Start a project",
-  secondaryCta: "Talk to us",
+  bodyTail: "See how similar teams started.",
   backdrop: siteImages.cloudNetwork,
 } as const;

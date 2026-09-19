@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { CANVAS_NAV_LINKS } from "@/lib/themes";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 import { CanvasBurger } from "@/components/canvas/canvas-burger";
+import { useContactPathChooser } from "@/components/contact-path-chooser";
 
 function CanvasCloseIcon({ visible }: { visible: boolean }) {
   return (
@@ -22,6 +23,9 @@ function CanvasCloseIcon({ visible }: { visible: boolean }) {
 export function CanvasNav() {
   const pathname = usePathname();
   const { open, toggleMenu, closeMenu } = useCanvasMenu();
+  const { openChooser } = useContactPathChooser();
+
+  const navLinks = CANVAS_NAV_LINKS.filter((l) => l.href !== "/contact");
 
   return (
     <nav className="canvas-nav fixed inset-y-0 right-0 z-[600]" aria-label="Primary">
@@ -45,14 +49,16 @@ export function CanvasNav() {
       >
         <div className="canvas-menubar-top absolute left-0 top-0 w-full border-b border-white/[0.04] shadow-[0_10px_24px_rgba(0,0,0,0.35)]" />
         <ul className="canvas-menu-list absolute inset-0 flex flex-col md:flex-row">
-          {CANVAS_NAV_LINKS.map((item, index) => {
+          {navLinks.map((item, index) => {
             const active =
-              pathname === item.href || pathname.startsWith(`${item.href}/`);
+              item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
             return (
               <li
                 key={item.href}
-                className="canvas-menu-item relative flex-1 border-b border-white/[0.04] md:w-[118px] md:flex-none md:border-b-0 md:border-r md:border-white/[0.04] md:shadow-[-10px_0_24px_rgba(0,0,0,0.25)]"
+                className="canvas-menu-item relative flex-1 border-b border-white/[0.04] md:w-[min(118px,11vw)] md:flex-none md:border-b-0 md:border-r md:border-white/[0.04] md:shadow-[-10px_0_24px_rgba(0,0,0,0.25)]"
                 style={{ transitionDelay: open ? `${index * 0.06 + 0.1}s` : "0s" }}
               >
                 <Link
@@ -70,6 +76,24 @@ export function CanvasNav() {
               </li>
             );
           })}
+          <li
+            className="canvas-menu-item relative flex-1 border-b border-white/[0.04] md:w-[min(140px,13vw)] md:flex-none md:border-b-0 md:border-r md:border-white/[0.04] md:shadow-[-10px_0_24px_rgba(0,0,0,0.25)]"
+            style={{ transitionDelay: open ? `${navLinks.length * 0.06 + 0.1}s` : "0s" }}
+          >
+            <button
+              type="button"
+              onClick={() => {
+                closeMenu();
+                openChooser();
+              }}
+              className="group flex h-full min-h-[72px] w-full flex-col justify-start px-5 py-5 text-left font-[family-name:var(--font-display)] text-[15px] font-extralight tracking-[0.04em] text-[#7d7d7d] transition-colors duration-300 hover:text-white sm:min-h-[88px] sm:px-[26px] sm:py-[26px] md:min-h-0 md:text-[20px] md:leading-[1.15]"
+            >
+              <span className="relative inline-block">
+                Tell us your problem
+                <span className="absolute -bottom-1 left-0 h-px w-0 bg-white opacity-0 transition-all duration-500 group-hover:w-full group-hover:opacity-50" />
+              </span>
+            </button>
+          </li>
         </ul>
         <button
           type="button"

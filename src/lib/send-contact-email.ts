@@ -1,12 +1,27 @@
 import type { ContactPayload } from "@/lib/contact-form-validation";
+import { calicapDiscoveryQuestions } from "@/lib/calicap-discovery";
 
 export type SendContactEmailResult =
   | { ok: true; delivered: boolean }
   | { ok: false; error: string };
 
+function formatDiscovery(payload: ContactPayload): string[] {
+  if (payload.mode !== "unsure" || Object.keys(payload.discovery).length === 0) {
+    return [];
+  }
+  const lines = ["", "— Discovery answers —"];
+  for (const q of calicapDiscoveryQuestions) {
+    const answer = payload.discovery[q.id];
+    if (!answer) continue;
+    const optionLabel =
+      q.options?.find((o) => o.value === answer)?.label ?? answer;
+    lines.push(`${q.label}: ${optionLabel}`);
+  }
+  return lines;
+}
+
 /**
  * Sends enquiry via Resend when configured; otherwise logs for local/dev.
- * No new dependency — uses the Resend HTTP API directly.
  */
 export async function sendContactEmail(
   payload: ContactPayload,
@@ -25,14 +40,19 @@ export async function sendContactEmail(
     return { ok: true, delivered: false };
   }
 
-  const subject = `Calicon enquiry from ${payload.name}`;
+  const modeLabel =
+    payload.mode === "unsure" ? "Not sure (discovery)" : "Knows what they need";
+
+  const subject = `Calicon enquiry · ${modeLabel} · ${payload.name}`;
   const text = [
+    `Mode: ${modeLabel}`,
     `Name: ${payload.name}`,
     `Email: ${payload.email}`,
     `Company: ${payload.company || "—"}`,
-    `Budget: ${payload.budget || "—"}`,
+    `Phone / WhatsApp: ${payload.phone || "—"}`,
     "",
     payload.message,
+    ...formatDiscovery(payload),
   ].join("\n");
 
   try {
@@ -56,7 +76,8 @@ export async function sendContactEmail(
       console.error("[contact email failed]", res.status, detail);
       return {
         ok: false,
-        error: "We could not send your message right now. Please try again shortly.",
+        error:
+          "Something went wrong while sending your message. Please try again.",
       };
     }
 
@@ -65,7 +86,8 @@ export async function sendContactEmail(
     console.error("[contact email error]", err);
     return {
       ok: false,
-      error: "We could not send your message right now. Please try again shortly.",
+      error:
+        "Something went wrong while sending your message. Please try again.",
     };
   }
 }

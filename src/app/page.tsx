@@ -8,17 +8,20 @@ import {
   Handshake,
   Layers,
   MessageCircle,
-  PhoneForwarded,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
+import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { SITE_NAME, pageMetadata } from "@/lib/seo";
 import {
   HOME_BUILD_ID,
   HOME_POSITIONING_ID,
   calicapHomeCta,
+  calicapHomeDiscovery,
   calicapHomeEntryDoors,
   calicapHomeHero,
   calicapHomeOutcomes,
+  calicapHomeOutcomesSection,
+  calicapHomePrinciples,
   calicapHomeProcess,
   calicapHomeRecognition,
   calicapHomeServices,
@@ -26,13 +29,14 @@ import {
   calicapHomeWorkSection,
   calicapHomeWorkTeasers,
 } from "@/lib/calicap-home";
+import { calicapDocumentedOutcomes } from "@/lib/calicap-work";
 import { siteImages } from "@/lib/site-images";
 
 export const metadata = {
   ...pageMetadata({
     title: "Build what's next",
     description:
-      "Turn business ideas and challenges into digital products, custom software, and AI in the workflow — then stay after launch.",
+      "Turn ideas and challenges into digital products, software, and technology that moves things forward. We understand before we build.",
     path: "/",
   }),
   title: {
@@ -92,17 +96,14 @@ export default function HomePage() {
                   {hero.body}
                 </p>
                 <div className="mt-10 flex flex-wrap items-center gap-4">
-                  <ButtonLink href="/contact">
-                    <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+                  <ProblemCtaButton>
+                    <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
                     {hero.primaryCta}
-                  </ButtonLink>
-                  <a
-                    href={`#${HOME_BUILD_ID}`}
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border-subtle)] px-5 py-2.5 text-sm font-semibold text-[var(--color-btn-ghost-text)] transition hover:border-[var(--color-btn-ghost-hover-border)] hover:bg-[var(--color-btn-ghost-hover-bg)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
-                  >
+                  </ProblemCtaButton>
+                  <ButtonLink href={hero.secondaryHref} variant="ghost">
                     <Layers className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
                     {hero.secondaryCta}
-                  </a>
+                  </ButtonLink>
                 </div>
               </div>
               <div className="home-brochure-figure relative mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none lg:pt-2">
@@ -127,13 +128,27 @@ export default function HomePage() {
           <h2 className="max-w-3xl font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
             {recognition.title}
           </h2>
-          <p className="mt-4 max-w-2xl text-slate-600">{recognition.body}</p>
-          <p className="mt-8 max-w-2xl text-lg font-medium leading-relaxed text-slate-800">
+          <p className="mt-4 max-w-2xl text-slate-600">{recognition.intro}</p>
+          <ul className="mt-6 grid max-w-2xl gap-2 sm:grid-cols-2">
+            {recognition.examples.map((item) => (
+              <li
+                key={item}
+                className="text-sm leading-relaxed text-slate-600 before:mr-2 before:text-gold-600 before:content-['·']"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-10 max-w-2xl text-lg font-medium leading-relaxed text-slate-800">
             {recognition.differentiator}
           </p>
+          <p className="mt-3 max-w-2xl text-base font-medium leading-relaxed text-slate-800">
+            {recognition.differentiatorLead}
+          </p>
+          <p className="mt-3 max-w-2xl text-slate-600">{recognition.differentiatorBody}</p>
 
           <dl className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {calicapHomeOutcomes.map(({ label, value, icon: Icon }) => (
+            {calicapHomePrinciples.map(({ label, value, icon: Icon }) => (
               <div key={label}>
                 <dt className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-slate-500">
                   <Icon className="h-3.5 w-3.5 text-gold-600" strokeWidth={2} aria-hidden />
@@ -145,6 +160,41 @@ export default function HomePage() {
               </div>
             ))}
           </dl>
+
+          <div className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
+            <h3 className="max-w-2xl font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+              {calicapHomeDiscovery.title}
+            </h3>
+            <p className="mt-3 max-w-2xl text-slate-600">{calicapHomeDiscovery.intro}</p>
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              {calicapHomeOutcomes.map(({ label, value, examples, href, linkLabel, icon: Icon }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  className="group surface-card block rounded-2xl p-5 transition hover:border-gold-500/30"
+                >
+                  <p className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-slate-500">
+                    <Icon className="h-3.5 w-3.5 text-gold-600" strokeWidth={2} aria-hidden />
+                    {label}
+                  </p>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-800 group-hover:text-slate-950">
+                    {value}
+                  </p>
+                  <ul className="mt-3 space-y-1">
+                    {examples.slice(0, 3).map((ex) => (
+                      <li key={ex} className="text-xs leading-relaxed text-slate-500">
+                        {ex}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-gold-600">
+                    {linkLabel}
+                    <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
 
           <div className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
             <h3 className="max-w-2xl font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
@@ -162,6 +212,18 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
+            <div className="mt-12 max-w-2xl">
+              <h3 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+                {recognition.problemCtaTitle}
+              </h3>
+              <p className="mt-3 text-slate-600">{recognition.problemCtaBody}</p>
+              <div className="mt-6">
+                <ProblemCtaButton>
+                  <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+                  {recognition.problemCtaLabel}
+                </ProblemCtaButton>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -189,7 +251,7 @@ export default function HomePage() {
               />
             </div>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {calicapHomeServices.map((s) => {
               const Icon = s.icon;
               return (
@@ -223,7 +285,7 @@ export default function HomePage() {
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-2">
             <Link
-              href="/services"
+              href="/build"
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-600 hover:text-gold-700"
             >
               <Layers className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
@@ -264,7 +326,10 @@ export default function HomePage() {
               );
             })}
           </ol>
-          <dl className="mt-12 grid gap-8 border-t border-[var(--color-border-subtle)] pt-10 sm:grid-cols-3">
+          <h3 className="mt-12 max-w-2xl font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+            {process.traitsTitle}
+          </h3>
+          <dl className="mt-8 grid gap-8 border-t border-[var(--color-border-subtle)] pt-10 sm:grid-cols-2 lg:grid-cols-3">
             {process.traits.map(({ label, value }) => (
               <div key={label}>
                 <dt className="text-xs font-medium uppercase tracking-wider text-slate-500">
@@ -335,20 +400,55 @@ export default function HomePage() {
                   <div className="p-8">
                     <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-gold-700/95">
                       <Icon className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-                      Case study
+                      {w.label}
                     </span>
                     <h3 className="mt-3 font-[family-name:var(--font-display)] text-xl text-slate-900 group-hover:text-slate-900">
                       {w.title}
                     </h3>
-                    <p className="mt-2 text-sm text-slate-600">{w.result}</p>
+                    <p className="mt-4 text-xs font-medium uppercase tracking-wider text-slate-500">
+                      Challenge
+                    </p>
+                    <p className="mt-1 text-sm leading-relaxed text-slate-600">{w.context}</p>
+                    <p className="mt-3 text-xs font-medium uppercase tracking-wider text-slate-500">
+                      Solution
+                    </p>
+                    <p className="mt-1 text-sm leading-relaxed text-slate-700">{w.built}</p>
+                    <p className="mt-3 text-xs font-medium uppercase tracking-wider text-slate-500">
+                      Outcome
+                    </p>
+                    <p className="mt-1 text-sm font-medium text-slate-800">{w.result}</p>
                     <p className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-gold-600">
-                      Read the narrative
+                      Read the case study
                       <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" strokeWidth={2} aria-hidden />
                     </p>
                   </div>
                 </Link>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-[var(--color-border-subtle)]">
+        <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
+          <h2 className="font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
+            {calicapHomeOutcomesSection.title}
+          </h2>
+          <p className="mt-4 max-w-2xl text-slate-600">{calicapHomeOutcomesSection.intro}</p>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {calicapDocumentedOutcomes.map((o) => (
+              <Link
+                key={`${o.href}-${o.label}`}
+                href={o.href}
+                className="group surface-card block rounded-2xl p-6 transition hover:border-gold-500/30"
+              >
+                <p className="font-[family-name:var(--font-display)] text-3xl font-medium text-slate-900 group-hover:text-slate-950">
+                  {o.value}
+                </p>
+                <p className="mt-2 text-sm font-medium text-slate-800">{o.label}</p>
+                <p className="mt-1 text-xs text-slate-500">{o.detail}</p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -380,11 +480,6 @@ export default function HomePage() {
               </h2>
               <p className="mt-4 text-slate-600">
                 {cta.bodyLead}{" "}
-                <span className="inline-flex items-center gap-1 font-medium text-slate-800">
-                  <PhoneForwarded className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-                  {cta.fitLabel}
-                </span>
-                {cta.bodyMid}{" "}
                 <Link
                   href="/work"
                   className="inline-flex items-center gap-1 font-semibold text-gold-600 hover:text-gold-700"
@@ -395,12 +490,12 @@ export default function HomePage() {
                 {cta.bodyTail}
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
-                <ButtonLink href="/contact">
-                  <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+                <ProblemCtaButton>
+                  <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
                   {cta.primaryCta}
-                </ButtonLink>
-                <ButtonLink href="/contact" variant="ghost">
-                  <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+                </ProblemCtaButton>
+                <ButtonLink href={cta.secondaryHref} variant="ghost">
+                  <Layers className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
                   {cta.secondaryCta}
                 </ButtonLink>
               </div>

@@ -12,6 +12,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/services",
+        destination: "/build",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX({});

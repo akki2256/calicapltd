@@ -9,6 +9,7 @@ import { CanvasNav } from "@/components/canvas/canvas-nav";
 import { CanvasMain } from "@/components/canvas/canvas-main";
 import { CanvasFooter } from "@/components/canvas/canvas-footer";
 import { FloatingActions } from "@/components/floating-actions";
+import { ContactPathChooserProvider } from "@/components/contact-path-chooser";
 
 type Props = {
   children: React.ReactNode;
@@ -17,8 +18,8 @@ type Props = {
 export function SiteShell({ children }: Props) {
   const { theme } = useTheme();
 
-  if (theme === "canvas") {
-    return (
+  const chrome =
+    theme === "canvas" ? (
       <CanvasMenuProvider>
         <CanvasHeader />
         <CanvasNav />
@@ -26,15 +27,14 @@ export function SiteShell({ children }: Props) {
         <CanvasFooter />
         <FloatingActions />
       </CanvasMenuProvider>
+    ) : (
+      <>
+        <SiteHeader />
+        <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
+        <SiteFooter />
+        <FloatingActions />
+      </>
     );
-  }
 
-  return (
-    <>
-      <SiteHeader />
-      <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
-      <SiteFooter />
-      <FloatingActions />
-    </>
-  );
+  return <ContactPathChooserProvider>{chrome}</ContactPathChooserProvider>;
 }

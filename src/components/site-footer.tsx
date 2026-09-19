@@ -1,25 +1,31 @@
 import Link from "next/link";
 import {
-  Briefcase,
   CircleUser,
   FolderKanban,
   LayoutGrid,
-  Monitor,
+  LayoutTemplate,
+  Mail,
+  MessageCircle,
+  Cpu,
+  RefreshCw,
   Shield,
-  Smartphone,
+  Workflow,
   type LucideIcon,
 } from "lucide-react";
+import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import {
   calicapContact,
   calicapFooterLinks,
 } from "@/lib/calicap-contact";
 
 const footerIcons: Record<string, LucideIcon> = {
-  "/about": CircleUser,
-  "/services": Briefcase,
-  "/services/web-app-development": Monitor,
-  "/services/mobile-app-development": Smartphone,
+  "/build": LayoutTemplate,
+  "/transform": Workflow,
+  "/automate": Cpu,
+  "/evolve": RefreshCw,
   "/work": FolderKanban,
+  "/about": CircleUser,
+  "/contact": Mail,
   "/privacy": Shield,
 };
 
@@ -27,7 +33,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-[var(--color-border-subtle)] bg-[var(--color-surface-muted)]">
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="flex flex-col justify-between gap-10 md:flex-row md:items-center">
+        <div className="flex flex-col justify-between gap-10 md:flex-row md:items-start">
           <div>
             <p className="inline-flex items-center gap-2 font-[family-name:var(--font-display)] text-xl text-slate-900">
               <LayoutGrid
@@ -40,6 +46,21 @@ export function SiteFooter() {
             <p className="mt-3 max-w-md text-sm leading-relaxed text-[var(--color-text-muted)]">
               {calicapContact.footerBlurb}
             </p>
+            <p className="mt-4 font-[family-name:var(--font-display)] text-lg font-medium tracking-tight text-slate-900">
+              {calicapContact.footerTagline}
+            </p>
+            <div className="mt-6 max-w-md">
+              <p className="text-sm font-medium text-slate-800">
+                {calicapContact.footerCtaPrompt}
+              </p>
+              <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+                {calicapContact.footerCtaBody}
+              </p>
+              <ProblemCtaButton variant="link" className="mt-4">
+                <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+                {calicapContact.footerCtaLabel}
+              </ProblemCtaButton>
+            </div>
           </div>
           <nav className="flex max-w-xl flex-wrap gap-x-5 gap-y-2" aria-label="Footer">
             {calicapFooterLinks.map((l) => {

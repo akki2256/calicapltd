@@ -24,9 +24,4 @@ export function isThemeId(value: string | null | undefined): value is ThemeId {
   return value === "calicon" || value === "canvas";
 }
 
-export const CANVAS_NAV_LINKS = [
-  { href: "/work", label: "Work" },
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
-  { href: "/contact", label: "Contact" },
-] as const;
+export { PRIMARY_NAV_LINKS as CANVAS_NAV_LINKS } from "@/lib/primary-nav";
