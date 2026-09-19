@@ -11,6 +11,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useTheme } from "@/components/theme-provider";
+import { useMagnetic } from "@/hooks/use-magnetic";
 
 type ContactPathChooserContextValue = {
   openChooser: () => void;
@@ -30,6 +32,7 @@ export function useContactPathChooser() {
 export function ContactPathChooserProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const titleId = useId();
+  const { theme } = useTheme();
 
   const openChooser = useCallback(() => setOpen(true), []);
   const closeChooser = useCallback(() => setOpen(false), []);
@@ -48,12 +51,22 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
     };
   }, [open, closeChooser]);
 
+  const dialogClass =
+    theme === "canvas"
+      ? "chooser-dialog chooser-dialog-canvas w-full max-w-lg border border-white/15 bg-[#141414] p-6 shadow-2xl sm:p-8"
+      : "chooser-dialog chooser-dialog-calicon surface-card w-full max-w-lg rounded-2xl p-6 shadow-2xl sm:p-8";
+
+  const pathClass =
+    theme === "canvas"
+      ? "group border border-white/12 p-5 transition hover:border-white/35 hover:bg-white/[0.04]"
+      : "group rounded-2xl border border-[var(--color-border-subtle)] p-5 transition hover:border-gold-500/40 hover:bg-[var(--color-accent-soft)]/40";
+
   return (
     <ContactPathChooserContext.Provider value={{ openChooser }}>
       {children}
       {open ? (
         <div
-          className="fixed inset-0 z-[700] flex items-end justify-center bg-slate-950/50 p-4 sm:items-center"
+          className="fixed inset-0 z-[700] flex items-end justify-center bg-black/60 p-4 backdrop-blur-sm sm:items-center"
           role="presentation"
           onClick={closeChooser}
         >
@@ -61,14 +74,18 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="surface-card w-full max-w-lg rounded-2xl p-6 shadow-2xl sm:p-8"
+            className={dialogClass}
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p
                   id={titleId}
-                  className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-[var(--color-text-strong)]"
+                  className={`font-[family-name:var(--font-display)] tracking-tight text-[var(--color-text-strong)] ${
+                    theme === "canvas"
+                      ? "text-2xl font-light uppercase tracking-[0.08em]"
+                      : "text-2xl font-medium"
+                  }`}
                 >
                   Tell us your problem
                 </p>
@@ -79,7 +96,11 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
               <button
                 type="button"
                 onClick={closeChooser}
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)]"
+                className={`inline-flex h-10 w-10 shrink-0 items-center justify-center text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)] ${
+                  theme === "canvas"
+                    ? "border border-white/20"
+                    : "rounded-full border border-[var(--color-border-subtle)]"
+                }`}
                 aria-label="Close"
               >
                 <X className="h-4 w-4" strokeWidth={2} aria-hidden />
@@ -87,11 +108,7 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
             </div>
 
             <div className="mt-8 grid gap-3">
-              <Link
-                href="/contact?mode=know"
-                onClick={closeChooser}
-                className="group rounded-2xl border border-[var(--color-border-subtle)] p-5 transition hover:border-gold-500/40 hover:bg-[var(--color-accent-soft)]/40"
-              >
+              <Link href="/contact?mode=know" onClick={closeChooser} className={pathClass}>
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-strong)]">
                   <PhoneForwarded className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
                   I know what I need
@@ -100,11 +117,7 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
                   Have a clear requirement? Tell us what needs to be built or improved.
                 </p>
               </Link>
-              <Link
-                href="/contact?mode=unsure"
-                onClick={closeChooser}
-                className="group rounded-2xl border border-[var(--color-border-subtle)] p-5 transition hover:border-gold-500/40 hover:bg-[var(--color-accent-soft)]/40"
-              >
+              <Link href="/contact?mode=unsure" onClick={closeChooser} className={pathClass}>
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-strong)]">
                   <MessageCircle className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
                   I&apos;m not sure what I need
@@ -127,14 +140,6 @@ type ProblemCtaProps = {
   variant?: "primary" | "ghost" | "link";
 };
 
-const variants = {
-  primary:
-    "rounded-full bg-[var(--color-btn-primary-bg)] px-5 py-2.5 text-[var(--color-btn-primary-text)] hover:bg-[var(--color-btn-primary-hover)] shadow-[0_0_0_1px_var(--color-btn-primary-ring)]",
-  ghost:
-    "rounded-full border border-[var(--color-border-subtle)] px-5 py-2.5 text-[var(--color-btn-ghost-text)] hover:border-[var(--color-btn-ghost-hover-border)] hover:bg-[var(--color-btn-ghost-hover-bg)]",
-  link: "gap-1.5 p-0 text-gold-600 hover:text-gold-700",
-} as const;
-
 /** Opens the two-path contact chooser instead of dumping into a form */
 export function ProblemCtaButton({
   children,
@@ -142,11 +147,38 @@ export function ProblemCtaButton({
   variant = "primary",
 }: ProblemCtaProps) {
   const { openChooser } = useContactPathChooser();
+  const { theme } = useTheme();
+  const isCanvas = theme === "canvas";
+  const mag = useMagnetic({
+    enabled: isCanvas && variant !== "link",
+    strength: 16,
+  });
+
+  const variants = isCanvas
+    ? {
+        primary:
+          "btn-canvas btn-canvas-primary rounded-none px-7 py-3 text-[11px] font-medium uppercase tracking-[0.22em]",
+        ghost:
+          "btn-canvas btn-canvas-ghost rounded-none border px-7 py-3 text-[11px] font-medium uppercase tracking-[0.22em]",
+        link: "gap-1.5 p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-white/80 hover:text-white",
+      }
+    : {
+        primary:
+          "btn-calicon btn-calicon-primary rounded-full px-6 py-2.5 text-sm font-semibold",
+        ghost:
+          "btn-calicon btn-calicon-ghost rounded-full border px-6 py-2.5 text-sm font-semibold",
+        link: "gap-1.5 p-0 text-sm font-semibold text-gold-600 hover:text-gold-700",
+      };
+
   return (
     <button
       type="button"
+      ref={mag.ref as never}
+      style={mag.style}
+      onPointerMove={mag.onPointerMove as never}
+      onPointerLeave={mag.onPointerLeave}
       onClick={openChooser}
-      className={`inline-flex items-center justify-center gap-2 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${variants[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${variants[variant]} ${className}`}
     >
       {children}
     </button>

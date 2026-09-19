@@ -13,16 +13,20 @@ export function CanvasHeader() {
     >
       <Link
         href="/"
-        className="canvas-wordmark group inline-block px-[26px] py-6 transition-opacity duration-300 hover:opacity-70"
+        className="canvas-wordmark group inline-flex items-center gap-3 px-[26px] py-6 transition-opacity duration-300 hover:opacity-70"
         rel="home"
       >
+        <span className="relative flex h-5 w-5 items-center justify-center" aria-hidden>
+          <span className="absolute inset-0 border border-white/35" />
+          <span className="h-1.5 w-1.5 bg-white" />
+        </span>
         <span className="sr-only">Calicon</span>
         <span
           aria-hidden
-          className="relative block font-[family-name:var(--font-display)] text-[13px] font-extralight uppercase tracking-[0.48em] text-white md:text-[14px]"
+          className="relative block font-[family-name:var(--font-display)] text-[13px] font-light uppercase tracking-[0.42em] text-white md:text-[14px]"
         >
           Calicon
-          <span className="absolute -bottom-1 left-0 h-px w-0 bg-white/40 transition-all duration-500 group-hover:w-full" />
+          <span className="absolute -bottom-1 left-0 h-px w-0 bg-white/50 transition-all duration-500 group-hover:w-full" />
         </span>
       </Link>
     </header>

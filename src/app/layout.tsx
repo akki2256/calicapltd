@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Fraunces, Outfit } from "next/font/google";
+import { DM_Sans, Fraunces, Outfit, Syne } from "next/font/google";
 import "./globals.css";
 import { JsonLd } from "@/components/JsonLd";
 import { SiteShell } from "@/components/site-shell";
@@ -30,6 +30,12 @@ const outfit = Outfit({
   display: "swap",
 });
 
+const syne = Syne({
+  subsets: ["latin"],
+  variable: "--font-syne",
+  display: "swap",
+});
+
 const themeInitScript = `(function(){try{var k=${JSON.stringify(THEME_STORAGE_KEY)};var lk="calicap-theme";var d=${JSON.stringify(DEFAULT_THEME)};var t=localStorage.getItem(k);if(!t){var legacy=localStorage.getItem(lk);if(legacy==="calicap"){t="calicon";localStorage.setItem(k,t);localStorage.removeItem(lk)}else if(legacy==="canvas"||legacy==="calicon"){t=legacy;localStorage.setItem(k,t);localStorage.removeItem(lk)}}document.documentElement.setAttribute("data-theme",t==="canvas"||t==="calicon"?t:d)}catch(e){document.documentElement.setAttribute("data-theme",${JSON.stringify(DEFAULT_THEME)})}})();`;
 
 export const metadata: Metadata = rootMetadata;
@@ -47,8 +53,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en-GB"
-      className={`${dmSans.variable} ${fraunces.variable} ${outfit.variable}`}
+      lang="en-US"
+      className={`${dmSans.variable} ${fraunces.variable} ${outfit.variable} ${syne.variable}`}
       data-theme={DEFAULT_THEME}
       suppressHydrationWarning
     >

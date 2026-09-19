@@ -3,6 +3,7 @@
 import { useTheme } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { CaliconScrollEnhancer } from "@/components/calicon/calicon-scroll-enhancer";
 import { CanvasMenuProvider } from "@/components/canvas/canvas-menu-context";
 import { CanvasHeader } from "@/components/canvas/canvas-header";
 import { CanvasNav } from "@/components/canvas/canvas-nav";
@@ -30,7 +31,9 @@ export function SiteShell({ children }: Props) {
     ) : (
       <>
         <SiteHeader />
-        <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
+        <main className="min-w-0 flex-1 overflow-x-clip">
+          <CaliconScrollEnhancer>{children}</CaliconScrollEnhancer>
+        </main>
         <SiteFooter />
         <FloatingActions />
       </>

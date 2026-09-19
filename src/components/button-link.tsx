@@ -1,23 +1,57 @@
-import Link from "next/link";
-import type { ComponentProps } from "react";
+"use client";
 
-const variants = {
+import Link from "next/link";
+import type { ComponentProps, ReactNode } from "react";
+import { useTheme } from "@/components/theme-provider";
+import { useMagnetic } from "@/hooks/use-magnetic";
+
+const caliconVariants = {
   primary:
-    "bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)] hover:bg-[var(--color-btn-primary-hover)] shadow-[0_0_0_1px_var(--color-btn-primary-ring)]",
+    "btn-calicon btn-calicon-primary rounded-full px-6 py-2.5 text-sm font-semibold",
   ghost:
-    "border border-[var(--color-border-subtle)] text-[var(--color-btn-ghost-text)] hover:border-[var(--color-btn-ghost-hover-border)] hover:bg-[var(--color-btn-ghost-hover-bg)]",
+    "btn-calicon btn-calicon-ghost rounded-full border px-6 py-2.5 text-sm font-semibold",
+} as const;
+
+const canvasVariants = {
+  primary:
+    "btn-canvas btn-canvas-primary rounded-none px-7 py-3 text-[11px] font-medium uppercase tracking-[0.22em]",
+  ghost:
+    "btn-canvas btn-canvas-ghost rounded-none border px-7 py-3 text-[11px] font-medium uppercase tracking-[0.22em]",
 } as const;
 
 type Props = Omit<ComponentProps<typeof Link>, "className"> & {
-  variant?: keyof typeof variants;
+  variant?: "primary" | "ghost";
   className?: string;
+  children: ReactNode;
+  /** Force magnetic even on Calicon (default: Canvas only) */
+  magnetic?: boolean;
 };
 
-export function ButtonLink({ variant = "primary", className = "", ...props }: Props) {
+export function ButtonLink({
+  variant = "primary",
+  className = "",
+  children,
+  magnetic,
+  ...props
+}: Props) {
+  const { theme } = useTheme();
+  const isCanvas = theme === "canvas";
+  const variants = isCanvas ? canvasVariants : caliconVariants;
+  const mag = useMagnetic({
+    enabled: magnetic ?? isCanvas,
+    strength: isCanvas ? 16 : 10,
+  });
+
   return (
     <Link
-      className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${variants[variant]} ${className}`}
+      ref={mag.ref as never}
+      style={mag.style}
+      onPointerMove={mag.onPointerMove as never}
+      onPointerLeave={mag.onPointerLeave}
+      className={`inline-flex items-center justify-center gap-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${variants[variant]} ${className}`}
       {...props}
-    />
+    >
+      {children}
+    </Link>
   );
 }

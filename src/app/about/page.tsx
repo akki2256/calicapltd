@@ -69,13 +69,11 @@ export default function AboutPage() {
             <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
               {about.beliefsTitle}
             </h2>
-            <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+            <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
               {about.beliefs.map((belief) => (
-                <li
-                  key={belief}
-                  className="text-sm leading-relaxed text-slate-600 before:mr-2 before:text-gold-600 before:content-['·']"
-                >
-                  {belief}
+                <li key={belief} className="flex gap-2.5 text-sm leading-relaxed text-slate-600">
+                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gold-600" aria-hidden />
+                  <span>{belief}</span>
                 </li>
               ))}
             </ul>
