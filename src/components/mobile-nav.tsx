@@ -53,7 +53,7 @@ export function MobileNav() {
             closeMenu();
             openChooser();
           }}
-          className="mt-1 flex w-full items-center gap-2 rounded-lg bg-[var(--color-btn-primary-bg)] px-3 py-2.5 text-sm font-semibold text-[var(--color-btn-primary-text)] hover:bg-[var(--color-btn-primary-hover)]"
+          className="mt-1 flex w-full items-center gap-2 rounded-full btn-calicon btn-calicon-primary px-3 py-2.5 text-sm font-semibold"
         >
           <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           Tell us your problem

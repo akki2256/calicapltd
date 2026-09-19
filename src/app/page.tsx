@@ -129,13 +129,11 @@ export default function HomePage() {
             {recognition.title}
           </h2>
           <p className="mt-4 max-w-2xl text-slate-600">{recognition.intro}</p>
-          <ul className="mt-6 grid max-w-2xl gap-2 sm:grid-cols-2">
+          <ul className="mt-6 grid max-w-2xl gap-2.5 sm:grid-cols-2">
             {recognition.examples.map((item) => (
-              <li
-                key={item}
-                className="text-sm leading-relaxed text-slate-600 before:mr-2 before:text-gold-600 before:content-['·']"
-              >
-                {item}
+              <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-slate-600">
+                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gold-600" aria-hidden />
+                <span>{item}</span>
               </li>
             ))}
           </ul>
@@ -230,7 +228,7 @@ export default function HomePage() {
 
       <section
         id={HOME_BUILD_ID}
-        className="home-band scroll-mt-8 border-t border-[var(--color-border-subtle)] bg-slate-400/35"
+        className="home-band scroll-mt-8 border-t border-[var(--color-border-subtle)] bg-[var(--color-surface-muted)]"
       >
         <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="home-split grid gap-10 lg:grid-cols-[1fr_minmax(0,440px)] lg:items-center lg:gap-12">

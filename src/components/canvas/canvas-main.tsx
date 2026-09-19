@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 import { CanvasHome } from "@/components/canvas/canvas-home";
+import { CanvasScrollEnhancer } from "@/components/canvas/canvas-scroll-enhancer";
 
 type Props = {
   children: React.ReactNode;
@@ -49,7 +50,7 @@ export function CanvasMain({ children }: Props) {
       document.documentElement.classList.add("canvas-out");
       window.setTimeout(() => {
         window.location.assign(url.pathname + url.search + url.hash);
-      }, 200);
+      }, 280);
     };
 
     main.addEventListener("click", handleClick);
@@ -66,10 +67,14 @@ export function CanvasMain({ children }: Props) {
         {isHome ? (
           <>
             <CanvasHome />
-            <div className="canvas-home-chapter canvas-main-inner">{children}</div>
+            <div className="canvas-home-chapter canvas-main-inner">
+              <CanvasScrollEnhancer>{children}</CanvasScrollEnhancer>
+            </div>
           </>
         ) : (
-          <div className="canvas-inner-content">{children}</div>
+          <div className="canvas-inner-content">
+            <CanvasScrollEnhancer>{children}</CanvasScrollEnhancer>
+          </div>
         )}
       </div>
     </main>
