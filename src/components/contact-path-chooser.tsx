@@ -53,12 +53,12 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
 
   const dialogClass =
     theme === "canvas"
-      ? "chooser-dialog chooser-dialog-canvas w-full max-w-lg border border-white/15 bg-[#141414] p-6 shadow-2xl sm:p-8"
+      ? "chooser-dialog w-full max-w-lg border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)] p-6 sm:p-8"
       : "chooser-dialog chooser-dialog-calicon surface-card w-full max-w-lg rounded-2xl p-6 shadow-2xl sm:p-8";
 
   const pathClass =
     theme === "canvas"
-      ? "group border border-white/12 p-5 transition hover:border-white/35 hover:bg-white/[0.04]"
+      ? "group border border-[var(--color-border-subtle)] p-5 transition hover:border-[var(--color-accent)]/50"
       : "group rounded-2xl border border-[var(--color-border-subtle)] p-5 transition hover:border-gold-500/40 hover:bg-[var(--color-accent-soft)]/40";
 
   return (
@@ -150,17 +150,17 @@ export function ProblemCtaButton({
   const { theme } = useTheme();
   const isCanvas = theme === "canvas";
   const mag = useMagnetic({
-    enabled: isCanvas && variant !== "link",
-    strength: 16,
+    enabled: false,
+    strength: 12,
   });
 
   const variants = isCanvas
     ? {
         primary:
-          "btn-canvas btn-canvas-primary rounded-none px-7 py-3 text-[11px] font-medium uppercase tracking-[0.22em]",
+          "btn-canvas btn-canvas-primary rounded-none px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em]",
         ghost:
-          "btn-canvas btn-canvas-ghost rounded-none border px-7 py-3 text-[11px] font-medium uppercase tracking-[0.22em]",
-        link: "gap-1.5 p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-white/80 hover:text-white",
+          "btn-canvas btn-canvas-ghost rounded-none border px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em]",
+        link: "gap-1.5 p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-accent)] hover:text-[var(--color-link-hover)]",
       }
     : {
         primary:
@@ -180,7 +180,12 @@ export function ProblemCtaButton({
       onClick={openChooser}
       className={`inline-flex items-center justify-center gap-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${variants[variant]} ${className}`}
     >
-      {children}
+      <span>{children}</span>
+      {isCanvas && variant !== "link" ? (
+        <span className="btn-canvas-arrow" aria-hidden>
+          →
+        </span>
+      ) : null}
     </button>
   );
 }

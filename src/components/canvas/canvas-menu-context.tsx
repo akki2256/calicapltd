@@ -56,11 +56,15 @@ export function CanvasMenuProvider({ children }: { children: React.ReactNode }) 
       }
     };
 
+    const prevBody = document.body.style.overflow;
+    const prevHtml = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = prevBody;
+      document.documentElement.style.overflow = prevHtml;
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [open, closeMenu]);

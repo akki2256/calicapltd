@@ -38,8 +38,8 @@ export function ButtonLink({
   const isCanvas = theme === "canvas";
   const variants = isCanvas ? canvasVariants : caliconVariants;
   const mag = useMagnetic({
-    enabled: magnetic ?? isCanvas,
-    strength: isCanvas ? 16 : 10,
+    enabled: magnetic === true,
+    strength: 12,
   });
 
   return (
@@ -51,7 +51,12 @@ export function ButtonLink({
       className={`inline-flex items-center justify-center gap-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${variants[variant]} ${className}`}
       {...props}
     >
-      {children}
+      <span>{children}</span>
+      {isCanvas ? (
+        <span className="btn-canvas-arrow" aria-hidden>
+          →
+        </span>
+      ) : null}
     </Link>
   );
 }

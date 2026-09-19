@@ -16,6 +16,7 @@ import {
 import { useActionState, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { submitContact, type ContactState } from "@/app/actions/contact";
+import { useTheme } from "@/components/theme-provider";
 import { calicapContact } from "@/lib/calicap-contact";
 import {
   calicapDiscovery,
@@ -34,6 +35,8 @@ type Props = {
 };
 
 export function ContactForm({ initialMode = "know" }: Props) {
+  const { theme } = useTheme();
+  const isCanvas = theme === "canvas";
   const searchParams = useSearchParams();
   const modeFromUrl = parseContactMode(searchParams.get("mode"));
   const [mode, setMode] = useState<ContactMode>(
@@ -44,6 +47,10 @@ export function ContactForm({ initialMode = "know" }: Props) {
   const [state, formAction, pending] = useActionState(submitContact, initial);
   const success = calicapContact.formSuccess;
   const copy = calicapDiscovery;
+  const pill = isCanvas ? "rounded-none" : "rounded-full";
+  const card = isCanvas
+    ? "border border-[var(--color-border-subtle)] bg-transparent p-0 sm:p-0"
+    : "surface-card rounded-2xl p-8 md:p-10";
 
   useEffect(() => {
     if (searchParams.has("mode")) {
@@ -61,7 +68,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
 
   if ("ok" in state && state.ok) {
     return (
-      <div className="surface-card rounded-2xl p-8 md:p-10">
+      <div className={card}>
         <div className="flex items-start gap-3">
           <CheckCircle2
             className="h-8 w-8 shrink-0 text-[var(--color-accent)]"
@@ -93,51 +100,64 @@ export function ContactForm({ initialMode = "know" }: Props) {
   };
 
   return (
-    <div className="surface-card space-y-6 rounded-2xl p-8 md:p-10">
-      <div>
-        <p className="font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
-          {copy.formIntroTitle}
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
-          {copy.formIntroBody}
-        </p>
-      </div>
+    <div className={`${card} space-y-6`}>
+      {!isCanvas ? (
+        <>
+          <div>
+            <p className="font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
+              {copy.formIntroTitle}
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+              {copy.formIntroBody}
+            </p>
+          </div>
 
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Contact path">
-        <Link
-          href="/contact?mode=know"
-          scroll={false}
-          onClick={() => switchMode("know")}
-          className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-            mode === "know"
-              ? "bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)]"
-              : "border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-[var(--color-text-strong)]"
-          }`}
-        >
-          {copy.modeKnowLabel}
-        </Link>
-        <Link
-          href="/contact?mode=unsure"
-          scroll={false}
-          onClick={() => switchMode("unsure")}
-          className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-            mode === "unsure"
-              ? "bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)]"
-              : "border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-[var(--color-text-strong)]"
-          }`}
-        >
-          {copy.modeUnsureLabel}
-        </Link>
-      </div>
+          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Contact path">
+            <Link
+              href="/contact?mode=know"
+              scroll={false}
+              onClick={() => switchMode("know")}
+              className={`${pill} px-4 py-2 text-sm font-semibold transition ${
+                mode === "know"
+                  ? "bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)]"
+                  : "border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-[var(--color-text-strong)]"
+              }`}
+            >
+              {copy.modeKnowLabel}
+            </Link>
+            <Link
+              href="/contact?mode=unsure"
+              scroll={false}
+              onClick={() => switchMode("unsure")}
+              className={`${pill} px-4 py-2 text-sm font-semibold transition ${
+                mode === "unsure"
+                  ? "bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)]"
+                  : "border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-[var(--color-text-strong)]"
+              }`}
+            >
+              {copy.modeUnsureLabel}
+            </Link>
+          </div>
 
-      <div>
-        <p className="text-sm font-medium text-[var(--color-text-strong)]">
-          {mode === "know" ? copy.knowCtaLabel : copy.unsureCtaLabel}
-        </p>
-        <p className="mt-1 text-sm leading-relaxed text-[var(--color-text-muted)]">
-          {mode === "know" ? copy.knowIntro : copy.unsureIntro}
-        </p>
-      </div>
+          <div>
+            <p className="text-sm font-medium text-[var(--color-text-strong)]">
+              {mode === "know" ? copy.knowCtaLabel : copy.unsureCtaLabel}
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-[var(--color-text-muted)]">
+              {mode === "know" ? copy.knowIntro : copy.unsureIntro}
+            </p>
+          </div>
+        </>
+      ) : (
+        <div>
+          <p className="canvas-micro text-[var(--color-accent)]">
+            {mode === "know" ? "01 · Clear brief" : "02 · Guided path"}
+          </p>
+          <p className="mt-3 font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
+            {mode === "know" ? copy.knowCtaLabel : copy.unsureCtaLabel}
+          </p>
+        </div>
+      )}
 
       {onDiscoverySteps && currentQuestion ? (
         <div className="space-y-5">
@@ -196,7 +216,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
               <button
                 type="button"
                 onClick={() => setStep((s) => s - 1)}
-                className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[var(--color-border-subtle)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)]"
+                className={`inline-flex min-h-11 items-center gap-1.5 ${pill} border border-[var(--color-border-subtle)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)]`}
               >
                 <ChevronLeft className="h-4 w-4" strokeWidth={2} aria-hidden />
                 Back
@@ -206,7 +226,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
               type="button"
               disabled={!canAdvanceDiscovery()}
               onClick={() => setStep((s) => s + 1)}
-              className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-[var(--color-btn-primary-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--color-btn-primary-text)] transition hover:bg-[var(--color-btn-primary-hover)] disabled:cursor-not-allowed disabled:opacity-60"
+              className={`inline-flex min-h-11 items-center gap-1.5 ${pill} bg-[var(--color-btn-primary-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--color-btn-primary-text)] transition hover:bg-[var(--color-btn-primary-hover)] disabled:cursor-not-allowed disabled:opacity-60`}
             >
               Continue
               <ChevronRight className="h-4 w-4" strokeWidth={2} aria-hidden />
@@ -389,7 +409,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
           <button
             type="submit"
             disabled={pending}
-            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[var(--color-btn-primary-bg)] py-3 text-sm font-semibold text-[var(--color-btn-primary-text)] transition hover:bg-[var(--color-btn-primary-hover)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-10"
+            className={`inline-flex min-h-11 w-full items-center justify-center gap-2 ${pill} bg-[var(--color-btn-primary-bg)] py-3 text-sm font-semibold text-[var(--color-btn-primary-text)] transition hover:bg-[var(--color-btn-primary-hover)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-10`}
           >
             {pending ? (
               <>

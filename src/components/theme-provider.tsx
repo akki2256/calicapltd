@@ -26,6 +26,8 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 function applyTheme(theme: ThemeId) {
   document.documentElement.setAttribute("data-theme", theme);
   document.documentElement.classList.remove("menu-visible", "canvas-out");
+  document.documentElement.style.overflow = "";
+  document.body.style.overflow = "";
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
