@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MessageCircle, PhoneForwarded } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
+import { CanvasPillarView } from "@/components/canvas/canvas-pillar-view";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
+import { ThemeSplit } from "@/components/theme-split";
 import {
   calicapBuildDetailLinks,
   calicapServicesApproach,
@@ -19,6 +23,15 @@ type Props = {
 };
 
 export function PillarPageView({ pillarId }: Props) {
+  return (
+    <ThemeSplit
+      canvas={<CanvasPillarView pillarId={pillarId} />}
+      calicon={<CaliconPillarView pillarId={pillarId} />}
+    />
+  );
+}
+
+function CaliconPillarView({ pillarId }: Props) {
   const page = getPillarPage(pillarId);
   const section = getPillarSection(pillarId);
   if (!page || !section) return null;

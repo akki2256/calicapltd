@@ -11,10 +11,10 @@ function CanvasCloseIcon({ visible }: { visible: boolean }) {
   return (
     <span className="relative block h-5 w-5" aria-hidden>
       <span
-        className={`absolute left-1/2 top-1/2 block h-px w-5 -translate-x-1/2 -translate-y-1/2 bg-white transition-all duration-300 ${visible ? "rotate-45 scale-100" : "rotate-0 scale-0"}`}
+        className={`absolute left-1/2 top-1/2 block h-px w-5 -translate-x-1/2 -translate-y-1/2 bg-[var(--color-text-strong)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "rotate-45 scale-100" : "rotate-0 scale-0"}`}
       />
       <span
-        className={`absolute left-1/2 top-1/2 block h-px w-5 -translate-x-1/2 -translate-y-1/2 bg-white transition-all duration-300 ${visible ? "-rotate-45 scale-100" : "rotate-0 scale-0"}`}
+        className={`absolute left-1/2 top-1/2 block h-px w-5 -translate-x-1/2 -translate-y-1/2 bg-[var(--color-text-strong)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${visible ? "-rotate-45 scale-100" : "rotate-0 scale-0"}`}
       />
     </span>
   );
@@ -29,7 +29,7 @@ export function CanvasNav() {
 
   return (
     <nav className="canvas-nav fixed inset-y-0 right-0 z-[600]" aria-label="Primary">
-      <div className="canvas-nav-rail fixed inset-y-0 right-0 border-l border-white/[0.08] bg-[#0a0a0a] shadow-[-12px_0_32px_rgba(0,0,0,0.55)]">
+      <div className="canvas-nav-rail fixed inset-y-0 right-0 border-l border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
         <button
           type="button"
           className="canvas-nav-trigger group flex items-center justify-center"
@@ -44,65 +44,82 @@ export function CanvasNav() {
 
       <div
         id="canvas-menubar"
-        className={`canvas-menubar fixed inset-0 bg-[#0a0a0a]/97 backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] ${open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
+        className={`canvas-menubar fixed inset-0 overflow-y-auto overscroll-contain bg-[var(--color-surface)]/97 backdrop-blur-md transition-[opacity,visibility] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${open ? "pointer-events-auto visible opacity-100" : "pointer-events-none invisible opacity-0"}`}
         aria-hidden={!open}
       >
-        <div className="canvas-menubar-top absolute left-0 top-0 w-full border-b border-white/[0.04] shadow-[0_10px_24px_rgba(0,0,0,0.35)]" />
-        <ul className="canvas-menu-list absolute inset-0 flex flex-col md:flex-row">
-          {navLinks.map((item, index) => {
-            const active =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname === item.href || pathname.startsWith(`${item.href}/`);
+        <div className="mx-auto flex min-h-full max-w-6xl flex-col px-6 pb-16 pt-[calc(var(--canvas-rail)+1.5rem)] sm:px-10 lg:px-14">
+          <div className="flex shrink-0 items-start justify-between gap-6">
+            <p className="canvas-micro text-[var(--color-accent)]">Navigate</p>
+            <button
+              type="button"
+              className="flex h-12 w-12 items-center justify-center text-[var(--color-text-strong)] transition hover:opacity-60"
+              aria-label="Close menu"
+              onClick={closeMenu}
+            >
+              <CanvasCloseIcon visible={open} />
+            </button>
+          </div>
 
-            return (
-              <li
-                key={item.href}
-                className="canvas-menu-item relative flex-1 border-b border-white/[0.04] md:w-[min(118px,11vw)] md:flex-none md:border-b-0 md:border-r md:border-white/[0.04] md:shadow-[-10px_0_24px_rgba(0,0,0,0.25)]"
-                style={{ transitionDelay: open ? `${index * 0.06 + 0.1}s` : "0s" }}
-              >
-                <Link
-                  href={item.href}
-                  onClick={closeMenu}
-                  className={`group flex h-full min-h-[72px] w-full flex-col justify-start px-5 py-5 font-[family-name:var(--font-display)] text-[15px] font-light tracking-[0.04em] transition-colors duration-300 sm:min-h-[88px] sm:px-[26px] sm:py-[26px] md:min-h-0 md:text-[23px] md:leading-[1.2] ${active ? "text-white" : "text-[#b0b0b0] hover:text-white"}`}
+          <ul className="my-auto flex flex-col gap-1 py-8">
+            {navLinks.map((item, index) => {
+              const active =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+              return (
+                <li
+                  key={item.href}
+                  className="canvas-menu-item border-b border-[var(--color-border-subtle)]"
+                  style={{
+                    transitionDelay: open ? `${120 + index * 45}ms` : "0ms",
+                  }}
                 >
-                  <span className="relative inline-block">
-                    {item.label}
+                  <Link
+                    href={item.href}
+                    onClick={closeMenu}
+                    className={`group flex items-baseline justify-between gap-6 py-4 transition-colors duration-500 sm:py-5 ${
+                      active
+                        ? "text-[var(--color-text-strong)]"
+                        : "text-[var(--color-text-muted)] hover:text-[var(--color-text-strong)]"
+                    }`}
+                  >
+                    <span className="font-[family-name:var(--font-display)] text-[clamp(1.5rem,4.5vw,2.75rem)] font-medium tracking-[-0.03em]">
+                      {item.label}
+                    </span>
                     <span
-                      className={`absolute -bottom-1 left-0 h-px bg-white transition-all duration-500 ${active ? "w-full opacity-80" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-50"}`}
-                    />
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-          <li
-            className="canvas-menu-item relative flex-1 border-b border-white/[0.04] md:w-[min(140px,13vw)] md:flex-none md:border-b-0 md:border-r md:border-white/[0.04] md:shadow-[-10px_0_24px_rgba(0,0,0,0.25)]"
-            style={{ transitionDelay: open ? `${navLinks.length * 0.06 + 0.1}s` : "0s" }}
-          >
+                      className={`font-mono text-[10px] tracking-[0.16em] ${
+                        active ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)]"
+                      }`}
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="mt-4 flex shrink-0 flex-wrap items-center gap-6 border-t border-[var(--color-border-subtle)] pt-8">
             <button
               type="button"
               onClick={() => {
                 closeMenu();
                 openChooser();
               }}
-              className="group flex h-full min-h-[72px] w-full flex-col justify-start px-5 py-5 text-left font-[family-name:var(--font-display)] text-[15px] font-light tracking-[0.04em] text-[#b0b0b0] transition-colors duration-300 hover:text-white sm:min-h-[88px] sm:px-[26px] sm:py-[26px] md:min-h-0 md:text-[20px] md:leading-[1.2]"
+              className="btn-canvas btn-canvas-primary inline-flex items-center justify-center px-7 py-3 text-[11px] font-medium uppercase tracking-[0.2em]"
             >
-              <span className="relative inline-block">
-                Tell us your problem
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-white opacity-0 transition-all duration-500 group-hover:w-full group-hover:opacity-50" />
-              </span>
+              Tell us your problem
             </button>
-          </li>
-        </ul>
-        <button
-          type="button"
-          className="canvas-nav-close absolute right-0 top-0 flex items-center justify-center text-white transition-opacity duration-300 hover:opacity-60"
-          aria-label="Close menu"
-          onClick={closeMenu}
-        >
-          <CanvasCloseIcon visible={open} />
-        </button>
+            <Link
+              href="/contact"
+              onClick={closeMenu}
+              className="text-sm text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)]"
+            >
+              Contact
+            </Link>
+          </div>
+        </div>
       </div>
     </nav>
   );

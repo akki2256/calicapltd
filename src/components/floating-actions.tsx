@@ -12,7 +12,7 @@ const IDLE_MS = 5000;
 export function FloatingActions() {
   const { openChooser } = useContactPathChooser();
   const { theme } = useTheme();
-  const mag = useMagnetic({ enabled: theme === "canvas", strength: 12 });
+  const mag = useMagnetic({ enabled: false, strength: 10 });
   const [callVisible, setCallVisible] = useState(true);
   const hoveringRef = useRef(false);
   const timerRef = useRef<number | null>(null);
