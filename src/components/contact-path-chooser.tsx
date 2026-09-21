@@ -13,6 +13,7 @@ import {
 } from "react";
 import { useTheme } from "@/components/theme-provider";
 import { useMagnetic } from "@/hooks/use-magnetic";
+import { track } from "@/lib/analytics";
 
 type ContactPathChooserContextValue = {
   openChooser: () => void;
@@ -34,7 +35,13 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
   const titleId = useId();
   const { theme } = useTheme();
 
-  const openChooser = useCallback(() => setOpen(true), []);
+  const openChooser = useCallback(() => {
+    track("contact_cta_clicked", {
+      cta_location:
+        typeof window === "undefined" ? undefined : window.location.pathname,
+    });
+    setOpen(true);
+  }, []);
   const closeChooser = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
@@ -108,7 +115,10 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
             </div>
 
             <div className="mt-8 grid gap-3">
-              <Link href="/contact?mode=know" onClick={closeChooser} className={pathClass}>
+              <Link href="/contact?mode=know" onClick={() => {
+                track("contact_path_selected", { contact_path: "know" });
+                closeChooser();
+              }} className={pathClass}>
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-strong)]">
                   <PhoneForwarded
                     className={`h-4 w-4 ${theme === "canvas" ? "text-[var(--color-accent)]" : "text-gold-600"}`}
@@ -121,7 +131,10 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
                   Have a clear requirement? Tell us what needs to be built or improved.
                 </p>
               </Link>
-              <Link href="/contact?mode=unsure" onClick={closeChooser} className={pathClass}>
+              <Link href="/contact?mode=unsure" onClick={() => {
+                track("contact_path_selected", { contact_path: "unsure" });
+                closeChooser();
+              }} className={pathClass}>
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-strong)]">
                   <MessageCircle
                     className={`h-4 w-4 ${theme === "canvas" ? "text-[var(--color-accent)]" : "text-gold-600"}`}

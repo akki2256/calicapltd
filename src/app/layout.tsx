@@ -4,6 +4,7 @@ import "./globals.css";
 import { JsonLd } from "@/components/JsonLd";
 import { SiteShell } from "@/components/site-shell";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Analytics } from "@/components/analytics";
 import { DEFAULT_THEME, THEME_STORAGE_KEY } from "@/lib/themes";
 import { rootMetadata } from "@/lib/seo";
 import {
@@ -66,6 +67,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-dvh antialiased">
         <ThemeProvider>
+          <Analytics />
           <div className="calicon-noise noise-overlay" aria-hidden />
           <div className="relative z-10 flex min-h-dvh flex-col">
             <SiteShell>{children}</SiteShell>

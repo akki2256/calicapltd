@@ -82,7 +82,7 @@ export function SiteFooter() {
             })}
           </nav>
         </div>
-        <p className="mt-10 text-xs text-[var(--color-text-muted)]">
+        <p className="mt-10 text-sm text-[var(--color-text-muted)]">
           © {new Date().getFullYear()} {calicapContact.brand}. All rights reserved.
         </p>
       </div>

@@ -13,10 +13,12 @@ import {
   Send,
   User,
 } from "lucide-react";
-import { useActionState, useEffect, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { submitContact, type ContactState } from "@/app/actions/contact";
 import { useTheme } from "@/components/theme-provider";
+import { track } from "@/lib/analytics";
+import { readStoredAttribution } from "@/lib/attribution";
 import { calicapContact } from "@/lib/calicap-contact";
 import {
   calicapDiscovery,
@@ -44,6 +46,14 @@ export function ContactForm({ initialMode = "know" }: Props) {
   );
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [attribution, setAttribution] = useState({
+    source: "",
+    medium: "",
+    campaign: "",
+    landingPath: "",
+  });
+  const startedRef = useRef(false);
+  const submittedRef = useRef(false);
   const [state, formAction, pending] = useActionState(submitContact, initial);
   const success = calicapContact.formSuccess;
   const copy = calicapDiscovery;
@@ -58,6 +68,34 @@ export function ContactForm({ initialMode = "know" }: Props) {
       setStep(0);
     }
   }, [modeFromUrl, searchParams]);
+
+  useEffect(() => {
+    const stored = readStoredAttribution();
+    setAttribution({
+      source: stored.source ?? "",
+      medium: stored.medium ?? "",
+      campaign: stored.campaign ?? "",
+      landingPath: stored.landingPath ?? "",
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!("ok" in state && state.ok)) return;
+    if (submittedRef.current) return;
+    submittedRef.current = true;
+    track("contact_form_submitted", {
+      contact_path: mode,
+      source: attribution.source || undefined,
+      medium: attribution.medium || undefined,
+      campaign: attribution.campaign || undefined,
+    });
+  }, [state, mode, attribution.source, attribution.medium, attribution.campaign]);
+
+  const markStarted = () => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    track("contact_form_started", { contact_path: mode });
+  };
 
   const questions = calicapDiscoveryQuestions;
   const totalSteps = questions.length;
@@ -91,6 +129,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
   const switchMode = (next: ContactMode) => {
     setMode(next);
     setStep(0);
+    track("contact_path_selected", { contact_path: next });
   };
 
   const canAdvanceDiscovery = () => {
@@ -171,6 +210,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
             <select
               className={fieldClassName}
               value={answers[currentQuestion.id] ?? ""}
+              onFocus={markStarted}
               onChange={(e) =>
                 setAnswers((prev) => ({
                   ...prev,
@@ -191,6 +231,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
               className={`${fieldClassName} resize-y`}
               placeholder={currentQuestion.placeholder}
               value={answers[currentQuestion.id] ?? ""}
+              onFocus={markStarted}
               onChange={(e) =>
                 setAnswers((prev) => ({
                   ...prev,
@@ -203,6 +244,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
               className={fieldClassName}
               placeholder={currentQuestion.placeholder}
               value={answers[currentQuestion.id] ?? ""}
+              onFocus={markStarted}
               onChange={(e) =>
                 setAnswers((prev) => ({
                   ...prev,
@@ -237,6 +279,10 @@ export function ContactForm({ initialMode = "know" }: Props) {
         <form action={formAction} className="space-y-5">
           <input type="hidden" name="mode" value={mode} />
           <input type="hidden" name="discovery" value={discoveryJson} />
+          <input type="hidden" name="source" value={attribution.source} />
+          <input type="hidden" name="medium" value={attribution.medium} />
+          <input type="hidden" name="campaign" value={attribution.campaign} />
+          <input type="hidden" name="landingPath" value={attribution.landingPath} />
 
           {mode === "unsure" ? (
             <button
@@ -265,6 +311,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
                 autoComplete="name"
                 className={fieldClassName}
                 placeholder="Alex Morgan"
+                onFocus={markStarted}
               />
             </div>
             <div>

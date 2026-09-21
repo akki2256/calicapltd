@@ -1,4 +1,9 @@
 import { Building2, Flower2, type LucideIcon } from "lucide-react";
+import {
+  getService,
+  type EngagementModel,
+  type PillarId,
+} from "@/lib/brand-architecture";
 import { siteImages, type SiteImageKey } from "@/lib/site-images";
 
 export const calicapWorkIndex = {
@@ -14,7 +19,7 @@ export const calicapWorkIndex = {
     "Selected Calicon case studies: custom software and digital products with real constraints and outcomes.",
 } as const;
 
-export type CalicapWorkPillar = "build" | "transform" | "automate" | "evolve";
+export type CalicapWorkPillar = PillarId;
 
 export type CalicapWorkStudy = {
   slug: string;
@@ -28,13 +33,21 @@ export type CalicapWorkStudy = {
   /** Short result line used on cards */
   result: string;
   beforeAfter?: string;
-  pillar: CalicapWorkPillar;
+  /** Primary pillar for display; projects may span several */
+  pillar: PillarId;
+  pillars: readonly PillarId[];
+  serviceIds: readonly string[];
+  outcomeIds?: readonly string[];
+  industryIds?: readonly string[];
+  engagement?: EngagementModel;
   icon: LucideIcon;
   imageKey: SiteImageKey;
   metaTitle: string;
   metaDescription: string;
   ctaLabel: string;
   ctaHref: string;
+  /** Documented delivery facts only — never invented architecture or QA */
+  deliveryNotes?: readonly string[];
 };
 
 export const calicapWorkStudies: CalicapWorkStudy[] = [
@@ -49,6 +62,15 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     result: "23% lower ops cost · 37% higher average sales",
     beforeAfter: "Disconnected tools → One workflow",
     pillar: "build",
+    pillars: ["build", "transform", "automate"],
+    serviceIds: [
+      "custom-software",
+      "business-management-systems",
+      "workflow-automation",
+    ],
+    outcomeIds: ["modernize", "automate", "create"],
+    industryIds: ["financial-services"],
+    engagement: "project",
     icon: Building2,
     imageKey: "calicapIndiaCrm",
     metaTitle: "Calicap India · custom CRM",
@@ -56,6 +78,11 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
       "Case study: Calicap India Pvt. Ltd.—a custom CRM built around their process in 60 days, cutting operational cost 23% and lifting average sales 37%.",
     ctaLabel: "Have a similar challenge? Tell us your problem",
     ctaHref: "/contact?mode=unsure",
+    deliveryNotes: [
+      "Started from the live loan workflow, not a generic CRM template.",
+      "Stages, owners, and handoffs became the product model.",
+      "Shipped as one platform from first contact through settlement in 60 days.",
+    ],
   },
   {
     slug: "yog-mantram",
@@ -68,6 +95,11 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     result: "25+ program pages · local search · enquire on every class",
     beforeAfter: "Word of mouth → Search-ready front desk",
     pillar: "transform",
+    pillars: ["transform", "build"],
+    serviceIds: ["web-ecommerce", "web-mobile-apps"],
+    outcomeIds: ["modernize", "create"],
+    industryIds: ["fitness-wellness"],
+    engagement: "project",
     icon: Flower2,
     imageKey: "yogMantramStudio",
     metaTitle: "Yog Mantram — studio website & local SEO",
@@ -75,6 +107,11 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
       "Case study: Yog Mantram in Bareilly—a conversion-first website with 25+ programs, WhatsApp enquire, and local search pages that turn seekers into students.",
     ctaLabel: "Looking to build something similar? Tell us your problem",
     ctaHref: "/contact",
+    deliveryNotes: [
+      "Designed as a digital front desk: programs, enquire paths, and local search.",
+      "Built as a Next.js marketing site with schema, sitemap, and Open Graph.",
+      "Educational pages support search without turning the studio into a blog.",
+    ],
   },
 ];
 
@@ -118,6 +155,22 @@ export function getWorkStudySlugs() {
   return calicapWorkStudies.map((s) => s.slug);
 }
 
-export function getWorkStudiesForPillar(pillar: CalicapWorkPillar) {
-  return calicapWorkStudies.filter((s) => s.pillar === pillar);
+export function getWorkStudiesForPillar(pillar: PillarId) {
+  return calicapWorkStudies.filter(
+    (s) => s.pillar === pillar || s.pillars.includes(pillar),
+  );
+}
+
+export function getWorkStudiesForService(serviceId: string) {
+  return calicapWorkStudies.filter((s) => s.serviceIds.includes(serviceId));
+}
+
+export function getWorkStudiesForOutcome(outcomeId: string) {
+  return calicapWorkStudies.filter((s) => s.outcomeIds?.includes(outcomeId));
+}
+
+export function getWorkStudyServices(study: CalicapWorkStudy) {
+  return study.serviceIds
+    .map((id) => getService(id))
+    .filter((s): s is NonNullable<typeof s> => Boolean(s));
 }

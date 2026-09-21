@@ -32,6 +32,7 @@ import {
   calicapHomeWorkTeasers,
 } from "@/lib/calicap-home";
 import { calicapContact } from "@/lib/calicap-contact";
+import { DELIVERY_HOME_NOTE } from "@/lib/delivery-architecture";
 import { siteImages } from "@/lib/site-images";
 
 function ProblemDiagnostics() {
@@ -493,6 +494,11 @@ export function CanvasHomeChapter() {
           </h2>
         </CanvasSectionTransition>
         <ProcessJourney />
+        <CanvasSectionTransition variant="blurIn" className="mt-10 max-w-xl">
+          <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
+            {DELIVERY_HOME_NOTE}
+          </p>
+        </CanvasSectionTransition>
       </section>
 
       {/* Work */}

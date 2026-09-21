@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { MessageCircle } from "lucide-react";
+import { BrandLogo } from "@/components/brand-logo";
 import { CANVAS_NAV_LINKS } from "@/lib/themes";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 import { CanvasBurger } from "@/components/canvas/canvas-burger";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { useContactPathChooser } from "@/components/contact-path-chooser";
 
 function CanvasCloseIcon({ visible }: { visible: boolean }) {
@@ -29,10 +32,10 @@ export function CanvasNav() {
 
   return (
     <nav className="canvas-nav fixed inset-y-0 right-0 z-[740]" aria-label="Primary">
-      <div className="canvas-nav-rail fixed inset-y-0 right-0 z-[750] border-l border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
+      <div className="canvas-nav-rail fixed inset-y-0 right-0 z-[750] flex flex-col border-l border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
         <button
           type="button"
-          className="canvas-nav-trigger group flex items-center justify-center"
+          className="canvas-nav-trigger group flex shrink-0 items-center justify-center"
           aria-expanded={open}
           aria-controls="canvas-menubar"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -40,6 +43,19 @@ export function CanvasNav() {
         >
           <CanvasBurger open={open} />
         </button>
+
+        <div className="canvas-rail-actions mt-auto flex flex-col items-center gap-1 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))]">
+          <ThemeToggle className="canvas-rail-btn" />
+          <button
+            type="button"
+            className="canvas-rail-btn canvas-rail-btn-primary"
+            aria-label="Tell us your problem"
+            title="Tell us your problem"
+            onClick={openChooser}
+          >
+            <MessageCircle className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+          </button>
+        </div>
       </div>
 
       <div
@@ -50,7 +66,14 @@ export function CanvasNav() {
       >
         <div className="mx-auto flex min-h-full max-w-6xl flex-col px-6 pb-16 pt-[calc(var(--canvas-rail)+1.5rem)] sm:px-10 lg:px-14">
           <div className="flex shrink-0 items-start justify-between gap-6">
-            <p className="canvas-micro text-[var(--color-accent)]">Navigate</p>
+            <Link
+              href="/"
+              onClick={closeMenu}
+              className="brand-logo-link inline-flex"
+              aria-label="Calicon home"
+            >
+              <BrandLogo size="md" variant="on-dark" layout="lockup" label="" />
+            </Link>
             <button
               type="button"
               className="flex h-12 w-12 shrink-0 items-center justify-center text-[var(--color-text-strong)] transition hover:opacity-60"

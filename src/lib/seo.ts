@@ -14,15 +14,11 @@ export const DEFAULT_DESCRIPTION =
 
 export const DEFAULT_KEYWORDS = [
   "Calicon",
-  "custom software development",
-  "web application development",
-  "mobile app development",
-  "website development",
-  "AI automation",
+  "custom software",
   "digital products",
-  "React",
-  "Node.js",
-  "Spring",
+  "digital transformation",
+  "workflow automation",
+  "application development",
 ] as const;
 
 export function absoluteUrl(path = "/"): string {
@@ -36,6 +32,7 @@ type PageMetadataInput = {
   path: string;
   imagePath?: string;
   noIndex?: boolean;
+  ogType?: "website" | "article";
 };
 
 export function pageMetadata({
@@ -44,6 +41,7 @@ export function pageMetadata({
   path,
   imagePath,
   noIndex,
+  ogType = "website",
 }: PageMetadataInput): Metadata {
   const url = absoluteUrl(path);
   const ogImage = imagePath
@@ -55,7 +53,6 @@ export function pageMetadata({
   return {
     title,
     description,
-    keywords: [...DEFAULT_KEYWORDS],
     alternates: { canonical: url },
     openGraph: {
       title: `${title} · ${SITE_NAME}`,
@@ -63,7 +60,7 @@ export function pageMetadata({
       url,
       siteName: SITE_NAME,
       locale: "en_US",
-      type: "website",
+      type: ogType,
       images: [{ url: ogImage }],
     },
     twitter: {
@@ -96,11 +93,21 @@ export const rootMetadata: Metadata = {
     locale: "en_US",
     siteName: SITE_NAME,
     url: SITE_URL,
+    images: [{ url: absoluteUrl("/opengraph-image") }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} · Build what's next.`,
     description: DEFAULT_DESCRIPTION,
+    images: [absoluteUrl("/opengraph-image")],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
   robots: {
     index: true,

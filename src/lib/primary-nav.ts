@@ -1,10 +1,9 @@
 /** Shared flat primary nav — Calicon header/mobile + Canvas rail */
+import { PILLARS } from "@/lib/brand-architecture";
+
 export const PRIMARY_NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/build", label: "Build" },
-  { href: "/transform", label: "Transform" },
-  { href: "/automate", label: "Automate" },
-  { href: "/evolve", label: "Evolve" },
+  ...PILLARS.map((p) => ({ href: p.href, label: p.label })),
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },

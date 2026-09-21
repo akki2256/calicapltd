@@ -17,8 +17,11 @@ import {
   Workflow,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
+import { CapabilityTrail } from "@/components/capability-trail";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { JsonLd } from "@/components/JsonLd";
+import { WorkViewTracker } from "@/components/work-view-tracker";
+import { WorkDeliveryNotes } from "@/components/work-delivery-notes";
 import { getWorkStudyBySlug, getWorkStudyImage } from "@/lib/calicap-work";
 import { pageMetadata } from "@/lib/seo";
 import { breadcrumbJsonLd, creativeWorkJsonLd } from "@/lib/structured-data";
@@ -31,6 +34,7 @@ export const metadata = pageMetadata({
   description: study.metaDescription,
   path: `/work/${study.slug}`,
   imagePath: studyImage.src,
+  ogType: "article",
 });
 
 const results = [
@@ -118,6 +122,7 @@ const snapshots = [
 export default function CalicapIndiaCasePage() {
   return (
     <article className="mx-auto max-w-3xl px-6 py-16 lg:px-8 lg:py-20">
+      <WorkViewTracker slug={study.slug} />
       <JsonLd
         data={[
           breadcrumbJsonLd([
@@ -258,6 +263,8 @@ export default function CalicapIndiaCasePage() {
         without repeating the same patchwork.
       </p>
 
+      <WorkDeliveryNotes notes={study.deliveryNotes} />
+
       <h2 className="mt-14 font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
         Solution
       </h2>
@@ -390,6 +397,8 @@ export default function CalicapIndiaCasePage() {
         system the team could keep extending as the process changed—without
         going back to a patchwork of tools.
       </p>
+
+      <CapabilityTrail pillarIds={study.pillars} serviceIds={study.serviceIds} />
 
       <div className="mt-12 flex flex-wrap gap-4">
         <ProblemCtaButton>

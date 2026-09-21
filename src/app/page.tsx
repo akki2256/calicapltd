@@ -30,6 +30,7 @@ import {
   calicapHomeWorkTeasers,
 } from "@/lib/calicap-home";
 import { calicapDocumentedOutcomes } from "@/lib/calicap-work";
+import { DELIVERY_HOME_NOTE } from "@/lib/delivery-architecture";
 import { siteImages } from "@/lib/site-images";
 
 export const metadata = {
@@ -337,6 +338,9 @@ export default function HomePage() {
               </div>
             ))}
           </dl>
+          <p className="mt-10 max-w-2xl text-sm leading-relaxed text-slate-500">
+            {DELIVERY_HOME_NOTE}
+          </p>
         </div>
       </section>
 

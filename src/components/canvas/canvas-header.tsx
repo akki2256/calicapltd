@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand-logo";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 
 export function CanvasHeader() {
@@ -13,20 +14,11 @@ export function CanvasHeader() {
     >
       <Link
         href="/"
-        className="canvas-wordmark group inline-flex items-center gap-3 px-[26px] py-6"
+        className="brand-logo-link canvas-brand group inline-flex items-center"
         rel="home"
+        aria-label="Calicon home"
       >
-        <span
-          className="block h-px w-5 bg-[var(--color-accent)] transition-all duration-500 group-hover:w-8"
-          aria-hidden
-        />
-        <span className="sr-only">Calicon</span>
-        <span
-          aria-hidden
-          className="font-[family-name:var(--font-display)] text-[13px] font-medium uppercase tracking-[0.36em] text-[var(--color-text-strong)] md:text-[14px]"
-        >
-          Calicon
-        </span>
+        <BrandLogo size="header" variant="on-dark" layout="lockup" priority label="" />
       </Link>
     </header>
   );

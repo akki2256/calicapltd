@@ -9,8 +9,14 @@ import {
   Smartphone,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
+import { JsonLd } from "@/components/JsonLd";
+import { RelatedWork } from "@/components/related-work";
+import { ProjectApproach } from "@/components/project-approach";
 import { calicapMobileAppService } from "@/lib/calicap-services";
+import { getWorkStudiesForService } from "@/lib/calicap-work";
+import { SERVICE_DELIVERY } from "@/lib/delivery-architecture";
 import { pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/structured-data";
 
 export const metadata = pageMetadata({
   title: calicapMobileAppService.metaTitle,
@@ -20,9 +26,24 @@ export const metadata = pageMetadata({
 
 export default function MobileAppDevelopmentPage() {
   const service = calicapMobileAppService;
+  const related = getWorkStudiesForService(service.serviceId);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Build", path: "/build" },
+            { name: service.metaTitle, path: service.path },
+          ]),
+          serviceJsonLd({
+            name: service.title,
+            description: service.metaDescription,
+            path: service.path,
+          }),
+        ]}
+      />
       <Link
         href="/build"
         className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gold-700/90 hover:text-gold-600"
@@ -107,6 +128,13 @@ export default function MobileAppDevelopmentPage() {
           ))}
         </ul>
       </div>
+
+      <ProjectApproach
+        title={SERVICE_DELIVERY["mobile-app-development"].title}
+        body={SERVICE_DELIVERY["mobile-app-development"].body}
+      />
+
+      <RelatedWork studies={related} />
 
       <p className="mt-14 text-sm text-slate-600">
         {service.footerPrompt}{" "}

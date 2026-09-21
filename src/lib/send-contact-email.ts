@@ -1,5 +1,6 @@
 import type { ContactPayload } from "@/lib/contact-form-validation";
 import { calicapDiscoveryQuestions } from "@/lib/calicap-discovery";
+import { segmentFromEnquiry } from "@/lib/growth";
 
 export type SendContactEmailResult =
   | { ok: true; delivered: boolean }
@@ -30,8 +31,17 @@ export async function sendContactEmail(
   const from = process.env.RESEND_FROM_EMAIL;
   const to = process.env.CONTACT_INBOX_EMAIL;
 
+  const segment = segmentFromEnquiry({
+    inquiryType: payload.mode,
+    source: payload.source,
+    medium: payload.medium,
+    campaign: payload.campaign,
+    landingPath: payload.landingPath,
+  });
+
   const stamped = {
     ...payload,
+    channel: segment.channel,
     at: new Date().toISOString(),
   };
 
@@ -50,10 +60,20 @@ export async function sendContactEmail(
     `Email: ${payload.email}`,
     `Company: ${payload.company || "—"}`,
     `Phone / WhatsApp: ${payload.phone || "—"}`,
+    segment.channel ? `Channel: ${segment.channel}` : "",
+    payload.source ? `Source: ${payload.source}` : "",
+    payload.medium ? `Medium: ${payload.medium}` : "",
+    payload.campaign ? `Campaign: ${payload.campaign}` : "",
+    payload.landingPath ? `Landing: ${payload.landingPath}` : "",
     "",
     payload.message,
     ...formatDiscovery(payload),
-  ].join("\n");
+  ]
+    .filter((line, index, lines) => {
+      if (line !== "") return true;
+      return lines[index - 1] !== "";
+    })
+    .join("\n");
 
   try {
     const res = await fetch("https://api.resend.com/emails", {

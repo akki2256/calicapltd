@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-import { Clock, Mail, MapPin, PhoneForwarded } from "lucide-react";
+import { Clock, Compass, Mail, MapPin, PhoneForwarded } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { JsonLd } from "@/components/JsonLd";
 import {
@@ -13,12 +13,13 @@ import {
   CanvasTextRevealInView,
 } from "@/components/canvas/motion";
 import { ThemeSplit } from "@/components/theme-split";
+import { track } from "@/lib/analytics";
 import { calicapContact } from "@/lib/calicap-contact";
 import { calicapDiscovery, type ContactMode } from "@/lib/calicap-discovery";
 import { siteImages } from "@/lib/site-images";
 import { breadcrumbJsonLd } from "@/lib/structured-data";
 
-const bulletIcons = [Clock, PhoneForwarded, MapPin] as const;
+const bulletIcons = [Clock, PhoneForwarded, Compass, MapPin] as const;
 
 type Props = {
   initialMode: ContactMode;
@@ -58,6 +59,7 @@ function CanvasContact({ initialMode }: Props) {
           <Link
             href="/contact?mode=know"
             scroll={false}
+            onClick={() => track("contact_path_selected", { contact_path: "know" })}
             className={`group block border-[var(--color-border-subtle)] p-7 transition sm:border-r ${
               initialMode === "know"
                 ? "bg-[var(--color-surface-elevated)]"
@@ -80,6 +82,7 @@ function CanvasContact({ initialMode }: Props) {
           <Link
             href="/contact?mode=unsure"
             scroll={false}
+            onClick={() => track("contact_path_selected", { contact_path: "unsure" })}
             className={`group block p-7 transition ${
               initialMode === "unsure"
                 ? "bg-[var(--color-surface-elevated)]"
