@@ -39,9 +39,7 @@ export function CanvasPillarView({ pillarId }: Props) {
         {page.body}
       </p>
       <div className="mt-10 flex flex-wrap gap-3">
-        <ButtonLink href={page.contactHref} magnetic={false}>
-          {page.contactCta}
-        </ButtonLink>
+        <ButtonLink href={page.contactHref}>{page.contactCta}</ButtonLink>
         {page.problemCta ? (
           <ProblemCtaButton variant="ghost">{page.problemCta}</ProblemCtaButton>
         ) : null}
@@ -182,9 +180,7 @@ export function CanvasPillarView({ pillarId }: Props) {
         </h2>
         <p className="mt-4 max-w-xl text-sm text-[var(--color-text-muted)]">{unsure.body}</p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <ButtonLink href={page.contactHref} magnetic={false}>
-            {page.contactCta}
-          </ButtonLink>
+          <ButtonLink href={page.contactHref}>{page.contactCta}</ButtonLink>
           <ProblemCtaButton variant="ghost">{unsure.cta}</ProblemCtaButton>
         </div>
       </section>

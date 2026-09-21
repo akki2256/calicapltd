@@ -8,6 +8,7 @@ import {
   CanvasReveal,
   CanvasStagger,
   CanvasStaggerItem,
+  CanvasTextReveal,
   CanvasTextRevealInView,
 } from "@/components/canvas/motion";
 import { ThemeSplit } from "@/components/theme-split";
@@ -23,10 +24,11 @@ function CanvasAbout() {
         <p className="canvas-micro text-[var(--color-accent)]">{about.eyebrow}</p>
       </CanvasReveal>
       <div className="mt-6">
-        <CanvasTextRevealInView
+        <CanvasTextReveal
           as="h1"
           lines={splitAboutTitle(about.title)}
           className="max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] font-medium leading-[1.05] tracking-[-0.04em] text-[var(--color-text-strong)]"
+          delay={0.12}
         />
       </div>
 

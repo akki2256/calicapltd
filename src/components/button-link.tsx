@@ -38,8 +38,8 @@ export function ButtonLink({
   const isCanvas = theme === "canvas";
   const variants = isCanvas ? canvasVariants : caliconVariants;
   const mag = useMagnetic({
-    enabled: magnetic === true,
-    strength: 12,
+    enabled: magnetic ?? isCanvas,
+    strength: isCanvas ? 10 : 12,
   });
 
   return (

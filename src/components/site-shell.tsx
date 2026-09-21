@@ -9,7 +9,7 @@ import { CanvasHeader } from "@/components/canvas/canvas-header";
 import { CanvasNav } from "@/components/canvas/canvas-nav";
 import { CanvasMain } from "@/components/canvas/canvas-main";
 import { CanvasFooter } from "@/components/canvas/canvas-footer";
-import { CanvasScrollProgress } from "@/components/canvas/motion";
+import { CanvasProgressRail, CanvasCursor } from "@/components/canvas/motion";
 import { FloatingActions } from "@/components/floating-actions";
 import { ContactPathChooserProvider } from "@/components/contact-path-chooser";
 
@@ -27,7 +27,8 @@ export function SiteShell({ children }: Props) {
         <CanvasNav />
         <CanvasMain>{children}</CanvasMain>
         <CanvasFooter />
-        <CanvasScrollProgress />
+        <CanvasProgressRail />
+        <CanvasCursor />
         <FloatingActions />
       </CanvasMenuProvider>
     ) : (
