@@ -8,7 +8,7 @@ export function CanvasHeader() {
 
   return (
     <header
-      className={`canvas-header fixed left-0 top-0 z-[700] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${open ? "pointer-events-none -translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}
+      className={`canvas-header fixed left-0 top-0 z-[710] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${open ? "pointer-events-none -translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}
       role="banner"
     >
       <Link

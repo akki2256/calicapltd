@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { canvasDur, canvasEase, canvasStagger } from "./tokens";
 
@@ -8,13 +9,12 @@ type Props = {
   lines: string[];
   className?: string;
   lineClassName?: string;
-  /** Use for hero load choreography instead of whileInView */
   animate?: boolean;
   delay?: number;
   as?: "h1" | "h2" | "p";
 };
 
-/** Line-level clip + translate reveal */
+/** Line-level reveal (mount choreography) */
 export function CanvasTextReveal({
   lines,
   className,
@@ -24,7 +24,13 @@ export function CanvasTextReveal({
   as = "h1",
 }: Props) {
   const reduced = usePrefersReducedMotion();
+  const [ready, setReady] = useState(false);
   const Tag = as;
+
+  useEffect(() => {
+    const id = window.requestAnimationFrame(() => setReady(true));
+    return () => window.cancelAnimationFrame(id);
+  }, []);
 
   if (reduced || !animate) {
     return (
@@ -39,13 +45,13 @@ export function CanvasTextReveal({
   }
 
   return (
-    <Tag className={className}>
+    <Tag className={className} data-canvas-authored="">
       {lines.map((line, i) => (
         <span key={`${line}-${i}`} className="block overflow-hidden">
           <motion.span
             className={`block ${lineClassName ?? ""}`}
-            initial={{ y: "110%", opacity: 0 }}
-            animate={{ y: "0%", opacity: 1 }}
+            initial={{ y: "100%", opacity: 0 }}
+            animate={ready ? { y: "0%", opacity: 1 } : { y: "100%", opacity: 0 }}
             transition={{
               duration: canvasDur.slow,
               delay: delay + i * canvasStagger.loose,
@@ -67,7 +73,7 @@ type ScrollLinesProps = {
   as?: "h1" | "h2" | "p";
 };
 
-/** Viewport-triggered line reveal — each line timed independently */
+/** Viewport-triggered line reveal */
 export function CanvasTextRevealInView({
   lines,
   className,
@@ -75,6 +81,8 @@ export function CanvasTextRevealInView({
   as = "h2",
 }: ScrollLinesProps) {
   const reduced = usePrefersReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.15 });
   const Tag = as;
 
   if (reduced) {
@@ -90,17 +98,16 @@ export function CanvasTextRevealInView({
   }
 
   return (
-    <Tag className={className}>
+    <Tag ref={ref as never} className={className} data-canvas-authored="">
       {lines.map((line, i) => (
         <span key={`${line}-${i}`} className="block overflow-hidden py-[0.06em]">
           <motion.span
             className={`block ${lineClassName ?? ""}`}
-            initial={{ y: "108%", opacity: 0 }}
-            whileInView={{ y: "0%", opacity: 1 }}
-            viewport={{ once: true, amount: 0.4 }}
+            initial={{ y: "100%", opacity: 0 }}
+            animate={inView ? { y: "0%", opacity: 1 } : { y: "100%", opacity: 0 }}
             transition={{
               duration: canvasDur.slow,
-              delay: 0.06 + i * canvasStagger.loose,
+              delay: 0.04 + i * canvasStagger.loose,
               ease: canvasEase,
             }}
           >

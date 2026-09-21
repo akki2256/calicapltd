@@ -66,7 +66,7 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
       {children}
       {open ? (
         <div
-          className="fixed inset-0 z-[700] flex items-end justify-center bg-black/60 p-4 backdrop-blur-sm sm:items-center"
+          className="fixed inset-0 z-[780] flex items-end justify-center bg-black/60 p-4 backdrop-blur-sm sm:items-center"
           role="presentation"
           onClick={closeChooser}
         >
@@ -110,7 +110,11 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
             <div className="mt-8 grid gap-3">
               <Link href="/contact?mode=know" onClick={closeChooser} className={pathClass}>
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-strong)]">
-                  <PhoneForwarded className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
+                  <PhoneForwarded
+                    className={`h-4 w-4 ${theme === "canvas" ? "text-[var(--color-accent)]" : "text-gold-600"}`}
+                    strokeWidth={2}
+                    aria-hidden
+                  />
                   I know what I need
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
@@ -119,7 +123,11 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
               </Link>
               <Link href="/contact?mode=unsure" onClick={closeChooser} className={pathClass}>
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-strong)]">
-                  <MessageCircle className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
+                  <MessageCircle
+                    className={`h-4 w-4 ${theme === "canvas" ? "text-[var(--color-accent)]" : "text-gold-600"}`}
+                    strokeWidth={2}
+                    aria-hidden
+                  />
                   I&apos;m not sure what I need
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
@@ -150,8 +158,8 @@ export function ProblemCtaButton({
   const { theme } = useTheme();
   const isCanvas = theme === "canvas";
   const mag = useMagnetic({
-    enabled: false,
-    strength: 12,
+    enabled: isCanvas,
+    strength: 10,
   });
 
   const variants = isCanvas

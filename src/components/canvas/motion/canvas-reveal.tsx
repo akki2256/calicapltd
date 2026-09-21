@@ -69,6 +69,7 @@ export function CanvasReveal({
   return (
     <motion.div
       className={className}
+      data-canvas-authored=""
       initial="hidden"
       whileInView="visible"
       viewport={once ? viewportOnce : { ...viewportOnce, once: false }}

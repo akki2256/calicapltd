@@ -28,8 +28,8 @@ export function CanvasNav() {
   const navLinks = CANVAS_NAV_LINKS.filter((l) => l.href !== "/contact");
 
   return (
-    <nav className="canvas-nav fixed inset-y-0 right-0 z-[600]" aria-label="Primary">
-      <div className="canvas-nav-rail fixed inset-y-0 right-0 border-l border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
+    <nav className="canvas-nav fixed inset-y-0 right-0 z-[740]" aria-label="Primary">
+      <div className="canvas-nav-rail fixed inset-y-0 right-0 z-[750] border-l border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
         <button
           type="button"
           className="canvas-nav-trigger group flex items-center justify-center"
@@ -44,15 +44,16 @@ export function CanvasNav() {
 
       <div
         id="canvas-menubar"
-        className={`canvas-menubar fixed inset-0 overflow-y-auto overscroll-contain bg-[var(--color-surface)]/97 backdrop-blur-md transition-[opacity,visibility] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${open ? "pointer-events-auto visible opacity-100" : "pointer-events-none invisible opacity-0"}`}
+        className={`canvas-menubar fixed inset-0 z-[745] overflow-y-auto overscroll-contain bg-[var(--color-surface)]/98 backdrop-blur-md transition-[opacity,visibility] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${open ? "pointer-events-auto visible opacity-100" : "pointer-events-none invisible opacity-0"}`}
         aria-hidden={!open}
+        style={{ paddingRight: "var(--canvas-rail)" }}
       >
         <div className="mx-auto flex min-h-full max-w-6xl flex-col px-6 pb-16 pt-[calc(var(--canvas-rail)+1.5rem)] sm:px-10 lg:px-14">
           <div className="flex shrink-0 items-start justify-between gap-6">
             <p className="canvas-micro text-[var(--color-accent)]">Navigate</p>
             <button
               type="button"
-              className="flex h-12 w-12 items-center justify-center text-[var(--color-text-strong)] transition hover:opacity-60"
+              className="flex h-12 w-12 shrink-0 items-center justify-center text-[var(--color-text-strong)] transition hover:opacity-60"
               aria-label="Close menu"
               onClick={closeMenu}
             >
