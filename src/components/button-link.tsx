@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { useTheme } from "@/components/theme-provider";
 import { useMagnetic } from "@/hooks/use-magnetic";
+import { trackCta } from "@/lib/analytics";
 
 const caliconVariants = {
   primary:
@@ -32,6 +33,8 @@ export function ButtonLink({
   className = "",
   children,
   magnetic,
+  href,
+  onClick,
   ...props
 }: Props) {
   const { theme } = useTheme();
@@ -41,13 +44,19 @@ export function ButtonLink({
     enabled: magnetic ?? isCanvas,
     strength: isCanvas ? 10 : 12,
   });
+  const hrefString = typeof href === "string" ? href : href.pathname ?? "";
 
   return (
     <Link
+      href={href}
       ref={mag.ref as never}
       style={mag.style}
       onPointerMove={mag.onPointerMove as never}
       onPointerLeave={mag.onPointerLeave}
+      onClick={(event) => {
+        if (hrefString) trackCta(hrefString);
+        onClick?.(event);
+      }}
       className={`inline-flex items-center justify-center gap-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${variants[variant]} ${className}`}
       {...props}
     >

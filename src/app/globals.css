@@ -13,6 +13,12 @@
   --color-gold-600: #927821;
 }
 
+/*
+  Typography roles (do not swap fonts casually):
+  - display / H1–H3: --font-display (Canvas: Syne · Calicon: Fraunces)
+  - body / nav / buttons / captions: --font-sans (Canvas: Outfit · Calicon: DM Sans)
+  - labels / metadata: same sans, smaller tracking as authored
+*/
 :root,
 [data-theme="canvas"] {
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
@@ -49,6 +55,8 @@
   --color-noise-opacity: 0.012;
   --color-link: #8aabbc;
   --color-link-hover: #b0c9d4;
+  /* Official logo contrast aid (Canvas / dark surfaces) — does not recolor the mark */
+  --color-logo-glow: rgba(138, 171, 188, 0.22);
   --motion-duration: 700ms;
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -97,6 +105,8 @@
   --color-noise-opacity: 0.02;
   --color-link: #6b5614;
   --color-link-hover: #927821;
+  /* Official logo contrast aid (Calicon / light surfaces) — does not recolor the mark */
+  --color-logo-glow: rgba(15, 23, 42, 0.14);
 
   --color-gold-50: #faf8f0;
   --color-gold-100: #f5eed9;
@@ -119,8 +129,10 @@ html {
   --fab-offset-y: max(1.25rem, env(safe-area-inset-bottom, 0px));
   --fab-stack-height: calc(var(--fab-size) * 2 + var(--fab-gap));
   --canvas-fab-column: calc(var(--fab-size) + var(--fab-offset-x));
-  --canvas-content-right: calc(var(--canvas-rail) + var(--canvas-fab-column));
-  --canvas-content-bottom: calc(var(--fab-stack-height) + var(--fab-offset-y) + 0.75rem);
+  /* Theme + contact live on the rail — no floating FAB column on Canvas */
+  --canvas-content-right: calc(var(--canvas-rail) + 1.25rem);
+  --canvas-content-bottom: max(2rem, env(safe-area-inset-bottom, 0px) + 1.5rem);
+  --canvas-progress-gutter: 2.75rem;
   max-width: 100%;
   overflow-x: hidden;
 }
@@ -134,9 +146,8 @@ html {
 @media (max-width: 768px) {
   html {
     --canvas-rail: 56px;
-    /* Rail is fixed; only a slim gutter is needed horizontally.
-       FAB clearance is handled via bottom padding, not side padding. */
     --canvas-content-right: calc(var(--canvas-rail) + 0.75rem);
+    --canvas-progress-gutter: 0.5rem;
   }
 }
 
@@ -197,7 +208,8 @@ section {
 }
 
 [data-theme="canvas"] .floating-actions {
-  right: calc(var(--canvas-rail) + var(--fab-offset-x));
+  /* Canvas FABs moved onto the nav rail */
+  display: none;
 }
 
 [data-theme="canvas"] .floating-actions-btn {
@@ -495,7 +507,7 @@ html.menu-visible .canvas-menu-item {
 
 .canvas-main {
   min-height: 100dvh;
-  padding: 115px var(--canvas-content-right) max(78px, var(--canvas-content-bottom)) 26px;
+  padding: 130px var(--canvas-content-right) max(78px, var(--canvas-content-bottom)) 26px;
   transition:
     opacity 0.35s var(--motion-ease),
     transform 0.35s var(--motion-ease);
@@ -633,6 +645,41 @@ html.canvas-out .canvas-main::after {
   height: var(--canvas-rail);
 }
 
+.canvas-rail-btn {
+  appearance: none;
+  display: inline-flex;
+  width: var(--canvas-rail);
+  height: calc(var(--canvas-rail) * 0.85);
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-strong);
+  cursor: pointer;
+  transition: color 0.25s ease, background-color 0.25s ease;
+}
+
+.canvas-rail-btn:hover {
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.canvas-rail-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -4px;
+}
+
+.canvas-rail-btn-primary {
+  color: var(--color-text-strong);
+}
+
+.canvas-rail-btn-primary:hover {
+  color: var(--color-btn-primary-text);
+  background: var(--color-btn-primary-bg);
+}
+
 .canvas-menubar-top {
   height: var(--canvas-rail);
 }
@@ -649,7 +696,7 @@ html.canvas-out .canvas-main::after {
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
-  padding: 115px 26px max(78px, var(--canvas-content-bottom));
+  padding: 130px 26px max(78px, var(--canvas-content-bottom));
   padding-right: var(--canvas-content-right);
 }
 
@@ -994,6 +1041,158 @@ html.canvas-out .canvas-main::after {
   background: var(--color-accent-soft);
 }
 
+/* ========== Brand logo ========== */
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  isolation: isolate;
+  /* Block accidental theme text remaps from affecting the mark */
+  color: transparent;
+  line-height: 0;
+}
+
+.brand-logo--lockup {
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.brand-logo__img {
+  display: block;
+  height: var(--brand-logo-h, 3.5rem);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+  /* Preserve official colors — never inherit text remaps */
+  filter: drop-shadow(0 0 12px var(--color-logo-glow));
+  transition:
+    opacity 0.35s var(--motion-ease, ease),
+    filter 0.35s var(--motion-ease, ease),
+    transform 0.35s var(--motion-ease, ease);
+}
+
+.brand-logo__wordmark {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--brand-wordmark-size, 0.7rem);
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  line-height: 1;
+  text-indent: 0.28em; /* optical center with letter-spacing */
+  text-transform: uppercase;
+  color: var(--brand-wordmark-color, var(--color-text-strong));
+  transition: opacity 0.35s var(--motion-ease, ease), color 0.35s ease;
+}
+
+.brand-logo--sm {
+  --brand-logo-h: 2.25rem;
+  --brand-wordmark-size: 0.55rem;
+}
+
+.brand-logo--md {
+  --brand-logo-h: 3rem;
+  --brand-wordmark-size: 0.62rem;
+}
+
+.brand-logo--lg {
+  --brand-logo-h: 4.5rem;
+  --brand-wordmark-size: 0.8rem;
+}
+
+.brand-logo--header {
+  --brand-logo-h: 3.5rem;
+  --brand-wordmark-size: 0.68rem;
+}
+
+.brand-logo--footer {
+  --brand-logo-h: 4rem;
+  --brand-wordmark-size: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .brand-logo--header {
+    --brand-logo-h: 2.85rem;
+    --brand-wordmark-size: 0.58rem;
+  }
+
+  .brand-logo--footer {
+    --brand-logo-h: 3.25rem;
+    --brand-wordmark-size: 0.65rem;
+  }
+}
+
+/* Force treatments when surface context differs from theme default */
+.brand-logo--on-dark .brand-logo__img {
+  filter: drop-shadow(0 0 12px rgba(138, 171, 188, 0.22));
+}
+
+.brand-logo--on-dark .brand-logo__wordmark {
+  --brand-wordmark-color: #f5f5f3;
+}
+
+.brand-logo--on-light .brand-logo__img {
+  filter: drop-shadow(0 1px 3px rgba(15, 23, 42, 0.16));
+}
+
+.brand-logo--on-light .brand-logo__wordmark {
+  --brand-wordmark-color: #0a1628;
+}
+
+.brand-logo--accent .brand-logo__img {
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-accent) 45%, transparent));
+}
+
+.brand-logo--accent .brand-logo__wordmark {
+  --brand-wordmark-color: var(--color-accent);
+}
+
+.brand-logo-link {
+  border-radius: 0.25rem;
+}
+
+.brand-logo-link:hover .brand-logo__img,
+.brand-logo-link:hover .brand-logo__wordmark {
+  opacity: 0.88;
+}
+
+.brand-logo-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.brand-logo-link:active .brand-logo__img {
+  opacity: 0.78;
+  transform: scale(0.985);
+}
+
+/* Canvas brand lockup — clear progress rail + hamburger strip */
+.canvas-brand {
+  position: relative;
+  z-index: 711;
+  margin: max(0.85rem, env(safe-area-inset-top, 0px))
+    calc(var(--canvas-rail) + 0.75rem)
+    0
+    max(1rem, var(--canvas-progress-gutter));
+  padding: 0.35rem 0.5rem;
+  max-width: calc(100vw - var(--canvas-rail) - var(--canvas-progress-gutter) - 1.5rem);
+  pointer-events: auto;
+}
+
+@media (min-width: 769px) {
+  .canvas-brand {
+    margin-left: max(3.25rem, var(--canvas-progress-gutter));
+  }
+
+  .brand-logo--header {
+    --brand-logo-h: 4.25rem;
+    --brand-wordmark-size: 0.78rem;
+  }
+}
+
 /* ========== Calicon header polish ========== */
 
 .calicon-header {
@@ -1096,7 +1295,7 @@ html.canvas-out .canvas-main::after {
   min-width: 0;
   align-items: flex-end;
   justify-content: flex-start;
-  padding: 115px 26px max(78px, var(--canvas-content-bottom));
+  padding: 130px 26px max(78px, var(--canvas-content-bottom));
   padding-right: var(--canvas-content-right);
 }
 
@@ -1128,10 +1327,22 @@ html.canvas-out .canvas-main::after {
   padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
 }
 
-.canvas-site-footer a {
+.canvas-site-footer .brand-logo-link,
+.canvas-site-footer .btn-canvas,
+.canvas-site-footer .btn-calicon {
   min-height: 44px;
+}
+
+.canvas-footer-brand .brand-logo--footer {
+  --brand-logo-h: 3.25rem;
+  --brand-wordmark-size: 0.65rem;
+}
+
+.canvas-site-footer nav a,
+.canvas-site-footer ul a {
   display: inline-flex;
   align-items: center;
+  min-height: 2rem;
 }
 
 .canvas-micro {

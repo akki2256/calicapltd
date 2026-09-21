@@ -1,6 +1,8 @@
 import { ContactPageView } from "@/components/contact-page-view";
+import { JsonLd } from "@/components/JsonLd";
 import { parseContactMode } from "@/lib/calicap-discovery";
 import { pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 
 export const metadata = pageMetadata({
   title: "Contact",
@@ -17,5 +19,15 @@ export default async function ContactPage({ searchParams }: Props) {
   const params = searchParams ? await searchParams : {};
   const initialMode = parseContactMode(params.mode);
 
-  return <ContactPageView initialMode={initialMode} />;
+  return (
+    <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
+      <ContactPageView initialMode={initialMode} />
+    </>
+  );
 }

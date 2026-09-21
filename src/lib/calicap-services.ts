@@ -1,15 +1,17 @@
 import {
-  Cpu,
   LayoutTemplate,
   Megaphone,
   Monitor,
-  RefreshCw,
   Search,
   Smartphone,
   Store,
-  Workflow,
   type LucideIcon,
 } from "lucide-react";
+import {
+  PILLARS,
+  getServicesForPillar,
+  type PillarId,
+} from "@/lib/brand-architecture";
 import { siteImages } from "@/lib/site-images";
 
 export const calicapServicesOverview = {
@@ -26,7 +28,7 @@ export const calicapServicesOverview = {
 } as const;
 
 export type CalicapStrategicPillar = {
-  id: string;
+  id: PillarId;
   label: string;
   tagline: string;
   body: string;
@@ -36,69 +38,19 @@ export type CalicapStrategicPillar = {
   icon: LucideIcon;
 };
 
-/** Level-1 service spine — used on /services and nav */
-export const calicapStrategicPillars: CalicapStrategicPillar[] = [
-  {
-    id: "build",
-    label: "Build",
-    tagline: "Create what's needed.",
-    body: "Applications, software, digital products, and integrations shaped around how work actually happens.",
-    bullets: [
-      "Web & mobile applications",
-      "Custom software",
-      "Digital products & platforms",
-      "APIs & integrations",
-    ],
-    cta: "Explore Build",
-    href: "/build",
-    icon: LayoutTemplate,
-  },
-  {
-    id: "transform",
-    label: "Transform",
-    tagline: "Modernize what already exists.",
-    body: "Improve digital experiences, bring core processes into better systems, and clarify what to change.",
-    bullets: [
-      "Web & e-commerce",
-      "Business management systems",
-      "Digital transformation",
-      "Technology consulting",
-    ],
-    cta: "Explore Transform",
-    href: "/transform",
-    icon: Workflow,
-  },
-  {
-    id: "automate",
-    label: "Automate",
-    tagline: "Remove unnecessary manual work.",
-    body: "Workflows and practical AI where they create value — not as the identity of the company.",
-    bullets: [
-      "AI applications",
-      "AI chatbots & assistants",
-      "Workflow automation",
-      "AI integrations",
-    ],
-    cta: "Explore Automate",
-    href: "/automate",
-    icon: Cpu,
-  },
-  {
-    id: "evolve",
-    label: "Evolve",
-    tagline: "Keep technology moving.",
-    body: "Maintenance, support, and continuous development after launch — so systems stay useful.",
-    bullets: [
-      "Application maintenance",
-      "Website maintenance",
-      "AMC & support",
-      "Continuous development",
-    ],
-    cta: "Explore Evolve",
-    href: "/evolve",
-    icon: RefreshCw,
-  },
-];
+/** Level-1 capability framework — derived from brand architecture */
+export const calicapStrategicPillars: CalicapStrategicPillar[] = PILLARS.map(
+  (p) => ({
+    id: p.id,
+    label: p.label,
+    tagline: p.tagline,
+    body: p.summary,
+    bullets: getServicesForPillar(p.id).map((s) => s.title),
+    cta: `Explore ${p.label}`,
+    href: p.href,
+    icon: p.icon,
+  }),
+);
 
 /** @deprecated alias — header/footer still map service links from pillars */
 export const calicapServicePillars = calicapStrategicPillars.map((p) => ({
@@ -115,7 +67,7 @@ export type CalicapServiceGroup = {
 };
 
 export type CalicapServiceSection = {
-  id: string;
+  id: PillarId;
   label: string;
   title: string;
   intro: string;
@@ -123,112 +75,45 @@ export type CalicapServiceSection = {
   cta: string;
 };
 
-export const calicapServiceSections: CalicapServiceSection[] = [
-  {
-    id: "build",
-    label: "Build",
-    title: "Create what's needed.",
+const PILLAR_SECTION_COPY: Record<
+  PillarId,
+  { intro: string; cta: string }
+> = {
+  build: {
     intro:
       "From a new digital product to software designed around real workflows — turn ideas and requirements into working technology.",
-    groups: [
-      {
-        title: "Web & mobile applications",
-        body: "Digital experiences built around customers and day-to-day workflows.",
-      },
-      {
-        title: "Custom software",
-        body: "Software designed around the way operations actually run.",
-      },
-      {
-        title: "Digital products",
-        body: "Turn an idea into a product people can use.",
-      },
-      {
-        title: "APIs & integrations",
-        body: "Connect systems, move data, and reduce disconnected workflows.",
-      },
-    ],
     cta: "Tell us what you want to build",
   },
-  {
-    id: "transform",
-    label: "Transform",
-    title: "Modernize what already exists.",
+  transform: {
     intro:
       "Improve digital experiences, bring core processes into systems that fit, and get clarity on what to build, change, or connect.",
-    groups: [
-      {
-        title: "Web & e-commerce",
-        body: "Better digital experiences and stronger online operations.",
-      },
-      {
-        title: "Business management systems",
-        body: "ERP, CRM, HRMS, and automation systems built around how the organization works.",
-      },
-      {
-        title: "Digital transformation",
-        body: "Improve the way work gets done through better technology.",
-      },
-      {
-        title: "Technology consulting",
-        body: "Think with us. Build with us. Clarity on what to build, change, connect, or improve.",
-      },
-    ],
     cta: "Talk about a transformation",
   },
-  {
-    id: "automate",
-    label: "Automate",
-    title: "Remove unnecessary manual work.",
+  automate: {
     intro:
       "Connect systems, automate repetitive work, and apply AI where it creates practical value.",
-    groups: [
-      {
-        title: "AI applications",
-        body: "Practical AI applications and intelligent functionality inside useful products and processes.",
-      },
-      {
-        title: "AI chatbots & assistants",
-        body: "Customer interactions, internal assistance, knowledge access, and workflow-connected conversations.",
-      },
-      {
-        title: "Workflow automation",
-        body: "Repetitive processes, approvals, notifications, data movement, and routine operations.",
-      },
-      {
-        title: "AI integrations",
-        body: "Connect AI capabilities to existing systems and AI-enabled workflows.",
-      },
-    ],
     cta: "Automate a process",
   },
-  {
-    id: "evolve",
-    label: "Evolve",
-    title: "Keep technology moving.",
+  evolve: {
     intro:
       "Launch is not the end. Keep critical systems reliable, useful, and aligned as priorities change.",
-    groups: [
-      {
-        title: "Application maintenance",
-        body: "Fixes, reliability, improvements, updates, and ongoing development.",
-      },
-      {
-        title: "Website maintenance",
-        body: "Updates, fixes, improvements, content and functional changes, ongoing development.",
-      },
-      {
-        title: "AMC & support",
-        body: "An ongoing technology relationship — maintenance, issue resolution, improvements, and continued development.",
-      },
-      {
-        title: "Continuous development",
-        body: "New features, improvements, product evolution, and long-term development as requirements change.",
-      },
-    ],
     cta: "Talk about ongoing support",
   },
-];
+};
+
+export const calicapServiceSections: CalicapServiceSection[] = PILLARS.map(
+  (p) => ({
+    id: p.id,
+    label: p.label,
+    title: p.tagline,
+    intro: PILLAR_SECTION_COPY[p.id].intro,
+    groups: getServicesForPillar(p.id).map((s) => ({
+      title: s.title,
+      body: s.body,
+    })),
+    cta: PILLAR_SECTION_COPY[p.id].cta,
+  }),
+);
 
 export const calicapServicesUnsure = {
   title: "Not sure what you need? That's okay.",
@@ -245,8 +130,8 @@ export const calicapServicesApproach = {
 } as const;
 
 export type CalicapPillarPage = {
-  id: string;
-  path: string;
+  id: PillarId;
+  path: `/${PillarId}`;
   eyebrow: string;
   title: string;
   body: string;
@@ -263,7 +148,7 @@ export type CalicapPillarPage = {
   metaDescription: string;
 };
 
-export const calicapPillarPages: Record<string, CalicapPillarPage> = {
+export const calicapPillarPages: Record<PillarId, CalicapPillarPage> = {
   build: {
     id: "build",
     path: "/build",
@@ -387,11 +272,11 @@ export const calicapPillarPages: Record<string, CalicapPillarPage> = {
   },
 };
 
-export function getPillarSection(id: string) {
+export function getPillarSection(id: PillarId) {
   return calicapServiceSections.find((s) => s.id === id);
 }
 
-export function getPillarPage(id: string) {
+export function getPillarPage(id: PillarId) {
   return calicapPillarPages[id];
 }
 
@@ -403,7 +288,8 @@ export type CalicapServiceOffering = {
 
 export const calicapWebAppService = {
   path: "/services/web-app-development",
-  pillar: "Build",
+  pillar: "build" as const,
+  serviceId: "web-mobile-apps",
   eyebrow: "Web & digital products",
   title: "Web applications and digital experiences that fit how work actually happens.",
   body:
@@ -455,7 +341,8 @@ export const calicapWebAppService = {
 
 export const calicapMobileAppService = {
   path: "/services/mobile-app-development",
-  pillar: "Build",
+  pillar: "build" as const,
+  serviceId: "web-mobile-apps",
   eyebrow: "Mobile applications",
   title: "Mobile products built around how customers and teams work.",
   body:

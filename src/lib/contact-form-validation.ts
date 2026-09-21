@@ -1,4 +1,6 @@
-export type ContactMode = "know" | "unsure";
+import type { ContactMode } from "@/lib/calicap-discovery";
+
+export type { ContactMode };
 
 export type ContactFieldErrors = Partial<
   Record<
@@ -27,6 +29,10 @@ export type ContactPayload = {
   message: string;
   /** Structured discovery answers for unsure mode */
   discovery: Record<string, string>;
+  source?: string;
+  medium?: string;
+  campaign?: string;
+  landingPath?: string;
 };
 
 export type ContactValidationResult =
@@ -52,6 +58,10 @@ export function validateContactForm(
   const built = String(formData.get("built") ?? "").trim();
   const message = String(formData.get("message") ?? "").trim();
 
+  const landingPath = String(formData.get("landingPath") ?? "").trim().slice(0, 200);
+  const source = String(formData.get("source") ?? "").trim().slice(0, 120);
+  const medium = String(formData.get("medium") ?? "").trim().slice(0, 120);
+  const campaign = String(formData.get("campaign") ?? "").trim().slice(0, 120);
   const discoveryRaw = String(formData.get("discovery") ?? "").trim();
   let discovery: Record<string, string> = {};
   if (discoveryRaw) {
@@ -139,6 +149,10 @@ export function validateContactForm(
       built,
       message: composedMessage,
       discovery,
+      source: source || undefined,
+      medium: medium || undefined,
+      campaign: campaign || undefined,
+      landingPath: landingPath || undefined,
     },
   };
 }

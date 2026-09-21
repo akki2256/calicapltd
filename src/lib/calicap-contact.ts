@@ -1,6 +1,9 @@
 /**
  * Single source for Calicon NAP, form copy, and contact-related constants.
  */
+import { PILLARS } from "@/lib/brand-architecture";
+import { CONTACT_DELIVERY_NOTE } from "@/lib/delivery-architecture";
+
 export const CALICON_SITE_NAME = "Calicon";
 
 export const calicapContact = {
@@ -22,6 +25,7 @@ export const calicapContact = {
     bullets: [
       "Every note is reviewed personally",
       "Follow-up happens once the context is understood",
+      CONTACT_DELIVERY_NOTE,
       "Remote-first; onsite when the work needs it",
     ] as const,
   },
@@ -32,10 +36,7 @@ export const calicapContact = {
 } as const;
 
 export const calicapFooterLinks = [
-  { href: "/build", label: "Build" },
-  { href: "/transform", label: "Transform" },
-  { href: "/automate", label: "Automate" },
-  { href: "/evolve", label: "Evolve" },
+  ...PILLARS.map((p) => ({ href: p.href, label: p.label })),
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },

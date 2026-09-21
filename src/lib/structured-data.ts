@@ -1,5 +1,8 @@
 import { absoluteUrl, SITE_NAME, SITE_URL, DEFAULT_DESCRIPTION } from "@/lib/seo";
+import { PILLAR_PATHS, SERVICE_PAGE_PATHS } from "@/lib/brand-architecture";
 import { calicapContact } from "@/lib/calicap-contact";
+import { getPublishedCampaigns } from "@/lib/campaigns";
+import { getPublishedContentPaths } from "@/lib/content";
 import { getWorkStudySlugs } from "@/lib/calicap-work";
 
 type JsonLd = Record<string, unknown>;
@@ -10,6 +13,7 @@ export function organizationJsonLd(): JsonLd {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
+    logo: absoluteUrl("/brand/calicon-logo.png"),
     description: DEFAULT_DESCRIPTION,
     ...(calicapContact.email ? { email: calicapContact.email } : {}),
   };
@@ -86,12 +90,8 @@ export function creativeWorkJsonLd(input: {
 /** Static marketing paths included in the sitemap (plus dynamic work slugs). */
 export const STATIC_SITEMAP_PATHS = [
   "/",
-  "/build",
-  "/transform",
-  "/automate",
-  "/evolve",
-  "/services/web-app-development",
-  "/services/mobile-app-development",
+  ...PILLAR_PATHS,
+  ...SERVICE_PAGE_PATHS,
   "/work",
   "/about",
   "/contact",
@@ -100,5 +100,34 @@ export const STATIC_SITEMAP_PATHS = [
 
 export function allSitemapPaths(): string[] {
   const workPaths = getWorkStudySlugs().map((slug) => `/work/${slug}`);
-  return [...STATIC_SITEMAP_PATHS, ...workPaths];
+  const contentPaths = getPublishedContentPaths();
+  const campaignPaths = getPublishedCampaigns().map((item) => item.path);
+  return [
+    ...new Set([
+      ...STATIC_SITEMAP_PATHS,
+      ...workPaths,
+      ...contentPaths,
+      ...campaignPaths,
+    ]),
+  ];
+}
+
+export function serviceJsonLd(input: {
+  name: string;
+  description: string;
+  path: string;
+}): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: input.name,
+    description: input.description,
+    url: absoluteUrl(input.path),
+    provider: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    areaServed: "Worldwide",
+  };
 }

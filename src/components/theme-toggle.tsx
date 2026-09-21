@@ -13,11 +13,12 @@ export function ThemeToggle({ className = "" }: Props) {
   const nextTheme = theme === "calicon" ? "canvas" : "calicon";
   const nextLabel = THEMES.find((option) => option.id === nextTheme)?.label;
   const currentLabel = THEMES.find((option) => option.id === theme)?.label;
+  const isRail = className.includes("canvas-rail-btn");
 
   return (
     <button
       type="button"
-      className={`floating-actions-btn ${className}`}
+      className={isRail ? className : `floating-actions-btn ${className}`}
       aria-label={`Switch theme to ${nextLabel}`}
       title={`Theme: ${currentLabel}. Switch to ${nextLabel}.`}
       onClick={() => setTheme(nextTheme)}

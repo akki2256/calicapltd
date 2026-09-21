@@ -11,6 +11,8 @@ export type CalicapTestimonial = {
   /** Optional link to related case study */
   projectSlug?: string;
   theme: "understanding" | "delivery" | "problem-solving" | "business-impact";
+  /** Keep false until the quote is approved by the client */
+  published: boolean;
 };
 
 export const calicapTestimonialsSection = {
@@ -28,6 +30,7 @@ export const calicapTestimonials: CalicapTestimonial[] = [
     company: "Calicap India",
     projectSlug: "calicap-india",
     theme: "understanding",
+    published: false,
   },
   {
     id: "t2",
@@ -38,6 +41,7 @@ export const calicapTestimonials: CalicapTestimonial[] = [
     company: "Yog Mantram",
     projectSlug: "yog-mantram",
     theme: "delivery",
+    published: false,
   },
   {
     id: "t3",
@@ -47,5 +51,10 @@ export const calicapTestimonials: CalicapTestimonial[] = [
     role: "Director",
     company: "Confidential client",
     theme: "problem-solving",
+    published: false,
   },
-] as const;
+];
+
+export function getPublishedTestimonials() {
+  return calicapTestimonials.filter((item) => item.published);
+}

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { FileText, Lightbulb, MessageCircle, PhoneForwarded } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
+import { DeliveryProcess } from "@/components/delivery-process";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import {
   CanvasReveal,
@@ -79,6 +80,8 @@ function CanvasAbout() {
           ))}
         </CanvasStagger>
       </section>
+
+      <DeliveryProcess />
 
       <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
         <CanvasReveal variant="riseSoft">
@@ -206,6 +209,8 @@ function CaliconAbout() {
               ))}
             </ol>
           </section>
+
+          <DeliveryProcess />
 
           <section className="mt-10 max-w-2xl">
             <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">

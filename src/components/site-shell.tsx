@@ -29,7 +29,6 @@ export function SiteShell({ children }: Props) {
         <CanvasFooter />
         <CanvasProgressRail />
         <CanvasCursor />
-        <FloatingActions />
       </CanvasMenuProvider>
     ) : (
       <>

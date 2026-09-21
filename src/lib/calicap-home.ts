@@ -13,6 +13,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { calicapWorkStudies } from "@/lib/calicap-work";
+import {
+  CUSTOMER_OUTCOMES,
+  PILLARS,
+} from "@/lib/brand-architecture";
 import { siteImages } from "@/lib/site-images";
 
 export const HOME_POSITIONING_ID = "positioning";
@@ -102,48 +106,23 @@ export const calicapHomeOutcomes: {
   href: string;
   linkLabel: string;
   icon: LucideIcon;
-}[] = [
-  {
-    label: "Create",
-    value: "Build something new.",
-    examples: ["Applications", "Software", "Digital products", "Platforms"],
-    href: "/build",
-    linkLabel: "Explore Build",
-    icon: LayoutTemplate,
-  },
-  {
-    label: "Modernize",
-    value: "Improve technology that no longer fits.",
-    examples: ["Existing software", "Websites", "Business systems", "Digital operations"],
-    href: "/transform",
-    linkLabel: "Explore Transform",
-    icon: Workflow,
-  },
-  {
-    label: "Automate",
-    value: "Remove repetitive work.",
-    examples: ["Workflows", "Manual processes", "Customer interactions", "Routine operations"],
-    href: "/automate",
-    linkLabel: "Explore Automate",
-    icon: Cpu,
-  },
-  {
-    label: "Connect",
-    value: "Bring systems, data, and workflows together.",
-    examples: ["APIs", "Integrations", "Connected systems", "Data flows"],
-    href: "/build",
-    linkLabel: "Explore integrations",
-    icon: Link2,
-  },
-  {
-    label: "Scale",
-    value: "Grow with changing needs.",
-    examples: ["Continuous development", "Improved systems", "Expanded functionality", "Ongoing support"],
-    href: "/evolve",
-    linkLabel: "Explore Evolve",
-    icon: Rocket,
-  },
-];
+}[] = CUSTOMER_OUTCOMES.map((o) => {
+  const icons: Record<string, LucideIcon> = {
+    create: LayoutTemplate,
+    modernize: Workflow,
+    automate: Cpu,
+    connect: Link2,
+    scale: Rocket,
+  };
+  return {
+    label: o.label,
+    value: o.value,
+    examples: o.examples,
+    href: o.href,
+    linkLabel: o.linkLabel,
+    icon: icons[o.id] ?? LayoutTemplate,
+  };
+});
 
 export const calicapHomeEntryDoors: {
   label: string;
@@ -186,32 +165,12 @@ export const calicapHomeServices: {
   body: string;
   href: string;
   icon: LucideIcon;
-}[] = [
-  {
-    title: "Build",
-    body: "Applications, software, digital products, and integrations — from a defined requirement, a rough idea, or a real-world problem.",
-    href: "/build",
-    icon: LayoutTemplate,
-  },
-  {
-    title: "Transform",
-    body: "Modernize websites, systems, workflows, and digital operations so technology works better for how things operate today.",
-    href: "/transform",
-    icon: Workflow,
-  },
-  {
-    title: "Automate",
-    body: "Remove repetitive work through workflow automation, practical AI applications, chatbots, and integrations.",
-    href: "/automate",
-    icon: Cpu,
-  },
-  {
-    title: "Evolve",
-    body: "Maintain, improve, extend, and continuously develop technology as requirements change.",
-    href: "/evolve",
-    icon: RefreshCw,
-  },
-];
+}[] = PILLARS.map((p) => ({
+  title: p.label,
+  body: p.summary,
+  href: p.href,
+  icon: p.icon,
+}));
 
 export const calicapHomeWorkSection = {
   title: "What we've built.",

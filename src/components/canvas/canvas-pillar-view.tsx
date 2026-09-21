@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ButtonLink } from "@/components/button-link";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
+import { ProjectApproach } from "@/components/project-approach";
 import {
   calicapBuildDetailLinks,
   calicapServicesApproach,
@@ -13,9 +14,11 @@ import {
 } from "@/lib/calicap-services";
 import { calicapHomeProcess } from "@/lib/calicap-home";
 import { getWorkStudiesForPillar, getWorkStudyImage } from "@/lib/calicap-work";
+import { PILLAR_DELIVERY } from "@/lib/delivery-architecture";
+import type { PillarId } from "@/lib/brand-architecture";
 
 type Props = {
-  pillarId: "build" | "transform" | "automate" | "evolve";
+  pillarId: PillarId;
 };
 
 /** Editorial Canvas pillar — type-led, minimal cards */
@@ -134,6 +137,11 @@ export function CanvasPillarView({ pillarId }: Props) {
           ))}
         </ol>
       </section>
+
+      <ProjectApproach
+        title={PILLAR_DELIVERY[pillarId].title}
+        body={PILLAR_DELIVERY[pillarId].body}
+      />
 
       {related.length > 0 ? (
         <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">

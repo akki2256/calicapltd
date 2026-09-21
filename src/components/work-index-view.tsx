@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -17,12 +18,65 @@ import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import {
   calicapWorkIndex,
   calicapWorkStudies,
+  getWorkStudiesForPillar,
   getWorkStudyImage,
+  type CalicapWorkStudy,
 } from "@/lib/calicap-work";
+import { PILLARS, type PillarId } from "@/lib/brand-architecture";
+
+type WorkFilter = "all" | PillarId;
+
+function studiesForFilter(filter: WorkFilter): CalicapWorkStudy[] {
+  if (filter === "all") return [...calicapWorkStudies];
+  return getWorkStudiesForPillar(filter);
+}
+
+function WorkIndexFilter({
+  value,
+  onChange,
+}: {
+  value: WorkFilter;
+  onChange: (next: WorkFilter) => void;
+}) {
+  const options: { id: WorkFilter; label: string }[] = [
+    { id: "all", label: "All" },
+    ...PILLARS.map((p) => ({ id: p.id as WorkFilter, label: p.label })),
+  ];
+
+  return (
+    <div
+      className="mt-8 flex flex-wrap gap-x-5 gap-y-2"
+      role="tablist"
+      aria-label="Filter work by capability"
+    >
+      {options.map((option) => {
+        const active = value === option.id;
+        return (
+          <button
+            key={option.id}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            onClick={() => onChange(option.id)}
+            className={`text-xs uppercase tracking-[0.16em] transition ${
+              active
+                ? "text-[var(--color-text-strong)]"
+                : "text-[var(--color-text-muted)] hover:text-[var(--color-text-strong)]"
+            }`}
+          >
+            {option.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 function CanvasWorkIndex() {
   const index = calicapWorkIndex;
   const reduced = usePrefersReducedMotion();
+  const [filter, setFilter] = useState<WorkFilter>("all");
+  const studies = studiesForFilter(filter);
 
   return (
     <div className="mx-auto max-w-[920px] py-4">
@@ -42,9 +96,15 @@ function CanvasWorkIndex() {
       <CanvasReveal variant="rise" delay={0.18} className="mt-10">
         <ProblemCtaButton>{index.ctaLabel}</ProblemCtaButton>
       </CanvasReveal>
+      <WorkIndexFilter value={filter} onChange={setFilter} />
 
       <div className="mt-20 space-y-20">
-        {calicapWorkStudies.map((s) => {
+        {studies.length === 0 ? (
+          <p className="text-sm text-[var(--color-text-muted)]">
+            No published work in this capability yet.
+          </p>
+        ) : null}
+        {studies.map((s) => {
           const image = getWorkStudyImage(s);
           return (
             <Link key={s.slug} href={`/work/${s.slug}`} className="group block">
@@ -107,6 +167,8 @@ function CanvasWorkIndex() {
 
 function CaliconWorkIndex() {
   const index = calicapWorkIndex;
+  const [filter, setFilter] = useState<WorkFilter>("all");
+  const studies = studiesForFilter(filter);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
@@ -131,9 +193,13 @@ function CaliconWorkIndex() {
       <div className="mt-10">
         <ProblemCtaButton>{index.ctaLabel}</ProblemCtaButton>
       </div>
+      <WorkIndexFilter value={filter} onChange={setFilter} />
 
       <div className="mt-16 grid gap-8 md:grid-cols-2">
-        {calicapWorkStudies.map((s) => {
+        {studies.length === 0 ? (
+          <p className="text-sm text-slate-600">No published work in this capability yet.</p>
+        ) : null}
+        {studies.map((s) => {
           const image = getWorkStudyImage(s);
           return (
             <Link

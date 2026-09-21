@@ -6,6 +6,8 @@ import { ArrowRight, MessageCircle, PhoneForwarded } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { CanvasPillarView } from "@/components/canvas/canvas-pillar-view";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
+import { JsonLd } from "@/components/JsonLd";
+import { ProjectApproach } from "@/components/project-approach";
 import { ThemeSplit } from "@/components/theme-split";
 import {
   calicapBuildDetailLinks,
@@ -16,18 +18,41 @@ import {
 } from "@/lib/calicap-services";
 import { calicapHomeProcess } from "@/lib/calicap-home";
 import { getWorkStudiesForPillar, getWorkStudyImage } from "@/lib/calicap-work";
+import { getPillar, type PillarId } from "@/lib/brand-architecture";
+import { PILLAR_DELIVERY } from "@/lib/delivery-architecture";
 import { siteImages } from "@/lib/site-images";
+import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/structured-data";
 
 type Props = {
-  pillarId: "build" | "transform" | "automate" | "evolve";
+  pillarId: PillarId;
 };
 
 export function PillarPageView({ pillarId }: Props) {
+  const page = getPillarPage(pillarId);
+  const pillar = getPillar(pillarId);
+
   return (
-    <ThemeSplit
-      canvas={<CanvasPillarView pillarId={pillarId} />}
-      calicon={<CaliconPillarView pillarId={pillarId} />}
-    />
+    <>
+      {page ? (
+        <JsonLd
+          data={[
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: pillar.label, path: page.path },
+            ]),
+            serviceJsonLd({
+              name: page.title,
+              description: page.metaDescription,
+              path: page.path,
+            }),
+          ]}
+        />
+      ) : null}
+      <ThemeSplit
+        canvas={<CanvasPillarView pillarId={pillarId} />}
+        calicon={<CaliconPillarView pillarId={pillarId} />}
+      />
+    </>
   );
 }
 
@@ -157,6 +182,11 @@ function CaliconPillarView({ pillarId }: Props) {
           ))}
         </ol>
       </section>
+
+      <ProjectApproach
+        title={PILLAR_DELIVERY[pillarId].title}
+        body={PILLAR_DELIVERY[pillarId].body}
+      />
 
       {related.length > 0 ? (
         <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
