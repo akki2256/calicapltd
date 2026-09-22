@@ -328,6 +328,7 @@ export type IndustryTag = {
 export const INDUSTRY_TAGS: readonly IndustryTag[] = [
   { id: "financial-services", label: "Financial services" },
   { id: "fitness-wellness", label: "Fitness & wellness" },
+  { id: "architecture-design", label: "Architecture & design" },
   { id: "healthcare", label: "Healthcare" },
   { id: "education", label: "Education" },
   { id: "retail-ecommerce", label: "Retail & e-commerce" },

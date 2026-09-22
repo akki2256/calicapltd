@@ -33,12 +33,12 @@ export function CanvasPillarView({ pillarId }: Props) {
   const approach = calicapServicesApproach;
 
   return (
-    <article className="canvas-pillar mx-auto max-w-[920px] px-0 py-4">
+    <article className="canvas-pillar mx-auto max-w-[1080px] px-0 py-4">
       <p className="canvas-micro text-[var(--color-accent)]">{page.eyebrow}</p>
-      <h1 className="mt-6 max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.25rem)] font-medium leading-[1.1] tracking-[-0.035em] text-[var(--color-text-strong)]">
+      <h1 className="mt-6 max-w-4xl font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.25rem)] font-medium leading-[1.1] tracking-[-0.035em] text-[var(--color-text-strong)]">
         {page.title}
       </h1>
-      <p className="mt-6 max-w-xl text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
+      <p className="mt-6 max-w-3xl text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
         {page.body}
       </p>
       <div className="mt-10 flex flex-wrap gap-3">
@@ -78,7 +78,7 @@ export function CanvasPillarView({ pillarId }: Props) {
             </li>
           ))}
         </ul>
-        <div className="mt-12 max-w-xl">
+        <div className="mt-12 max-w-3xl">
           <h3 className="font-[family-name:var(--font-display)] text-lg text-[var(--color-text-strong)]">
             {page.flexibleTitle}
           </h3>
@@ -92,12 +92,12 @@ export function CanvasPillarView({ pillarId }: Props) {
         <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
           {section.title}
         </h2>
-        <p className="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-text-muted)]">
+        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)]">
           {section.intro}
         </p>
         <div className="mt-10 divide-y divide-[var(--color-border-subtle)] border-y border-[var(--color-border-subtle)]">
           {section.groups.map((g) => (
-            <div key={g.title} className="grid gap-3 py-7 sm:grid-cols-[12rem_1fr] sm:gap-10">
+            <div key={g.title} className="grid gap-3 py-7 sm:grid-cols-[minmax(8rem,14rem)_minmax(0,1fr)] sm:gap-6 lg:gap-8">
               <h3 className="text-sm font-medium text-[var(--color-text-strong)]">{g.title}</h3>
               <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">{g.body}</p>
             </div>
@@ -177,7 +177,7 @@ export function CanvasPillarView({ pillarId }: Props) {
         <h2 className="font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
           {approach.title}
         </h2>
-        <p className="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-text-muted)]">
+        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)]">
           {approach.body}
         </p>
       </section>
@@ -186,7 +186,7 @@ export function CanvasPillarView({ pillarId }: Props) {
         <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
           {unsure.title}
         </h2>
-        <p className="mt-4 max-w-xl text-sm text-[var(--color-text-muted)]">{unsure.body}</p>
+        <p className="mt-4 max-w-3xl text-sm text-[var(--color-text-muted)]">{unsure.body}</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <ButtonLink href={page.contactHref}>{page.contactCta}</ButtonLink>
           <ProblemCtaButton variant="ghost">{unsure.cta}</ProblemCtaButton>

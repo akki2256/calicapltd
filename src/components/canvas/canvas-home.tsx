@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef } from "react";
 import { ButtonLink } from "@/components/button-link";
@@ -50,8 +49,6 @@ export function CanvasHome() {
   const visualOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.2]);
   const headlineY = useTransform(scrollYProgress, [0, 1], [0, -90]);
   const headlineScale = useTransform(scrollYProgress, [0, 1], [1, 0.88]);
-  const stillY = useTransform(scrollYProgress, [0, 1], [0, 60]);
-  const stillScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
   const pointerX = pointerActive ? pointer.x * 36 : 0;
   const pointerY = pointerActive ? pointer.y * 22 : 0;
@@ -108,34 +105,6 @@ export function CanvasHome() {
             intensity={1}
           />
         </motion.div>
-
-        <motion.div
-          className="pointer-events-none absolute bottom-[6%] right-[6%] hidden w-[46%] overflow-hidden border border-[var(--color-border-subtle)] md:block"
-          initial={reduced ? false : { opacity: 0, y: 40, clipPath: "inset(0 100% 0 0)" }}
-          animate={{ opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)" }}
-          transition={{ duration: canvasDur.slow, ease: canvasEase, delay: 0.95 }}
-          style={
-            reduced
-              ? undefined
-              : {
-                  y: stillY,
-                  scale: stillScale,
-                }
-          }
-        >
-          <div className="relative aspect-[16/10]">
-            <Image
-              src="/images/case-studies/crm-dashboard.png"
-              alt=""
-              fill
-              className="object-cover object-left-top opacity-85"
-              sizes="320px"
-              priority
-              aria-hidden
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-surface)] via-transparent to-transparent" />
-          </div>
-        </motion.div>
       </motion.div>
 
       <motion.div
@@ -146,7 +115,7 @@ export function CanvasHome() {
             : { y: copyY, x: copyX, opacity: copyOpacity, clipPath: clipRaw }
         }
       >
-        <div className="canvas-home-copy w-full max-w-[min(100%,36rem)] pb-6 md:pb-0">
+        <div className="canvas-home-copy w-full max-w-[min(100%,42rem)] pb-6 md:pb-0">
           <motion.div
             className="flex items-center gap-3"
             initial={reduced ? false : { opacity: 0, y: 10 }}
@@ -170,7 +139,7 @@ export function CanvasHome() {
           </motion.div>
 
           <motion.p
-            className="mt-6 max-w-md text-[15px] font-light leading-[1.7] text-[var(--color-text-muted)] sm:mt-8 sm:text-base"
+            className="mt-6 max-w-xl text-[15px] font-light leading-[1.7] text-[var(--color-text-muted)] sm:mt-8 sm:text-base"
             initial={reduced ? false : { opacity: 0, y: 24, filter: "blur(8px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{

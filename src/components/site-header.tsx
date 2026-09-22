@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
+import { BrandLogo } from "@/components/brand-logo";
 import { MobileNav } from "@/components/mobile-nav";
 import { useContactPathChooser } from "@/components/contact-path-chooser";
 import { CALICON_DESKTOP_NAV_LINKS } from "@/lib/primary-nav";
@@ -18,13 +19,18 @@ export function SiteHeader() {
       <div className="mx-auto flex h-[4.25rem] w-full max-w-6xl min-w-0 items-center justify-between gap-2 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="group inline-flex min-w-0 shrink items-center gap-2.5 font-[family-name:var(--font-display)] text-lg font-medium tracking-tight text-slate-900 transition"
+          className="brand-logo-link calicon-header-brand group inline-flex min-w-0 shrink items-center"
+          rel="home"
+          aria-label="Calicon home"
         >
-          <span className="relative flex h-8 w-8 items-center justify-center">
-            <span className="absolute inset-0 rounded-full bg-gold-600/15 transition group-hover:bg-gold-600/25" />
-            <span className="relative h-2 w-2 rounded-full bg-gold-600" aria-hidden />
-          </span>
-          <span className="truncate">Calicon</span>
+          <BrandLogo
+            size="header"
+            variant="calicon"
+            palette="official"
+            layout="lockup"
+            priority
+            label=""
+          />
         </Link>
         <nav
           className="hidden min-w-0 items-center gap-1 lg:gap-1.5 md:flex"

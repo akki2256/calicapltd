@@ -12,6 +12,7 @@ import {
   Workflow,
   type LucideIcon,
 } from "lucide-react";
+import { BrandLogo } from "@/components/brand-logo";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import {
   calicapContact,
@@ -35,14 +36,20 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="flex flex-col justify-between gap-10 md:flex-row md:items-start">
           <div>
-            <p className="inline-flex items-center gap-2 font-[family-name:var(--font-display)] text-xl text-slate-900">
-              <LayoutGrid
-                className="h-5 w-5 text-[var(--color-accent)]"
-                strokeWidth={2}
-                aria-hidden
+            <Link
+              href="/"
+              className="brand-logo-link calicon-footer-brand inline-flex w-fit"
+              rel="home"
+              aria-label={`${calicapContact.brand} home`}
+            >
+              <BrandLogo
+                size="footer"
+                variant="calicon"
+                palette="official"
+                layout="lockup"
+                label=""
               />
-              {calicapContact.brand}
-            </p>
+            </Link>
             <p className="mt-3 max-w-md text-sm leading-relaxed text-[var(--color-text-muted)]">
               {calicapContact.footerBlurb}
             </p>

@@ -105,8 +105,8 @@
   --color-noise-opacity: 0.02;
   --color-link: #6b5614;
   --color-link-hover: #927821;
-  /* Official logo contrast aid (Calicon / light surfaces) — does not recolor the mark */
-  --color-logo-glow: rgba(15, 23, 42, 0.14);
+  /* Calicon gold lockup — soft gold bloom behind the mark */
+  --color-logo-glow: rgba(184, 148, 42, 0.28);
 
   --color-gold-50: #faf8f0;
   --color-gold-100: #f5eed9;
@@ -732,7 +732,19 @@ html.canvas-out .canvas-main::after {
 .canvas-main-inner li {
   line-height: 1.75;
   overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+  text-wrap: pretty;
   color: inherit;
+}
+
+.canvas-main-inner h1,
+.canvas-main-inner h2,
+.canvas-main-inner h3 {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  text-wrap: balance;
 }
 
 .canvas-main-inner .surface-card {
@@ -1150,6 +1162,21 @@ html.canvas-out .canvas-main::after {
   --brand-wordmark-color: var(--color-accent);
 }
 
+/* Calicon chrome — shift official blue/silver mark toward brand gold */
+.brand-logo--calicon .brand-logo__img {
+  filter:
+    hue-rotate(158deg)
+    saturate(1.45)
+    brightness(1.02)
+    contrast(1.06)
+    drop-shadow(0 1px 3px rgba(107, 86, 20, 0.28))
+    drop-shadow(0 0 10px var(--color-logo-glow));
+}
+
+.brand-logo--calicon .brand-logo__wordmark {
+  --brand-wordmark-color: var(--color-gold-600);
+}
+
 .brand-logo-link {
   border-radius: 0.25rem;
 }
@@ -1197,6 +1224,35 @@ html.canvas-out .canvas-main::after {
 
 .calicon-header {
   box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+}
+
+/* Sticky bar: mark + wordmark side-by-side so the lockup fits the header */
+.calicon-header-brand .brand-logo--lockup {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.calicon-header-brand .brand-logo--header {
+  --brand-logo-h: 2.35rem;
+  --brand-wordmark-size: 0.72rem;
+}
+
+.calicon-header-brand .brand-logo__wordmark {
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+}
+
+@media (max-width: 640px) {
+  .calicon-header-brand .brand-logo--header {
+    --brand-logo-h: 2rem;
+    --brand-wordmark-size: 0.62rem;
+  }
+}
+
+.calicon-footer-brand .brand-logo--footer {
+  --brand-logo-h: 3.5rem;
+  --brand-wordmark-size: 0.72rem;
 }
 
 .calicon-header-accent {
@@ -1352,8 +1408,27 @@ html.canvas-out .canvas-main::after {
   text-transform: uppercase;
 }
 
+/* Prefer whole-word wraps; avoid mid-word breaks and orphan-heavy lines */
+[data-theme="canvas"] h1,
+[data-theme="canvas"] h2,
+[data-theme="canvas"] h3,
+[data-theme="canvas"] .canvas-wrap-heading {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  text-wrap: balance;
+}
+
+[data-theme="canvas"] p,
+[data-theme="canvas"] li {
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+  text-wrap: pretty;
+}
+
 .canvas-chapter {
-  max-width: min(1080px, 100%);
+  max-width: min(1180px, 100%);
   margin: 0 auto;
   padding: 0 26px max(4rem, var(--canvas-content-bottom));
   padding-right: max(26px, calc(var(--canvas-fab-column) + 0.5rem));

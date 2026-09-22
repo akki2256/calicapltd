@@ -6,6 +6,7 @@ export const BRAND_LOGO_SRC = "/brand/calicon-logo-canvas.png";
 export const BRAND_LOGO_SRC_COMPACT = "/brand/calicon-logo-canvas-512.png";
 /** Untinted official master (blue/silver) */
 export const BRAND_LOGO_SRC_OFFICIAL = "/brand/calicon-logo.png";
+export const BRAND_LOGO_SRC_OFFICIAL_COMPACT = "/brand/calicon-logo-512.png";
 
 /** Intrinsic aspect from production asset (738×828) */
 export const BRAND_LOGO_ASPECT = 738 / 828;
@@ -14,9 +15,12 @@ export type BrandLogoSize = "sm" | "md" | "lg" | "header" | "footer";
 
 /**
  * Color treatment relative to the surface behind the mark.
- * Official mark colors stay intact — wordmark + glow adapt.
+ * `calicon` shifts the mark toward gold for Calicon chrome.
  */
-export type BrandLogoVariant = "auto" | "on-dark" | "on-light" | "accent";
+export type BrandLogoVariant = "auto" | "on-dark" | "on-light" | "accent" | "calicon";
+
+/** Asset palette — Canvas steel vs official blue/silver master */
+export type BrandLogoPalette = "canvas" | "official";
 
 /** `lockup` matches the official mark-over-wordmark reference. */
 export type BrandLogoLayout = "mark" | "lockup";
@@ -33,6 +37,8 @@ type BrandLogoProps = {
   size?: BrandLogoSize;
   variant?: BrandLogoVariant;
   layout?: BrandLogoLayout;
+  /** Defaults to canvas steel; use `official` under Calicon gold treatment */
+  palette?: BrandLogoPalette;
   className?: string;
   /** Prefer true in sticky/fixed headers */
   priority?: boolean;
@@ -47,16 +53,22 @@ export function BrandLogo({
   size = "header",
   variant = "auto",
   layout = "lockup",
+  palette = "canvas",
   className = "",
   priority = false,
   label = CALICON_SITE_NAME,
 }: BrandLogoProps) {
   const height = SIZE_PX[size];
   const width = Math.round(height * BRAND_LOGO_ASPECT);
+  const compact = size === "sm" || size === "md" || size === "header";
   const src =
-    size === "sm" || size === "md" || size === "header"
-      ? BRAND_LOGO_SRC_COMPACT
-      : BRAND_LOGO_SRC;
+    palette === "official"
+      ? compact
+        ? BRAND_LOGO_SRC_OFFICIAL_COMPACT
+        : BRAND_LOGO_SRC_OFFICIAL
+      : compact
+        ? BRAND_LOGO_SRC_COMPACT
+        : BRAND_LOGO_SRC;
   const decorative = label === "";
   const showWordmark = layout === "lockup";
 
