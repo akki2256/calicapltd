@@ -3,7 +3,7 @@ import { calicapDiscoveryQuestions } from "@/lib/calicap-discovery";
 import { segmentFromEnquiry } from "@/lib/growth";
 
 export type SendContactEmailResult =
-  | { ok: true; delivered: boolean }
+  | { ok: true; delivered: true }
   | { ok: false; error: string };
 
 function formatDiscovery(payload: ContactPayload): string[] {
@@ -21,8 +21,12 @@ function formatDiscovery(payload: ContactPayload): string[] {
   return lines;
 }
 
+const CONFIG_ERROR =
+  "Message could not be sent right now. Please try again later.";
+
 /**
- * Sends enquiry via Resend when configured; otherwise logs for local/dev.
+ * Sends enquiry via Resend. Fails closed when delivery is not configured
+ * or the provider rejects the send — never reports success without delivery.
  */
 export async function sendContactEmail(
   payload: ContactPayload,
@@ -31,6 +35,13 @@ export async function sendContactEmail(
   const from = process.env.RESEND_FROM_EMAIL;
   const to = process.env.CONTACT_INBOX_EMAIL;
 
+  if (!apiKey || !from || !to) {
+    console.error(
+      "[contact] delivery not configured — missing RESEND_API_KEY, RESEND_FROM_EMAIL, or CONTACT_INBOX_EMAIL",
+    );
+    return { ok: false, error: CONFIG_ERROR };
+  }
+
   const segment = segmentFromEnquiry({
     inquiryType: payload.mode,
     source: payload.source,
@@ -38,17 +49,6 @@ export async function sendContactEmail(
     campaign: payload.campaign,
     landingPath: payload.landingPath,
   });
-
-  const stamped = {
-    ...payload,
-    channel: segment.channel,
-    at: new Date().toISOString(),
-  };
-
-  if (!apiKey || !from || !to) {
-    console.info("[contact enquiry]", stamped);
-    return { ok: true, delivered: false };
-  }
 
   const modeLabel =
     payload.mode === "unsure" ? "Not sure (discovery)" : "Knows what they need";
@@ -93,7 +93,7 @@ export async function sendContactEmail(
 
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
-      console.error("[contact email failed]", res.status, detail);
+      console.error("[contact email failed]", res.status, detail.slice(0, 200));
       return {
         ok: false,
         error:

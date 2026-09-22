@@ -52,7 +52,7 @@ function ProblemDiagnostics() {
   });
 
   return (
-    <div ref={ref} className="relative mt-12 max-w-2xl">
+    <div ref={ref} className="relative mt-12 max-w-3xl">
       <motion.div
         className="absolute bottom-0 left-0 top-0 w-px origin-top bg-[var(--color-accent)]"
         style={{ scaleY: lineScale }}
@@ -283,7 +283,7 @@ function ProcessJourney() {
           return (
             <motion.li
               key={s.n}
-              className="grid grid-cols-[3.5rem_1fr] gap-6 border-t border-[var(--color-border-subtle)] py-8 sm:grid-cols-[4rem_9rem_1fr] sm:gap-10"
+              className="grid grid-cols-[3.5rem_1fr] gap-4 border-t border-[var(--color-border-subtle)] py-8 sm:grid-cols-[4rem_minmax(7rem,11rem)_minmax(0,1fr)] sm:gap-6 lg:gap-8"
               animate={{
                 opacity: isActive ? 1 : 0.25,
                 x: isCurrent ? 0 : -6,
@@ -336,7 +336,7 @@ function WhyUsSequence() {
         return (
           <motion.div
             key={p.label}
-            className="grid gap-3 border-t border-[var(--color-border-subtle)] py-7 sm:grid-cols-[10rem_1fr] sm:gap-10"
+            className="grid gap-2 border-t border-[var(--color-border-subtle)] py-7 sm:grid-cols-[minmax(8rem,12rem)_minmax(0,1fr)] sm:gap-6 lg:gap-8"
             animate={{
               opacity: isActive ? 1 : 0.35,
               x: isActive ? 0 : -6,
@@ -384,10 +384,10 @@ export function CanvasHomeChapter() {
           <CanvasWordReveal
             as="h2"
             text={recognition.title}
-            className="max-w-3xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.75rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text-strong)]"
+            className="max-w-4xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.75rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text-strong)]"
           />
         </CanvasScrollMap>
-        <CanvasSectionTransition variant="blurIn" className="mt-6 max-w-xl">
+        <CanvasSectionTransition variant="blurIn" className="mt-6 max-w-3xl">
           <p className="text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
             {recognition.intro}
           </p>
@@ -406,11 +406,11 @@ export function CanvasHomeChapter() {
           <CanvasWordReveal
             as="h2"
             text={recognition.differentiator}
-            className="max-w-2xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text-strong)]"
+            className="max-w-4xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text-strong)]"
             emphasize={["understand", "before", "build"]}
           />
         </div>
-        <div className="mt-14 max-w-4xl">
+        <div className="mt-14 max-w-5xl">
           <CanvasTextScrub
             as="p"
             text={recognition.differentiatorLead}
@@ -418,7 +418,7 @@ export function CanvasHomeChapter() {
             emphasize={["technology", "achieve"]}
           />
         </div>
-        <CanvasSectionTransition variant="riseDepth" className="mt-8 max-w-xl">
+        <CanvasSectionTransition variant="riseDepth" className="mt-8 max-w-3xl">
           <p className="text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
             {recognition.differentiatorBody}
           </p>
@@ -435,7 +435,7 @@ export function CanvasHomeChapter() {
           <p className="canvas-micro text-[var(--color-accent)]">Outcomes</p>
         </CanvasSectionTransition>
         <CanvasSectionTransition variant="clipUp" className="mt-5">
-          <h2 className="max-w-2xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]">
+          <h2 className="max-w-4xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]">
             What do you need to move forward?
           </h2>
         </CanvasSectionTransition>
@@ -453,7 +453,7 @@ export function CanvasHomeChapter() {
         <CanvasWordReveal
           as="h2"
           text="We build technology around your business."
-          className="mt-5 max-w-2xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text-strong)]"
+          className="mt-5 max-w-4xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text-strong)]"
         />
         <div className="mt-14 grid gap-0 lg:grid-cols-2">
           {calicapHomeServices.map((s, i) => (
@@ -494,7 +494,7 @@ export function CanvasHomeChapter() {
           </h2>
         </CanvasSectionTransition>
         <ProcessJourney />
-        <CanvasSectionTransition variant="blurIn" className="mt-10 max-w-xl">
+        <CanvasSectionTransition variant="blurIn" className="mt-10 max-w-3xl">
           <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
             {DELIVERY_HOME_NOTE}
           </p>
@@ -560,9 +560,9 @@ export function CanvasHomeChapter() {
         <CanvasTextScrub
           as="h2"
           text={cta.title}
-          className="max-w-2xl font-[family-name:var(--font-display)] text-[clamp(1.85rem,4.5vw,3rem)] font-medium leading-[1.12] tracking-[-0.03em] text-[var(--color-text-strong)]"
+          className="max-w-4xl font-[family-name:var(--font-display)] text-[clamp(1.85rem,4.5vw,3rem)] font-medium leading-[1.12] tracking-[-0.03em] text-[var(--color-text-strong)]"
         />
-        <CanvasSectionTransition variant="blurIn" className="mt-6 max-w-lg">
+        <CanvasSectionTransition variant="blurIn" className="mt-6 max-w-2xl">
           <p className="text-[15px] leading-[1.75] text-[var(--color-text-muted)]">{cta.bodyLead}</p>
         </CanvasSectionTransition>
         <CanvasSectionTransition variant="clipUp" className="mt-10 flex flex-wrap gap-3">

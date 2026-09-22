@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { useMemo, useRef } from "react";
+import { Fragment, useMemo, useRef } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { canvasDur, canvasEase, canvasStagger } from "./tokens";
 
@@ -31,26 +31,29 @@ export function CanvasWordReveal({
   }
 
   return (
-    <Tag className={className}>
+    <Tag className={`${className ?? ""} canvas-wrap-heading`}>
       {words.map((word, i) => {
         const hot = emp.has(word.replace(/[^\w']/g, "").toLowerCase());
         return (
-          <span key={`${word}-${i}`} className="inline-block overflow-hidden align-bottom">
-            <motion.span
-              className={`inline-block pr-[0.28em] ${hot ? "text-[var(--color-accent)]" : ""}`}
-              initial={{ y: "115%", opacity: 0, rotateX: 18 }}
-              whileInView={{ y: "0%", opacity: 1, rotateX: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{
-                duration: canvasDur.slow,
-                delay: delay + i * canvasStagger.tight,
-                ease: canvasEase,
-              }}
-              style={{ transformPerspective: 800 }}
-            >
-              {word}
-            </motion.span>
-          </span>
+          <Fragment key={`${word}-${i}`}>
+            <span className="inline-block overflow-hidden align-bottom">
+              <motion.span
+                className={`inline-block whitespace-nowrap ${hot ? "text-[var(--color-accent)]" : ""}`}
+                initial={{ y: "115%", opacity: 0, rotateX: 18 }}
+                whileInView={{ y: "0%", opacity: 1, rotateX: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{
+                  duration: canvasDur.slow,
+                  delay: delay + i * canvasStagger.tight,
+                  ease: canvasEase,
+                }}
+                style={{ transformPerspective: 800 }}
+              >
+                {word}
+              </motion.span>
+            </span>
+            {i < words.length - 1 ? " " : null}
+          </Fragment>
         );
       })}
     </Tag>
@@ -73,7 +76,7 @@ function ScrubWord({
   const opacity = useTransform(progress, [start, end], [0.22, 1]);
   return (
     <motion.span
-      className={`inline pr-[0.28em] ${hot ? "text-[var(--color-accent)]" : ""}`}
+      className={`inline-block whitespace-nowrap ${hot ? "text-[var(--color-accent)]" : ""}`}
       style={{ opacity }}
     >
       {word}
@@ -107,27 +110,29 @@ export function CanvasTextScrub({
 
   if (reduced) {
     return (
-      <Tag className={className} ref={ref as never}>
+      <Tag className={`${className ?? ""} canvas-wrap-heading`} ref={ref as never}>
         {text}
       </Tag>
     );
   }
 
   return (
-    <Tag className={className} ref={ref as never}>
+    <Tag className={`${className ?? ""} canvas-wrap-heading`} ref={ref as never}>
       {words.map((word, i) => {
         const start = i / words.length;
         const end = Math.min(1, (i + 1.2) / words.length);
         const hot = emp.has(word.replace(/[^\w']/g, "").toLowerCase());
         return (
-          <ScrubWord
-            key={`${word}-${i}`}
-            word={word}
-            progress={scrollYProgress}
-            start={start}
-            end={end}
-            hot={hot}
-          />
+          <Fragment key={`${word}-${i}`}>
+            <ScrubWord
+              word={word}
+              progress={scrollYProgress}
+              start={start}
+              end={end}
+              hot={hot}
+            />
+            {i < words.length - 1 ? " " : null}
+          </Fragment>
         );
       })}
     </Tag>

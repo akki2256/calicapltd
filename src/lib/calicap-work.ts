@@ -1,4 +1,4 @@
-import { Building2, Flower2, type LucideIcon } from "lucide-react";
+import { Building2, DraftingCompass, Flower2, type LucideIcon } from "lucide-react";
 import {
   getService,
   type EngagementModel,
@@ -113,6 +113,37 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
       "Educational pages support search without turning the studio into a blog.",
     ],
   },
+  {
+    slug: "amazing-art-architects",
+    label: "Transform · Web",
+    title: "Amazing Art Architects",
+    context:
+      "An architecture practice that needed a digital presence matching the quality of its built work.",
+    built:
+      "Premium portfolio website — UI/UX, visual direction, and responsive React build end-to-end.",
+    excerpt:
+      "A refined digital presence for an architecture studio—portfolio-first, enquiry-ready, and shipped in four weeks.",
+    result: "Premium brand presence · portfolio-led UX · client enquiries",
+    beforeAfter: "No cohesive digital presence → Portfolio-first brand site",
+    pillar: "transform",
+    pillars: ["transform", "build"],
+    serviceIds: ["web-ecommerce", "web-mobile-apps"],
+    outcomeIds: ["modernize", "create"],
+    industryIds: ["architecture-design"],
+    engagement: "project",
+    icon: DraftingCompass,
+    imageKey: "amazingArtHero",
+    metaTitle: "Amazing Art Architects — architecture website",
+    metaDescription:
+      "Case study: Amazing Art Architects—a premium portfolio website designed and built by Calicon in four weeks to showcase projects and generate client enquiries.",
+    ctaLabel: "Want a site like this? Tell us your problem",
+    ctaHref: "/contact",
+    deliveryNotes: [
+      "Treated the site as an extension of the firm’s design philosophy — clean, considered, intentional.",
+      "Prioritised visual hierarchy and spacing so a large project library never feels crowded.",
+      "Shipped UI/UX, visual direction, and responsive React development end-to-end in four weeks.",
+    ],
+  },
 ];
 
 /** Documented outcomes only — never invent metrics here */
@@ -140,6 +171,12 @@ export const calicapDocumentedOutcomes = [
     label: "Program pages live",
     detail: "Yog Mantram — studio website",
     href: "/work/yog-mantram",
+  },
+  {
+    value: "4 wks",
+    label: "Concept to launch",
+    detail: "Amazing Art Architects — website",
+    href: "/work/amazing-art-architects",
   },
 ] as const;
 
