@@ -14,9 +14,13 @@ import {
   BadgeCheck,
   Boxes,
   Eye,
+  Handshake,
   PenLine,
   RefreshCw,
   Rocket,
+  Scale,
+  Shield,
+  Wrench,
   type LucideIcon,
 } from "lucide-react";
 import type { PillarId } from "@/lib/brand-architecture";
@@ -27,47 +31,63 @@ export const DELIVERY_PROCESS = {
   intro: "A delivery approach suited to the project — not a single methodology for every engagement.",
   principle:
     "Understand the problem. Choose what fits. Build it properly. Test it thoroughly. Launch it confidently. Keep improving when needed.",
+  /** Glanceable sequence chips — mirrors principle without the prose */
+  principleBeats: [
+    "Understand",
+    "Choose",
+    "Build",
+    "Test",
+    "Launch",
+    "Improve",
+  ] as const,
   sequence: "Understand → Plan → Build → Test → Launch → Evolve",
   steps: [
     {
       n: "01",
       t: "Understand",
+      lead: "Before deciding what to build",
       d: "The goal, the problem, the people involved, the constraints, and what success looks like — before deciding what to build.",
       icon: Eye,
     },
     {
       n: "02",
       t: "Plan",
+      lead: "Enough to start well",
       d: "Scope, solution direction, technology, and a delivery approach that matches the complexity — enough to start well, not a ceremony for its own sake.",
       icon: PenLine,
     },
     {
       n: "03",
       t: "Build",
+      lead: "Keep the work moving",
       d: "Design, develop, and integrate. Iterate where it helps. Keep the work moving without adding unnecessary process.",
       icon: Boxes,
     },
     {
       n: "04",
       t: "Test",
+      lead: "Thorough by default",
       d: "Quality is part of delivery, not a leftover step. Testing depth follows the system — thorough by default, never theatrical.",
       icon: BadgeCheck,
     },
     {
       n: "05",
       t: "Launch",
+      lead: "Into real operation",
       d: "Put the solution into operation: deploy, hand over, and support the transition in the way the engagement needs.",
       icon: Rocket,
     },
     {
       n: "06",
       t: "Evolve",
+      lead: "Improve when useful",
       d: "A defined support period after launch. Ongoing maintenance, improvements, and new work when they are useful — not a required contract.",
       icon: RefreshCw,
     },
   ] as const satisfies readonly {
     n: string;
     t: string;
+    lead: string;
     d: string;
     icon: LucideIcon;
   }[],
@@ -80,35 +100,53 @@ export const DELIVERY_HOME_NOTE =
 export const DELIVERY_PRACTICES = [
   {
     label: "Discovery",
+    lead: "Understand before we build",
     value:
-      "We understand before we build. Straightforward projects clarify objectives, scope, and constraints, then move. Uncertain or complex work gets deeper attention — workflows, integrations, risks, and success criteria. Not every project is a consulting engagement.",
+      "Straightforward projects clarify objectives, scope, and constraints, then move. Uncertain or complex work gets deeper attention — workflows, integrations, risks, and success criteria. Not every project is a consulting engagement.",
+    icon: Eye,
   },
   {
     label: "Technology",
+    lead: "Use what's right. Build what's necessary.",
     value:
-      "Use what's right. Build what's necessary. Choices follow requirements, maintainability, integration, security, and the client's environment — not a stack we happen to like.",
+      "Choices follow requirements, maintainability, integration, security, and the client's environment — not a stack we happen to like.",
+    icon: Wrench,
   },
   {
     label: "Scope",
+    lead: "Structured enough. Flexible enough.",
     value:
-      "Structured enough to deliver. Flexible enough to adapt. We agree a baseline, then treat legitimate change as something to understand — including impact on cost and timeline. Not rigid. Not unlimited.",
+      "We agree a baseline, then treat legitimate change as something to understand — including impact on cost and timeline. Not rigid. Not unlimited.",
+    icon: Scale,
   },
   {
     label: "Quality",
+    lead: "Testing is part of the work",
     value:
-      "Testing is part of the work. Functional, integration, regression, and the checks the system actually needs. Comprehensive by default does not mean applying enterprise process to a small, well-scoped build.",
+      "Functional, integration, regression, and the checks the system actually needs. Comprehensive by default does not mean applying enterprise process to a small, well-scoped build.",
+    icon: BadgeCheck,
   },
   {
     label: "Security",
+    lead: "A baseline on every project",
     value:
-      "A baseline on every project, considered from discovery through maintenance. Depth follows data sensitivity, access, and risk. This is how we build software — not a cybersecurity service.",
+      "Considered from discovery through maintenance. Depth follows data sensitivity, access, and risk. This is how we build software — not a cybersecurity service.",
+    icon: Shield,
   },
   {
     label: "Launch & after",
+    lead: "Practical handover. Support when useful.",
     value:
-      "Handover is practical: what someone needs to operate and maintain the solution. Deployment fits the engagement. Ongoing support, AMC, and further development are available through Evolve — never forced.",
+      "What someone needs to operate and maintain the solution. Deployment fits the engagement. Ongoing support, AMC, and further development are available through Evolve — never forced.",
+    icon: Handshake,
   },
-] as const;
+] as const satisfies readonly {
+  label: string;
+  lead: string;
+  value: string;
+  icon: LucideIcon;
+}[];
+
 
 export const PILLAR_DELIVERY: Record<
   PillarId,

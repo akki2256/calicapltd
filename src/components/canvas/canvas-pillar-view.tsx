@@ -48,63 +48,70 @@ export function CanvasPillarView({ pillarId }: Props) {
         ) : null}
       </div>
 
-      <section className="mt-20 border-t border-[var(--color-border-subtle)] pt-12">
+      <section className="mt-14 border-t border-[var(--color-border-subtle)] pt-10">
         <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
           {page.challengesTitle}
         </h2>
-        <ul className="mt-8 space-y-0">
-          {page.challenges.map((item) => (
+        <ul className="mt-6 space-y-0">
+          {page.challenges.map((item, index) => (
             <li
               key={item}
-              className="border-b border-[var(--color-border-subtle)] py-5 text-sm leading-relaxed text-[var(--color-text-muted)]"
+              className="flex items-baseline gap-3 border-b border-[var(--color-border-subtle)] py-4 text-sm leading-relaxed text-[var(--color-text-muted)]"
             >
-              {item}
+              <span className="shrink-0 font-mono text-[10px] text-[var(--color-accent)]">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span>{item}</span>
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
-          {page.examplesTitle}
-        </h2>
-        <ul className="mt-8 grid gap-x-10 gap-y-3 sm:grid-cols-2">
-          {page.examples.map((item) => (
-            <li
-              key={item}
-              className="border-l border-[var(--color-accent)]/40 pl-4 text-sm leading-relaxed text-[var(--color-text-muted)]"
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
-        <div className="mt-12 max-w-3xl">
-          <h3 className="font-[family-name:var(--font-display)] text-lg text-[var(--color-text-strong)]">
-            {page.flexibleTitle}
-          </h3>
-          <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
-            {page.flexibleBody}
-          </p>
+      <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
+          <div>
+            <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
+              {page.examplesTitle}
+            </h2>
+            <ul className="mt-6 space-y-3">
+              {page.examples.map((item) => (
+                <li
+                  key={item}
+                  className="border-l border-[var(--color-accent)]/40 pl-4 text-sm leading-relaxed text-[var(--color-text-muted)]"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-[family-name:var(--font-display)] text-lg text-[var(--color-text-strong)]">
+              {page.flexibleTitle}
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
+              {page.flexibleBody}
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
+      <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
         <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
           {section.title}
         </h2>
-        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)]">
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)]">
           {section.intro}
         </p>
-        <div className="mt-10 divide-y divide-[var(--color-border-subtle)] border-y border-[var(--color-border-subtle)]">
+        <div className="mt-7 divide-y divide-[var(--color-border-subtle)] border-y border-[var(--color-border-subtle)]">
           {section.groups.map((g) => (
-            <div key={g.title} className="grid gap-3 py-7 sm:grid-cols-[minmax(8rem,14rem)_minmax(0,1fr)] sm:gap-6 lg:gap-8">
+            <div key={g.title} className="grid gap-2 py-5 sm:grid-cols-[minmax(8rem,14rem)_minmax(0,1fr)] sm:gap-6 lg:gap-8">
               <h3 className="text-sm font-medium text-[var(--color-text-strong)]">{g.title}</h3>
               <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">{g.body}</p>
             </div>
           ))}
         </div>
         {pillarId === "build" ? (
-          <div className="mt-8 flex flex-wrap gap-6">
+          <div className="mt-7 flex flex-wrap gap-6">
             {calicapBuildDetailLinks.map(({ href, label }) => (
               <Link
                 key={href}
@@ -118,15 +125,15 @@ export function CanvasPillarView({ pillarId }: Props) {
         ) : null}
       </section>
 
-      <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
+      <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
         <h2 className="font-[family-name:var(--font-display)] text-xl font-medium text-[var(--color-text-strong)]">
           {process.title}
         </h2>
-        <ol className="mt-8">
+        <ol className="mt-6">
           {process.steps.map((s) => (
             <li
               key={s.n}
-              className="grid grid-cols-[3rem_1fr] gap-4 border-t border-[var(--color-border-subtle)] py-6 sm:grid-cols-[3rem_8rem_1fr]"
+              className="grid grid-cols-[3rem_1fr] gap-4 border-t border-[var(--color-border-subtle)] py-5 sm:grid-cols-[3rem_8rem_1fr]"
             >
               <span className="font-mono text-xs text-[var(--color-accent)]">{s.n}</span>
               <span className="text-sm font-medium text-[var(--color-text-strong)]">{s.t}</span>
@@ -144,11 +151,11 @@ export function CanvasPillarView({ pillarId }: Props) {
       />
 
       {related.length > 0 ? (
-        <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
+        <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
           <h2 className="font-[family-name:var(--font-display)] text-xl font-medium text-[var(--color-text-strong)]">
             Related work
           </h2>
-          <div className="mt-10 space-y-12">
+          <div className="mt-7 space-y-10">
             {related.map((s) => {
               const image = getWorkStudyImage(s);
               return (
@@ -162,7 +169,7 @@ export function CanvasPillarView({ pillarId }: Props) {
                       sizes="(max-width: 920px) 100vw, 920px"
                     />
                   </div>
-                  <h3 className="mt-5 font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
+                  <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
                     {s.title}
                   </h3>
                   <p className="mt-2 text-sm text-[var(--color-text-muted)]">{s.result}</p>
@@ -173,23 +180,24 @@ export function CanvasPillarView({ pillarId }: Props) {
         </section>
       ) : null}
 
-      <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
-        <h2 className="font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
-          {approach.title}
-        </h2>
-        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)]">
-          {approach.body}
-        </p>
-      </section>
-
-      <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12 pb-8">
-        <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
-          {unsure.title}
-        </h2>
-        <p className="mt-4 max-w-3xl text-sm text-[var(--color-text-muted)]">{unsure.body}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <ButtonLink href={page.contactHref}>{page.contactCta}</ButtonLink>
-          <ProblemCtaButton variant="ghost">{unsure.cta}</ProblemCtaButton>
+      <section className="mt-12 grid gap-8 border-t border-[var(--color-border-subtle)] pt-10 lg:grid-cols-2 lg:gap-12">
+        <div>
+          <h2 className="font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
+            {approach.title}
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
+            {approach.body}
+          </p>
+        </div>
+        <div>
+          <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
+            {unsure.title}
+          </h2>
+          <p className="mt-3 text-sm text-[var(--color-text-muted)]">{unsure.body}</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <ButtonLink href={page.contactHref}>{page.contactCta}</ButtonLink>
+            <ProblemCtaButton variant="ghost">{unsure.cta}</ProblemCtaButton>
+          </div>
         </div>
       </section>
     </article>
