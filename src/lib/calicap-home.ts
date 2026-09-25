@@ -21,6 +21,55 @@ import { siteImages } from "@/lib/site-images";
 
 export const HOME_POSITIONING_ID = "positioning";
 export const HOME_BUILD_ID = "what-we-build";
+export const HOME_IMPACT_ID = "impact";
+
+/**
+ * Homepage impact / results metrics.
+ * Keep values as obvious placeholders (e.g. "XX%") until verified project data exists.
+ * Do not invent percentages. When a real value is supplied, prefer a countable form like "37%"
+ * so theme UIs can optionally animate a count-up.
+ */
+export type HomeImpactMetric = {
+  /** Display value — use "XX%" until verified; countable forms like "37%" enable count-up */
+  value: string;
+  label: string;
+  /** Compact label for tight Canvas compositions */
+  shortLabel: string;
+};
+
+export const calicapHomeImpact = {
+  eyebrow: "Selected results",
+  title: "Built for measurable impact.",
+  body: "Technology designed to help improve growth, efficiency, visibility, and performance.",
+  attribution: "Measured impact across selected projects",
+  metrics: [
+    {
+      value: "XX%",
+      label: "Increase in qualified leads",
+      shortLabel: "Qualified leads",
+    },
+    {
+      value: "XX%",
+      label: "Increase in organic traffic",
+      shortLabel: "Organic traffic",
+    },
+    {
+      value: "XX%",
+      label: "Increase in sales",
+      shortLabel: "Sales",
+    },
+    {
+      value: "XX%",
+      label: "Reduction in operating costs",
+      shortLabel: "Operating costs",
+    },
+  ] as const satisfies readonly HomeImpactMetric[],
+} as const;
+
+/** True when value is a numeric percentage suitable for count-up animation */
+export function isCountablePercentValue(value: string): boolean {
+  return /^\d+(\.\d+)?%$/.test(value.trim());
+}
 
 export const calicapHomeHero = {
   splash: "Build what's next",

@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 import { CanvasHome } from "@/components/canvas/canvas-home";
 import { CanvasHomeChapter } from "@/components/canvas/canvas-home-chapter";
+import { CanvasImpactMetrics } from "@/components/canvas/canvas-impact-metrics";
 import { CanvasScrollEnhancer } from "@/components/canvas/canvas-scroll-enhancer";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { canvasDur, canvasEase } from "@/components/canvas/motion/tokens";
@@ -19,6 +20,7 @@ export function CanvasMain({ children }: Props) {
   const router = useRouter();
   const { open, closeMenu } = useCanvasMenu();
   const mainRef = useRef<HTMLElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
   const isHome = pathname === "/";
   const reduced = usePrefersReducedMotion();
   const [leaving, setLeaving] = useState(false);
@@ -67,6 +69,15 @@ export function CanvasMain({ children }: Props) {
     return () => main.removeEventListener("click", handleClick);
   }, [pathname, router, reduced]);
 
+  /** Drop transform/clip-path after enter so sticky/fixed children can use the viewport */
+  const clearContainingBlock = () => {
+    const el = pageRef.current;
+    if (!el) return;
+    el.style.transform = "none";
+    el.style.clipPath = "none";
+    el.style.filter = "none";
+  };
+
   return (
     <main
       ref={mainRef}
@@ -76,6 +87,7 @@ export function CanvasMain({ children }: Props) {
       <AnimatePresence mode="wait">
         <motion.div
           key={pathname}
+          ref={pageRef}
           className="canvas-page relative"
           initial={
             reduced
@@ -89,8 +101,8 @@ export function CanvasMain({ children }: Props) {
               : { opacity: 0, y: -16, clipPath: "inset(0 0 40% 0)", filter: "blur(4px)" }
           }
           transition={{ duration: canvasDur.base, ease: canvasEase }}
+          onAnimationComplete={clearContainingBlock}
         >
-          {/* System wipe line during leave */}
           <motion.div
             className="pointer-events-none absolute inset-x-0 top-0 z-20 h-px bg-[var(--color-accent)]"
             initial={false}
@@ -103,6 +115,11 @@ export function CanvasMain({ children }: Props) {
           {isHome ? (
             <>
               <CanvasHome />
+              {/*
+                Impact is a direct child but pin uses sticky (not fixed).
+                clearContainingBlock removes page transform/clip after enter.
+              */}
+              <CanvasImpactMetrics />
               <div className="canvas-home-chapter">
                 <CanvasHomeChapter />
               </div>

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { CaliconOutcomesRail } from "@/components/calicon/calicon-outcomes-rail";
+import { CaliconImpactMetrics } from "@/components/calicon-impact-metrics";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { SITE_NAME, pageMetadata } from "@/lib/seo";
 import {
@@ -408,6 +409,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Impact categories — after work evidence, before attributable documented KPIs */}
+      <CaliconImpactMetrics />
 
       <section className="border-t border-[var(--color-border-subtle)]">
         <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
