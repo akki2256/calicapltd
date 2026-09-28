@@ -117,17 +117,6 @@ export function CanvasHome() {
       >
         <div className="canvas-home-copy w-full max-w-[min(100%,42rem)] pb-6 md:pb-0">
           <motion.div
-            className="flex items-center gap-3"
-            initial={reduced ? false : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: canvasDur.base, ease: canvasEase, delay: 0.12 }}
-          >
-            <span className="h-px w-8 bg-[var(--color-accent)]" aria-hidden />
-            <p className="canvas-micro text-[var(--color-accent)]">Technology company</p>
-          </motion.div>
-
-          <motion.div
-            className="mt-7"
             style={reduced ? undefined : { y: headlineY, scale: headlineScale }}
           >
             <CanvasTextReveal

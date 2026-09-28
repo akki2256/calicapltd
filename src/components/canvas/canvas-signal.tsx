@@ -189,12 +189,6 @@ export function CanvasSignal({
         ctx.lineTo(x, cy + 4);
         ctx.stroke();
       }
-
-      // System label
-      ctx.fillStyle = "rgba(242,242,240,0.4)";
-      ctx.font = "10px ui-monospace, monospace";
-      ctx.fillText(`SYS · ${String(Math.floor(sc * 99)).padStart(2, "0")}`, w * 0.1, h * 0.16);
-      ctx.fillText("FIELD", w * 0.1, h * 0.16 + 14);
     };
 
     const loop = () => {
