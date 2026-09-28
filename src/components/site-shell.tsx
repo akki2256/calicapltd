@@ -37,9 +37,13 @@ export function SiteShell({ children }: Props) {
           <CaliconScrollEnhancer>{children}</CaliconScrollEnhancer>
         </main>
         <SiteFooter />
-        <FloatingActions />
       </>
     );
 
-  return <ContactPathChooserProvider>{chrome}</ContactPathChooserProvider>;
+  return (
+    <ContactPathChooserProvider>
+      {chrome}
+      <FloatingActions />
+    </ContactPathChooserProvider>
+  );
 }

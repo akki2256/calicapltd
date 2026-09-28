@@ -4,14 +4,12 @@ import { MessageCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useContactPathChooser } from "@/components/contact-path-chooser";
-import { useTheme } from "@/components/theme-provider";
 import { useMagnetic } from "@/hooks/use-magnetic";
 
 const IDLE_MS = 5000;
 
 export function FloatingActions() {
   const { openChooser } = useContactPathChooser();
-  const { theme } = useTheme();
   const mag = useMagnetic({ enabled: false, strength: 10 });
   const [callVisible, setCallVisible] = useState(true);
   const hoveringRef = useRef(false);
@@ -52,8 +50,6 @@ export function FloatingActions() {
         onPointerMove={mag.onPointerMove as never}
         onClick={openChooser}
         className={`floating-actions-btn floating-actions-btn-primary pointer-events-auto shrink-0 transition-all duration-300 ease-out ${
-          theme === "canvas" ? "rounded-none" : ""
-        } ${
           callVisible
             ? "translate-y-0 opacity-100"
             : "pointer-events-none translate-y-3 opacity-0"
