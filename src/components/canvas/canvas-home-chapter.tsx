@@ -575,6 +575,6 @@ export function CanvasHomeChapter() {
           {calicapContact.footerTagline}
         </p>
       </section>
-    </div>
+      </div>
   );
 }

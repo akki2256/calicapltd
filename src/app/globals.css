@@ -523,7 +523,9 @@ html.menu-visible .canvas-menu-item {
   padding-right: var(--canvas-content-right);
   padding-bottom: max(78px, var(--canvas-content-bottom));
   background: var(--color-surface);
-  overflow-x: clip;
+  /* Keep overflow visible so sticky Impact can pin to the viewport.
+     Horizontal clip lives on .canvas-chapter (narrow column) instead. */
+  overflow: visible;
 }
 
 .canvas-home-chapter .home-hero-media,
@@ -1432,6 +1434,7 @@ html.canvas-out .canvas-main::after {
   margin: 0 auto;
   padding: 0 26px max(4rem, var(--canvas-content-bottom));
   padding-right: max(26px, calc(var(--canvas-fab-column) + 0.5rem));
+  overflow-x: clip;
 }
 
 @media (min-width: 768px) {
@@ -1443,6 +1446,539 @@ html.canvas-out .canvas-main::after {
 .canvas-chapter-block {
   padding-top: clamp(2.75rem, 6vw, 5.5rem);
   padding-bottom: clamp(2.75rem, 6vw, 5.5rem);
+}
+
+/* Kinetic Results Ledger — viewport-safe sticky Impact scene */
+.canvas-impact {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-surface) 92%, #000) 0%,
+      var(--color-surface) 42%,
+      color-mix(in srgb, var(--color-surface) 88%, #0a0c0e) 100%
+    );
+  overflow: visible;
+  border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+}
+
+.canvas-impact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 47px,
+    color-mix(in srgb, var(--color-border-subtle) 35%, transparent) 47px,
+    color-mix(in srgb, var(--color-border-subtle) 35%, transparent) 48px
+  );
+  mask-image: linear-gradient(90deg, transparent 0%, black 12%, black 88%, transparent 100%);
+}
+
+.canvas-impact-stage {
+  position: relative;
+  display: block;
+  padding: clamp(3.5rem, 8vh, 5rem) 0;
+  overflow: visible;
+}
+
+.canvas-impact-frame {
+  width: min(92vw, 1320px);
+  margin: 0 auto;
+  padding-left: max(1.25rem, 3.5vw);
+  padding-right: max(1.25rem, calc(var(--canvas-fab-column, 2.5rem) * 0.4));
+  overflow: visible;
+}
+
+.canvas-impact-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vh, 2.75rem);
+  align-items: start;
+  overflow: visible;
+}
+
+.canvas-impact-editorial {
+  max-width: min(28rem, 100%);
+  overflow: visible;
+}
+
+.canvas-impact-eyebrow {
+  margin: 0;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.canvas-impact-headline {
+  margin: 1.25rem 0 0;
+  max-width: min(26rem, 100%);
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 4.4vw, 4.5rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: var(--color-text-strong);
+  overflow: visible;
+}
+
+/* Line wrappers — no overflow clip (was cropping “measurable”) */
+.canvas-impact-headline-line {
+  display: block;
+  overflow: visible;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.02em;
+}
+
+.canvas-impact-headline-inner {
+  display: block;
+  will-change: transform, opacity;
+}
+
+.canvas-impact-body {
+  margin: 1.35rem 0 0;
+  max-width: 24rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+.canvas-impact-ledger {
+  position: relative;
+  min-width: 0;
+  overflow: visible;
+}
+
+.canvas-impact-track {
+  position: relative;
+  will-change: transform;
+}
+
+.canvas-impact-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-accent) 55%, transparent) 35%,
+    color-mix(in srgb, var(--color-accent) 75%, white) 50%,
+    color-mix(in srgb, var(--color-accent) 55%, transparent) 65%,
+    transparent 100%
+  );
+}
+
+.canvas-impact-rule-pulse {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  z-index: 1;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  transform: translateY(-50%);
+}
+
+.canvas-impact-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-impact-row {
+  position: relative;
+  min-height: 7.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: default;
+  flex: none;
+}
+
+.canvas-impact-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-border-subtle) 95%, var(--color-text-muted));
+  transform-origin: left center;
+}
+
+.canvas-impact-rule--exit {
+  position: relative;
+  top: auto;
+  margin-top: 0;
+  opacity: 0.4;
+}
+
+.canvas-impact-signal {
+  position: absolute;
+  top: 50%;
+  width: min(28%, 260px);
+  height: 1px;
+  margin-top: -0.5px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-accent) 70%, white),
+    transparent
+  );
+  transform: translateX(-50%);
+}
+
+.canvas-impact-row-body {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(9rem, 11.5rem) minmax(0, 1fr);
+  gap: clamp(0.85rem, 1.8vw, 1.75rem);
+  align-items: center;
+  padding: 1.1rem 0 1.15rem;
+}
+
+.canvas-impact-index {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  color: var(--color-text-muted);
+}
+
+.canvas-impact-value-clip {
+  overflow: visible;
+  min-width: 0;
+}
+
+.canvas-impact-value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 4.8vw, 4.75rem);
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  color: var(--color-text-strong);
+  white-space: nowrap;
+  transform-origin: left center;
+}
+
+.canvas-impact-copy {
+  min-width: 0;
+  max-width: 22rem;
+}
+
+.canvas-impact-label {
+  margin: 0;
+  font-size: clamp(0.8125rem, 1.05vw, 1rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-strong);
+  transition:
+    color 0.25s var(--motion-ease, ease),
+    opacity 0.25s var(--motion-ease, ease),
+    transform 0.25s var(--motion-ease, ease);
+}
+
+.canvas-impact-category {
+  margin: 0.4rem 0 0;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  transition: opacity 0.25s var(--motion-ease, ease), color 0.25s var(--motion-ease, ease);
+}
+
+.canvas-impact-row.is-hovered .canvas-impact-label {
+  transform: translateX(5px);
+}
+
+.canvas-impact-row.is-hovered .canvas-impact-rule {
+  background: color-mix(in srgb, var(--color-accent) 45%, var(--color-border-subtle));
+}
+
+.canvas-impact-row.is-hovered .canvas-impact-category {
+  color: var(--color-accent);
+}
+
+.canvas-impact-row.is-hovered .canvas-impact-index {
+  color: var(--color-accent);
+}
+
+/* Tablet: stacked editorial → ledger (no sticky pin) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .canvas-impact-stage {
+    padding: clamp(3.75rem, 7vh, 5rem) 0;
+  }
+
+  .canvas-impact-frame {
+    width: min(92vw, 100%);
+  }
+
+  .canvas-impact-headline {
+    max-width: 28rem;
+    font-size: clamp(2.75rem, 5.5vw, 3.5rem);
+  }
+
+  .canvas-impact-row {
+    min-height: 7.65rem;
+  }
+
+  .canvas-impact-row-body {
+    grid-template-columns: 2.5rem minmax(8rem, 10.5rem) minmax(0, 1fr);
+  }
+}
+
+/* Desktop: transform-pinned viewport scene — composition centered */
+@media (min-width: 1024px) {
+  .canvas-impact {
+    position: relative;
+    min-height: 220vh;
+  }
+
+  .canvas-impact-stage {
+    position: relative;
+    top: auto;
+    height: 100svh;
+    min-height: 100svh;
+    max-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(4.5rem, 10vh, 5.75rem) 0;
+    overflow: visible;
+    z-index: 2;
+    will-change: transform;
+  }
+
+  .canvas-impact-frame {
+    width: min(92vw, 1320px);
+    max-height: min(760px, calc(100svh - 8.75rem));
+    padding-left: clamp(3.75rem, 4.5vw, 5rem);
+    padding-right: clamp(3.75rem, 4.5vw, 5rem);
+  }
+
+  .canvas-impact-layout {
+    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+    column-gap: clamp(4rem, 7vw, 6.5rem);
+    align-items: center;
+  }
+
+  .canvas-impact-editorial {
+    max-width: 460px;
+    width: 100%;
+  }
+
+  .canvas-impact-headline {
+    max-width: 460px;
+    font-size: clamp(3rem, 4vw, 4.25rem);
+    line-height: 0.98;
+  }
+
+  .canvas-impact-ledger {
+    height: min(72vh, 640px);
+    max-height: calc(100svh - 9rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+  }
+
+  .canvas-impact-track {
+    width: 100%;
+  }
+
+  .canvas-impact-rows {
+    flex: none;
+    min-height: 0;
+    justify-content: flex-start;
+  }
+
+  .canvas-impact-row {
+    flex: none;
+    min-height: 9.5rem;
+    max-height: none;
+  }
+
+  .canvas-impact-row-body {
+    grid-template-columns: 2.5rem minmax(10rem, 12.5rem) minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .canvas-impact-frame {
+    width: min(92vw, 1320px);
+  }
+
+  .canvas-impact-editorial {
+    max-width: 460px;
+  }
+
+  .canvas-impact-value {
+    font-size: clamp(3rem, 4.6vw, 4.75rem);
+  }
+}
+
+@media (min-width: 1440px) {
+  .canvas-impact-frame {
+    width: min(92vw, 1320px);
+  }
+}
+
+/* Mobile: normal flow, no sticky pin */
+@media (max-width: 767px) {
+  .canvas-impact {
+    min-height: 0;
+  }
+
+  .canvas-impact-stage {
+    position: relative;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    padding: 3.25rem 0 3rem;
+    display: block;
+  }
+
+  .canvas-impact-frame {
+    width: min(calc(100vw - 2rem), 100%);
+    max-height: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .canvas-impact::before {
+    opacity: 0.1;
+  }
+
+  .canvas-impact-editorial {
+    max-width: 100%;
+  }
+
+  .canvas-impact-headline {
+    max-width: calc(100vw - 2.5rem);
+    font-size: clamp(2.5rem, 11vw, 3.25rem);
+  }
+
+  .canvas-impact-ledger {
+    height: auto;
+  }
+
+  .canvas-impact-row {
+    min-height: 7.75rem;
+    max-height: none;
+    flex: none;
+  }
+
+  .canvas-impact-row-body {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+    padding: 1.05rem 0 1.1rem;
+  }
+
+  .canvas-impact-value {
+    font-size: clamp(2.65rem, 13vw, 3.5rem);
+  }
+
+  .canvas-impact-copy {
+    max-width: none;
+  }
+
+  .canvas-impact-scan,
+  .canvas-impact-rule-pulse {
+    display: none;
+  }
+}
+
+@media (max-width: 389px) {
+  .canvas-impact-frame {
+    width: min(calc(100vw - 1.5rem), 100%);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .canvas-impact-headline {
+    max-width: calc(100vw - 1.75rem);
+    font-size: clamp(2.25rem, 10.5vw, 2.75rem);
+  }
+
+  .canvas-impact-value {
+    font-size: clamp(2.35rem, 12vw, 3rem);
+  }
+
+  .canvas-impact-row {
+    min-height: 7rem;
+  }
+
+  .canvas-impact-category {
+    display: none;
+  }
+}
+
+@media (max-width: 320px) {
+  .canvas-impact-body {
+    font-size: 0.875rem;
+  }
+
+  .canvas-impact-value {
+    font-size: 2.15rem;
+  }
+
+  .canvas-impact-headline {
+    font-size: 2.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas-impact {
+    min-height: 0;
+  }
+
+  .canvas-impact-stage {
+    position: relative;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    display: block;
+    padding: 4rem 0;
+  }
+
+  .canvas-impact-frame {
+    max-height: none;
+  }
+
+  .canvas-impact-ledger {
+    height: auto;
+  }
+
+  .canvas-impact-row {
+    max-height: none;
+  }
+
+  .canvas-impact-value,
+  .canvas-impact-label {
+    transform: none !important;
+  }
 }
 
 .canvas-home-signal {
