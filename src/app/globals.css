@@ -1548,7 +1548,7 @@ html.canvas-out .canvas-main::after {
   max-width: 24rem;
   font-size: 0.9375rem;
   line-height: 1.7;
-  color: var(--color-text-muted);
+  color: color-mix(in srgb, var(--color-text-muted) 70%, var(--color-text-strong));
 }
 
 .canvas-impact-ledger {
@@ -1559,7 +1559,6 @@ html.canvas-out .canvas-main::after {
 
 .canvas-impact-track {
   position: relative;
-  will-change: transform;
 }
 
 .canvas-impact-scan {
@@ -1644,7 +1643,7 @@ html.canvas-out .canvas-main::after {
 .canvas-impact-row-body {
   display: grid;
   grid-template-columns: 2.5rem minmax(9rem, 11.5rem) minmax(0, 1fr);
-  gap: clamp(0.85rem, 1.8vw, 1.75rem);
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
   align-items: center;
   padding: 1.1rem 0 1.15rem;
 }
@@ -1653,12 +1652,16 @@ html.canvas-out .canvas-main::after {
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.6875rem;
   letter-spacing: 0.16em;
-  color: var(--color-text-muted);
+  color: color-mix(in srgb, var(--color-text-muted) 55%, var(--color-text-strong));
+  line-height: 1;
+  padding-top: 0.15em;
 }
 
 .canvas-impact-value-clip {
   overflow: visible;
   min-width: 0;
+  display: flex;
+  align-items: center;
 }
 
 .canvas-impact-value {
@@ -1666,7 +1669,7 @@ html.canvas-out .canvas-main::after {
   font-family: var(--font-display);
   font-size: clamp(2.75rem, 4.8vw, 4.75rem);
   font-weight: 600;
-  line-height: 0.92;
+  line-height: 1;
   letter-spacing: -0.045em;
   color: var(--color-text-strong);
   white-space: nowrap;
@@ -1676,13 +1679,17 @@ html.canvas-out .canvas-main::after {
 .canvas-impact-copy {
   min-width: 0;
   max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
 }
 
 .canvas-impact-label {
   margin: 0;
   font-size: clamp(0.8125rem, 1.05vw, 1rem);
   font-weight: 500;
-  line-height: 1.35;
+  line-height: 1.3;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-strong);
@@ -1693,7 +1700,7 @@ html.canvas-out .canvas-main::after {
 }
 
 .canvas-impact-category {
-  margin: 0.4rem 0 0;
+  margin: 0;
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.625rem;
   letter-spacing: 0.18em;
@@ -1758,7 +1765,7 @@ html.canvas-out .canvas-main::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(4.5rem, 10vh, 5.75rem) 0;
+    padding: clamp(2.75rem, 6vh, 4.5rem) 0;
     overflow: visible;
     z-index: 2;
     will-change: transform;
@@ -1766,62 +1773,87 @@ html.canvas-out .canvas-main::after {
 
   .canvas-impact-frame {
     width: min(92vw, 1320px);
-    max-height: min(760px, calc(100svh - 8.75rem));
-    padding-left: clamp(3.75rem, 4.5vw, 5rem);
-    padding-right: clamp(3.75rem, 4.5vw, 5rem);
+    max-height: none;
+    padding-left: clamp(3.5rem, 4.5vw, 5rem);
+    padding-right: clamp(3.5rem, 4.5vw, 5rem);
   }
 
   .canvas-impact-layout {
-    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
-    column-gap: clamp(4rem, 7vw, 6.5rem);
-    align-items: center;
+    grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+    column-gap: clamp(2.75rem, 4.5vw, 4rem);
+    /* Tops of editorial + ledger share one baseline */
+    align-items: start;
   }
 
   .canvas-impact-editorial {
-    max-width: 460px;
+    max-width: 380px;
     width: 100%;
+    /* Match optical top of first ledger rule */
+    padding-top: 0.15rem;
   }
 
   .canvas-impact-headline {
-    max-width: 460px;
-    font-size: clamp(3rem, 4vw, 4.25rem);
+    max-width: 380px;
+    font-size: clamp(2.65rem, 3.4vw, 3.85rem);
     line-height: 0.98;
   }
 
+  /*
+   * Ledger window sized to the metric stack — not full viewport —
+   * so both columns share one composition height and center as a unit.
+   */
   .canvas-impact-ledger {
-    height: min(72vh, 640px);
-    max-height: calc(100svh - 9rem);
+    height: clamp(28rem, 56vh, 34rem);
+    max-height: calc(100svh - 8rem);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     overflow: hidden;
     mask-image: linear-gradient(
       180deg,
       transparent 0%,
-      #000 12%,
-      #000 88%,
+      #000 8%,
+      #000 92%,
       transparent 100%
     );
   }
 
   .canvas-impact-track {
     width: 100%;
+    will-change: transform;
+    /* Enough travel for first/last rows to reach the clear mid band */
+    padding-block: clamp(6.5rem, 14vh, 9.5rem);
   }
 
   .canvas-impact-rows {
     flex: none;
     min-height: 0;
     justify-content: flex-start;
+    gap: 0;
   }
 
   .canvas-impact-row {
     flex: none;
-    min-height: 9.5rem;
+    min-height: clamp(6.25rem, 11.5vh, 7.5rem);
     max-height: none;
   }
 
   .canvas-impact-row-body {
-    grid-template-columns: 2.5rem minmax(10rem, 12.5rem) minmax(0, 1fr);
+    grid-template-columns: 2rem minmax(8.75rem, 11rem) minmax(0, 1fr);
+    gap: 0.75rem 1.15rem;
+    align-items: center;
+    padding: 0.85rem 0 0.9rem;
+  }
+
+  .canvas-impact-value {
+    font-size: clamp(2.5rem, 3.6vw, 3.85rem);
+    line-height: 1;
+  }
+
+  .canvas-impact-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 

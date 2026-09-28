@@ -7,6 +7,7 @@ import {
   useMotionValue,
   useMotionValueEvent,
   useScroll,
+  useSpring,
   useTransform,
   type MotionValue,
 } from "motion/react";
@@ -35,7 +36,7 @@ const ROW_META = [
 ] as const;
 
 /** Scroll progress where the ledger focus sequence runs (while stage is pinned) */
-const FOCUS_START = 0.12;
+const FOCUS_START = 0.08;
 const FOCUS_END = 0.9;
 
 function MetricValue({
@@ -93,11 +94,11 @@ function ResultRow({
   const pad = String(index + 1).padStart(2, "0");
   const arrow = direction === "up" ? "↑" : "↓";
 
-  const rowOp = useTransform(focus, [0, 0.35, 1], reduced ? [1, 1, 1] : [0.28, 0.55, 1]);
-  const numberScale = useTransform(focus, [0, 1], reduced ? [1, 1] : [0.96, 1.04]);
-  const labelOp = useTransform(focus, [0, 1], reduced ? [1, 1] : [0.32, 1]);
-  const catOp = useTransform(focus, [0, 1], reduced ? [0.55, 0.55] : [0.18, 0.85]);
-  const ruleOp = useTransform(focus, [0, 1], reduced ? [0.4, 0.4] : [0.14, 0.82]);
+  const rowOp = useTransform(focus, [0, 0.4, 1], reduced ? [1, 1, 1] : [0.5, 0.75, 1]);
+  const numberScale = useTransform(focus, [0, 1], reduced ? [1, 1] : [0.97, 1.04]);
+  const labelOp = useTransform(focus, [0, 1], reduced ? [1, 1] : [0.6, 1]);
+  const catOp = useTransform(focus, [0, 1], reduced ? [0.7, 0.7] : [0.42, 0.9]);
+  const ruleOp = useTransform(focus, [0, 1], reduced ? [0.45, 0.45] : [0.28, 0.85]);
   const signalX = useTransform(focus, [0.2, 1], reduced ? ["0%", "0%"] : ["0%", "100%"]);
   const signalOp = useTransform(
     focus,
@@ -159,7 +160,8 @@ function ResultRow({
 
 /**
  * Kinetic Results Ledger.
- * Desktop: useScroll-driven pin + ledger slides so the active row sits on the viewport center.
+ * Desktop: pinned stage + spring-smoothed ledger that slides each metric
+ * through the viewport center — without harsh edge clipping.
  */
 export function CanvasImpactMetrics() {
   const impact = calicapHomeImpact;
@@ -167,43 +169,73 @@ export function CanvasImpactMetrics() {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const ledgerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
   const rowEls = useRef<(HTMLLIElement | null)[]>([]);
   const rulePulseY = useMotionValue(-1);
   const rulePulseOp = useMotionValue(0);
   const desktopRef = useRef(false);
 
-  const f0 = useMotionValue(reduced ? 1 : 0);
-  const f1 = useMotionValue(reduced ? 1 : 0);
-  const f2 = useMotionValue(reduced ? 1 : 0);
-  const f3 = useMotionValue(reduced ? 1 : 0);
+  const f0 = useMotionValue(reduced ? 1 : 0.55);
+  const f1 = useMotionValue(reduced ? 1 : 0.4);
+  const f2 = useMotionValue(reduced ? 1 : 0.4);
+  const f3 = useMotionValue(reduced ? 1 : 0.4);
   const focuses = [f0, f1, f2, f3];
+
+  /** Target Y for the sliding track — spring smooths the motion */
+  const trackY = useMotionValue(0);
+  const smoothTrackY = useSpring(trackY, {
+    stiffness: 90,
+    damping: 26,
+    mass: 0.45,
+    restDelta: 0.1,
+  });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    // Pin window: section top hits viewport top → section bottom hits viewport bottom
     offset: ["start start", "end end"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 110,
+    damping: 30,
+    mass: 0.4,
+    restDelta: 0.001,
   });
 
   const progress = scrollYProgress;
 
-  const applyFrame = useCallback(
-    (p: number) => {
-      const stage = stageRef.current;
-      const track = trackRef.current;
-      const ledger = ledgerRef.current;
-      const section = sectionRef.current;
-      if (!stage || !track || !ledger || !section) return;
+  const rowCenterLocal = useCallback((index: number) => {
+    let y = 0;
+    for (let i = 0; i < index; i++) {
+      y += rowEls.current[i]?.offsetHeight ?? 0;
+    }
+    const el = rowEls.current[index];
+    return y + (el ? el.offsetHeight / 2 : 0);
+  }, []);
 
-      const desktop = desktopRef.current;
-      const vh = window.innerHeight;
+  const applyPin = useCallback((p: number) => {
+    const stage = stageRef.current;
+    const section = sectionRef.current;
+    if (!stage || !section) return;
+
+    if (!desktopRef.current) {
+      stage.style.transform = "";
+      return;
+    }
+
+    const vh = window.innerHeight;
+    const travel = Math.max(1, section.offsetHeight - vh);
+    stage.style.transform = p <= 0 ? "" : `translate3d(0, ${p * travel}px, 0)`;
+  }, []);
+
+  const applyLedgerMotion = useCallback(
+    (p: number) => {
+      const ledger = ledgerRef.current;
       const focusList = [f0, f1, f2, f3];
       const metricCount = focusList.length;
+      const vh = window.innerHeight;
 
-      if (!desktop) {
-        stage.style.transform = "";
-        track.style.transform = "";
-
+      if (!desktopRef.current) {
+        trackY.set(0);
         const line = vh * 0.52;
         const distances = rowEls.current.map((el) => {
           if (!el) return Number.POSITIVE_INFINITY;
@@ -213,70 +245,71 @@ export function CanvasImpactMetrics() {
         const best = distances.indexOf(Math.min(...distances));
         focusList.forEach((f, i) => {
           const dist = distances[i] ?? Number.POSITIVE_INFINITY;
-          const proximity = Math.max(0, 1 - dist / 200);
-          f.set(i === best ? Math.max(proximity, 0.65) : proximity * 0.7);
+          const proximity = Math.max(0, 1 - dist / 220);
+          f.set(i === best ? Math.max(proximity, 0.75) : Math.max(0.45, proximity * 0.8));
         });
         return;
       }
 
-      const travel = Math.max(1, section.offsetHeight - vh);
-      const sectionTop = section.getBoundingClientRect().top;
+      if (!ledger) return;
 
-      /* Only pin once the section has reached the viewport top */
-      if (sectionTop > 0.5) {
-        stage.style.transform = "";
-        track.style.transform = "";
-        focusList.forEach((f, i) => f.set(i === 0 ? 0.22 : 0.12));
-        return;
-      }
+      const track = ledger.querySelector(".canvas-impact-track") as HTMLElement | null;
+      const padTop = track
+        ? parseFloat(getComputedStyle(track).paddingTop) || 0
+        : 0;
 
-      /* Fake-sticky: progress 0→1 maps to translate 0→travel */
-      stage.style.transform = `translate3d(0, ${p * travel}px, 0)`;
-
-      let y = 0;
-      const centers: number[] = [];
-      for (let i = 0; i < metricCount; i++) {
-        const el = rowEls.current[i];
-        const h = el?.offsetHeight ?? 0;
-        centers.push(y + h / 2);
-        y += h;
-      }
-
+      const ledgerH = ledger.clientHeight || vh * 0.56;
       const span = Math.max(0.001, FOCUS_END - FOCUS_START);
       const focusFloat = Math.min(
         metricCount - 1,
         Math.max(0, ((p - FOCUS_START) / span) * (metricCount - 1)),
       );
-      const i0 = Math.floor(focusFloat);
-      const i1 = Math.min(metricCount - 1, i0 + 1);
-      const t = focusFloat - i0;
-      const focusCenter =
-        (centers[i0] ?? 0) + ((centers[i1] ?? 0) - (centers[i0] ?? 0)) * t;
 
-      const ledgerRect = ledger.getBoundingClientRect();
-      const localCenter = vh * 0.5 - ledgerRect.top;
-      track.style.transform = `translate3d(0, ${localCenter - focusCenter}px, 0)`;
+      /*
+       * Before the focus sequence: park the full stack just below the soft
+       * fade so editorial + ledger tops read as one aligned composition.
+       * During focus: slide the active row into the clear mid band.
+       */
+      if (p < FOCUS_START) {
+        const clearTop = ledgerH * 0.1;
+        trackY.set(clearTop - padTop);
+      } else if (p > FOCUS_END) {
+        const lastCenter = rowCenterLocal(metricCount - 1);
+        trackY.set(ledgerH * 0.5 - padTop - lastCenter);
+      } else {
+        const i0 = Math.floor(focusFloat);
+        const i1 = Math.min(metricCount - 1, i0 + 1);
+        const t = focusFloat - i0;
+        const focusCenter =
+          rowCenterLocal(i0) + (rowCenterLocal(i1) - rowCenterLocal(i0)) * t;
+        trackY.set(ledgerH * 0.5 - padTop - focusCenter);
+      }
 
       focusList.forEach((f, i) => {
         const dist = Math.abs(focusFloat - i);
         if (p < FOCUS_START) {
-          f.set(i === 0 ? 0.45 : 0.14);
+          f.set(i === 0 ? 0.82 : 0.55);
           return;
         }
         if (p > FOCUS_END) {
-          f.set(i === metricCount - 1 ? 0.75 : 0.28);
+          f.set(i === metricCount - 1 ? 0.9 : 0.5);
           return;
         }
-        const peak = Math.max(0, 1 - dist);
-        f.set(peak * peak);
+        const peak = Math.max(0, 1 - dist * 0.85);
+        f.set(0.45 + peak * 0.55);
       });
     },
-    [f0, f1, f2, f3],
+    [f0, f1, f2, f3, rowCenterLocal, trackY],
   );
 
   useMotionValueEvent(scrollYProgress, "change", (p) => {
     if (reduced) return;
-    applyFrame(p);
+    applyPin(p);
+  });
+
+  useMotionValueEvent(smoothProgress, "change", (p) => {
+    if (reduced) return;
+    applyLedgerMotion(p);
   });
 
   useEffect(() => {
@@ -285,49 +318,60 @@ export function CanvasImpactMetrics() {
       f1.set(1);
       f2.set(1);
       f3.set(1);
+      trackY.set(0);
       return;
     }
 
-    const syncDesktop = () => {
+    const sync = () => {
       desktopRef.current = window.innerWidth >= 1024;
-      applyFrame(scrollYProgress.get());
+      applyPin(scrollYProgress.get());
+      applyLedgerMotion(smoothProgress.get());
     };
 
-    syncDesktop();
-    window.addEventListener("resize", syncDesktop, { passive: true });
+    sync();
+    window.addEventListener("resize", sync, { passive: true });
     return () => {
-      window.removeEventListener("resize", syncDesktop);
+      window.removeEventListener("resize", sync);
       const stage = stageRef.current;
-      const track = trackRef.current;
       if (stage) stage.style.transform = "";
-      if (track) track.style.transform = "";
     };
-  }, [reduced, applyFrame, scrollYProgress, f0, f1, f2, f3]);
+  }, [
+    reduced,
+    applyPin,
+    applyLedgerMotion,
+    scrollYProgress,
+    smoothProgress,
+    trackY,
+    f0,
+    f1,
+    f2,
+    f3,
+  ]);
 
-  const editorialOp = useTransform(progress, [0, 0.1], reduced ? [1, 1] : [0.35, 1]);
+  const editorialOp = useTransform(progress, [0, 0.08], reduced ? [1, 1] : [0.94, 1]);
   const labelClip = useTransform(
     progress,
-    [0, 0.08],
+    [0, 0.06],
     reduced
       ? ["inset(0 0% 0 0)", "inset(0 0% 0 0)"]
-      : ["inset(0 100% 0 0)", "inset(0 0% 0 0)"],
+      : ["inset(0 8% 0 0)", "inset(0 0% 0 0)"],
   );
-  const line0Y = useTransform(progress, [0.02, 0.1], reduced ? [0, 0] : [20, 0]);
-  const line0Op = useTransform(progress, [0.02, 0.1], reduced ? [1, 1] : [0, 1]);
-  const line1Y = useTransform(progress, [0.04, 0.12], reduced ? [0, 0] : [20, 0]);
-  const line1Op = useTransform(progress, [0.04, 0.12], reduced ? [1, 1] : [0, 1]);
-  const line2Y = useTransform(progress, [0.06, 0.14], reduced ? [0, 0] : [20, 0]);
-  const line2Op = useTransform(progress, [0.06, 0.14], reduced ? [1, 1] : [0, 1]);
-  const bodyY = useTransform(progress, [0.08, 0.16], reduced ? [0, 0] : [10, 0]);
-  const bodyOp = useTransform(progress, [0.08, 0.16], reduced ? [1, 1] : [0, 1]);
+  const line0Y = useTransform(progress, [0, 0.08], reduced ? [0, 0] : [12, 0]);
+  const line0Op = useTransform(progress, [0, 0.08], reduced ? [1, 1] : [0.9, 1]);
+  const line1Y = useTransform(progress, [0.02, 0.1], reduced ? [0, 0] : [12, 0]);
+  const line1Op = useTransform(progress, [0.02, 0.1], reduced ? [1, 1] : [0.9, 1]);
+  const line2Y = useTransform(progress, [0.04, 0.12], reduced ? [0, 0] : [12, 0]);
+  const line2Op = useTransform(progress, [0.04, 0.12], reduced ? [1, 1] : [0.9, 1]);
+  const bodyY = useTransform(progress, [0.06, 0.14], reduced ? [0, 0] : [8, 0]);
+  const bodyOp = useTransform(progress, [0.06, 0.14], reduced ? [1, 1] : [0.85, 1]);
   const lineYs = [line0Y, line1Y, line2Y];
   const lineOps = [line0Op, line1Op, line2Op];
 
-  const scanY = useTransform(progress, [FOCUS_START, FOCUS_END], ["50%", "50%"]);
+  const scanY = useTransform(smoothProgress, [FOCUS_START, FOCUS_END], ["50%", "50%"]);
   const scanOp = useTransform(
-    progress,
-    [FOCUS_START - 0.04, FOCUS_START + 0.02, FOCUS_END - 0.02, FOCUS_END + 0.04],
-    reduced ? [0, 0, 0, 0] : [0, 0.75, 0.6, 0],
+    smoothProgress,
+    [FOCUS_START - 0.03, FOCUS_START + 0.02, FOCUS_END - 0.02, FOCUS_END + 0.05],
+    reduced ? [0, 0, 0, 0] : [0, 0.65, 0.5, 0],
   );
 
   const pulseTop = useMotionTemplate`${rulePulseY}px`;
@@ -424,7 +468,10 @@ export function CanvasImpactMetrics() {
                 />
               ) : null}
 
-              <div ref={trackRef} className="canvas-impact-track">
+              <motion.div
+                className="canvas-impact-track"
+                style={reduced ? undefined : { y: smoothTrackY }}
+              >
                 <ul className="canvas-impact-rows">
                   {impact.metrics.map((metric, i) => {
                     const meta = ROW_META[i] ?? ROW_META[0];
@@ -448,7 +495,7 @@ export function CanvasImpactMetrics() {
                   className="canvas-impact-rule canvas-impact-rule--exit"
                   aria-hidden
                 />
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
