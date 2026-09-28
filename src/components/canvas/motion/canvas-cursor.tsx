@@ -50,7 +50,7 @@ export function CanvasCursor() {
 
   return (
     <motion.div
-      className="pointer-events-none fixed left-0 top-0 z-[800] mix-blend-difference"
+      className="canvas-system-cursor pointer-events-none fixed left-0 top-0 z-[800] mix-blend-difference"
       style={{ x: sx, y: sy, translateX: "-50%", translateY: "-50%" }}
       aria-hidden
     >

@@ -8,6 +8,7 @@ import { CanvasHome } from "@/components/canvas/canvas-home";
 import { CanvasHomeChapter } from "@/components/canvas/canvas-home-chapter";
 import { CanvasImpactMetrics } from "@/components/canvas/canvas-impact-metrics";
 import { CanvasScrollEnhancer } from "@/components/canvas/canvas-scroll-enhancer";
+import { CanvasTechMarquee } from "@/components/canvas/canvas-tech-marquee";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { canvasDur, canvasEase } from "@/components/canvas/motion/tokens";
 
@@ -115,6 +116,7 @@ export function CanvasMain({ children }: Props) {
           {isHome ? (
             <>
               <CanvasHome />
+              <CanvasTechMarquee />
               {/*
                 Impact is a direct child but pin uses sticky (not fixed).
                 clearContainingBlock removes page transform/clip after enter.
