@@ -1461,7 +1461,39 @@ html.menu-visible .canvas-nav-trigger-float {
   overflow: visible;
 }
 
+/* Shape-style particle mesh — full stage, subtle like their opacity:.5 shell */
+.canvas-impact-mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  mask-image: radial-gradient(
+    ellipse 92% 78% at 38% 48%,
+    black 0%,
+    black 42%,
+    rgba(0, 0, 0, 0.55) 68%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 92% 78% at 38% 48%,
+    black 0%,
+    black 42%,
+    rgba(0, 0, 0, 0.55) 68%,
+    transparent 100%
+  );
+}
+
+.canvas-impact-editorial {
+  position: relative;
+  z-index: 1;
+  max-width: min(28rem, 100%);
+  overflow: visible;
+}
+
 .canvas-impact-frame {
+  position: relative;
+  z-index: 1;
   width: min(92vw, 1320px);
   margin: 0 auto;
   padding-left: max(1.25rem, 3.5vw);
@@ -1474,11 +1506,6 @@ html.menu-visible .canvas-nav-trigger-float {
   grid-template-columns: 1fr;
   gap: clamp(2rem, 4vh, 2.75rem);
   align-items: start;
-  overflow: visible;
-}
-
-.canvas-impact-editorial {
-  max-width: min(28rem, 100%);
   overflow: visible;
 }
 
@@ -1502,6 +1529,9 @@ html.menu-visible .canvas-nav-trigger-float {
   letter-spacing: -0.04em;
   color: var(--color-text-strong);
   overflow: visible;
+  text-shadow:
+    0 0 24px color-mix(in srgb, var(--color-surface) 80%, transparent),
+    0 1px 18px color-mix(in srgb, var(--color-surface) 70%, transparent);
 }
 
 /* Line wrappers — no overflow clip (was cropping “measurable”) */
@@ -1521,8 +1551,10 @@ html.menu-visible .canvas-nav-trigger-float {
   margin: 1.35rem 0 0;
   max-width: 24rem;
   font-size: 0.9375rem;
+  font-weight: 400;
   line-height: 1.7;
   color: color-mix(in srgb, var(--color-text-muted) 70%, var(--color-text-strong));
+  text-shadow: 0 0 16px color-mix(in srgb, var(--color-surface) 75%, transparent);
 }
 
 .canvas-impact-ledger {
@@ -1723,26 +1755,25 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 }
 
-/* Desktop: transform-pinned viewport scene — composition centered */
+/* Desktop: side-by-side editorial + full metric stack (no scroll pin) */
 @media (min-width: 1024px) {
   .canvas-impact {
     position: relative;
-    min-height: 220vh;
+    min-height: 0;
   }
 
   .canvas-impact-stage {
     position: relative;
     top: auto;
-    height: 100svh;
-    min-height: 100svh;
-    max-height: 100svh;
+    height: auto;
+    min-height: 0;
+    max-height: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(2.75rem, 6vh, 4.5rem) 0;
+    padding: clamp(4rem, 8vh, 6rem) 0;
     overflow: visible;
     z-index: 2;
-    will-change: transform;
   }
 
   .canvas-impact-frame {
@@ -1755,14 +1786,12 @@ html.menu-visible .canvas-nav-trigger-float {
   .canvas-impact-layout {
     grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
     column-gap: clamp(2.75rem, 4.5vw, 4rem);
-    /* Tops of editorial + ledger share one baseline */
     align-items: start;
   }
 
   .canvas-impact-editorial {
     max-width: 380px;
     width: 100%;
-    /* Match optical top of first ledger rule */
     padding-top: 0.15rem;
   }
 
@@ -1772,31 +1801,19 @@ html.menu-visible .canvas-nav-trigger-float {
     line-height: 0.98;
   }
 
-  /*
-   * Ledger window sized to the metric stack — not full viewport —
-   * so both columns share one composition height and center as a unit.
-   */
   .canvas-impact-ledger {
-    height: clamp(28rem, 56vh, 34rem);
-    max-height: calc(100svh - 8rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    overflow: hidden;
-    mask-image: linear-gradient(
-      180deg,
-      transparent 0%,
-      #000 8%,
-      #000 92%,
-      transparent 100%
-    );
+    height: auto;
+    max-height: none;
+    display: block;
+    overflow: visible;
+    mask-image: none;
+    -webkit-mask-image: none;
   }
 
   .canvas-impact-track {
     width: 100%;
-    will-change: transform;
-    /* Enough travel for first/last rows to reach the clear mid band */
-    padding-block: clamp(6.5rem, 14vh, 9.5rem);
+    padding-block: 0;
+    will-change: auto;
   }
 
   .canvas-impact-rows {
@@ -1810,6 +1827,7 @@ html.menu-visible .canvas-nav-trigger-float {
     flex: none;
     min-height: clamp(6.25rem, 11.5vh, 7.5rem);
     max-height: none;
+    opacity: 1;
   }
 
   .canvas-impact-row-body {
@@ -1864,6 +1882,22 @@ html.menu-visible .canvas-nav-trigger-float {
     max-height: none;
     padding: 3.25rem 0 3rem;
     display: block;
+  }
+
+  .canvas-impact-mesh {
+    opacity: 0.45;
+    mask-image: linear-gradient(
+      180deg,
+      black 0%,
+      black 58%,
+      transparent 94%
+    );
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      black 0%,
+      black 58%,
+      transparent 94%
+    );
   }
 
   .canvas-impact-frame {
@@ -1975,10 +2009,13 @@ html.menu-visible .canvas-nav-trigger-float {
 
   .canvas-impact-ledger {
     height: auto;
+    mask-image: none;
+    -webkit-mask-image: none;
   }
 
   .canvas-impact-row {
     max-height: none;
+    opacity: 1;
   }
 
   .canvas-impact-value,
