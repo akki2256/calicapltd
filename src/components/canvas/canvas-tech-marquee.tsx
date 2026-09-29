@@ -28,6 +28,7 @@ const TECHS: readonly Tech[] = [
   { name: "Spring", src: "/tech/spring.png", variant: "lockup" },
   { name: "MySQL", src: "/tech/mysql.png", variant: "lockup" },
   { name: "PostgreSQL", src: "/tech/postgresql.png", variant: "icon" },
+  { name: "OpenAI", variant: "text" },
   { name: "WordPress", variant: "text" },
   { name: "WooCommerce", src: "/tech/woocommerce.png", variant: "lockup" },
   { name: "Shopify", src: "/tech/shopify.png", variant: "lockup", invert: true },

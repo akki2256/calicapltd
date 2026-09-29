@@ -117,10 +117,6 @@ export function CanvasMain({ children }: Props) {
             <>
               <CanvasHome />
               <CanvasTechMarquee />
-              {/*
-                Impact is a direct child but pin uses sticky (not fixed).
-                clearContainingBlock removes page transform/clip after enter.
-              */}
               <CanvasImpactMetrics />
               <div className="canvas-home-chapter">
                 <CanvasHomeChapter />
