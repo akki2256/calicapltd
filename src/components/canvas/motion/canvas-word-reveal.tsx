@@ -84,55 +84,98 @@ function ScrubWord({
   );
 }
 
+function splitWords(text: string): string[] {
+  return text.split(/\s+/).filter(Boolean);
+}
+
 type ScrubProps = {
-  text: string;
+  /** Single string — words scrub in sequence */
+  text?: string;
+  /** Explicit line breaks — preferred for display headlines */
+  lines?: string[];
   className?: string;
-  as?: "h1" | "h2" | "p";
+  lineClassName?: string;
+  as?: "h1" | "h2" | "h3" | "p";
   emphasize?: string[];
+  id?: string;
 };
 
-/** Scroll scrub — words resolve from muted → strong as section progresses */
+/**
+ * Scroll scrub — words resolve from muted → strong as the headline progresses
+ * through the viewport. Default Canvas treatment for section headlines.
+ */
 export function CanvasTextScrub({
   text,
+  lines,
   className,
+  lineClassName,
   as = "h2",
   emphasize = [],
+  id,
 }: ScrubProps) {
   const ref = useRef<HTMLElement>(null);
   const reduced = usePrefersReducedMotion();
-  const words = useMemo(() => text.split(/\s+/).filter(Boolean), [text]);
+  const lineList = useMemo(() => {
+    if (lines?.length) return lines;
+    if (text) return [text];
+    return [];
+  }, [lines, text]);
+  const flatWords = useMemo(
+    () => lineList.flatMap((line) => splitWords(line)),
+    [lineList],
+  );
+  const total = Math.max(flatWords.length, 1);
   const emp = new Set(emphasize.map((w) => w.toLowerCase()));
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.85", "end 0.35"],
+    offset: ["start 0.9", "start 0.25"],
   });
   const Tag = as;
 
   if (reduced) {
     return (
-      <Tag className={`${className ?? ""} canvas-wrap-heading`} ref={ref as never}>
-        {text}
+      <Tag id={id} className={`${className ?? ""} canvas-wrap-heading`} ref={ref as never}>
+        {lineList.map((line) => (
+          <span key={line} className={`block ${lineClassName ?? ""}`}>
+            {line}
+          </span>
+        ))}
       </Tag>
     );
   }
 
+  let wordIndex = 0;
+
   return (
-    <Tag className={`${className ?? ""} canvas-wrap-heading`} ref={ref as never}>
-      {words.map((word, i) => {
-        const start = i / words.length;
-        const end = Math.min(1, (i + 1.2) / words.length);
-        const hot = emp.has(word.replace(/[^\w']/g, "").toLowerCase());
+    <Tag
+      id={id}
+      className={`${className ?? ""} canvas-wrap-heading`}
+      ref={ref as never}
+      data-canvas-authored=""
+    >
+      {lineList.map((line, lineIdx) => {
+        const words = splitWords(line);
         return (
-          <Fragment key={`${word}-${i}`}>
-            <ScrubWord
-              word={word}
-              progress={scrollYProgress}
-              start={start}
-              end={end}
-              hot={hot}
-            />
-            {i < words.length - 1 ? " " : null}
-          </Fragment>
+          <span key={`${line}-${lineIdx}`} className={`block ${lineClassName ?? ""}`}>
+            {words.map((word, i) => {
+              const idx = wordIndex++;
+              const start = idx / total;
+              const end = Math.min(1, (idx + 1.35) / total);
+              const hot = emp.has(word.replace(/[^\w']/g, "").toLowerCase());
+              return (
+                <Fragment key={`${word}-${idx}`}>
+                  <ScrubWord
+                    word={word}
+                    progress={scrollYProgress}
+                    start={start}
+                    end={end}
+                    hot={hot}
+                  />
+                  {i < words.length - 1 ? " " : null}
+                </Fragment>
+              );
+            })}
+          </span>
         );
       })}
     </Tag>

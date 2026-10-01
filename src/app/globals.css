@@ -128,7 +128,7 @@ html {
   --fab-offset-y: max(1.25rem, env(safe-area-inset-bottom, 0px));
   --fab-offset-top: max(1.25rem, env(safe-area-inset-top, 0px));
   --fab-offset-left: max(1.25rem, env(safe-area-inset-left, 0px));
-  --fab-stack-height: calc(var(--fab-size) * 2 + var(--fab-gap));
+  --fab-stack-height: var(--fab-size);
   --canvas-fab-column: calc(var(--fab-size) + var(--fab-offset-x));
   --canvas-content-right: calc(var(--canvas-fab-column) + 1rem);
   --canvas-content-bottom: max(
@@ -136,8 +136,43 @@ html {
     calc(var(--fab-stack-height) + var(--fab-offset-y) + 0.75rem)
   );
   --canvas-progress-gutter: 2.75rem;
+  /* Shared Canvas section frame (Selected Results alignment) */
+  --canvas-frame-max: 1320px;
+  --canvas-frame-width: min(92vw, var(--canvas-frame-max));
+  --canvas-frame-pad-left: max(1.25rem, 3.5vw);
+  --canvas-frame-pad-right: max(1.25rem, calc(var(--canvas-fab-column) * 0.4));
   max-width: 100%;
   overflow-x: hidden;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  html {
+    --canvas-frame-width: min(92vw, 100%);
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    --canvas-frame-width: min(92vw, var(--canvas-frame-max));
+    --canvas-frame-pad-left: clamp(3.5rem, 4.5vw, 5rem);
+    --canvas-frame-pad-right: clamp(3.5rem, 4.5vw, 5rem);
+  }
+}
+
+@media (max-width: 767px) {
+  html {
+    --canvas-frame-width: min(calc(100vw - 2rem), 100%);
+    --canvas-frame-pad-left: 1rem;
+    --canvas-frame-pad-right: 1rem;
+  }
+}
+
+@media (max-width: 389px) {
+  html {
+    --canvas-frame-width: min(calc(100vw - 1.5rem), 100%);
+    --canvas-frame-pad-left: 0.75rem;
+    --canvas-frame-pad-right: 0.75rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -687,10 +722,13 @@ html.menu-visible .canvas-nav-trigger-float {
 
 .canvas-home-copy-wrap {
   box-sizing: border-box;
-  width: 100%;
+  width: var(--canvas-frame-width);
+  margin-inline: auto;
   min-width: 0;
-  padding: 130px 26px max(78px, var(--canvas-content-bottom));
-  padding-right: var(--canvas-content-right);
+  padding-top: 130px;
+  padding-bottom: max(78px, var(--canvas-content-bottom));
+  padding-left: var(--canvas-frame-pad-left);
+  padding-right: var(--canvas-frame-pad-right);
 }
 
 .canvas-main-inner .canvas-page > section:first-child,
@@ -831,8 +869,10 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 
   .canvas-home-copy-wrap {
-    padding: 104px 22px max(64px, var(--canvas-content-bottom));
-    padding-right: var(--canvas-content-right);
+    padding-top: 104px;
+    padding-bottom: max(64px, var(--canvas-content-bottom));
+    padding-left: var(--canvas-frame-pad-left);
+    padding-right: var(--canvas-frame-pad-right);
   }
 
   .canvas-footer {
@@ -855,8 +895,10 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 
   .canvas-home-copy-wrap {
-    padding: 88px 16px max(7.5rem, calc(var(--canvas-content-bottom) + 2.5rem));
-    padding-right: var(--canvas-content-right);
+    padding-top: 88px;
+    padding-bottom: max(7.5rem, calc(var(--canvas-content-bottom) + 2.5rem));
+    padding-left: var(--canvas-frame-pad-left);
+    padding-right: var(--canvas-frame-pad-right);
     align-items: flex-end;
   }
 
@@ -902,8 +944,10 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 
   .canvas-home-copy-wrap {
-    padding: 80px 14px max(8rem, calc(var(--canvas-content-bottom) + 3rem));
-    padding-right: var(--canvas-content-right);
+    padding-top: 80px;
+    padding-bottom: max(8rem, calc(var(--canvas-content-bottom) + 3rem));
+    padding-left: var(--canvas-frame-pad-left);
+    padding-right: var(--canvas-frame-pad-right);
   }
 
   .canvas-home-eyebrow {
@@ -1048,6 +1092,26 @@ html.menu-visible .canvas-nav-trigger-float {
   gap: 0.35rem;
 }
 
+.brand-logo--horizontal {
+  flex-direction: row;
+  align-items: center;
+}
+
+.canvas-brand .brand-logo--canvas,
+.canvas-footer-brand .brand-logo--canvas,
+.canvas-menubar .brand-logo--canvas {
+  height: var(--brand-logo-h, 2.25rem);
+  max-width: 100%;
+}
+
+.canvas-brand .brand-logo__img,
+.canvas-footer-brand .brand-logo__img,
+.canvas-menubar .brand-logo__img {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+}
+
 .brand-logo__img {
   display: block;
   height: var(--brand-logo-h, 3.5rem);
@@ -1185,14 +1249,27 @@ html.menu-visible .canvas-nav-trigger-float {
   pointer-events: auto;
 }
 
+/* Horizontal steel lockup stays compact; do not inherit the tall stacked-mark size */
+.canvas-brand .brand-logo--header {
+  --brand-logo-h: 2.125rem;
+}
+
+/* Home: larger hero-facing lockup */
+.canvas-brand--home .brand-logo--canvas {
+  --brand-logo-h: 2.75rem;
+}
+
 @media (min-width: 769px) {
   .canvas-brand {
     margin-left: max(3.25rem, var(--canvas-progress-gutter));
   }
 
-  .brand-logo--header {
-    --brand-logo-h: 4.25rem;
-    --brand-wordmark-size: 0.78rem;
+  .canvas-brand .brand-logo--header {
+    --brand-logo-h: 2.25rem;
+  }
+
+  .canvas-brand--home .brand-logo--canvas {
+    --brand-logo-h: 3.5rem;
   }
 }
 
@@ -1323,12 +1400,15 @@ html.menu-visible .canvas-nav-trigger-float {
 
 .canvas-home-copy-wrap {
   box-sizing: border-box;
-  width: 100%;
+  width: var(--canvas-frame-width);
+  margin-inline: auto;
   min-width: 0;
   align-items: flex-end;
   justify-content: flex-start;
-  padding: 130px 26px max(78px, var(--canvas-content-bottom));
-  padding-right: var(--canvas-content-right);
+  padding-top: 130px;
+  padding-bottom: max(78px, var(--canvas-content-bottom));
+  padding-left: var(--canvas-frame-pad-left);
+  padding-right: var(--canvas-frame-pad-right);
 }
 
 @media (min-width: 640px) {
@@ -1339,10 +1419,6 @@ html.menu-visible .canvas-nav-trigger-float {
 
 /* Clear the progress-rail markers (lg+) */
 @media (min-width: 1024px) {
-  .canvas-home-copy-wrap {
-    padding-left: 4.5rem;
-  }
-
   .canvas-chapter {
     padding-left: max(26px, 4.5rem);
   }
@@ -1494,10 +1570,10 @@ html.menu-visible .canvas-nav-trigger-float {
 .canvas-impact-frame {
   position: relative;
   z-index: 1;
-  width: min(92vw, 1320px);
+  width: var(--canvas-frame-width);
   margin: 0 auto;
-  padding-left: max(1.25rem, 3.5vw);
-  padding-right: max(1.25rem, calc(var(--canvas-fab-column, 2.5rem) * 0.4));
+  padding-left: var(--canvas-frame-pad-left);
+  padding-right: var(--canvas-frame-pad-right);
   overflow: visible;
 }
 
@@ -1737,10 +1813,6 @@ html.menu-visible .canvas-nav-trigger-float {
     padding: clamp(3.75rem, 7vh, 5rem) 0;
   }
 
-  .canvas-impact-frame {
-    width: min(92vw, 100%);
-  }
-
   .canvas-impact-headline {
     max-width: 28rem;
     font-size: clamp(2.75rem, 5.5vw, 3.5rem);
@@ -1777,10 +1849,10 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 
   .canvas-impact-frame {
-    width: min(92vw, 1320px);
+    width: var(--canvas-frame-width);
     max-height: none;
-    padding-left: clamp(3.5rem, 4.5vw, 5rem);
-    padding-right: clamp(3.5rem, 4.5vw, 5rem);
+    padding-left: var(--canvas-frame-pad-left);
+    padding-right: var(--canvas-frame-pad-right);
   }
 
   .canvas-impact-layout {
@@ -1850,22 +1922,12 @@ html.menu-visible .canvas-nav-trigger-float {
 }
 
 @media (min-width: 1280px) {
-  .canvas-impact-frame {
-    width: min(92vw, 1320px);
-  }
-
   .canvas-impact-editorial {
     max-width: 460px;
   }
 
   .canvas-impact-value {
     font-size: clamp(3rem, 4.6vw, 4.75rem);
-  }
-}
-
-@media (min-width: 1440px) {
-  .canvas-impact-frame {
-    width: min(92vw, 1320px);
   }
 }
 
@@ -1901,10 +1963,10 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 
   .canvas-impact-frame {
-    width: min(calc(100vw - 2rem), 100%);
+    width: var(--canvas-frame-width);
     max-height: none;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: var(--canvas-frame-pad-left);
+    padding-right: var(--canvas-frame-pad-right);
   }
 
   .canvas-impact::before {
@@ -1952,9 +2014,9 @@ html.menu-visible .canvas-nav-trigger-float {
 
 @media (max-width: 389px) {
   .canvas-impact-frame {
-    width: min(calc(100vw - 1.5rem), 100%);
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+    width: var(--canvas-frame-width);
+    padding-left: var(--canvas-frame-pad-left);
+    padding-right: var(--canvas-frame-pad-right);
   }
 
   .canvas-impact-headline {
@@ -2026,6 +2088,90 @@ html.menu-visible .canvas-nav-trigger-float {
 
 .canvas-home-signal {
   opacity: 0.95;
+}
+
+/* Shared Canvas content frame — width + gutters from Selected Results */
+.canvas-content-frame {
+  width: var(--canvas-frame-width);
+  margin-inline: auto;
+  padding-left: var(--canvas-frame-pad-left);
+  padding-right: var(--canvas-frame-pad-right);
+}
+
+/* ========== Canvas About Us teaser (below marquee) ========== */
+
+.canvas-about-teaser {
+  position: relative;
+  z-index: 2;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-subtle) 55%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-surface) 96%, #000) 0%,
+      var(--color-surface) 100%
+    );
+}
+
+.canvas-about-teaser__frame {
+  padding-top: clamp(3rem, 7vh, 4.75rem);
+  padding-bottom: clamp(3rem, 7vh, 4.75rem);
+}
+
+.canvas-about-teaser__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.canvas-about-teaser__layout {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 2.5rem);
+  margin-top: 1.5rem;
+  align-items: end;
+}
+
+.canvas-about-teaser__copy {
+  max-width: 40rem;
+}
+
+.canvas-about-teaser__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.5vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: var(--color-text-strong);
+}
+
+.canvas-about-teaser__body {
+  margin: 1.25rem 0 0;
+  max-width: 34rem;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--color-text-muted);
+}
+
+.canvas-about-teaser__cta {
+  justify-self: start;
+}
+
+@media (min-width: 768px) {
+  .canvas-about-teaser__layout {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 3rem;
+  }
+
+  .canvas-about-teaser__cta {
+    padding-bottom: 0.15rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .canvas-about-teaser__title {
+    font-size: clamp(2.5rem, 4vw, 3.75rem);
+  }
 }
 
 /* ========== Canvas tech marquee (below hero) ========== */
@@ -2220,9 +2366,9 @@ html.menu-visible .canvas-menu-item {
 
   .canvas-home-copy-wrap {
     padding-top: 88px;
-    padding-left: 20px;
+    padding-left: var(--canvas-frame-pad-left);
     padding-bottom: max(9rem, calc(var(--canvas-content-bottom) + 3.5rem));
-    padding-right: var(--canvas-content-right);
+    padding-right: var(--canvas-frame-pad-right);
     align-items: flex-end;
   }
 }
@@ -2230,9 +2376,9 @@ html.menu-visible .canvas-menu-item {
 @media (max-width: 480px) {
   .canvas-home-copy-wrap {
     padding-top: 80px;
-    padding-left: 14px;
+    padding-left: var(--canvas-frame-pad-left);
     padding-bottom: max(8rem, calc(var(--canvas-content-bottom) + 3rem));
-    padding-right: var(--canvas-content-right);
+    padding-right: var(--canvas-frame-pad-right);
   }
 }
 

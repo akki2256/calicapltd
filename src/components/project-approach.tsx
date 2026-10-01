@@ -1,3 +1,8 @@
+"use client";
+
+import { ThemeSplit } from "@/components/theme-split";
+import { CanvasTextScrub } from "@/components/canvas/motion";
+
 type Props = {
   title: string;
   body: string;
@@ -11,9 +16,20 @@ export function ProjectApproach({ title, body }: Props) {
         Approach
       </p>
       <div className="mt-3 grid gap-3 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] sm:items-start sm:gap-8">
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-tight text-[var(--color-text-strong)] sm:text-2xl">
-          {title}
-        </h2>
+        <ThemeSplit
+          canvas={
+            <CanvasTextScrub
+              as="h2"
+              text={title}
+              className="font-[family-name:var(--font-display)] text-xl font-medium tracking-tight text-[var(--color-text-strong)] sm:text-2xl"
+            />
+          }
+          calicon={
+            <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-tight text-[var(--color-text-strong)] sm:text-2xl">
+              {title}
+            </h2>
+          }
+        />
         <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">{body}</p>
       </div>
     </section>

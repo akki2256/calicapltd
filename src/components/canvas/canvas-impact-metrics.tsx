@@ -3,7 +3,7 @@
 import { animate, motion, useInView, useMotionValue, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { CanvasNodeMesh } from "@/components/canvas/canvas-node-mesh";
-import { canvasEase } from "@/components/canvas/motion";
+import { CanvasTextScrub, canvasEase } from "@/components/canvas/motion";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import {
   HOME_IMPACT_ID,
@@ -121,13 +121,13 @@ export function CanvasImpactMetrics() {
           <div className="canvas-impact-layout">
             <aside className="canvas-impact-editorial">
               <p className="canvas-impact-eyebrow">{impact.eyebrow}</p>
-              <h2 id="canvas-impact-heading" className="canvas-impact-headline">
-                {HEADLINE_LINES.map((line) => (
-                  <span key={line} className="canvas-impact-headline-line">
-                    <span className="canvas-impact-headline-inner">{line}</span>
-                  </span>
-                ))}
-              </h2>
+              <CanvasTextScrub
+                as="h2"
+                id="canvas-impact-heading"
+                lines={[...HEADLINE_LINES]}
+                className="canvas-impact-headline"
+                lineClassName="canvas-impact-headline-line"
+              />
               <p className="canvas-impact-body">{impact.body}</p>
             </aside>
 

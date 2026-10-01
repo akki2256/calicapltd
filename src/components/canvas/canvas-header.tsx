@@ -9,33 +9,39 @@ import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 export function CanvasHeader() {
   const { open } = useCanvasMenu();
   const pathname = usePathname();
-  const [pastHero, setPastHero] = useState(false);
+  const isHome = pathname === "/";
+  const [tucked, setTucked] = useState(false);
+  /** Larger home lockup needs a taller clear band before it tucks away. */
+  const brandClearancePx = isHome ? 112 : 88;
 
   useEffect(() => {
     const hero = document.querySelector<HTMLElement>('[data-canvas-section="hero"]');
+    const headline =
+      hero?.querySelector<HTMLElement>(".canvas-home-headline, h1") ??
+      document.querySelector<HTMLElement>(".canvas-main-inner h1");
 
-    if (hero) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          setPastHero(!entry.isIntersecting);
-        },
-        { threshold: 0, rootMargin: "0px 0px -12% 0px" },
-      );
-      observer.observe(hero);
-      return () => observer.disconnect();
-    }
+    const update = () => {
+      if (headline) {
+        const top = headline.getBoundingClientRect().top;
+        setTucked(top < brandClearancePx);
+        return;
+      }
 
-    // Inner pages: tuck the fixed mark away once past the first screen
-    // so it never stacks on the footer lockup.
-    const onScroll = () => {
-      setPastHero(window.scrollY > window.innerHeight * 0.55);
+      // Inner pages without a measured headline: hide after leaving the first screen
+      // so the fixed mark never stacks on the footer lockup.
+      setTucked(window.scrollY > window.innerHeight * 0.55);
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [pathname]);
 
-  const hidden = open || pastHero;
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [pathname, brandClearancePx]);
+
+  const hidden = open || tucked;
 
   return (
     <header
@@ -45,12 +51,18 @@ export function CanvasHeader() {
     >
       <Link
         href="/"
-        className="brand-logo-link canvas-brand group inline-flex items-center"
+        className={`brand-logo-link canvas-brand group inline-flex items-center${isHome ? " canvas-brand--home" : ""}`}
         rel="home"
         aria-label="Calicon home"
         tabIndex={hidden ? -1 : undefined}
       >
-        <BrandLogo size="header" variant="on-dark" layout="lockup" priority label="" />
+        <BrandLogo
+          size={isHome ? "lg" : "header"}
+          variant="on-dark"
+          layout="lockup"
+          priority
+          label=""
+        />
       </Link>
     </header>
   );

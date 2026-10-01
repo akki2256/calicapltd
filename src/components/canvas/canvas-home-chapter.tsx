@@ -13,10 +13,8 @@ import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import {
   CanvasImageReveal,
   CanvasScrollScene,
-  CanvasScrollMap,
   CanvasSectionTransition,
   CanvasTextScrub,
-  CanvasWordReveal,
   canvasDur,
   canvasEase,
 } from "@/components/canvas/motion";
@@ -380,13 +378,13 @@ export function CanvasHomeChapter() {
         <CanvasSectionTransition variant="clipUp">
           <p className="canvas-micro text-[var(--color-accent)]">Position</p>
         </CanvasSectionTransition>
-        <CanvasScrollMap y={[40, -20]} opacity={[0.4, 1]} from={0} to={0.45} className="mt-5">
-          <CanvasWordReveal
+        <div className="mt-5">
+          <CanvasTextScrub
             as="h2"
             text={recognition.title}
             className="max-w-4xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.75rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text-strong)]"
           />
-        </CanvasScrollMap>
+        </div>
         <CanvasSectionTransition variant="blurIn" className="mt-6 max-w-3xl">
           <p className="text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
             {recognition.intro}
@@ -403,7 +401,7 @@ export function CanvasHomeChapter() {
       >
         <p className="canvas-micro text-[var(--color-accent)]">Approach</p>
         <div className="mt-5">
-          <CanvasWordReveal
+          <CanvasTextScrub
             as="h2"
             text={recognition.differentiator}
             className="max-w-4xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text-strong)]"
@@ -434,11 +432,13 @@ export function CanvasHomeChapter() {
         <CanvasSectionTransition variant="wipeRight">
           <p className="canvas-micro text-[var(--color-accent)]">Outcomes</p>
         </CanvasSectionTransition>
-        <CanvasSectionTransition variant="clipUp" className="mt-5">
-          <h2 className="max-w-4xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]">
-            What do you need to move forward?
-          </h2>
-        </CanvasSectionTransition>
+        <div className="mt-5">
+          <CanvasTextScrub
+            as="h2"
+            text="What do you need to move forward?"
+            className="max-w-4xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]"
+          />
+        </div>
         <OutcomesRail />
       </section>
 
@@ -450,7 +450,7 @@ export function CanvasHomeChapter() {
         <CanvasSectionTransition variant="clipLeft">
           <p className="canvas-micro text-[var(--color-accent)]">Practice</p>
         </CanvasSectionTransition>
-        <CanvasWordReveal
+        <CanvasTextScrub
           as="h2"
           text="We build technology around your business."
           className="mt-5 max-w-4xl font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text-strong)]"
@@ -488,11 +488,13 @@ export function CanvasHomeChapter() {
         <CanvasSectionTransition variant="scaleBlur">
           <p className="canvas-micro text-[var(--color-accent)]">Process</p>
         </CanvasSectionTransition>
-        <CanvasSectionTransition variant="clipUp" className="mt-5">
-          <h2 className="font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]">
-            {process.title}
-          </h2>
-        </CanvasSectionTransition>
+        <div className="mt-5">
+          <CanvasTextScrub
+            as="h2"
+            text={process.title}
+            className="font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]"
+          />
+        </div>
         <ProcessJourney />
         <CanvasSectionTransition variant="blurIn" className="mt-10 max-w-3xl">
           <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
@@ -506,7 +508,7 @@ export function CanvasHomeChapter() {
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <p className="canvas-micro text-[var(--color-accent)]">Work</p>
-            <CanvasWordReveal
+            <CanvasTextScrub
               as="h2"
               text="What we've built."
               className="mt-5 font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]"

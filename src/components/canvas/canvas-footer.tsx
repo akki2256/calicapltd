@@ -18,7 +18,7 @@ export function CanvasFooter() {
     <footer className="canvas-site-footer border-t border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
       <div className="mx-auto max-w-6xl px-6 py-16 sm:px-10 lg:px-14 lg:py-20">
         {/* Brand + close */}
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] lg:items-end lg:gap-16">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:items-end lg:gap-16">
           <Link
             href="/"
             className="brand-logo-link canvas-footer-brand inline-flex w-fit"
