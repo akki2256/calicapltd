@@ -8,13 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import {
-  DEFAULT_THEME,
-  LEGACY_THEME_STORAGE_KEY,
-  THEME_STORAGE_KEY,
-  isThemeId,
-  type ThemeId,
-} from "@/lib/themes";
+import { DEFAULT_THEME, THEME_STORAGE_KEY, type ThemeId } from "@/lib/themes";
 
 type ThemeContextValue = {
   theme: ThemeId;
@@ -34,22 +28,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<ThemeId>(DEFAULT_THEME);
 
   useEffect(() => {
-    let stored = localStorage.getItem(THEME_STORAGE_KEY);
-    if (!stored) {
-      const legacy = localStorage.getItem(LEGACY_THEME_STORAGE_KEY);
-      if (legacy === "calicap") {
-        stored = "calicon";
-        localStorage.setItem(THEME_STORAGE_KEY, stored);
-        localStorage.removeItem(LEGACY_THEME_STORAGE_KEY);
-      } else if (isThemeId(legacy)) {
-        stored = legacy;
-        localStorage.setItem(THEME_STORAGE_KEY, stored);
-        localStorage.removeItem(LEGACY_THEME_STORAGE_KEY);
-      }
-    }
-    if (isThemeId(stored)) {
-      setThemeState(stored);
-      applyTheme(stored);
+    // The theme selector is hidden. Canvas stays on; Calicon remains callable via setTheme.
+    setThemeState(DEFAULT_THEME);
+    applyTheme(DEFAULT_THEME);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, DEFAULT_THEME);
+    } catch {
+      /* storage unavailable */
     }
   }, []);
 

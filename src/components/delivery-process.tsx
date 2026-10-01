@@ -6,7 +6,7 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } fr
 import { ThemeSplit } from "@/components/theme-split";
 import {
   CanvasReveal,
-  CanvasSectionTransition,
+  CanvasTextScrub,
   canvasDur,
   canvasEase,
 } from "@/components/canvas/motion";
@@ -37,11 +37,13 @@ function CanvasDeliveryProcess() {
       <CanvasReveal variant="riseSoft">
         <p className="canvas-micro text-[var(--color-accent)]">{DELIVERY_PROCESS.eyebrow}</p>
       </CanvasReveal>
-      <CanvasSectionTransition variant="clipUp" className="mt-3">
-        <h2 className="font-[family-name:var(--font-display)] text-[clamp(1.5rem,3.5vw,2.25rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]">
-          {DELIVERY_PROCESS.title}
-        </h2>
-      </CanvasSectionTransition>
+      <div className="mt-3">
+        <CanvasTextScrub
+          as="h2"
+          text={DELIVERY_PROCESS.title}
+          className="font-[family-name:var(--font-display)] text-[clamp(1.5rem,3.5vw,2.25rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]"
+        />
+      </div>
 
       <div ref={ref} className="relative mt-8">
         <div className="mb-6 h-px w-full overflow-hidden bg-[var(--color-border-subtle)]">

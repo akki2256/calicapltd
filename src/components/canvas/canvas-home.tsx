@@ -135,7 +135,7 @@ export function CanvasHome() {
             <CanvasTextReveal
               as="h1"
               lines={["Build", "what's next."]}
-              className="font-[family-name:var(--font-display)] text-[clamp(2.35rem,8.5vw,5.75rem)] font-medium leading-[0.95] tracking-[-0.04em] text-[var(--color-text-strong)] text-balance"
+              className="canvas-home-headline font-[family-name:var(--font-display)] text-[clamp(2.35rem,8.5vw,5.75rem)] font-medium leading-[0.95] tracking-[-0.04em] text-[var(--color-text-strong)] text-balance"
               delay={0.32}
             />
           </motion.div>

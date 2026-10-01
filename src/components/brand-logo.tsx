@@ -1,28 +1,29 @@
 import Image from "next/image";
 import { CALICON_SITE_NAME } from "@/lib/calicap-contact";
 
-/** Official geometry, Canvas steel palette — public/brand/calicon-logo-canvas.png */
-export const BRAND_LOGO_SRC = "/brand/calicon-logo-canvas.png";
-export const BRAND_LOGO_SRC_COMPACT = "/brand/calicon-logo-canvas-512.png";
-/** Untinted official master (blue/silver) */
+/** Canvas lockup — public/brand/calicon-lockup.svg (cropped official path, 1160×250) */
+export const BRAND_LOCKUP_SRC = "/brand/calicon-lockup.svg";
+export const BRAND_LOCKUP_ASPECT = 1160 / 250;
+
+/** Calicon theme mark. Kept so that chrome still resolves if the theme is turned back on. */
 export const BRAND_LOGO_SRC_OFFICIAL = "/brand/calicon-logo.png";
 export const BRAND_LOGO_SRC_OFFICIAL_COMPACT = "/brand/calicon-logo-512.png";
 
-/** Intrinsic aspect from production asset (738×828) */
+/** Intrinsic aspect of the official Calicon mark (738×828) */
 export const BRAND_LOGO_ASPECT = 738 / 828;
 
 export type BrandLogoSize = "sm" | "md" | "lg" | "header" | "footer";
 
 /**
  * Color treatment relative to the surface behind the mark.
- * `calicon` shifts the mark toward gold for Calicon chrome.
+ * `calicon` shifts the official mark toward gold for Calicon chrome.
  */
 export type BrandLogoVariant = "auto" | "on-dark" | "on-light" | "accent" | "calicon";
 
-/** Asset palette — Canvas steel vs official blue/silver master */
+/** `canvas` is the horizontal steel lockup. `official` is the Calicon mark. */
 export type BrandLogoPalette = "canvas" | "official";
 
-/** `lockup` matches the official mark-over-wordmark reference. */
+/** `lockup` is the full wordmark treatment. */
 export type BrandLogoLayout = "mark" | "lockup";
 
 const SIZE_PX: Record<BrandLogoSize, number> = {
@@ -33,11 +34,20 @@ const SIZE_PX: Record<BrandLogoSize, number> = {
   footer: 72,
 };
 
+/** Official lockup is ~4.64:1 — keep Canvas heights short enough for the header. */
+const CANVAS_SIZE_PX: Record<BrandLogoSize, number> = {
+  sm: 28,
+  md: 34,
+  lg: 56,
+  header: 34,
+  footer: 40,
+};
+
 type BrandLogoProps = {
   size?: BrandLogoSize;
   variant?: BrandLogoVariant;
   layout?: BrandLogoLayout;
-  /** Defaults to canvas steel; use `official` under Calicon gold treatment */
+  /** Defaults to the Canvas steel lockup */
   palette?: BrandLogoPalette;
   className?: string;
   /** Prefer true in sticky/fixed headers */
@@ -58,23 +68,23 @@ export function BrandLogo({
   priority = false,
   label = CALICON_SITE_NAME,
 }: BrandLogoProps) {
-  const height = SIZE_PX[size];
-  const width = Math.round(height * BRAND_LOGO_ASPECT);
+  const canvas = palette === "canvas";
+  const height = (canvas ? CANVAS_SIZE_PX : SIZE_PX)[size];
+  const aspect = canvas ? BRAND_LOCKUP_ASPECT : BRAND_LOGO_ASPECT;
+  const width = Math.round(height * aspect);
   const compact = size === "sm" || size === "md" || size === "header";
-  const src =
-    palette === "official"
-      ? compact
-        ? BRAND_LOGO_SRC_OFFICIAL_COMPACT
-        : BRAND_LOGO_SRC_OFFICIAL
-      : compact
-        ? BRAND_LOGO_SRC_COMPACT
-        : BRAND_LOGO_SRC;
+  const src = canvas
+    ? BRAND_LOCKUP_SRC
+    : compact
+      ? BRAND_LOGO_SRC_OFFICIAL_COMPACT
+      : BRAND_LOGO_SRC_OFFICIAL;
   const decorative = label === "";
-  const showWordmark = layout === "lockup";
+  const showWordmark = !canvas && layout === "lockup";
+  const layoutClass = canvas ? "horizontal" : layout;
 
   return (
     <span
-      className={`brand-logo brand-logo--${variant} brand-logo--${size} brand-logo--${layout}${className ? ` ${className}` : ""}`}
+      className={`brand-logo brand-logo--${variant} brand-logo--${size} brand-logo--${layoutClass}${canvas ? " brand-logo--canvas" : ""}${className ? ` ${className}` : ""}`}
       style={{ ["--brand-logo-h" as string]: `${height}px` }}
       data-brand-logo=""
     >
@@ -84,6 +94,7 @@ export function BrandLogo({
         width={width}
         height={height}
         priority={priority}
+        unoptimized={canvas}
         className="brand-logo__img"
         sizes={`${width}px`}
         {...(decorative || showWordmark ? { "aria-hidden": true as const } : {})}

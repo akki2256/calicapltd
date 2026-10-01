@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ButtonLink } from "@/components/button-link";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { ProjectApproach } from "@/components/project-approach";
+import { CanvasTextScrub } from "@/components/canvas/motion";
 import {
   calicapBuildDetailLinks,
   calicapServicesApproach,
@@ -21,6 +22,9 @@ type Props = {
   pillarId: PillarId;
 };
 
+const HEADLINE =
+  "font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]";
+
 /** Editorial Canvas pillar — type-led, minimal cards */
 export function CanvasPillarView({ pillarId }: Props) {
   const page = getPillarPage(pillarId);
@@ -35,9 +39,11 @@ export function CanvasPillarView({ pillarId }: Props) {
   return (
     <article className="canvas-pillar mx-auto max-w-[1080px] px-0 py-4">
       <p className="canvas-micro text-[var(--color-accent)]">{page.eyebrow}</p>
-      <h1 className="mt-6 max-w-4xl font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.25rem)] font-medium leading-[1.1] tracking-[-0.035em] text-[var(--color-text-strong)]">
-        {page.title}
-      </h1>
+      <CanvasTextScrub
+        as="h1"
+        text={page.title}
+        className="mt-6 max-w-4xl font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.25rem)] font-medium leading-[1.1] tracking-[-0.035em] text-[var(--color-text-strong)]"
+      />
       <p className="mt-6 max-w-3xl text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
         {page.body}
       </p>
@@ -49,9 +55,7 @@ export function CanvasPillarView({ pillarId }: Props) {
       </div>
 
       <section className="mt-14 border-t border-[var(--color-border-subtle)] pt-10">
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
-          {page.challengesTitle}
-        </h2>
+        <CanvasTextScrub as="h2" text={page.challengesTitle} className={HEADLINE} />
         <ul className="mt-6 space-y-0">
           {page.challenges.map((item, index) => (
             <li
@@ -70,9 +74,7 @@ export function CanvasPillarView({ pillarId }: Props) {
       <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
           <div>
-            <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
-              {page.examplesTitle}
-            </h2>
+            <CanvasTextScrub as="h2" text={page.examplesTitle} className={HEADLINE} />
             <ul className="mt-6 space-y-3">
               {page.examples.map((item) => (
                 <li
@@ -96,9 +98,7 @@ export function CanvasPillarView({ pillarId }: Props) {
       </section>
 
       <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
-          {section.title}
-        </h2>
+        <CanvasTextScrub as="h2" text={section.title} className={HEADLINE} />
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)]">
           {section.intro}
         </p>
@@ -126,9 +126,11 @@ export function CanvasPillarView({ pillarId }: Props) {
       </section>
 
       <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-medium text-[var(--color-text-strong)]">
-          {process.title}
-        </h2>
+        <CanvasTextScrub
+          as="h2"
+          text={process.title}
+          className="font-[family-name:var(--font-display)] text-xl font-medium text-[var(--color-text-strong)]"
+        />
         <ol className="mt-6">
           {process.steps.map((s) => (
             <li
@@ -152,9 +154,11 @@ export function CanvasPillarView({ pillarId }: Props) {
 
       {related.length > 0 ? (
         <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-medium text-[var(--color-text-strong)]">
-            Related work
-          </h2>
+          <CanvasTextScrub
+            as="h2"
+            text="Related work"
+            className="font-[family-name:var(--font-display)] text-xl font-medium text-[var(--color-text-strong)]"
+          />
           <div className="mt-7 space-y-10">
             {related.map((s) => {
               const image = getWorkStudyImage(s);
@@ -182,17 +186,17 @@ export function CanvasPillarView({ pillarId }: Props) {
 
       <section className="mt-12 grid gap-8 border-t border-[var(--color-border-subtle)] pt-10 lg:grid-cols-2 lg:gap-12">
         <div>
-          <h2 className="font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
-            {approach.title}
-          </h2>
+          <CanvasTextScrub
+            as="h2"
+            text={approach.title}
+            className="font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]"
+          />
           <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
             {approach.body}
           </p>
         </div>
         <div>
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]">
-            {unsure.title}
-          </h2>
+          <CanvasTextScrub as="h2" text={unsure.title} className={HEADLINE} />
           <p className="mt-3 text-sm text-[var(--color-text-muted)]">{unsure.body}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <ButtonLink href={page.contactHref}>{page.contactCta}</ButtonLink>

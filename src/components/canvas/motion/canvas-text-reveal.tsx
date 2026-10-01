@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useInView } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { CanvasTextScrub } from "./canvas-word-reveal";
 import { canvasDur, canvasEase, canvasStagger } from "./tokens";
 
 type Props = {
@@ -14,7 +15,7 @@ type Props = {
   as?: "h1" | "h2" | "p";
 };
 
-/** Line-level reveal (mount choreography) */
+/** Line-level reveal (mount choreography) — use for above-the-fold heroes only */
 export function CanvasTextReveal({
   lines,
   className,
@@ -71,50 +72,30 @@ type ScrollLinesProps = {
   className?: string;
   lineClassName?: string;
   as?: "h1" | "h2" | "p";
+  emphasize?: string[];
+  id?: string;
 };
 
-/** Viewport-triggered line reveal */
+/**
+ * Canvas headline rule — scroll-scrub highlight (muted → strong).
+ * Prefer this for section headlines across the Canvas theme.
+ */
 export function CanvasTextRevealInView({
   lines,
   className,
   lineClassName,
   as = "h2",
+  emphasize,
+  id,
 }: ScrollLinesProps) {
-  const reduced = usePrefersReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.15 });
-  const Tag = as;
-
-  if (reduced) {
-    return (
-      <Tag className={className}>
-        {lines.map((line) => (
-          <span key={line} className={`block ${lineClassName ?? ""}`}>
-            {line}
-          </span>
-        ))}
-      </Tag>
-    );
-  }
-
   return (
-    <Tag ref={ref as never} className={className} data-canvas-authored="">
-      {lines.map((line, i) => (
-        <span key={`${line}-${i}`} className="block overflow-hidden py-[0.06em]">
-          <motion.span
-            className={`block ${lineClassName ?? ""}`}
-            initial={{ y: "100%", opacity: 0 }}
-            animate={inView ? { y: "0%", opacity: 1 } : { y: "100%", opacity: 0 }}
-            transition={{
-              duration: canvasDur.slow,
-              delay: 0.04 + i * canvasStagger.loose,
-              ease: canvasEase,
-            }}
-          >
-            {line}
-          </motion.span>
-        </span>
-      ))}
-    </Tag>
+    <CanvasTextScrub
+      lines={lines}
+      className={className}
+      lineClassName={lineClassName}
+      as={as}
+      emphasize={emphasize}
+      id={id}
+    />
   );
 }

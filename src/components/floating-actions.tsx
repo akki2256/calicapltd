@@ -2,7 +2,6 @@
 
 import { MessageCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { useContactPathChooser } from "@/components/contact-path-chooser";
 import { useMagnetic } from "@/hooks/use-magnetic";
 
@@ -40,9 +39,6 @@ export function FloatingActions() {
 
   return (
     <div className="floating-actions pointer-events-none fixed z-[650] flex shrink-0 flex-col items-end gap-2">
-      <div className="pointer-events-auto shrink-0">
-        <ThemeToggle />
-      </div>
       <button
         type="button"
         ref={mag.ref as never}

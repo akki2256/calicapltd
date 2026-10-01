@@ -13,7 +13,7 @@ export function organizationJsonLd(): JsonLd {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-    logo: absoluteUrl("/brand/calicon-logo.png"),
+    logo: absoluteUrl("/brand/calicon-mark.png"),
     description: DEFAULT_DESCRIPTION,
     ...(calicapContact.email ? { email: calicapContact.email } : {}),
   };

@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
+import { CanvasAboutTeaser } from "@/components/canvas/canvas-about-teaser";
 import { CanvasHome } from "@/components/canvas/canvas-home";
 import { CanvasHomeChapter } from "@/components/canvas/canvas-home-chapter";
 import { CanvasImpactMetrics } from "@/components/canvas/canvas-impact-metrics";
@@ -117,6 +118,7 @@ export function CanvasMain({ children }: Props) {
             <>
               <CanvasHome />
               <CanvasTechMarquee />
+              <CanvasAboutTeaser />
               <CanvasImpactMetrics />
               <div className="canvas-home-chapter">
                 <CanvasHomeChapter />
