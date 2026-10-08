@@ -15,10 +15,7 @@ export function CaliconImpactMetrics() {
       className="scroll-mt-24 border-t border-[var(--color-border-subtle)]"
     >
       <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-700/90">
-          {impact.eyebrow}
-        </p>
-        <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900 sm:text-4xl">
+        <h2 className="max-w-2xl font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900 sm:text-4xl">
           {impact.title}
         </h2>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
