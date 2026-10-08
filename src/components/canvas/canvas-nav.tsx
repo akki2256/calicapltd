@@ -52,9 +52,7 @@ export function CanvasNav() {
           <ul className="my-auto flex flex-col gap-1 py-8">
             {navLinks.map((item, index) => {
               const active =
-                item.href === "/"
-                  ? pathname === "/"
-                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
+                pathname === item.href || pathname.startsWith(`${item.href}/`);
 
               return (
                 <li
