@@ -33,9 +33,8 @@ export type HomeImpactMetric = {
 };
 
 export const calicapHomeImpact = {
-  //eyebrow: "Selected results",
   title: "Built for measurable impact.",
-  //body: "Technology designed to help improve growth, efficiency, visibility, and performance.",
+  body: "Technology designed to help improve growth, efficiency, visibility, and performance.",
   attribution: "Measured impact across selected projects",
   metrics: [
     {

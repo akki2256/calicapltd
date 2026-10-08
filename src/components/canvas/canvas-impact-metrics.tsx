@@ -107,7 +107,6 @@ export function CanvasImpactMetrics() {
         <div className="canvas-impact-frame">
           <div className="canvas-impact-layout">
             <aside className="canvas-impact-editorial">
-              <p className="canvas-impact-eyebrow">{impact.eyebrow}</p>
               <CanvasTextScrub
                 as="h2"
                 id="canvas-impact-heading"
