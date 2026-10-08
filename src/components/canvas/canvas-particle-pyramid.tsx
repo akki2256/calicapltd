@@ -541,9 +541,9 @@ export function CanvasParticlePyramid({ className = "" }: Props) {
     let structureIndex: number[] = [];
     let textIndex: number[] = [];
     let faceDefs: FaceDef[] = [];
-    let faceBright = [0.55, 0.55, 0.55];
+    const faceBright = [0.55, 0.55, 0.55];
     /** Smoothed reveal 0→1 per face — drives particle-word timing */
-    let faceReveal = [0, 0, 0];
+    const faceReveal = [0, 0, 0];
 
     const pointer = { x: 0, y: 0, tx: 0, ty: 0, active: false };
     const camBase = new THREE.Vector3(0, 0.08, 5.35);
