@@ -251,7 +251,7 @@ section {
 [data-theme="canvas"] .floating-actions-btn-primary:hover,
 [data-theme="canvas"] .floating-actions-btn-primary:focus-visible {
   background: transparent;
-  color: var(--color-accent);
+  color: var(--color-link-hover);
   transform: none;
 }
 
@@ -413,14 +413,91 @@ html.menu-visible .canvas-system-cursor {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="canvas"] [class*="hover:text-slate-9"]:hover,
-[data-theme="canvas"] [class*="hover:text-slate-8"]:hover,
-[data-theme="canvas"] [class*="group-hover:text-slate-9"]:is(:where(.group):hover *) {
-  color: #ffffff;
+/*
+ * Canvas dual-color appearance
+ * Resting pair: text-strong + accent. Interactive lift: link-hover.
+ * Clickables only for hover; logo lockup keeps opacity/glow (excluded below).
+ * Calicon is untouched — all rules are theme-scoped.
+ */
+[data-theme="canvas"] .canvas-em {
+  color: var(--color-accent);
+  transition-property: color, opacity;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
 }
 
-[data-theme="canvas"] [class*="hover:text-gold-"]:hover:not([class*="before:text-gold"]):not([class*="after:text-gold"]) {
+[data-theme="canvas"] :is(
+  a,
+  button,
+  [role="button"],
+  [role="link"],
+  summary
+):not(.brand-logo-link):not(:disabled):not([aria-disabled="true"]) {
+  transition-property: color, opacity, border-color, background-color, transform, box-shadow, outline-color;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+
+[data-theme="canvas"] :is(
+  a,
+  button,
+  [role="button"],
+  [role="link"],
+  summary
+):not(.brand-logo-link):not(.btn-canvas-primary):not(.btn-canvas-ghost):not(.btn-calicon-primary):not(.btn-calicon-ghost):not(:disabled):not([aria-disabled="true"]):hover,
+[data-theme="canvas"] :is(
+  a,
+  button,
+  [role="button"],
+  [role="link"],
+  summary
+):not(.brand-logo-link):not(.btn-canvas-primary):not(.btn-canvas-ghost):not(.btn-calicon-primary):not(.btn-calicon-ghost):not(:disabled):not([aria-disabled="true"]):focus-visible {
   color: var(--color-link-hover);
+}
+
+/* Dual-color accent tokens participate in the same hover lift */
+[data-theme="canvas"] :is(
+  a,
+  button,
+  [role="button"],
+  [role="link"],
+  summary
+):not(.brand-logo-link):not(.btn-canvas-primary):not(.btn-canvas-ghost):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible) .canvas-em,
+[data-theme="canvas"] :is(
+  a,
+  button,
+  [role="button"],
+  [role="link"],
+  summary
+).canvas-em:not(.brand-logo-link):not(.btn-canvas-primary):not(.btn-canvas-ghost):not(:disabled):not([aria-disabled="true"]):is(:hover, :focus-visible),
+[data-theme="canvas"] :where(.group):hover .canvas-em {
+  color: var(--color-link-hover);
+}
+
+/* Remap Tailwind / token hover utilities → accent lighter */
+[data-theme="canvas"] [class*="hover:text-slate"]:hover,
+[data-theme="canvas"] [class*="group-hover:text-slate"]:is(:where(.group):hover *),
+[data-theme="canvas"] [class*="hover:text-gold-"]:hover:not([class*="before:text-gold"]):not([class*="after:text-gold"]),
+[data-theme="canvas"] [class*="group-hover:text-gold"]:is(:where(.group):hover *),
+/* Substrings avoid `]` inside attribute selectors */
+[data-theme="canvas"] [class*="hover:text-[var(--color-text-strong)"]:hover,
+[data-theme="canvas"] [class*="hover:text-[var(--color-accent)"]:hover,
+[data-theme="canvas"] [class*="group-hover:text-[var(--color-text-strong)"]:is(:where(.group):hover *),
+[data-theme="canvas"] [class*="group-hover:text-[var(--color-accent)"]:is(:where(.group):hover *) {
+  color: var(--color-link-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="canvas"] .canvas-em,
+  [data-theme="canvas"] :is(
+    a,
+    button,
+    [role="button"],
+    [role="link"],
+    summary
+  ):not(.brand-logo-link):not(:disabled):not([aria-disabled="true"]) {
+    transition-duration: 0.01ms;
+  }
 }
 
 [data-theme="canvas"] [class*="hover:border-gold"]:hover {
@@ -549,7 +626,8 @@ html.menu-visible .canvas-menu-item {
 
 .canvas-main {
   min-height: 100dvh;
-  padding: 130px var(--canvas-content-right) max(78px, var(--canvas-content-bottom)) 26px;
+  /* Horizontal inset lives on the shared content frame (same as index). */
+  padding: 130px 0 max(78px, var(--canvas-content-bottom));
   transition:
     opacity 0.35s var(--motion-ease),
     transform 0.35s var(--motion-ease);
@@ -562,11 +640,10 @@ html.menu-visible .canvas-menu-item {
 }
 
 .canvas-home-chapter {
-  padding-right: var(--canvas-content-right);
+  padding-right: 0;
   padding-bottom: max(78px, var(--canvas-content-bottom));
   background: var(--color-surface);
-  /* Keep overflow visible so sticky Impact can pin to the viewport.
-     Horizontal clip lives on .canvas-chapter (narrow column) instead. */
+  /* Full-bleed section rules need this wrapper at the viewport edge. */
   overflow: visible;
 }
 
@@ -593,11 +670,15 @@ html.menu-visible .canvas-menu-item {
   animation: canvas-arrow-bob 2s ease-in-out infinite;
 }
 
+/* Inner pages share the index content frame (92vw / max 1320 + gutters). */
 .canvas-inner-content {
-  max-width: min(920px, 100%);
-  margin: 0 auto;
+  box-sizing: border-box;
+  width: var(--canvas-frame-width);
+  max-width: 100%;
+  margin-inline: auto;
   min-width: 0;
-  width: 100%;
+  padding-left: var(--canvas-frame-pad-left);
+  padding-right: var(--canvas-frame-pad-right);
 }
 
 /* Inner-page scroll choreography (CanvasScrollEnhancer) */
@@ -703,7 +784,7 @@ html.menu-visible .canvas-nav-trigger-float {
 }
 
 .canvas-nav-trigger-float:hover {
-  color: var(--color-accent);
+  color: var(--color-link-hover);
 }
 
 .canvas-nav-trigger-float:focus-visible {
@@ -804,6 +885,31 @@ html.menu-visible .canvas-nav-trigger-float {
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
+/*
+ * Canvas section rules match the marquee / about hairline:
+ * 1px, viewport-wide, and fluid with the screen. Content stays in the column.
+ * The border box itself grows — a ::before is clipped by section clip-path.
+ * Calicon is outside .canvas-main-inner, so these rules do not apply there.
+ */
+[data-theme="canvas"] .canvas-main-inner :is(section, nav).border-t,
+[data-theme="canvas"] .canvas-main-inner article > .border-t {
+  /* Bleed hairlines to the viewport edge from inside the shared content frame */
+  --canvas-rule-bleed-left: calc(
+    (100vw - var(--canvas-frame-width)) / 2 + var(--canvas-frame-pad-left)
+  );
+  --canvas-rule-bleed-right: calc(
+    (100vw - var(--canvas-frame-width)) / 2 + var(--canvas-frame-pad-right)
+  );
+  box-sizing: border-box;
+  width: calc(100% + var(--canvas-rule-bleed-left) + var(--canvas-rule-bleed-right));
+  max-width: none;
+  margin-left: calc(-1 * var(--canvas-rule-bleed-left));
+  margin-right: 0;
+  padding-left: var(--canvas-rule-bleed-left);
+  padding-right: var(--canvas-rule-bleed-right);
+  border-top-color: var(--color-border-subtle) !important;
+}
+
 .canvas-main-inner .text-gradient {
   background: linear-gradient(125deg, #ffffff 0%, #eaeaea 50%, #c8c8c8 100%);
   -webkit-background-clip: text;
@@ -856,7 +962,7 @@ html.menu-visible .canvas-nav-trigger-float {
 
 @media (max-width: 1024px) {
   .canvas-main {
-    padding: 104px var(--canvas-content-right) max(64px, var(--canvas-content-bottom)) 22px;
+    padding: 104px 0 max(64px, var(--canvas-content-bottom));
   }
 
   .canvas-main-home {
@@ -864,7 +970,7 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 
   .canvas-home-chapter {
-    padding-right: var(--canvas-content-right);
+    padding-right: 0;
     padding-bottom: max(64px, var(--canvas-content-bottom));
   }
 
@@ -882,7 +988,7 @@ html.menu-visible .canvas-nav-trigger-float {
 
 @media (max-width: 768px) {
   .canvas-main {
-    padding: 88px var(--canvas-content-right) max(56px, var(--canvas-content-bottom)) 16px;
+    padding: 88px 0 max(56px, var(--canvas-content-bottom));
   }
 
   .canvas-main-home {
@@ -890,7 +996,7 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 
   .canvas-home-chapter {
-    padding-right: var(--canvas-content-right);
+    padding-right: 0;
     padding-bottom: max(56px, var(--canvas-content-bottom));
   }
 
@@ -940,7 +1046,11 @@ html.menu-visible .canvas-nav-trigger-float {
 
 @media (max-width: 480px) {
   .canvas-main {
-    padding: 80px var(--canvas-content-right) max(48px, var(--canvas-content-bottom)) 14px;
+    padding: 80px 0 max(48px, var(--canvas-content-bottom));
+  }
+
+  .canvas-main-home {
+    padding: 0;
   }
 
   .canvas-home-copy-wrap {
@@ -1045,7 +1155,7 @@ html.menu-visible .canvas-nav-trigger-float {
 
 .btn-canvas-primary:hover {
   background: transparent;
-  color: var(--color-text-strong);
+  color: var(--color-link-hover);
   border-color: var(--color-accent);
 }
 
@@ -1069,7 +1179,7 @@ html.menu-visible .canvas-nav-trigger-float {
 
 .btn-canvas-ghost:hover {
   border-color: var(--color-accent);
-  color: var(--color-text-strong);
+  color: var(--color-link-hover);
   background: var(--color-accent-soft);
 }
 
@@ -1249,13 +1359,9 @@ html.menu-visible .canvas-nav-trigger-float {
   pointer-events: auto;
 }
 
-/* Horizontal steel lockup stays compact; do not inherit the tall stacked-mark size */
-.canvas-brand .brand-logo--header {
-  --brand-logo-h: 2.125rem;
-}
-
-/* Home: larger hero-facing lockup */
-.canvas-brand--home .brand-logo--canvas {
+/* Horizontal steel lockup — site-wide Canvas header scale (index appearance) */
+.canvas-brand .brand-logo--canvas,
+.canvas-menu-brand .brand-logo--canvas {
   --brand-logo-h: 2.75rem;
 }
 
@@ -1264,11 +1370,8 @@ html.menu-visible .canvas-nav-trigger-float {
     margin-left: max(3.25rem, var(--canvas-progress-gutter));
   }
 
-  .canvas-brand .brand-logo--header {
-    --brand-logo-h: 2.25rem;
-  }
-
-  .canvas-brand--home .brand-logo--canvas {
+  .canvas-brand .brand-logo--canvas,
+  .canvas-menu-brand .brand-logo--canvas {
     --brand-logo-h: 3.5rem;
   }
 }
@@ -1417,13 +1520,6 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 }
 
-/* Clear the progress-rail markers (lg+) */
-@media (min-width: 1024px) {
-  .canvas-chapter {
-    padding-left: max(26px, 4.5rem);
-  }
-}
-
 .canvas-footer {
   display: none;
 }
@@ -1433,6 +1529,25 @@ html.menu-visible .canvas-nav-trigger-float {
   z-index: 5;
   margin-right: 0;
   padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+}
+
+/* Inner footer rules — same viewport span as the footer’s top edge */
+.canvas-site-footer .border-t {
+  position: relative;
+  border-top-color: transparent;
+}
+
+.canvas-site-footer .border-t::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -1px;
+  left: 50%;
+  width: 100vw;
+  height: 1px;
+  transform: translateX(-50%);
+  background: var(--color-border-subtle);
+  pointer-events: none;
 }
 
 .canvas-site-footer .brand-logo-link,
@@ -1479,23 +1594,61 @@ html.menu-visible .canvas-nav-trigger-float {
   text-wrap: pretty;
 }
 
+/*
+ * Global text safety (both themes):
+ * containers use available width; readable text wraps instead of clipping.
+ */
+.canvas-text-safe,
+[data-theme="canvas"] .canvas-main-inner :is(h1, h2, h3, p, li, .canvas-wrap-heading, [data-canvas-authored]),
+[data-theme="calicon"] :is(main, article) :is(h1, h2, h3, p, li) {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.canvas-text-safe,
+[data-theme="canvas"] .canvas-main-inner :is(h1, h2, h3, .canvas-wrap-heading, [data-canvas-authored]) {
+  white-space: normal;
+}
+
+/* Line-reveal mask: width-bound so overflow only affects the vertical wipe */
+.canvas-text-line-mask {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
 .canvas-chapter {
-  max-width: min(1180px, 100%);
-  margin: 0 auto;
-  padding: 0 26px max(4rem, var(--canvas-content-bottom));
-  padding-right: max(26px, calc(var(--canvas-fab-column) + 0.5rem));
+  --canvas-chapter-pad-left: 26px;
+  --canvas-chapter-pad-right: max(26px, calc(var(--canvas-fab-column) + 0.5rem));
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 max(4rem, var(--canvas-content-bottom));
   overflow-x: clip;
 }
 
 @media (min-width: 768px) {
   .canvas-chapter {
-    padding-left: max(26px, 3rem);
+    --canvas-chapter-pad-left: max(26px, 3rem);
   }
 }
 
 .canvas-chapter-block {
+  /* Section rule spans the viewport; padding keeps copy on the previous column. */
+  --canvas-chapter-side: calc(
+    (
+        100% - var(--canvas-content-right) -
+          min(1180px, calc(100% - var(--canvas-content-right)))
+      ) / 2
+  );
   padding-top: clamp(2.75rem, 6vw, 5.5rem);
   padding-bottom: clamp(2.75rem, 6vw, 5.5rem);
+  padding-left: calc(var(--canvas-chapter-side) + var(--canvas-chapter-pad-left, 26px));
+  padding-right: calc(
+    var(--canvas-chapter-side) + var(--canvas-chapter-pad-right, 26px) + var(--canvas-content-right)
+  );
 }
 
 /* Kinetic Results Ledger — viewport-safe sticky Impact scene */
@@ -1724,26 +1877,10 @@ html.menu-visible .canvas-nav-trigger-float {
 
 .canvas-impact-row-body {
   display: grid;
-  grid-template-columns: 2.5rem minmax(9rem, 11.5rem) minmax(0, 1fr);
-  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  grid-template-columns: max-content max-content;
+  column-gap: clamp(0.85rem, 1.4vw, 1.35rem);
   align-items: center;
   padding: 1.1rem 0 1.15rem;
-}
-
-.canvas-impact-index {
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 0.6875rem;
-  letter-spacing: 0.16em;
-  color: color-mix(in srgb, var(--color-text-muted) 55%, var(--color-text-strong));
-  line-height: 1;
-  padding-top: 0.15em;
-}
-
-.canvas-impact-value-clip {
-  overflow: visible;
-  min-width: 0;
-  display: flex;
-  align-items: center;
 }
 
 .canvas-impact-value {
@@ -1759,12 +1896,23 @@ html.menu-visible .canvas-nav-trigger-float {
 }
 
 .canvas-impact-copy {
-  min-width: 0;
-  max-width: 22rem;
+  margin: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.35rem;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.55rem;
+  white-space: nowrap;
+}
+
+.canvas-impact-arrow {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-text-muted);
+  transition: color 0.25s var(--motion-ease, ease);
 }
 
 .canvas-impact-label {
@@ -1775,20 +1923,11 @@ html.menu-visible .canvas-nav-trigger-float {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-strong);
+  white-space: nowrap;
   transition:
     color 0.25s var(--motion-ease, ease),
     opacity 0.25s var(--motion-ease, ease),
     transform 0.25s var(--motion-ease, ease);
-}
-
-.canvas-impact-category {
-  margin: 0;
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 0.625rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  transition: opacity 0.25s var(--motion-ease, ease), color 0.25s var(--motion-ease, ease);
 }
 
 .canvas-impact-row.is-hovered .canvas-impact-label {
@@ -1799,11 +1938,7 @@ html.menu-visible .canvas-nav-trigger-float {
   background: color-mix(in srgb, var(--color-accent) 45%, var(--color-border-subtle));
 }
 
-.canvas-impact-row.is-hovered .canvas-impact-category {
-  color: var(--color-accent);
-}
-
-.canvas-impact-row.is-hovered .canvas-impact-index {
+.canvas-impact-row.is-hovered .canvas-impact-arrow {
   color: var(--color-accent);
 }
 
@@ -1823,7 +1958,7 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 
   .canvas-impact-row-body {
-    grid-template-columns: 2.5rem minmax(8rem, 10.5rem) minmax(0, 1fr);
+    grid-template-columns: max-content max-content;
   }
 }
 
@@ -1858,19 +1993,32 @@ html.menu-visible .canvas-nav-trigger-float {
   .canvas-impact-layout {
     grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
     column-gap: clamp(2.75rem, 4.5vw, 4rem);
-    align-items: start;
+    align-items: stretch;
   }
 
   .canvas-impact-editorial {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     max-width: 380px;
     width: 100%;
-    padding-top: 0.15rem;
+    min-height: 100%;
+    padding-top: 0;
+  }
+
+  .canvas-impact-eyebrow:empty {
+    display: none;
   }
 
   .canvas-impact-headline {
+    margin: 0;
     max-width: 380px;
-    font-size: clamp(2.65rem, 3.4vw, 3.85rem);
-    line-height: 0.98;
+    font-size: clamp(3.25rem, 4.6vw, 5.25rem);
+    line-height: 0.96;
+  }
+
+  .canvas-impact-body {
+    display: none;
   }
 
   .canvas-impact-ledger {
@@ -1883,7 +2031,9 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 
   .canvas-impact-track {
-    width: 100%;
+    width: max-content;
+    max-width: 100%;
+    margin-left: auto;
     padding-block: 0;
     will-change: auto;
   }
@@ -1892,20 +2042,27 @@ html.menu-visible .canvas-nav-trigger-float {
     flex: none;
     min-height: 0;
     justify-content: flex-start;
+    align-items: stretch;
     gap: 0;
+    width: max-content;
+    max-width: 100%;
   }
 
   .canvas-impact-row {
     flex: none;
+    align-self: stretch;
+    width: auto;
     min-height: clamp(6.25rem, 11.5vh, 7.5rem);
     max-height: none;
     opacity: 1;
   }
 
   .canvas-impact-row-body {
-    grid-template-columns: 2rem minmax(8.75rem, 11rem) minmax(0, 1fr);
-    gap: 0.75rem 1.15rem;
+    grid-template-columns: max-content max-content;
+    column-gap: 1.1rem;
     align-items: center;
+    justify-content: start;
+    width: 100%;
     padding: 0.85rem 0 0.9rem;
   }
 
@@ -1914,16 +2071,23 @@ html.menu-visible .canvas-nav-trigger-float {
     line-height: 1;
   }
 
-  .canvas-impact-copy {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  .canvas-impact-arrow {
+    font-size: clamp(1.25rem, 1.7vw, 1.55rem);
   }
 }
 
 @media (min-width: 1280px) {
+  .canvas-impact-layout {
+    grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+  }
+
   .canvas-impact-editorial {
     max-width: 460px;
+  }
+
+  .canvas-impact-headline {
+    max-width: 460px;
+    font-size: clamp(3.75rem, 5vw, 5.75rem);
   }
 
   .canvas-impact-value {
@@ -1994,7 +2158,7 @@ html.menu-visible .canvas-nav-trigger-float {
 
   .canvas-impact-row-body {
     grid-template-columns: 1fr;
-    gap: 0.3rem;
+    row-gap: 0.45rem;
     padding: 1.05rem 0 1.1rem;
   }
 
@@ -2002,8 +2166,13 @@ html.menu-visible .canvas-nav-trigger-float {
     font-size: clamp(2.65rem, 13vw, 3.5rem);
   }
 
-  .canvas-impact-copy {
-    max-width: none;
+  .canvas-impact-copy,
+  .canvas-impact-label {
+    white-space: normal;
+  }
+
+  .canvas-impact-arrow {
+    font-size: 1.25rem;
   }
 
   .canvas-impact-scan,
@@ -2030,10 +2199,6 @@ html.menu-visible .canvas-nav-trigger-float {
 
   .canvas-impact-row {
     min-height: 7rem;
-  }
-
-  .canvas-impact-category {
-    display: none;
   }
 }
 
@@ -2090,12 +2255,109 @@ html.menu-visible .canvas-nav-trigger-float {
   opacity: 0.95;
 }
 
-/* Shared Canvas content frame — width + gutters from Selected Results */
+/* Shared Canvas content frame — width + gutters from Selected Results / index */
 .canvas-content-frame {
+  box-sizing: border-box;
   width: var(--canvas-frame-width);
+  max-width: 100%;
   margin-inline: auto;
+  min-width: 0;
   padding-left: var(--canvas-frame-pad-left);
   padding-right: var(--canvas-frame-pad-right);
+}
+
+/* ========== Canvas About page — particle world map background ========== */
+
+.canvas-about {
+  position: relative;
+  isolation: isolate;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/*
+ * Portaled to document.body — escapes page-transition transforms.
+ * Fixed full-viewport backdrop for the entire About scroll.
+ */
+.canvas-about__backdrop {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Keep About copy / chrome above the portaled map */
+.canvas-main,
+.canvas-footer {
+  position: relative;
+  z-index: 2;
+}
+
+.canvas-about__map {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  /* Match .canvas-impact-mesh shell strength — dots carry their own opacity */
+  opacity: 0.62;
+}
+
+.canvas-about__content {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.canvas-world-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.canvas-world-map__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .canvas-about__map {
+    opacity: 0.62;
+  }
+
+  .canvas-about__content {
+    text-shadow:
+      0 0 20px color-mix(in srgb, var(--color-surface) 90%, transparent),
+      0 1px 12px color-mix(in srgb, var(--color-surface) 70%, transparent);
+  }
+}
+
+@media (min-width: 1024px) {
+  .canvas-about__map {
+    opacity: 0.62;
+  }
+
+  .canvas-about__content {
+    text-shadow:
+      0 0 16px color-mix(in srgb, var(--color-surface) 82%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas-about__map {
+    opacity: 0.62;
+  }
 }
 
 /* ========== Canvas About Us teaser (below marquee) ========== */
@@ -2103,6 +2365,7 @@ html.menu-visible .canvas-nav-trigger-float {
 .canvas-about-teaser {
   position: relative;
   z-index: 2;
+  overflow: visible;
   border-bottom: 1px solid color-mix(in srgb, var(--color-border-subtle) 55%, transparent);
   background:
     linear-gradient(
@@ -2114,34 +2377,43 @@ html.menu-visible .canvas-nav-trigger-float {
 
 .canvas-about-teaser__frame {
   padding-top: clamp(3rem, 7vh, 4.75rem);
-  padding-bottom: clamp(3rem, 7vh, 4.75rem);
+  padding-bottom: clamp(3.5rem, 8vh, 5.5rem);
+  overflow: visible;
+}
+
+.canvas-about-teaser__layout {
+  position: relative;
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 2.5rem);
+  align-items: start;
+  min-width: 0;
+}
+
+.canvas-about-teaser__copy {
+  position: relative;
+  z-index: 2;
+  max-width: min(52rem, 100%);
+  min-width: 0;
 }
 
 .canvas-about-teaser__eyebrow {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-}
-
-.canvas-about-teaser__layout {
-  display: grid;
-  gap: clamp(1.75rem, 4vw, 2.5rem);
-  margin-top: 1.5rem;
-  align-items: end;
-}
-
-.canvas-about-teaser__copy {
-  max-width: 40rem;
+  margin-bottom: 1.5rem;
 }
 
 .canvas-about-teaser__title {
   margin: 0;
+  max-width: 100%;
+  min-width: 0;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5.5vw, 3.5rem);
+  font-size: clamp(1.35rem, 3.2vw, 2.35rem);
   font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.04em;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
   color: var(--color-text-strong);
+  white-space: normal;
 }
 
 .canvas-about-teaser__body {
@@ -2154,23 +2426,117 @@ html.menu-visible .canvas-nav-trigger-float {
 }
 
 .canvas-about-teaser__cta {
-  justify-self: start;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.canvas-about-teaser__visual {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  /* Let the stage breathe — mesh size is locked in JS, not grown with this box */
+  overflow: visible;
+  isolation: isolate;
+  pointer-events: auto;
+}
+
+.canvas-particle-pyramid {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  /* Tall/wide stage = framing margin around a fixed-size mesh */
+  height: clamp(28rem, 92vw, 36rem);
+  overflow: visible;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.canvas-particle-pyramid__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  pointer-events: auto;
+}
+
+/* Narrow: tetrahedron sits behind the copy, full-bleed in the section */
+@media (max-width: 767px) {
+  .canvas-about-teaser__layout {
+    display: block;
+    min-height: clamp(30rem, 100vw, 38rem);
+  }
+
+  .canvas-about-teaser__copy {
+    max-width: none;
+    padding-right: 0.5rem;
+    text-shadow:
+      0 0 18px color-mix(in srgb, var(--color-surface) 88%, transparent),
+      0 1px 14px color-mix(in srgb, var(--color-surface) 75%, transparent);
+  }
+
+  .canvas-about-teaser__visual {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    opacity: 0.72;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .canvas-particle-pyramid {
+    height: 100%;
+    min-height: clamp(30rem, 100vw, 38rem);
+    cursor: default;
+  }
 }
 
 @media (min-width: 768px) {
   .canvas-about-teaser__layout {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 3rem;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
   }
 
-  .canvas-about-teaser__cta {
-    padding-bottom: 0.15rem;
+  /* Lift visual so apex tracks the eyebrow / title band */
+  .canvas-about-teaser__visual {
+    margin-top: -0.35rem;
+  }
+
+  .canvas-particle-pyramid {
+    height: clamp(34rem, 48vw, 42rem);
+    width: calc(100% + 1.5rem);
+    max-width: none;
+    margin-right: -0.75rem;
   }
 }
 
 @media (min-width: 1024px) {
   .canvas-about-teaser__title {
     font-size: clamp(2.5rem, 4vw, 3.75rem);
+  }
+
+  .canvas-about-teaser__visual {
+    margin-top: -0.5rem;
+  }
+
+  .canvas-particle-pyramid {
+    height: clamp(38rem, 44vw, 46rem);
+    width: calc(100% + 2.5rem);
+    margin-right: -1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas-particle-pyramid {
+    pointer-events: none;
   }
 }
 
@@ -2360,8 +2726,8 @@ html.menu-visible .canvas-menu-item {
 
 @media (max-width: 768px) {
   .canvas-chapter {
-    padding-left: 16px;
-    padding-right: 16px;
+    --canvas-chapter-pad-left: 16px;
+    --canvas-chapter-pad-right: 16px;
   }
 
   .canvas-home-copy-wrap {
@@ -2507,3 +2873,6 @@ html.menu-visible .canvas-menu-item {
   }
 }
 
+.canvas-about__mission {
+  text-align: center;
+}

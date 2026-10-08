@@ -1,184 +1,249 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { ArrowRight, FileText, Lightbulb, MessageCircle, PhoneForwarded } from "lucide-react";
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { FileText, Lightbulb, MessageCircle, PhoneForwarded } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { DeliveryProcess } from "@/components/delivery-process";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import {
   CanvasReveal,
-  CanvasStagger,
-  CanvasStaggerItem,
   CanvasTextReveal,
   CanvasTextRevealInView,
+  canvasDur,
+  canvasEase,
 } from "@/components/canvas/motion";
+import { CanvasWorldMap } from "@/components/canvas/canvas-world-map";
 import { ThemeSplit } from "@/components/theme-split";
-import { calicapAbout } from "@/lib/calicap-about";
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import {
+  ABOUT_APPROACH_ID,
+  calicapAbout,
+} from "@/lib/calicap-about";
 import { calicapContact } from "@/lib/calicap-contact";
+
+function CanvasApproachPrinciples() {
+  const reduced = usePrefersReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const items = calicapAbout.approachPrinciples;
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.7", "end 0.35"],
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    if (reduced) return;
+    setActive(Math.min(items.length - 1, Math.max(0, Math.floor(v * items.length))));
+  });
+
+  return (
+    <div ref={ref} className="mt-12 space-y-0">
+      {items.map((p, i) => {
+        const isActive = reduced || i === active;
+        return (
+          <motion.div
+            key={p.label}
+            className="grid gap-2 border-t border-[var(--color-border-subtle)] py-7 sm:grid-cols-[minmax(8rem,12rem)_minmax(0,1fr)] sm:gap-6 lg:gap-8"
+            animate={{
+              opacity: isActive ? 1 : 0.35,
+              x: isActive ? 0 : -6,
+            }}
+            transition={{ duration: canvasDur.fast, ease: canvasEase }}
+            onMouseEnter={() => setActive(i)}
+          >
+            <p
+              className={`font-[family-name:var(--font-display)] text-lg ${
+                isActive ? "text-[var(--color-text-strong)]" : "text-[var(--color-text-muted)]"
+              }`}
+            >
+              {p.label}
+            </p>
+            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">{p.value}</p>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
 
 function CanvasAbout() {
   const about = calicapAbout;
+  const [portalReady, setPortalReady] = useState(false);
+
+  useEffect(() => {
+    setPortalReady(true);
+  }, []);
+
+  const mapBackdrop =
+    portalReady &&
+    createPortal(
+      <div className="canvas-about__backdrop" aria-hidden>
+        <div className="canvas-about__map">
+          <CanvasWorldMap />
+        </div>
+      </div>,
+      document.body,
+    );
 
   return (
-    <article className="canvas-about mx-auto max-w-[920px] py-4">
-      <CanvasReveal variant="riseSoft">
-        <p className="canvas-micro text-[var(--color-accent)]">{about.eyebrow}</p>
-      </CanvasReveal>
-      <div className="mt-6">
-        <CanvasTextReveal
-          as="h1"
-          lines={splitAboutTitle(about.title)}
-          className="max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] font-medium leading-[1.05] tracking-[-0.04em] text-[var(--color-text-strong)]"
-          delay={0.12}
-        />
-      </div>
-
-      <section className="mt-14 grid gap-10 border-t border-[var(--color-border-subtle)] pt-10 md:grid-cols-2 md:gap-12">
-        <CanvasReveal variant="riseSoft">
-          <p className="canvas-micro text-[var(--color-text-muted)]">{about.visionTitle}</p>
-          <p className="mt-4 text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
-            {about.visionBody}
-          </p>
-        </CanvasReveal>
-        <CanvasReveal variant="blurIn" delay={0.08}>
-          <p className="canvas-micro text-[var(--color-text-muted)]">{about.philosophyTitle}</p>
-          <p className="mt-4 text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
-            {about.philosophyBody}
-          </p>
-        </CanvasReveal>
-      </section>
-
-      <section className="mt-14 border-t border-[var(--color-border-subtle)] pt-10">
-        <CanvasReveal variant="riseSoft">
-          <p className="canvas-micro text-[var(--color-accent)]">{about.howWeWorkTitle}</p>
-        </CanvasReveal>
-        <CanvasStagger
-          className="mt-8 flex flex-col gap-0 md:flex-row md:flex-wrap md:items-stretch md:gap-y-6"
-          as="ol"
-          stagger={0.08}
-        >
-          {about.howWeWorkSteps.map((step, index) => (
-            <CanvasStaggerItem
-              key={step.n}
-              as="li"
-              className="relative flex flex-1 flex-col border-t border-[var(--color-border-subtle)] py-5 md:min-w-[9.5rem] md:border-t-0 md:border-l md:px-4 md:py-0 md:first:border-l-0 md:first:pl-0"
-            >
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs text-[var(--color-accent)]">{step.n}</span>
-                <span className="font-[family-name:var(--font-display)] text-lg text-[var(--color-text-strong)]">
-                  {step.t}
-                </span>
-                {index < about.howWeWorkSteps.length - 1 ? (
-                  <ArrowRight
-                    className="ml-auto hidden h-3.5 w-3.5 text-[var(--color-accent)] md:block"
-                    strokeWidth={1.75}
-                    aria-hidden
-                  />
-                ) : null}
-              </div>
-              <span className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
-                {step.d}
-              </span>
-            </CanvasStaggerItem>
-          ))}
-        </CanvasStagger>
-      </section>
-
-      <DeliveryProcess />
-
-      <section className="mt-14 grid gap-10 border-t border-[var(--color-border-subtle)] pt-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-12">
-        <CanvasReveal variant="riseSoft">
-          <p className="canvas-micro text-[var(--color-text-muted)]">{about.whereTitle}</p>
-          <p className="mt-4 text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
-            {about.whereBody}
-          </p>
-        </CanvasReveal>
-        <div>
+    <article className="canvas-about w-full min-w-0 py-4">
+      {mapBackdrop}
+      <div className="canvas-about__content">
+        <section className="canvas-about__mission">
           <CanvasReveal variant="riseSoft">
-            <p className="canvas-micro text-[var(--color-accent)]">{about.beliefsTitle}</p>
+            <p className="font-[family-name:var(--font-display)] text-sm font-medium tracking-[0.14em] text-[var(--color-text-muted)] uppercase sm:text-base">
+              {about.missionEyebrow}
+            </p>
           </CanvasReveal>
-          <CanvasStagger className="mt-6 grid gap-x-6 gap-y-3 sm:grid-cols-2" as="ul" stagger={0.05}>
-            {about.beliefs.map((belief) => (
-              <CanvasStaggerItem
-                key={belief}
-                as="li"
-                className="flex items-start gap-2 border-l border-[var(--color-accent)]/40 pl-3 font-[family-name:var(--font-display)] text-base tracking-[-0.02em] text-[var(--color-text-strong)]"
-              >
-                {belief}
-              </CanvasStaggerItem>
-            ))}
-          </CanvasStagger>
-        </div>
-      </section>
+          <div className="mt-5 min-w-0">
+            <CanvasTextReveal
+              as="h1"
+              lines={splitMissionTitle(about.missionTitle)}
+              className="w-full max-w-full font-[family-name:var(--font-display)] text-[clamp(2rem,5.5vw,3.75rem)] font-medium leading-[1.08] tracking-[-0.04em] text-[var(--color-text-strong)]"
+              delay={0.1}
+              emphasize={[...about.missionEmphasize]}
+            />
+          </div>
+        </section>
 
-      <section className="mt-14 border-t border-[var(--color-border-subtle)] pt-10">
-        <CanvasReveal variant="riseSoft">
-          <p className="canvas-micro text-[var(--color-text-muted)]">{about.teamTitle}</p>
-        </CanvasReveal>
-        <div className="mt-6 grid gap-5 sm:grid-cols-2">
-          {about.paragraphs.map((paragraph, index) => (
-            <CanvasReveal key={index} variant="blurIn" delay={index * 0.05}>
-              <p className="text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
-                {paragraph.blocks.map((block, blockIndex) =>
-                  block.type === "em" ? (
-                    <span key={blockIndex} className="text-[var(--color-text-strong)]">
-                      {block.value}
-                    </span>
-                  ) : (
-                    <span key={blockIndex}>{block.value}</span>
-                  ),
-                )}
-              </p>
-            </CanvasReveal>
-          ))}
-        </div>
-      </section>
+        <section className="mt-14 border-t border-[var(--color-border-subtle)] pt-10">
+          <CanvasReveal variant="riseSoft">
+            <p className="canvas-micro text-[var(--color-accent)]">{about.eyebrow}</p>
+          </CanvasReveal>
+          <div className="mt-6 min-w-0">
+            <CanvasTextReveal
+              as="h2"
+              lines={splitAboutTitle(about.title)}
+              className="w-full max-w-full font-[family-name:var(--font-display)] text-[clamp(1.35rem,2.8vw,2.65rem)] font-medium leading-[1.2] tracking-[-0.035em] text-[var(--color-text-strong)]"
+              delay={0.08}
+              emphasize={[...about.titleEmphasize]}
+            />
+          </div>
+          <CanvasReveal variant="blurIn" delay={0.16} className="mt-6 max-w-3xl">
+            <p className="text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
+              {about.lead}
+            </p>
+          </CanvasReveal>
+        </section>
 
-      <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
-        <CanvasTextRevealInView
-          as="h2"
-          lines={calicapContact.footerTagline.split(". ").map((p, i, a) =>
-            i < a.length - 1 ? `${p}.` : p,
-          )}
-          className="font-[family-name:var(--font-display)] text-[clamp(1.5rem,3.5vw,2.25rem)] font-medium leading-snug tracking-[-0.03em] text-[var(--color-text-strong)]"
-        />
-        <CanvasReveal variant="rise" delay={0.15} className="mt-8 flex flex-wrap gap-3">
-          <ProblemCtaButton>{about.aboutCloseCta}</ProblemCtaButton>
-          <ButtonLink href="/work" variant="ghost" magnetic={false}>
-            {about.secondaryCta}
-          </ButtonLink>
-        </CanvasReveal>
-      </section>
+        <section
+          id={ABOUT_APPROACH_ID}
+          className="mt-14 scroll-mt-8 border-t border-[var(--color-border-subtle)] pt-10"
+        >
+          <CanvasReveal variant="riseSoft">
+            <p className="canvas-micro text-[var(--color-accent)]">{about.approachEyebrow}</p>
+          </CanvasReveal>
+          <CanvasReveal variant="blurIn" className="mt-5 max-w-3xl">
+            <p className="text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
+              {about.approachBody}
+            </p>
+          </CanvasReveal>
+          <CanvasApproachPrinciples />
+        </section>
+
+        <DeliveryProcess />
+
+        <section className="mt-16 border-t border-[var(--color-border-subtle)] pt-12">
+          <CanvasTextRevealInView
+            as="h2"
+            lines={calicapContact.footerTagline.split(". ").map((p, i, a) =>
+              i < a.length - 1 ? `${p}.` : p,
+            )}
+            className="font-[family-name:var(--font-display)] text-[clamp(1.5rem,3.5vw,2.25rem)] font-medium leading-snug tracking-[-0.03em] text-[var(--color-text-strong)]"
+          />
+          <CanvasReveal variant="rise" delay={0.15} className="mt-8 flex flex-wrap gap-3">
+            <ProblemCtaButton>{about.aboutCloseCta}</ProblemCtaButton>
+            <ButtonLink href="/work" variant="ghost" magnetic={false}>
+              {about.secondaryCta}
+            </ButtonLink>
+          </CanvasReveal>
+        </section>
+      </div>
     </article>
   );
 }
 
-function splitAboutTitle(title: string): string[] {
-  const lower = title.toLowerCase();
-  if (lower.includes("before we build")) {
-    return ["We understand", "before we build."];
+const MISSION_ACCENT = new Set(
+  calicapAbout.missionEmphasize.map((w) => w.toLowerCase()),
+);
+const ABOUT_TITLE_ACCENT = new Set(
+  calicapAbout.titleEmphasize.map((w) => w.toLowerCase()),
+);
+
+function splitMissionTitle(title: string): string[] {
+  if (title.toLowerCase().includes("into technology")) {
+    const end = title.trimEnd().endsWith(".") ? "." : "";
+    return ["Convert Ideas", `Into Technology${end}`];
   }
   return [title];
 }
 
+function splitAboutTitle(title: string): string[] {
+  if (title.toLowerCase().includes("before we create")) {
+    return ["We understand", "before we create."];
+  }
+  return [title];
+}
+
+function renderDualColorLine(
+  line: string,
+  accentWords: Set<string>,
+  accentClass: string,
+) {
+  const words = line.split(/\s+/).filter(Boolean);
+  return words.map((word, i) => {
+    const key = word.replace(/[^\w']/g, "").toLowerCase();
+    const accent = accentWords.has(key);
+    return (
+      <span key={`${word}-${i}`}>
+        <span className={accent ? accentClass : undefined}>{word}</span>
+        {i < words.length - 1 ? " " : null}
+      </span>
+    );
+  });
+}
+
 function CaliconAbout() {
   const about = calicapAbout;
-  const [journeyStep, setJourneyStep] = useState(0);
-  const activeJourney = about.howWeWorkSteps[journeyStep];
-  const JourneyIcon = activeJourney.icon;
 
   return (
     <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-12 sm:px-6 lg:px-8 lg:py-14">
-      <header className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-10">
+      <section className="border-b border-[var(--color-border-subtle)] pb-10">
+        <p className="font-[family-name:var(--font-display)] text-sm font-medium tracking-[0.14em] text-slate-500 uppercase sm:text-base">
+          {about.missionEyebrow}
+        </p>
+        <h1 className="mt-4 w-full max-w-4xl min-w-0 font-[family-name:var(--font-display)] text-[clamp(1.85rem,3.8vw,2.85rem)] font-medium leading-[1.1] tracking-tight text-slate-900">
+          {splitMissionTitle(about.missionTitle).map((line) => (
+            <span key={line} className="block">
+              {renderDualColorLine(line, MISSION_ACCENT, "text-gold-600")}
+            </span>
+          ))}
+        </h1>
+      </section>
+
+      <header className="mt-10 grid items-center gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-10">
         <div>
           <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-gold-700/95">
             <Lightbulb className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
             {about.eyebrow}
           </p>
-          <h1 className="mt-4 max-w-xl text-balance font-[family-name:var(--font-display)] text-4xl font-medium tracking-tight text-slate-900 md:text-[2.65rem] md:leading-[1.1]">
-            {about.title}
-          </h1>
+          <h2 className="mt-4 w-full max-w-3xl min-w-0 font-[family-name:var(--font-display)] text-[clamp(1.35rem,2.2vw,1.85rem)] font-medium leading-[1.25] tracking-tight text-slate-900">
+            {splitAboutTitle(about.title).map((line) => (
+              <span key={line} className="block">
+                {renderDualColorLine(line, ABOUT_TITLE_ACCENT, "text-gold-600")}
+              </span>
+            ))}
+          </h2>
+          <p className="mt-5 max-w-xl text-sm leading-relaxed text-slate-600">
+            {about.lead}
+          </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <ButtonLink href={about.primaryHref}>
               <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
@@ -202,136 +267,41 @@ function CaliconAbout() {
         </div>
       </header>
 
-      <section className="mt-12 grid gap-8 md:grid-cols-2 md:gap-12">
-        <div className="border-l-2 border-gold-500/40 pl-5">
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-tight text-slate-900">
-            {about.visionTitle}
-          </h2>
-          <p className="mt-3 text-sm leading-relaxed text-slate-600">{about.visionBody}</p>
-        </div>
-        <div className="border-l-2 border-gold-500/40 pl-5">
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-tight text-slate-900">
-            {about.philosophyTitle}
-          </h2>
-          <p className="mt-3 text-sm leading-relaxed text-slate-600">{about.philosophyBody}</p>
-        </div>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-          {about.howWeWorkTitle}
-        </h2>
-
-        <div className="relative mt-8">
-          <div
-            className="pointer-events-none absolute left-0 right-0 top-[1.125rem] hidden h-px bg-[var(--color-border-subtle)] md:block"
-            aria-hidden
-          />
-          <ol className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-5 md:gap-0">
-            {about.howWeWorkSteps.map((step, index) => {
-              const Icon = step.icon;
-              const isActive = journeyStep === index;
-              return (
-                <li key={step.n}>
-                  <button
-                    type="button"
-                    onClick={() => setJourneyStep(index)}
-                    onMouseEnter={() => setJourneyStep(index)}
-                    className="group flex w-full flex-col items-start text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] md:items-center md:text-center"
-                    aria-current={isActive ? "step" : undefined}
-                  >
-                    <span
-                      className={`relative z-[1] flex h-9 w-9 items-center justify-center rounded-full border transition duration-300 ${
-                        isActive
-                          ? "border-gold-600 bg-gold-600 text-[var(--color-btn-primary-text)] shadow-[0_0_0_4px_var(--color-accent-soft)]"
-                          : "border-[var(--color-border-subtle)] bg-[var(--color-surface)] text-slate-500 group-hover:border-gold-500/50"
-                      }`}
-                    >
-                      <Icon className="h-4 w-4" strokeWidth={2} aria-hidden />
-                    </span>
-                    <span className="mt-3 text-[11px] font-mono text-gold-600">{step.n}</span>
-                    <span
-                      className={`mt-1 font-[family-name:var(--font-display)] text-base ${
-                        isActive ? "text-slate-900" : "text-slate-500"
-                      }`}
-                    >
-                      {step.t}
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-
-        <div className="mt-8 flex items-start gap-4 border-t border-[var(--color-border-subtle)] pt-6">
-          <JourneyIcon className="mt-0.5 h-5 w-5 shrink-0 text-gold-600" strokeWidth={1.75} aria-hidden />
+      <section
+        id={ABOUT_APPROACH_ID}
+        className="mt-12 scroll-mt-8 border-t border-[var(--color-border-subtle)] pt-10"
+      >
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-12">
           <div>
-            <p className="font-[family-name:var(--font-display)] text-xl text-slate-900">
-              {activeJourney.t}
-            </p>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
-              {activeJourney.d}
-            </p>
+            <div className="border-l-2 border-gold-500/45 pl-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-gold-700/90">
+                {about.approachEyebrow}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                {about.approachBody}
+              </p>
+            </div>
           </div>
+          <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-[var(--color-border-subtle)] lg:border-y lg:border-[var(--color-border-subtle)]">
+            {about.approachPrinciples.map(({ label, value, icon: Icon }) => (
+              <div
+                key={label}
+                className="rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)]/55 px-4 py-4 lg:rounded-none lg:border-0 lg:bg-transparent lg:px-0 lg:py-4"
+              >
+                <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                  <Icon className="h-3.5 w-3.5 shrink-0 text-gold-600" strokeWidth={2} aria-hidden />
+                  <span>{label}</span>
+                </dt>
+                <dd className="mt-2 text-sm font-medium leading-relaxed text-slate-800">
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
       <DeliveryProcess />
-
-      <section className="mt-12 grid gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-10">
-        <div>
-          <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-            {about.whereTitle}
-          </h2>
-          <p className="mt-3 text-sm leading-relaxed text-slate-600">{about.whereBody}</p>
-        </div>
-        <div>
-          <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-            {about.beliefsTitle}
-          </h2>
-          <ul className="mt-5 columns-1 gap-x-10 sm:columns-2">
-            {about.beliefs.map((belief, index) => (
-              <li
-                key={belief}
-                className="mb-3 flex break-inside-avoid items-baseline gap-2.5 text-sm text-slate-700"
-              >
-                <span className="font-mono text-[11px] text-gold-600">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span>{belief}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-          {about.teamTitle}
-        </h2>
-        <ul className="mt-5 divide-y divide-[var(--color-border-subtle)] border-y border-[var(--color-border-subtle)]">
-          {about.paragraphs.map((paragraph, index) => {
-            const Icon = paragraph.icon;
-            return (
-              <li key={index} className="flex gap-4 py-5">
-                <Icon className="mt-0.5 h-5 w-5 shrink-0 text-gold-600" strokeWidth={1.75} aria-hidden />
-                <p className="text-sm leading-relaxed text-slate-600">
-                  {paragraph.blocks.map((block, blockIndex) =>
-                    block.type === "em" ? (
-                      <span key={blockIndex} className="font-medium text-slate-800">
-                        {block.value}
-                      </span>
-                    ) : (
-                      <span key={blockIndex}>{block.value}</span>
-                    ),
-                  )}
-                </p>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
 
       <section className="mt-12 flex flex-col gap-4 border-t border-[var(--color-border-subtle)] pt-8 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
         <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-tight text-slate-900 sm:text-2xl">

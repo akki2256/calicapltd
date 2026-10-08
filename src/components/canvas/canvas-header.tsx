@@ -6,29 +6,29 @@ import { useEffect, useState } from "react";
 import { BrandLogo } from "@/components/brand-logo";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 
+/** Home hero lockup clearance — tuck only when the index headline rises into the mark. */
+const BRAND_CLEARANCE_PX = 112;
+
 export function CanvasHeader() {
   const { open } = useCanvasMenu();
   const pathname = usePathname();
-  const isHome = pathname === "/";
   const [tucked, setTucked] = useState(false);
-  /** Larger home lockup needs a taller clear band before it tucks away. */
-  const brandClearancePx = isHome ? 112 : 88;
 
   useEffect(() => {
-    const hero = document.querySelector<HTMLElement>('[data-canvas-section="hero"]');
-    const headline =
-      hero?.querySelector<HTMLElement>(".canvas-home-headline, h1") ??
-      document.querySelector<HTMLElement>(".canvas-main-inner h1");
+    const isHome = pathname === "/";
 
     const update = () => {
-      if (headline) {
-        const top = headline.getBoundingClientRect().top;
-        setTucked(top < brandClearancePx);
-        return;
+      if (isHome) {
+        const hero = document.querySelector<HTMLElement>('[data-canvas-section="hero"]');
+        const headline = hero?.querySelector<HTMLElement>(".canvas-home-headline, h1");
+        if (headline) {
+          setTucked(headline.getBoundingClientRect().top < BRAND_CLEARANCE_PX);
+          return;
+        }
       }
 
-      // Inner pages without a measured headline: hide after leaving the first screen
-      // so the fixed mark never stacks on the footer lockup.
+      // Inner pages: keep the index-scale mark visible at the top; tuck after
+      // leaving the first screen so it never stacks on the footer lockup.
       setTucked(window.scrollY > window.innerHeight * 0.55);
     };
 
@@ -39,7 +39,7 @@ export function CanvasHeader() {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, [pathname, brandClearancePx]);
+  }, [pathname]);
 
   const hidden = open || tucked;
 
@@ -51,13 +51,13 @@ export function CanvasHeader() {
     >
       <Link
         href="/"
-        className={`brand-logo-link canvas-brand group inline-flex items-center${isHome ? " canvas-brand--home" : ""}`}
+        className="brand-logo-link canvas-brand group inline-flex items-center"
         rel="home"
         aria-label="Calicon home"
         tabIndex={hidden ? -1 : undefined}
       >
         <BrandLogo
-          size={isHome ? "lg" : "header"}
+          size="lg"
           variant="on-dark"
           layout="lockup"
           priority

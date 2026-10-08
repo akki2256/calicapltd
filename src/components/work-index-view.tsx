@@ -79,7 +79,7 @@ function CanvasWorkIndex() {
   const studies = studiesForFilter(filter);
 
   return (
-    <div className="mx-auto max-w-[920px] py-4">
+    <div className="w-full min-w-0 py-4">
       <CanvasReveal variant="riseSoft">
         <p className="canvas-micro text-[var(--color-accent)]">{index.eyebrow}</p>
       </CanvasReveal>

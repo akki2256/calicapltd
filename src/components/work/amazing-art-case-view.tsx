@@ -138,7 +138,7 @@ function CanvasCase() {
   const reduced = usePrefersReducedMotion();
 
   return (
-    <article className="mx-auto max-w-[920px] py-4">
+    <article className="w-full min-w-0 py-4">
       <SharedTracker />
 
       <CanvasReveal variant="riseSoft">

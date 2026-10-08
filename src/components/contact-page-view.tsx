@@ -30,7 +30,7 @@ function CanvasContact({ initialMode }: Props) {
   const copy = calicapDiscovery;
 
   return (
-    <article className="canvas-contact mx-auto max-w-[920px] py-4">
+    <article className="canvas-contact w-full min-w-0 py-4">
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },

@@ -90,6 +90,7 @@ export function creativeWorkJsonLd(input: {
 /** Static marketing paths included in the sitemap (plus dynamic work slugs). */
 export const STATIC_SITEMAP_PATHS = [
   "/",
+  "/services",
   ...PILLAR_PATHS,
   ...SERVICE_PAGE_PATHS,
   "/work",

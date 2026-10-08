@@ -37,7 +37,7 @@ export function CanvasPillarView({ pillarId }: Props) {
   const approach = calicapServicesApproach;
 
   return (
-    <article className="canvas-pillar mx-auto max-w-[1080px] px-0 py-4">
+    <article className="canvas-pillar w-full min-w-0 py-4">
       <p className="canvas-micro text-[var(--color-accent)]">{page.eyebrow}</p>
       <CanvasTextScrub
         as="h1"
