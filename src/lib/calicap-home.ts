@@ -13,14 +13,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { calicapWorkStudies } from "@/lib/calicap-work";
-import {
-  CUSTOMER_OUTCOMES,
-  PILLARS,
-} from "@/lib/brand-architecture";
+import { CUSTOMER_OUTCOMES } from "@/lib/brand-architecture";
 import { siteImages } from "@/lib/site-images";
 
-export const HOME_POSITIONING_ID = "positioning";
-export const HOME_BUILD_ID = "what-we-build";
 export const HOME_IMPACT_ID = "impact";
 
 /**
@@ -38,9 +33,9 @@ export type HomeImpactMetric = {
 };
 
 export const calicapHomeImpact = {
-  eyebrow: "Selected results",
+  //eyebrow: "Selected results",
   title: "Built for measurable impact.",
-  body: "Technology designed to help improve growth, efficiency, visibility, and performance.",
+  //body: "Technology designed to help improve growth, efficiency, visibility, and performance.",
   attribution: "Measured impact across selected projects",
   metrics: [
     {
@@ -83,29 +78,13 @@ export const calicapHomeHero = {
   /** Opens two-path chooser — not a direct form dump */
   primaryOpensChooser: true,
   secondaryCta: "Explore services",
-  secondaryHref: "/build",
-  stayOn:
-    "Consulting sits with Transform when a plan is needed. Evolve covers support and continuous improvement after launch.",
+  secondaryHref: "/services",
   bannerSrc: "/images/home-hero-banner.png",
   sideImage: siteImages.heroWorkspace,
 } as const;
 
-/** Problem recognition + differentiation */
+/** Entry framing (home) */
 export const calicapHomeRecognition = {
-  title: "Your business is moving forward. Your technology should too.",
-  intro:
-    "Technology becomes a constraint when it no longer matches how work actually happens.",
-  examples: [
-    "Too much manual work",
-    "Outdated software",
-    "Disconnected systems",
-    "Processes spread across spreadsheets, email, and multiple tools",
-  ],
-  differentiator: "We understand before we build.",
-  differentiatorLead:
-    "You don't need to know exactly what technology you need. You just need to know what you want to achieve.",
-  differentiatorBody:
-    "Goals, workflows, and direction come first — then the approach that fits. No rigid packages.",
   bridgeTitle: "Bring the problem. Build the solution.",
   bridgeBody:
     "A clear brief, an early idea, something inefficient, or a system that needs to change — the approach adapts to where things start.",
@@ -116,35 +95,8 @@ export const calicapHomeRecognition = {
   problemCtaOpensChooser: true,
 } as const;
 
-export const calicapHomePrinciples: {
-  label: string;
-  value: string;
-  icon: LucideIcon;
-}[] = [
-  {
-    label: "Understand",
-    value: "Goals, problems, workflows, and future direction — before deciding what to build.",
-    icon: Compass,
-  },
-  {
-    label: "Find the right approach",
-    value: "Use existing technology where it makes sense. Build custom where it creates real value.",
-    icon: ListChecks,
-  },
-  {
-    label: "Build around the real need",
-    value: "Technology should fit the way things actually work.",
-    icon: Workflow,
-  },
-  {
-    label: "Move & evolve",
-    value: "Start with what matters, move efficiently, and adapt as needs change.",
-    icon: Rocket,
-  },
-];
-
 export const calicapHomeDiscovery = {
-  title: "What do you need to move forward?",
+  title: "What we can help you with?",
   intro: "Technology built around what needs to happen next.",
 } as const;
 
@@ -199,27 +151,6 @@ export const calicapHomeEntryDoors: {
     icon: RefreshCw,
   },
 ];
-
-export const calicapHomeServicesSection = {
-  title: "We build technology around your business.",
-  intro:
-    "Four ways in — create what's needed, modernize what exists, remove manual work, and keep systems moving as requirements change.",
-  image: siteImages.analyticsDashboard,
-  overviewLabel: "Explore Build",
-  workLabel: "Case studies",
-} as const;
-
-export const calicapHomeServices: {
-  title: string;
-  body: string;
-  href: string;
-  icon: LucideIcon;
-}[] = PILLARS.map((p) => ({
-  title: p.label,
-  body: p.summary,
-  href: p.href,
-  icon: p.icon,
-}));
 
 export const calicapHomeWorkSection = {
   title: "What we've built.",
@@ -323,7 +254,7 @@ export const calicapHomeCta = {
   primaryCta: "Tell us your problem",
   primaryOpensChooser: true,
   secondaryCta: "Explore services",
-  secondaryHref: "/build",
+  secondaryHref: "/services",
   workLabel: "selected work",
   bodyTail: "See how similar teams started.",
   backdrop: siteImages.cloudNetwork,

@@ -7,8 +7,7 @@ import { MobileNav } from "@/components/mobile-nav";
 import { useContactPathChooser } from "@/components/contact-path-chooser";
 import { CALICON_DESKTOP_NAV_LINKS } from "@/lib/primary-nav";
 
-/** Nav without Contact — CTA covers that path on desktop */
-const desktopLinks = CALICON_DESKTOP_NAV_LINKS.filter((l) => l.href !== "/contact");
+const desktopLinks = CALICON_DESKTOP_NAV_LINKS;
 
 export function SiteHeader() {
   const { openChooser } = useContactPathChooser();

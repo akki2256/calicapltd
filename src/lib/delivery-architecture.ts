@@ -4,7 +4,7 @@
  * Distinct from the customer journey on the homepage
  * (Problem → Strategy → Solution → Launch → Growth).
  * That journey is how we think about a transformation.
- * This module is how we deliver: Understand → Plan → Build → Test → Launch → Evolve.
+ * This module is how we deliver: Envision → Create → Transform.
  *
  * Depth is flexible by project. Do not invent capabilities or certifications.
  * Future Calicon-owned products, when they exist, belong under the relevant pillar —
@@ -15,9 +15,7 @@ import {
   Boxes,
   Eye,
   Handshake,
-  PenLine,
   RefreshCw,
-  Rocket,
   Scale,
   Shield,
   Wrench,
@@ -26,76 +24,60 @@ import {
 import type { PillarId } from "@/lib/brand-architecture";
 
 export const DELIVERY_PROCESS = {
-  eyebrow: "Delivery",
   title: "How we deliver",
   intro: "A delivery approach suited to the project — not a single methodology for every engagement.",
   principle:
-    "Understand the problem. Choose what fits. Build it properly. Test it thoroughly. Launch it confidently. Keep improving when needed.",
-  /** Glanceable sequence chips — mirrors principle without the prose */
-  principleBeats: [
-    "Understand",
-    "Choose",
-    "Build",
-    "Test",
-    "Launch",
-    "Improve",
-  ] as const,
-  sequence: "Understand → Plan → Build → Test → Launch → Evolve",
+    "Envision the work. Create it properly. Transform it as needs change.",
+  sequence: "Envision → Create → Transform",
   steps: [
     {
       n: "01",
-      t: "Understand",
-      lead: "Before deciding what to build",
-      d: "The goal, the problem, the people involved, the constraints, and what success looks like — before deciding what to build.",
+      t: "Envision",
+      lead: "Understand the need, then plan enough to start",
+      bullets: [
+        "Clarify the goal, problem, people involved, and constraints",
+        "Define what success looks like before choosing a solution",
+        "Set scope, direction, and technology to match the complexity",
+        "Plan enough to start well — not process for its own sake",
+      ],
       icon: Eye,
     },
     {
       n: "02",
-      t: "Plan",
-      lead: "Enough to start well",
-      d: "Scope, solution direction, technology, and a delivery approach that matches the complexity — enough to start well, not a ceremony for its own sake.",
-      icon: PenLine,
-    },
-    {
-      n: "03",
-      t: "Build",
-      lead: "Keep the work moving",
-      d: "Design, develop, and integrate. Iterate where it helps. Keep the work moving without adding unnecessary process.",
+      t: "Create",
+      lead: "Build, prove, and put it into operation",
+      bullets: [
+        "Design, develop, and integrate without unnecessary process",
+        "Iterate where it helps and keep the work moving",
+        "Test as part of delivery",
+        "Deploy, hand over, and support the transition as the engagement needs",
+      ],
       icon: Boxes,
     },
     {
-      n: "04",
-      t: "Test",
-      lead: "Thorough by default",
-      d: "Quality is part of delivery, not a leftover step. Testing depth follows the system — thorough by default, never theatrical.",
-      icon: BadgeCheck,
-    },
-    {
-      n: "05",
-      t: "Launch",
-      lead: "Into real operation",
-      d: "Put the solution into operation: deploy, hand over, and support the transition in the way the engagement needs.",
-      icon: Rocket,
-    },
-    {
-      n: "06",
-      t: "Evolve",
-      lead: "Improve when useful",
-      d: "A defined support period after launch. Ongoing maintenance, improvements, and new work when they are useful — not a required contract.",
+      n: "03",
+      t: "Transform",
+      lead: "Keep improving when it is useful",
+      bullets: [
+        "Support the solution after launch",
+        "Maintain and improve the system as priorities change",
+        "Take on new work when business demands",
+        "Be the long-term tech partner businesses need",
+      ],
       icon: RefreshCw,
     },
   ] as const satisfies readonly {
     n: string;
     t: string;
     lead: string;
-    d: string;
+    bullets: readonly string[];
     icon: LucideIcon;
   }[],
 } as const;
 
 /** Homepage — short, sits under the existing customer journey */
 export const DELIVERY_HOME_NOTE =
-  "That's how we think about the work. How we execute — understand, plan, build, test, launch, evolve — scales with the project's complexity. Simple work starts efficiently. Complex work gets deeper discovery, architecture, and testing.";
+  "That's how we think about the work. How we execute — envision, create, transform — scales with the project's complexity. Simple work starts efficiently. Complex work gets deeper discovery, architecture, and testing.";
 
 export const DELIVERY_PRACTICES = [
   {

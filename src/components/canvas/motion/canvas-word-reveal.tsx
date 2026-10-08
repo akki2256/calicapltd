@@ -2,6 +2,10 @@
 
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { Fragment, useMemo, useRef } from "react";
+import {
+  isCanvasEmphasized,
+  resolveCanvasEmphasize,
+} from "@/lib/canvas-dual-color";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { canvasDur, canvasEase, canvasStagger } from "./tokens";
 
@@ -10,8 +14,17 @@ type WordRevealProps = {
   className?: string;
   as?: "h1" | "h2" | "h3" | "p";
   delay?: number;
+  /** Accent words. Omit for auto dual-color; pass `[]` to disable. */
   emphasize?: string[];
 };
+
+function splitWords(text: string): string[] {
+  return text.split(/\s+/).filter(Boolean);
+}
+
+function DualWord({ word, hot }: { word: string; hot: boolean }) {
+  return <span className={hot ? "canvas-em" : undefined}>{word}</span>;
+}
 
 /** Word-level entrance for major statements */
 export function CanvasWordReveal({
@@ -19,26 +32,38 @@ export function CanvasWordReveal({
   className,
   as = "h2",
   delay = 0,
-  emphasize = [],
+  emphasize,
 }: WordRevealProps) {
   const reduced = usePrefersReducedMotion();
-  const words = useMemo(() => text.split(/\s+/).filter(Boolean), [text]);
+  const words = useMemo(() => splitWords(text), [text]);
+  const emp = useMemo(
+    () => resolveCanvasEmphasize(words, emphasize),
+    [words, emphasize],
+  );
   const Tag = as;
-  const emp = new Set(emphasize.map((w) => w.toLowerCase()));
 
   if (reduced) {
-    return <Tag className={className}>{text}</Tag>;
+    return (
+      <Tag className={`${className ?? ""} canvas-wrap-heading canvas-text-safe`}>
+        {words.map((word, i) => (
+          <Fragment key={`${word}-${i}`}>
+            <DualWord word={word} hot={isCanvasEmphasized(word, emp)} />
+            {i < words.length - 1 ? " " : null}
+          </Fragment>
+        ))}
+      </Tag>
+    );
   }
 
   return (
-    <Tag className={`${className ?? ""} canvas-wrap-heading`}>
+    <Tag className={`${className ?? ""} canvas-wrap-heading canvas-text-safe`}>
       {words.map((word, i) => {
-        const hot = emp.has(word.replace(/[^\w']/g, "").toLowerCase());
+        const hot = isCanvasEmphasized(word, emp);
         return (
           <Fragment key={`${word}-${i}`}>
-            <span className="inline-block overflow-hidden align-bottom">
+            <span className="inline-block max-w-full overflow-hidden align-bottom">
               <motion.span
-                className={`inline-block whitespace-nowrap ${hot ? "text-[var(--color-accent)]" : ""}`}
+                className={`inline-block whitespace-nowrap${hot ? " canvas-em" : ""}`}
                 initial={{ y: "115%", opacity: 0, rotateX: 18 }}
                 whileInView={{ y: "0%", opacity: 1, rotateX: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
@@ -76,16 +101,12 @@ function ScrubWord({
   const opacity = useTransform(progress, [start, end], [0.22, 1]);
   return (
     <motion.span
-      className={`inline-block whitespace-nowrap ${hot ? "text-[var(--color-accent)]" : ""}`}
+      className={`inline-block whitespace-nowrap${hot ? " canvas-em" : ""}`}
       style={{ opacity }}
     >
       {word}
     </motion.span>
   );
-}
-
-function splitWords(text: string): string[] {
-  return text.split(/\s+/).filter(Boolean);
 }
 
 type ScrubProps = {
@@ -96,6 +117,7 @@ type ScrubProps = {
   className?: string;
   lineClassName?: string;
   as?: "h1" | "h2" | "h3" | "p";
+  /** Accent words. Omit for auto dual-color; pass `[]` to disable. */
   emphasize?: string[];
   id?: string;
 };
@@ -103,6 +125,7 @@ type ScrubProps = {
 /**
  * Scroll scrub — words resolve from muted → strong as the headline progresses
  * through the viewport. Default Canvas treatment for section headlines.
+ * Dual-color: curated or auto accent words via `.canvas-em`.
  */
 export function CanvasTextScrub({
   text,
@@ -110,7 +133,7 @@ export function CanvasTextScrub({
   className,
   lineClassName,
   as = "h2",
-  emphasize = [],
+  emphasize,
   id,
 }: ScrubProps) {
   const ref = useRef<HTMLElement>(null);
@@ -125,7 +148,10 @@ export function CanvasTextScrub({
     [lineList],
   );
   const total = Math.max(flatWords.length, 1);
-  const emp = new Set(emphasize.map((w) => w.toLowerCase()));
+  const emp = useMemo(
+    () => resolveCanvasEmphasize(flatWords, emphasize),
+    [flatWords, emphasize],
+  );
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 0.9", "start 0.25"],
@@ -134,12 +160,24 @@ export function CanvasTextScrub({
 
   if (reduced) {
     return (
-      <Tag id={id} className={`${className ?? ""} canvas-wrap-heading`} ref={ref as never}>
-        {lineList.map((line) => (
-          <span key={line} className={`block ${lineClassName ?? ""}`}>
-            {line}
-          </span>
-        ))}
+      <Tag
+        id={id}
+        className={`${className ?? ""} canvas-wrap-heading canvas-text-safe`}
+        ref={ref as never}
+      >
+        {lineList.map((line, lineIdx) => {
+          const words = splitWords(line);
+          return (
+            <span key={`${line}-${lineIdx}`} className={`block ${lineClassName ?? ""}`}>
+              {words.map((word, i) => (
+                <Fragment key={`${word}-${i}`}>
+                  <DualWord word={word} hot={isCanvasEmphasized(word, emp)} />
+                  {i < words.length - 1 ? " " : null}
+                </Fragment>
+              ))}
+            </span>
+          );
+        })}
       </Tag>
     );
   }
@@ -149,7 +187,7 @@ export function CanvasTextScrub({
   return (
     <Tag
       id={id}
-      className={`${className ?? ""} canvas-wrap-heading`}
+      className={`${className ?? ""} canvas-wrap-heading canvas-text-safe`}
       ref={ref as never}
       data-canvas-authored=""
     >
@@ -161,7 +199,7 @@ export function CanvasTextScrub({
               const idx = wordIndex++;
               const start = idx / total;
               const end = Math.min(1, (idx + 1.35) / total);
-              const hot = emp.has(word.replace(/[^\w']/g, "").toLowerCase());
+              const hot = isCanvasEmphasized(word, emp);
               return (
                 <Fragment key={`${word}-${idx}`}>
                   <ScrubWord

@@ -11,14 +11,9 @@ import {
   isCountablePercentValue,
 } from "@/lib/calicap-home";
 
-const HEADLINE_LINES = ["Built for", "measurable", "impact."] as const;
+const HEADLINE_LINES = ["What changes", "when we work."] as const;
 
-const ROW_META = [
-  { category: "GROWTH", direction: "up" as const },
-  { category: "VISIBILITY", direction: "up" as const },
-  { category: "PERFORMANCE", direction: "up" as const },
-  { category: "EFFICIENCY", direction: "down" as const },
-] as const;
+const ROW_DIRECTION = ["up", "up", "up", "down"] as const;
 
 function MetricValue({ value, active }: { value: string; active: boolean }) {
   const reduced = usePrefersReducedMotion();
@@ -53,19 +48,16 @@ function ResultRow({
   index,
   value,
   label,
-  category,
   direction,
   active,
 }: {
   index: number;
   value: string;
   label: string;
-  category: string;
   direction: "up" | "down";
   active: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
-  const pad = String(index + 1).padStart(2, "0");
   const arrow = direction === "up" ? "↑" : "↓";
 
   return (
@@ -74,23 +66,18 @@ function ResultRow({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="canvas-impact-rule" aria-hidden />
+      {/* Skip the first top rule — section already has a border; avoids the extra small line */}
+      {index > 0 ? <div className="canvas-impact-rule" aria-hidden /> : null}
       <div className="canvas-impact-row-body">
-        <span className="canvas-impact-index" aria-hidden>
-          {pad}
-        </span>
-        <div className="canvas-impact-value-clip">
-          <p className="canvas-impact-value whitespace-nowrap">
-            <MetricValue value={value} active={active} />
-          </p>
-        </div>
-        <div className="canvas-impact-copy">
-          <p className="canvas-impact-label">{label}</p>
-          <p className="canvas-impact-category">
-            <span aria-hidden>{arrow} </span>
-            {category}
-          </p>
-        </div>
+        <p className="canvas-impact-value whitespace-nowrap">
+          <MetricValue value={value} active={active} />
+        </p>
+        <p className="canvas-impact-copy">
+          <span className="canvas-impact-arrow" aria-hidden>
+            {arrow}
+          </span>
+          <span className="canvas-impact-label">{label}</span>
+        </p>
       </div>
     </li>
   );
@@ -127,6 +114,7 @@ export function CanvasImpactMetrics() {
                 lines={[...HEADLINE_LINES]}
                 className="canvas-impact-headline"
                 lineClassName="canvas-impact-headline-line"
+                emphasize={["changes", "work"]}
               />
               <p className="canvas-impact-body">{impact.body}</p>
             </aside>
@@ -135,15 +123,14 @@ export function CanvasImpactMetrics() {
               <div className="canvas-impact-track">
                 <ul className="canvas-impact-rows">
                   {impact.metrics.map((metric, i) => {
-                    const meta = ROW_META[i] ?? ROW_META[0];
+                    const direction = ROW_DIRECTION[i] ?? "up";
                     return (
                       <ResultRow
                         key={metric.label}
                         index={i}
                         value={metric.value}
                         label={metric.label}
-                        category={meta.category}
-                        direction={meta.direction}
+                        direction={direction}
                         active={reduced || inView}
                       />
                     );

@@ -29,7 +29,7 @@ export function MobileNav() {
         </span>
       </summary>
       <div className="absolute right-0 z-50 mt-2 max-h-[min(70vh,28rem)] w-[min(16rem,calc(100vw-2rem))] overflow-y-auto surface-card rounded-xl p-2 shadow-xl">
-        {PRIMARY_NAV_LINKS.filter((l) => l.href !== "/contact").map((item) => {
+        {PRIMARY_NAV_LINKS.map((item) => {
           const Icon = serviceHrefIcon(item.href);
           return (
             <Link

@@ -2,10 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  Briefcase,
-  Compass,
   FileText,
-  Handshake,
   Layers,
   MessageCircle,
 } from "lucide-react";
@@ -15,22 +12,15 @@ import { CaliconImpactMetrics } from "@/components/calicon-impact-metrics";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { SITE_NAME, pageMetadata } from "@/lib/seo";
 import {
-  HOME_BUILD_ID,
-  HOME_POSITIONING_ID,
   calicapHomeCta,
   calicapHomeEntryDoors,
   calicapHomeHero,
   calicapHomeOutcomesSection,
-  calicapHomePrinciples,
-  calicapHomeProcess,
   calicapHomeRecognition,
-  calicapHomeServices,
-  calicapHomeServicesSection,
   calicapHomeWorkSection,
   calicapHomeWorkTeasers,
 } from "@/lib/calicap-home";
 import { calicapDocumentedOutcomes } from "@/lib/calicap-work";
-import { DELIVERY_HOME_NOTE } from "@/lib/delivery-architecture";
 import { siteImages } from "@/lib/site-images";
 
 export const metadata = {
@@ -48,14 +38,12 @@ export const metadata = {
 export default function HomePage() {
   const hero = calicapHomeHero;
   const recognition = calicapHomeRecognition;
-  const servicesSection = calicapHomeServicesSection;
   const workSection = calicapHomeWorkSection;
-  const process = calicapHomeProcess;
   const cta = calicapHomeCta;
 
   return (
     <>
-      <section id={HOME_POSITIONING_ID} className="scroll-mt-0">
+      <section className="scroll-mt-0">
         {/* Full viewport below sticky Calicon header (4.25rem) — Calicon home only */}
         <div className="relative flex min-h-[calc(100dvh-4.25rem)] flex-col justify-center overflow-hidden">
           <div className="home-hero-media pointer-events-none absolute inset-0 z-0">
@@ -127,51 +115,6 @@ export default function HomePage() {
 
       <section className="border-t border-[var(--color-border-subtle)]">
         <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
-          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-12">
-            <div>
-              <h2 className="max-w-xl text-balance font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900 md:text-[2rem] md:leading-snug">
-                {recognition.title}
-              </h2>
-              <p className="mt-4 max-w-lg text-slate-600">{recognition.intro}</p>
-              <ul className="mt-5 grid gap-2 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-2">
-                {recognition.examples.map((item) => (
-                  <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-slate-600">
-                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gold-600" aria-hidden />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8 border-l-2 border-gold-500/45 pl-5">
-                <p className="text-lg font-medium leading-snug text-slate-800">
-                  {recognition.differentiator}
-                </p>
-                <p className="mt-2 text-base font-medium leading-relaxed text-slate-800">
-                  {recognition.differentiatorLead}
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  {recognition.differentiatorBody}
-                </p>
-              </div>
-            </div>
-
-            <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-[var(--color-border-subtle)] lg:border-y lg:border-[var(--color-border-subtle)]">
-              {calicapHomePrinciples.map(({ label, value, icon: Icon }) => (
-                <div
-                  key={label}
-                  className="rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)]/55 px-4 py-4 lg:rounded-none lg:border-0 lg:bg-transparent lg:px-0 lg:py-4"
-                >
-                  <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                    <Icon className="h-3.5 w-3.5 shrink-0 text-gold-600" strokeWidth={2} aria-hidden />
-                    <span>{label}</span>
-                  </dt>
-                  <dd className="mt-2 text-sm font-medium leading-relaxed text-slate-800">
-                    {value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-
           <CaliconOutcomesRail />
 
           <div className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
@@ -201,124 +144,6 @@ export default function HomePage() {
                 {recognition.problemCtaLabel}
               </ProblemCtaButton>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id={HOME_BUILD_ID}
-        className="home-band scroll-mt-8 border-t border-[var(--color-border-subtle)] bg-[var(--color-surface-muted)]"
-      >
-        <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
-          <div className="home-split grid gap-8 lg:grid-cols-[1fr_minmax(0,400px)] lg:items-center lg:gap-10">
-            <div>
-              <h2 className="flex min-w-0 flex-wrap items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
-                <Briefcase className="h-7 w-7 text-gold-600" strokeWidth={1.75} aria-hidden />
-                {servicesSection.title}
-              </h2>
-            </div>
-            <div className="home-brochure-figure relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg shadow-slate-900/10 ring-1 ring-slate-200/80">
-              <Image
-                src={servicesSection.image.src}
-                alt={servicesSection.image.alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 400px"
-              />
-            </div>
-          </div>
-          <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {calicapHomeServices.map((s) => {
-              const Icon = s.icon;
-              return (
-                <Link
-                  key={s.href}
-                  href={s.href}
-                  className="group surface-card block rounded-2xl p-5 transition hover:border-gold-500/30"
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-accent-soft)]">
-                      <Icon className="h-4 w-4 text-gold-700" strokeWidth={2} aria-hidden />
-                    </span>
-                    <div className="min-w-0">
-                      <h3 className="font-[family-name:var(--font-display)] text-lg leading-snug text-slate-900 group-hover:text-slate-950">
-                        {s.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-600">{s.body}</p>
-                      <p className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-gold-600">
-                        Explore
-                        <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-          <p className="mt-8 max-w-2xl text-sm leading-relaxed text-slate-500">
-            <Handshake className="mb-0.5 mr-1.5 inline h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-            {hero.stayOn}
-          </p>
-          <div className="mt-5 flex flex-wrap items-center gap-x-8 gap-y-2">
-            <Link
-              href="/build"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold-600 hover:text-gold-700"
-            >
-              <Layers className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-              {servicesSection.overviewLabel}
-              <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
-            </Link>
-            <Link
-              href="/work"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-slate-900"
-            >
-              <FileText className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-              {servicesSection.workLabel}
-              <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-[var(--color-border-subtle)]">
-        <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
-          <h2 className="flex min-w-0 flex-wrap items-center gap-2 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
-            <Compass className="h-7 w-7 text-gold-600" strokeWidth={1.75} aria-hidden />
-            {process.title}
-          </h2>
-          <ol className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-            {process.steps.map((s) => {
-              const Icon = s.icon;
-              return (
-                <li key={s.n} className="surface-card rounded-2xl p-4">
-                  <div className="flex items-center gap-2">
-                    <Icon className="h-4 w-4 shrink-0 text-gold-600" strokeWidth={2} aria-hidden />
-                    <span className="text-[11px] font-mono text-gold-600">{s.n}</span>
-                    <p className="font-medium text-slate-800">{s.t}</p>
-                  </div>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500">{s.d}</p>
-                </li>
-              );
-            })}
-          </ol>
-
-          <div className="mt-10 border-t border-[var(--color-border-subtle)] pt-8">
-            <h3 className="max-w-xl font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-              {process.traitsTitle}
-            </h3>
-            <dl className="mt-6 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
-              {process.traits.map(({ label, value }) => (
-                <div key={label} className="border-l-2 border-gold-500/35 pl-4">
-                  <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                    {label}
-                  </dt>
-                  <dd className="mt-1.5 text-sm leading-relaxed text-slate-600">{value}</dd>
-                </div>
-              ))}
-            </dl>
-            <p className="mt-7 max-w-2xl text-sm leading-relaxed text-slate-500">
-              {DELIVERY_HOME_NOTE}
-            </p>
           </div>
         </div>
       </section>

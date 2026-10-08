@@ -46,7 +46,7 @@ export function CanvasFooter() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)]"
+                    className="text-sm text-[var(--color-text-muted)] transition hover:text-[var(--color-link-hover)]"
                   >
                     {l.label}
                   </Link>
@@ -61,7 +61,7 @@ export function CanvasFooter() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)]"
+                    className="text-sm text-[var(--color-text-muted)] transition hover:text-[var(--color-link-hover)]"
                   >
                     {l.label}
                   </Link>
@@ -84,7 +84,7 @@ export function CanvasFooter() {
           </p>
           <Link
             href="/privacy"
-            className="text-xs text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)]"
+            className="text-xs text-[var(--color-text-muted)] transition hover:text-[var(--color-link-hover)]"
           >
             Privacy
           </Link>

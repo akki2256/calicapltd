@@ -6,14 +6,12 @@ import { BrandLogo } from "@/components/brand-logo";
 import { CANVAS_NAV_LINKS } from "@/lib/themes";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 import { CanvasBurger } from "@/components/canvas/canvas-burger";
-import { useContactPathChooser } from "@/components/contact-path-chooser";
 
 export function CanvasNav() {
   const pathname = usePathname();
   const { open, toggleMenu, closeMenu } = useCanvasMenu();
-  const { openChooser } = useContactPathChooser();
 
-  const navLinks = CANVAS_NAV_LINKS.filter((l) => l.href !== "/contact");
+  const navLinks = CANVAS_NAV_LINKS;
 
   return (
     <nav className="canvas-nav" aria-label="Primary">
@@ -38,10 +36,16 @@ export function CanvasNav() {
             <Link
               href="/"
               onClick={closeMenu}
-              className="brand-logo-link inline-flex"
+              className="brand-logo-link canvas-menu-brand group inline-flex items-center"
               aria-label="Calicon home"
             >
-              <BrandLogo size="md" variant="on-dark" layout="lockup" label="" />
+              <BrandLogo
+                size="lg"
+                variant="on-dark"
+                layout="lockup"
+                priority
+                label=""
+              />
             </Link>
           </div>
 
@@ -63,47 +67,20 @@ export function CanvasNav() {
                   <Link
                     href={item.href}
                     onClick={closeMenu}
-                    className={`group flex items-baseline justify-between gap-6 py-4 transition-colors duration-500 sm:py-5 ${
+                    className={`group block py-4 transition-colors duration-500 sm:py-5 ${
                       active
                         ? "text-[var(--color-text-strong)]"
-                        : "text-[var(--color-text-muted)] hover:text-[var(--color-text-strong)]"
+                        : "text-[var(--color-text-muted)] hover:text-[var(--color-link-hover)]"
                     }`}
                   >
                     <span className="font-[family-name:var(--font-display)] text-[clamp(1.5rem,4.5vw,2.75rem)] font-medium tracking-[-0.03em]">
                       {item.label}
-                    </span>
-                    <span
-                      className={`font-mono text-[10px] tracking-[0.16em] ${
-                        active ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)]"
-                      }`}
-                    >
-                      {String(index + 1).padStart(2, "0")}
                     </span>
                   </Link>
                 </li>
               );
             })}
           </ul>
-
-          <div className="mt-4 flex shrink-0 flex-wrap items-center gap-6 border-t border-[var(--color-border-subtle)] pt-8">
-            <button
-              type="button"
-              onClick={() => {
-                closeMenu();
-                openChooser();
-              }}
-              className="btn-canvas btn-canvas-primary inline-flex items-center justify-center px-7 py-3 text-[11px] font-medium uppercase tracking-[0.2em]"
-            >
-              Tell us your problem
-            </button>
-            <Link
-              href="/contact"
-              onClick={closeMenu}
-              className="text-sm text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)]"
-            >
-              Contact
-            </Link>
-          </div>
         </div>
       </div>
     </nav>

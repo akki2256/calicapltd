@@ -2,6 +2,7 @@ import {
   Cpu,
   FolderKanban,
   Home,
+  LayoutGrid,
   LayoutTemplate,
   Mail,
   Monitor,
@@ -13,6 +14,7 @@ import {
 
 export function serviceHrefIcon(href: string): LucideIcon {
   if (href === "/") return Home;
+  if (href === "/services") return LayoutGrid;
   if (href.includes("mobile")) return Smartphone;
   if (href.includes("transform") || href.includes("#transform")) return Workflow;
   if (href.includes("automate") || href.includes("#automate")) return Cpu;
