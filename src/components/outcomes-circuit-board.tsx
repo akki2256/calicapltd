@@ -491,7 +491,7 @@ export function OutcomesCircuitBoard({
    * while active) and eases toward that moving target — no mid-flight restarts.
    */
   const followBoardIntoView = useCallback(
-    (duration = DUR.scroll) => {
+    (duration: number = DUR.scroll) => {
       const stage = boardRef.current;
       if (!stage) return;
 
