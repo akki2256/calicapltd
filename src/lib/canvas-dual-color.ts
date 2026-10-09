@@ -115,9 +115,9 @@ const STOP = new Set([
   "vs",
 ]);
 
-/** Normalize a token for emphasize matching (keeps apostrophes). */
+/** Normalize a token for emphasize matching (keeps apostrophes and hyphens). */
 export function canvasWordKey(word: string): string {
-  return word.replace(/[^\w']/g, "").toLowerCase();
+  return word.replace(/[^\w'-]/g, "").toLowerCase();
 }
 
 function contentKeys(words: string[]): string[] {

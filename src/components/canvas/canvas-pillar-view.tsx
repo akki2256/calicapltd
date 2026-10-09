@@ -20,41 +20,61 @@ import type { PillarId } from "@/lib/brand-architecture";
 
 type Props = {
   pillarId: PillarId;
+  /** Hide Related work — used when embedding in the home circuit panel */
+  omitRelatedWork?: boolean;
+  /** Denser chrome for constrained surfaces (circuit detail panel) */
+  embedded?: boolean;
 };
 
 const HEADLINE =
   "font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.02em] text-[var(--color-text-strong)]";
 
 /** Editorial Canvas pillar — type-led, minimal cards */
-export function CanvasPillarView({ pillarId }: Props) {
+export function CanvasPillarView({
+  pillarId,
+  omitRelatedWork = false,
+  embedded = false,
+}: Props) {
   const page = getPillarPage(pillarId);
   const section = getPillarSection(pillarId);
   if (!page || !section) return null;
 
-  const related = getWorkStudiesForPillar(pillarId);
+  const related = omitRelatedWork ? [] : getWorkStudiesForPillar(pillarId);
   const process = calicapHomeProcess;
   const unsure = calicapServicesUnsure;
   const approach = calicapServicesApproach;
+  const sectionGap = embedded ? "mt-8 pt-6" : "mt-12 pt-10";
+  const firstGap = embedded ? "mt-10 pt-6" : "mt-14 pt-10";
 
   return (
-    <article className="canvas-pillar w-full min-w-0 py-4">
+    <article
+      className={`canvas-pillar w-full min-w-0 ${embedded ? "py-0" : "py-4"}`}
+    >
       <p className="canvas-micro text-[var(--color-accent)]">{page.eyebrow}</p>
       <CanvasTextScrub
         as="h1"
         text={page.title}
-        className="mt-6 max-w-4xl font-[family-name:var(--font-display)] text-[clamp(2rem,5vw,3.25rem)] font-medium leading-[1.1] tracking-[-0.035em] text-[var(--color-text-strong)]"
+        className={`mt-4 max-w-4xl font-[family-name:var(--font-display)] font-medium leading-[1.1] tracking-[-0.035em] text-[var(--color-text-strong)] ${
+          embedded
+            ? "text-[clamp(1.45rem,3.2vw,2rem)]"
+            : "mt-6 text-[clamp(2rem,5vw,3.25rem)]"
+        }`}
       />
-      <p className="mt-6 max-w-3xl text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
+      <p
+        className={`max-w-3xl leading-[1.75] text-[var(--color-text-muted)] ${
+          embedded ? "mt-4 text-sm" : "mt-6 text-[15px]"
+        }`}
+      >
         {page.body}
       </p>
-      <div className="mt-10 flex flex-wrap gap-3">
+      <div className={`flex flex-wrap gap-3 ${embedded ? "mt-6" : "mt-10"}`}>
         <ButtonLink href={page.contactHref}>{page.contactCta}</ButtonLink>
         {page.problemCta ? (
           <ProblemCtaButton variant="ghost">{page.problemCta}</ProblemCtaButton>
         ) : null}
       </div>
 
-      <section className="mt-14 border-t border-[var(--color-border-subtle)] pt-10">
+      <section className={`border-t border-[var(--color-border-subtle)] ${firstGap}`}>
         <CanvasTextScrub as="h2" text={page.challengesTitle} className={HEADLINE} />
         <ul className="mt-6 space-y-0">
           {page.challenges.map((item, index) => (
@@ -71,7 +91,7 @@ export function CanvasPillarView({ pillarId }: Props) {
         </ul>
       </section>
 
-      <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
+      <section className={`border-t border-[var(--color-border-subtle)] ${sectionGap}`}>
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
           <div>
             <CanvasTextScrub as="h2" text={page.examplesTitle} className={HEADLINE} />
@@ -97,7 +117,7 @@ export function CanvasPillarView({ pillarId }: Props) {
         </div>
       </section>
 
-      <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
+      <section className={`border-t border-[var(--color-border-subtle)] ${sectionGap}`}>
         <CanvasTextScrub as="h2" text={section.title} className={HEADLINE} />
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)]">
           {section.intro}
@@ -125,7 +145,7 @@ export function CanvasPillarView({ pillarId }: Props) {
         ) : null}
       </section>
 
-      <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
+      <section className={`border-t border-[var(--color-border-subtle)] ${sectionGap}`}>
         <CanvasTextScrub
           as="h2"
           text={process.title}
@@ -153,7 +173,7 @@ export function CanvasPillarView({ pillarId }: Props) {
       />
 
       {related.length > 0 ? (
-        <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10">
+        <section className={`border-t border-[var(--color-border-subtle)] ${sectionGap}`}>
           <CanvasTextScrub
             as="h2"
             text="Related work"
@@ -184,7 +204,9 @@ export function CanvasPillarView({ pillarId }: Props) {
         </section>
       ) : null}
 
-      <section className="mt-12 grid gap-8 border-t border-[var(--color-border-subtle)] pt-10 lg:grid-cols-2 lg:gap-12">
+      <section
+        className={`grid gap-8 border-t border-[var(--color-border-subtle)] lg:grid-cols-2 lg:gap-12 ${sectionGap}`}
+      >
         <div>
           <CanvasTextScrub
             as="h2"

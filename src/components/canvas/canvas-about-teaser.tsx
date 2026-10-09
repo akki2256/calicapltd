@@ -10,7 +10,7 @@ import { calicapAbout } from "@/lib/calicap-about";
 import { calicapHomeHero } from "@/lib/calicap-home";
 
 /**
- * Home teaser for About — Canvas indexing page only, below the tech marquee.
+ * Home teaser for About — Canvas indexing page only, after outcomes.
  */
 export function CanvasAboutTeaser() {
   const about = calicapAbout;

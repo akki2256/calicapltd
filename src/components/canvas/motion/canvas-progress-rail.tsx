@@ -6,9 +6,10 @@ import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
 const SECTIONS = [
   { id: "hero", label: "00" },
-  { id: "impact", label: "01" },
-  { id: "outcomes", label: "02" },
-  { id: "work", label: "03" },
+  { id: "outcomes", label: "01" },
+  { id: "impact", label: "02" },
+  { id: "testimonials", label: "03" },
+  { id: "work", label: "04" },
 ] as const;
 
 /** System-style progress instrument — desktop Canvas */
