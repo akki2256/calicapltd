@@ -502,7 +502,7 @@ export function OutcomesCircuitBoard({
         const rect = board.getBoundingClientRect();
         const vh = window.innerHeight || 1;
         const margin = Math.min(12, Math.round(vh * 0.012));
-        let next =
+        const next =
           rect.height >= vh * 0.82
             ? window.scrollY + rect.top - margin
             : window.scrollY + rect.top - (vh - rect.height) / 2;
