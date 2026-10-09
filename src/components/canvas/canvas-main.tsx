@@ -6,10 +6,14 @@ import { AnimatePresence, motion } from "motion/react";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 import { CanvasAboutTeaser } from "@/components/canvas/canvas-about-teaser";
 import { CanvasHome } from "@/components/canvas/canvas-home";
-import { CanvasHomeChapter } from "@/components/canvas/canvas-home-chapter";
+import {
+  CanvasHomeChapter,
+  CanvasHomeOutcomes,
+} from "@/components/canvas/canvas-home-chapter";
 import { CanvasImpactMetrics } from "@/components/canvas/canvas-impact-metrics";
 import { CanvasScrollEnhancer } from "@/components/canvas/canvas-scroll-enhancer";
 import { CanvasTechMarquee } from "@/components/canvas/canvas-tech-marquee";
+import { CanvasTestimonials } from "@/components/canvas/canvas-testimonials";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { canvasDur, canvasEase } from "@/components/canvas/motion/tokens";
 
@@ -118,11 +122,13 @@ export function CanvasMain({ children }: Props) {
             <>
               <CanvasHome />
               <CanvasTechMarquee />
+              <div className="canvas-home-chapter">
+                <CanvasHomeOutcomes />
+              </div>
               <CanvasAboutTeaser />
               <CanvasImpactMetrics />
-              <div className="canvas-home-chapter">
-                <CanvasHomeChapter />
-              </div>
+              <CanvasTestimonials />
+              <CanvasHomeChapter />
               <div className="hidden" aria-hidden>
                 {children}
               </div>

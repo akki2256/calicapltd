@@ -28,6 +28,10 @@ import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/structured-data";
 
 type Props = {
   pillarId: PillarId;
+  /** Hide Related work — used when embedding in the home circuit panel */
+  omitRelatedWork?: boolean;
+  /** Denser chrome for constrained surfaces (circuit detail panel) */
+  embedded?: boolean;
 };
 
 export function PillarPageView({ pillarId }: Props) {
@@ -56,6 +60,32 @@ export function PillarPageView({ pillarId }: Props) {
         calicon={<CaliconPillarView pillarId={pillarId} />}
       />
     </>
+  );
+}
+
+/** Theme-aware pillar body for the outcomes circuit detail panel */
+export function PillarEmbeddedView({
+  pillarId,
+  omitRelatedWork = true,
+  embedded = true,
+}: Props) {
+  return (
+    <ThemeSplit
+      canvas={
+        <CanvasPillarView
+          pillarId={pillarId}
+          omitRelatedWork={omitRelatedWork}
+          embedded={embedded}
+        />
+      }
+      calicon={
+        <CaliconPillarView
+          pillarId={pillarId}
+          omitRelatedWork={omitRelatedWork}
+          embedded={embedded}
+        />
+      }
+    />
   );
 }
 
@@ -138,27 +168,56 @@ function CaliconProcessRail() {
   );
 }
 
-function CaliconPillarView({ pillarId }: Props) {
+function CaliconPillarView({
+  pillarId,
+  omitRelatedWork = false,
+  embedded = false,
+}: Props) {
   const page = getPillarPage(pillarId);
   const section = getPillarSection(pillarId);
   if (!page || !section) return null;
 
   const unsure = calicapServicesUnsure;
   const approach = calicapServicesApproach;
-  const related = getWorkStudiesForPillar(pillarId);
+  const related = omitRelatedWork ? [] : getWorkStudiesForPillar(pillarId);
+  const sectionGap = embedded ? "mt-8 pt-6" : "mt-12 pt-8";
 
   return (
-    <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-12 sm:px-6 lg:px-8 lg:py-14">
-      <header className="grid items-end gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-10">
+    <div
+      className={
+        embedded
+          ? "w-full min-w-0 px-0 py-0"
+          : "mx-auto w-full min-w-0 max-w-6xl px-4 py-12 sm:px-6 lg:px-8 lg:py-14"
+      }
+    >
+      <header
+        className={
+          embedded
+            ? "grid items-end gap-5"
+            : "grid items-end gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-10"
+        }
+      >
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-700/95">
             {page.eyebrow}
           </p>
-          <h1 className="mt-3 max-w-xl text-balance font-[family-name:var(--font-display)] text-4xl font-medium tracking-tight text-slate-900 md:text-[2.5rem] md:leading-[1.12]">
+          <h1
+            className={`mt-3 max-w-xl text-balance font-[family-name:var(--font-display)] font-medium tracking-tight text-slate-900 ${
+              embedded
+                ? "text-2xl leading-snug md:text-[1.75rem] md:leading-[1.2]"
+                : "text-4xl md:text-[2.5rem] md:leading-[1.12]"
+            }`}
+          >
             {page.title}
           </h1>
-          <p className="mt-4 max-w-lg text-base leading-relaxed text-slate-600">{page.body}</p>
-          <div className="mt-7 flex flex-wrap gap-3">
+          <p
+            className={`mt-4 max-w-lg leading-relaxed text-slate-600 ${
+              embedded ? "text-sm" : "text-base"
+            }`}
+          >
+            {page.body}
+          </p>
+          <div className={`flex flex-wrap gap-3 ${embedded ? "mt-5" : "mt-7"}`}>
             <ButtonLink href={page.contactHref}>
               <PhoneForwarded className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
               {page.contactCta}
@@ -171,25 +230,33 @@ function CaliconPillarView({ pillarId }: Props) {
             ) : null}
           </div>
         </div>
-        <div className="relative aspect-[5/3] w-full overflow-hidden rounded-2xl shadow-lg shadow-slate-900/10 ring-1 ring-slate-200/80">
-          <Image
-            src={siteImages.cloudNetwork.src}
-            alt={siteImages.cloudNetwork.alt}
-            fill
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 40vw"
-            priority
-          />
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-slate-900/35 via-transparent to-transparent"
-            aria-hidden
-          />
-        </div>
+        {!embedded ? (
+          <div className="relative aspect-[5/3] w-full overflow-hidden rounded-2xl shadow-lg shadow-slate-900/10 ring-1 ring-slate-200/80">
+            <Image
+              src={siteImages.cloudNetwork.src}
+              alt={siteImages.cloudNetwork.alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              priority
+            />
+            <div
+              className="absolute inset-0 bg-gradient-to-t from-slate-900/35 via-transparent to-transparent"
+              aria-hidden
+            />
+          </div>
+        ) : null}
       </header>
 
-      <section className="mt-12 grid gap-8 border-t border-[var(--color-border-subtle)] pt-8 lg:grid-cols-2 lg:gap-12">
+      <section
+        className={`grid gap-8 border-t border-[var(--color-border-subtle)] lg:grid-cols-2 lg:gap-12 ${sectionGap}`}
+      >
         <div>
-          <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+          <h2
+            className={`font-[family-name:var(--font-display)] font-medium tracking-tight text-slate-900 ${
+              embedded ? "text-xl" : "text-2xl"
+            }`}
+          >
             {page.challengesTitle}
           </h2>
           <ul className="mt-5 space-y-0">
@@ -208,7 +275,11 @@ function CaliconPillarView({ pillarId }: Props) {
         </div>
 
         <div>
-          <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
+          <h2
+            className={`font-[family-name:var(--font-display)] font-medium tracking-tight text-slate-900 ${
+              embedded ? "text-xl" : "text-2xl"
+            }`}
+          >
             {page.examplesTitle}
           </h2>
           <ul className="mt-5 space-y-0">
@@ -230,9 +301,13 @@ function CaliconPillarView({ pillarId }: Props) {
         </div>
       </section>
 
-      <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-8">
+      <section className={`border-t border-[var(--color-border-subtle)] ${sectionGap}`}>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
-          <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900 sm:text-3xl">
+          <h2
+            className={`font-[family-name:var(--font-display)] font-medium tracking-tight text-slate-900 ${
+              embedded ? "text-xl" : "text-2xl sm:text-3xl"
+            }`}
+          >
             {section.title}
           </h2>
           <p className="max-w-md text-sm text-slate-600 sm:text-right">{section.intro}</p>
@@ -275,7 +350,7 @@ function CaliconPillarView({ pillarId }: Props) {
       />
 
       {related.length > 0 ? (
-        <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-8">
+        <section className={`border-t border-[var(--color-border-subtle)] ${sectionGap}`}>
           <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
             Related work
           </h2>
@@ -308,7 +383,9 @@ function CaliconPillarView({ pillarId }: Props) {
         </section>
       ) : null}
 
-      <section className="mt-12 grid gap-6 border-t border-[var(--color-border-subtle)] pt-8 lg:grid-cols-2 lg:gap-10">
+      <section
+        className={`grid gap-6 border-t border-[var(--color-border-subtle)] lg:grid-cols-2 lg:gap-10 ${sectionGap}`}
+      >
         <div>
           <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-tight text-slate-900">
             {approach.title}

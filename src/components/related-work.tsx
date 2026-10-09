@@ -1,5 +1,4 @@
-import Link from "next/link";
-import Image from "next/image";
+import { WorkProjectFlipCard } from "@/components/work-project-flip-card";
 import { getWorkStudyImage, type CalicapWorkStudy } from "@/lib/calicap-work";
 
 type Props = {
@@ -22,32 +21,20 @@ export function RelatedWork({
         {heading}
       </h2>
       <p className="mt-3 max-w-2xl text-sm text-[var(--color-text-muted)]">{intro}</p>
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
+      <div className="work-flip-grid mt-8">
         {studies.map((study) => {
           const image = getWorkStudyImage(study);
           return (
-            <Link
+            <WorkProjectFlipCard
               key={study.slug}
               href={`/work/${study.slug}`}
-              className="group surface-card block overflow-hidden rounded-2xl transition hover:border-[var(--color-accent)]/30"
-            >
-              <div className="relative aspect-[2/1] w-full overflow-hidden">
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-              <div className="p-6">
-                <p className="text-xs text-[var(--color-text-muted)]">{study.label}</p>
-                <h3 className="mt-2 font-[family-name:var(--font-display)] text-lg text-[var(--color-text-strong)]">
-                  {study.title}
-                </h3>
-                <p className="mt-2 text-sm text-[var(--color-text-muted)]">{study.result}</p>
-              </div>
-            </Link>
+              title={study.title}
+              label={study.label}
+              description={study.context}
+              result={study.result}
+              image={image}
+              sizes="(max-width: 768px) 100vw, 1400px"
+            />
           );
         })}
       </div>

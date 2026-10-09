@@ -1,95 +1,183 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { BrandLogo } from "@/components/brand-logo";
 import { PILLAR_PATHS } from "@/lib/brand-architecture";
-import { calicapContact, calicapFooterLinks } from "@/lib/calicap-contact";
+import {
+  calicapContact,
+  calicapFooterLinks,
+  calicapQuickLinks,
+} from "@/lib/calicap-contact";
+import { calicapHomeHero } from "@/lib/calicap-home";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 
 const pillarHrefs = new Set<string>(PILLAR_PATHS);
 const practiceLinks = calicapFooterLinks.filter((l) => pillarHrefs.has(l.href));
-const companyLinks = calicapFooterLinks.filter((l) =>
-  l.href === "/work" || l.href === "/about" || l.href === "/contact",
+const companyLinks = calicapFooterLinks.filter(
+  (l) =>
+    l.href === "/work" ||
+    l.href === "/services" ||
+    l.href === "/about" ||
+    l.href === "/contact",
 );
 
 /** Canvas footer — structured editorial close */
 export function CanvasFooter() {
+  const hero = calicapHomeHero;
+  const email = calicapContact.email || "info@calicon.com";
+
   return (
     <footer className="canvas-site-footer border-t border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
-      <div className="mx-auto max-w-6xl px-6 py-16 sm:px-10 lg:px-14 lg:py-20">
-        {/* Brand + close */}
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:items-end lg:gap-16">
-          <Link
-            href="/"
-            className="brand-logo-link canvas-footer-brand inline-flex w-fit"
-            aria-label={`${calicapContact.brand} home`}
-          >
-            <BrandLogo size="footer" variant="on-dark" layout="lockup" label="" />
-          </Link>
-
-          <div className="min-w-0 max-w-xl lg:justify-self-end lg:text-right">
-            <p className="font-[family-name:var(--font-display)] text-[clamp(1.35rem,2.8vw,2rem)] font-medium leading-snug tracking-[-0.03em] text-[var(--color-text-strong)]">
-              {calicapContact.footerTagline}
+      <div className="mx-auto max-w-6xl px-6 pt-16 pb-0 sm:px-10 lg:px-14 lg:pt-24">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.1fr)] lg:items-start lg:gap-14">
+          <div className="min-w-0">
+            <Link
+              href="/"
+              className="brand-logo-link canvas-footer-brand inline-flex w-fit"
+              aria-label={`${calicapContact.brand} home`}
+            >
+              <BrandLogo
+                size="lg"
+                variant="on-dark"
+                layout="lockup"
+                label=""
+              />
+            </Link>
+            <p className="mt-6 font-[family-name:var(--font-display)] text-[clamp(1.25rem,2.2vw,1.65rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text-strong)]">
+              {hero.headlineBefore}{" "}
+              <span className="canvas-em">{hero.headlineAccent}</span>
+              {hero.headlineAfter}
             </p>
-            <div className="mt-7 lg:flex lg:justify-end">
-              <ProblemCtaButton>{calicapContact.footerCtaLabel}</ProblemCtaButton>
+            <div className="mt-5 flex flex-col gap-1.5 text-sm text-[var(--color-text-muted)]">
+              <a
+                href={calicapContact.phoneHref}
+                className="w-fit transition hover:text-[var(--color-link-hover)]"
+              >
+                {calicapContact.phone}
+              </a>
+              <a
+                href={`mailto:${email}`}
+                className="w-fit transition hover:text-[var(--color-link-hover)]"
+              >
+                {email}
+              </a>
+            </div>
+          </div>
+
+          <div className="min-w-0">
+            <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:gap-10">
+              <FooterColumn title="Practice">
+                {practiceLinks.map((l) => (
+                  <FooterLink key={l.href} href={l.href}>
+                    {l.label}
+                  </FooterLink>
+                ))}
+              </FooterColumn>
+              <FooterColumn title="Company">
+                {companyLinks.map((l) => (
+                  <FooterLink key={l.href} href={l.href}>
+                    {l.label}
+                  </FooterLink>
+                ))}
+              </FooterColumn>
+              <FooterColumn title="Quick Links">
+                {calicapQuickLinks.map((l) => (
+                  <FooterLink key={l.href} href={l.href}>
+                    {l.label}
+                  </FooterLink>
+                ))}
+              </FooterColumn>
             </div>
           </div>
         </div>
 
-        {/* Link columns */}
-        <div className="mt-16 grid gap-10 border-t border-[var(--color-border-subtle)] pt-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
-          <div>
-            <p className="canvas-micro text-[var(--color-accent)]">Practice</p>
-            <ul className="mt-5 flex flex-col gap-3">
-              {practiceLinks.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="text-sm text-[var(--color-text-muted)] transition hover:text-[var(--color-link-hover)]"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <p className="canvas-micro text-[var(--color-accent)]">Company</p>
-            <ul className="mt-5 flex flex-col gap-3">
-              {companyLinks.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="text-sm text-[var(--color-text-muted)] transition hover:text-[var(--color-link-hover)]"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="sm:col-span-2 lg:col-span-1">
-            <p className="canvas-micro text-[var(--color-accent)]">Note</p>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--color-text-muted)]">
-              {calicapContact.footerBlurb}
-            </p>
-          </div>
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+          <ProblemCtaButton>{calicapContact.footerCtaLabel}</ProblemCtaButton>
+          <ul className="flex flex-wrap items-center gap-3" aria-label="Social media">
+            {calicapContact.social.map((item) => (
+              <li key={item.id}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="canvas-site-footer__social"
+                  aria-label={item.label}
+                >
+                  <SocialIcon id={item.id} />
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        {/* Legal bar */}
-        <div className="mt-14 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-[var(--color-border-subtle)] pt-8">
-          <p className="text-xs text-[var(--color-text-muted)]">
+        <div className="footer-legal-bar mt-14 border-t border-[var(--color-border-subtle)] pt-8">
+          <p className="text-xs tracking-[0.04em] text-[var(--color-text-muted)]">
             © {new Date().getFullYear()} {calicapContact.brand}
           </p>
           <Link
             href="/privacy"
-            className="text-xs text-[var(--color-text-muted)] transition hover:text-[var(--color-link-hover)]"
+            className="text-xs tracking-[0.04em] text-[var(--color-text-muted)] transition hover:text-[var(--color-link-hover)]"
           >
             Privacy
           </Link>
         </div>
       </div>
     </footer>
+  );
+}
+
+function SocialIcon({ id }: { id: string }) {
+  const className = "h-5 w-5";
+  if (id === "linkedin") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+      </svg>
+    );
+  }
+  if (id === "instagram") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+      </svg>
+    );
+  }
+  if (id === "x") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.71-8.835L2.25 2.25h6.093l4.261 5.685L18.244 2.25Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z" />
+      </svg>
+    );
+  }
+  if (id === "facebook") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
+        <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z" />
+      </svg>
+    );
+  }
+  return null;
+}
+
+function FooterColumn({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div>
+      <p className="canvas-micro text-[var(--color-accent)]">{title}</p>
+      <ul className="mt-5 flex flex-col gap-1">{children}</ul>
+    </div>
+  );
+}
+
+function FooterLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <li>
+      <Link href={href} className="canvas-site-footer__link group">
+        <span>{children}</span>
+        <span className="canvas-site-footer__link-mark" aria-hidden>
+          →
+        </span>
+      </Link>
+    </li>
   );
 }

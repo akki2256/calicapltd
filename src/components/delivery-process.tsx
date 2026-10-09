@@ -5,7 +5,6 @@ import { ArrowRight } from "lucide-react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from "motion/react";
 import { ThemeSplit } from "@/components/theme-split";
 import {
-  CanvasTextScrub,
   canvasDur,
   canvasEase,
 } from "@/components/canvas/motion";
@@ -32,14 +31,8 @@ function CanvasDeliveryProcess() {
   });
 
   return (
-    <section className="mt-14 border-t border-[var(--color-border-subtle)] pt-10">
-      <CanvasTextScrub
-        as="h2"
-        text={DELIVERY_PROCESS.title}
-        className="font-[family-name:var(--font-display)] text-[clamp(1.5rem,3.5vw,2.25rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]"
-      />
-
-      <div ref={ref} className="relative mt-8">
+    <section className="mt-10" aria-label={DELIVERY_PROCESS.title}>
+      <div ref={ref} className="relative">
         <div className="mb-6 h-px w-full overflow-hidden bg-[var(--color-border-subtle)]">
           <motion.div
             className="h-full origin-left bg-[var(--color-accent)]"
@@ -118,13 +111,9 @@ function CaliconDeliveryProcess() {
   const StepIcon = step.icon;
 
   return (
-    <section className="mt-12">
-      <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-        {DELIVERY_PROCESS.title}
-      </h2>
-
+    <section className="mt-10" aria-label={DELIVERY_PROCESS.title}>
       {/* Timeline rail */}
-      <div className="relative mt-8">
+      <div className="relative">
         <div
           className="pointer-events-none absolute left-0 right-0 top-[1.125rem] hidden h-px bg-[var(--color-border-subtle)] sm:block"
           aria-hidden

@@ -150,7 +150,15 @@ export function pageContextFromPath(pathname: string): AnalyticsProps {
   if (page_path === "/about") return { page_type: "about", page_path };
   if (page_path === "/contact") return { page_type: "contact", page_path };
   if (page_path === "/work") return { page_type: "work", page_path };
-  if (page_path === "/privacy") return { page_type: "legal", page_path };
+  if (
+    page_path === "/privacy" ||
+    page_path === "/privacy-policy" ||
+    page_path === "/terms" ||
+    page_path === "/faqs" ||
+    page_path === "/online-safety"
+  ) {
+    return { page_type: "legal", page_path };
+  }
 
   if (page_path.startsWith("/work/")) {
     const case_study = page_path.slice("/work/".length).split("/")[0];

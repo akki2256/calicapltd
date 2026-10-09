@@ -13,7 +13,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { calicapWorkStudies } from "@/lib/calicap-work";
-import { CUSTOMER_OUTCOMES } from "@/lib/brand-architecture";
+import {
+  CUSTOMER_OUTCOMES,
+  type PillarId,
+} from "@/lib/brand-architecture";
 import { siteImages } from "@/lib/site-images";
 
 export const HOME_IMPACT_ID = "impact";
@@ -100,11 +103,13 @@ export const calicapHomeDiscovery = {
 } as const;
 
 export const calicapHomeOutcomes: {
+  id: string;
   label: string;
   value: string;
   examples: readonly string[];
   href: string;
   linkLabel: string;
+  primaryPillar: PillarId;
   icon: LucideIcon;
 }[] = CUSTOMER_OUTCOMES.map((o) => {
   const icons: Record<string, LucideIcon> = {
@@ -115,11 +120,13 @@ export const calicapHomeOutcomes: {
     scale: Rocket,
   };
   return {
+    id: o.id,
     label: o.label,
     value: o.value,
     examples: o.examples,
     href: o.href,
     linkLabel: o.linkLabel,
+    primaryPillar: o.primaryPillar,
     icon: icons[o.id] ?? LayoutTemplate,
   };
 });
@@ -162,11 +169,6 @@ export const calicapHomeWorkSection = {
 export const calicapHomeOutcomesSection = {
   title: "Documented outcomes",
   intro: "Results from engagements where the numbers are real and attributable.",
-} as const;
-
-export const calicapHomeTestimonialsSection = {
-  title: "Trusted by the businesses we work with.",
-  intro: "Feedback from people we've built with.",
 } as const;
 
 /** Home teaser cards — shared study list with short result lines */
@@ -244,17 +246,4 @@ export const calicapHomeProcess = {
       value: "Continue supporting and improving what gets built.",
     },
   ],
-} as const;
-
-export const calicapHomeCta = {
-  title: "Technology that moves your business forward.",
-  bodyLead:
-    "No technical specification required to start. Share what you're trying to achieve, what's not working, or what you have in mind.",
-  primaryCta: "Tell us your problem",
-  primaryOpensChooser: true,
-  secondaryCta: "Explore services",
-  secondaryHref: "/services",
-  workLabel: "selected work",
-  bodyTail: "See how similar teams started.",
-  backdrop: siteImages.cloudNetwork,
 } as const;

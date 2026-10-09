@@ -15,8 +15,14 @@ export type CalicapTestimonial = {
   published: boolean;
 };
 
+export const HOME_TESTIMONIALS_ID = "testimonials";
+
 export const calicapTestimonialsSection = {
-  title: "What clients say",
+  eyebrow: "Testimonials",
+  title: "Trusted by the businesses we work with.",
+  /** Canvas stacked headline */
+  titleLines: ["Trusted by the", "businesses we work with."] as const,
+  titleEmphasize: ["Trusted", "businesses"] as const,
   intro: "Feedback from people we've built with.",
 } as const;
 
@@ -57,4 +63,10 @@ export const calicapTestimonials: CalicapTestimonial[] = [
 
 export function getPublishedTestimonials() {
   return calicapTestimonials.filter((item) => item.published);
+}
+
+/** Home: show approved quotes when available; otherwise placeholder set. */
+export function getHomeTestimonials() {
+  const published = getPublishedTestimonials();
+  return published.length > 0 ? published : calicapTestimonials;
 }
