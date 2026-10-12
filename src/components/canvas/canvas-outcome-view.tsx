@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { ButtonLink } from "@/components/button-link";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { CanvasTextScrub } from "@/components/canvas/motion";
@@ -18,6 +19,7 @@ const HEADLINE =
  * Layout matches the Build circuit detail card.
  */
 export function CanvasOutcomeView({ outcomeId, embedded = true }: Props) {
+  const router = useRouter();
   const page = getOutcomeDetail(outcomeId);
   if (!page) return null;
 
@@ -26,7 +28,8 @@ export function CanvasOutcomeView({ outcomeId, embedded = true }: Props) {
 
   return (
     <article
-      className={`canvas-pillar w-full min-w-0 ${embedded ? "py-0" : "py-4"}`}
+      className={`canvas-pillar w-full min-w-0 cursor-pointer ${embedded ? "py-0" : "py-4"}`}
+      onClick={() => router.push("/services")}
     >
       <CanvasTextScrub
         as="h1"
@@ -73,9 +76,15 @@ export function CanvasOutcomeView({ outcomeId, embedded = true }: Props) {
       <div
         className={`flex flex-wrap gap-3 border-t border-[var(--color-border-subtle)] ${sectionGap}`}
       >
-        <ProblemCtaButton variant="primary">
-          Tell us your problem
-        </ProblemCtaButton>
+        <span
+          className="inline-flex"
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
+          <ProblemCtaButton variant="primary">
+            Tell us your problem
+          </ProblemCtaButton>
+        </span>
         <ButtonLink href="/services" variant="ghost">
           Explore services
         </ButtonLink>

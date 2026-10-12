@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ButtonLink } from "@/components/button-link";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { CanvasTextScrub } from "@/components/canvas/motion";
@@ -25,6 +26,7 @@ export function CanvasPillarView({
   pillarId,
   embedded = false,
 }: Props) {
+  const router = useRouter();
   const page = getPillarPage(pillarId);
   const section = getPillarSection(pillarId);
   if (!page || !section) return null;
@@ -39,11 +41,14 @@ export function CanvasPillarView({
 
   /**
    * Circuit detail layout (Build reference): title, body, service cards under
-   * examplesTitle, bottom CTAs. Explore services is an explicit link only.
+   * examplesTitle, bottom CTAs. Card click → /services except problem CTA.
    */
   if (embedded) {
     return (
-      <article className="canvas-pillar w-full min-w-0 py-0">
+      <article
+        className="canvas-pillar w-full min-w-0 cursor-pointer py-0"
+        onClick={() => router.push("/services")}
+      >
         <CanvasTextScrub
           as="h1"
           text={page.title}
@@ -81,9 +86,15 @@ export function CanvasPillarView({
         <div
           className={`flex flex-wrap gap-3 border-t border-[var(--color-border-subtle)] ${sectionGap}`}
         >
-          <ProblemCtaButton variant="primary">
-            Tell us your problem
-          </ProblemCtaButton>
+          <span
+            className="inline-flex"
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+          >
+            <ProblemCtaButton variant="primary">
+              Tell us your problem
+            </ProblemCtaButton>
+          </span>
           <ButtonLink href="/services" variant="ghost">
             Explore services
           </ButtonLink>
