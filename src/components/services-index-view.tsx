@@ -9,8 +9,6 @@ import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { DeliveryPractices } from "@/components/delivery-process";
 import {
   CanvasReveal,
-  CanvasStagger,
-  CanvasStaggerItem,
   CanvasTextReveal,
   CanvasTextScrub,
 } from "@/components/canvas/motion";
@@ -56,16 +54,14 @@ function DualColorText({
   });
 }
 
+/** Static grid — dense catalogue must not hydrate dozens of motion nodes */
 function CanvasServiceCards({
   services,
 }: {
   services: (typeof SERVICE_CATALOGUE)[number]["services"];
 }) {
   return (
-    <CanvasStagger
-      className="grid grid-cols-2 gap-px border border-[var(--color-border-subtle)] bg-[var(--color-border-subtle)]"
-      stagger={0.05}
-    >
+    <div className="grid grid-cols-2 gap-px border border-[var(--color-border-subtle)] bg-[var(--color-border-subtle)]">
       {services.map((service) => {
         const cardClass =
           "group flex h-full flex-col gap-1.5 bg-[var(--color-surface)] px-3 py-3 transition-colors duration-300 hover:bg-[var(--color-surface-elevated)]";
@@ -87,28 +83,50 @@ function CanvasServiceCards({
           </>
         );
 
-        return (
-          <CanvasStaggerItem key={service.id}>
-            {service.href ? (
-              <Link href={service.href} className={cardClass}>
-                {body}
-              </Link>
-            ) : (
-              <article className={cardClass}>{body}</article>
-            )}
-          </CanvasStaggerItem>
+        return service.href ? (
+          <Link key={service.id} href={service.href} className={cardClass}>
+            {body}
+          </Link>
+        ) : (
+          <article key={service.id} className={cardClass}>
+            {body}
+          </article>
         );
       })}
-    </CanvasStagger>
+    </div>
   );
 }
 
 function CanvasServicesIndex() {
   const overview = calicapServicesOverview;
   const [portalReady, setPortalReady] = useState(false);
+  /** Scrub after first paint — 10 scroll listeners must not compete with hydrate */
+  const [scrubReady, setScrubReady] = useState(false);
 
   useEffect(() => {
     setPortalReady(true);
+
+    let cancelled = false;
+    let scrubIdle = 0;
+    let scrubTimeout = 0;
+
+    const enableScrub = () => {
+      if (!cancelled) setScrubReady(true);
+    };
+
+    if (typeof window.requestIdleCallback === "function") {
+      scrubIdle = window.requestIdleCallback(enableScrub, { timeout: 520 });
+    } else {
+      scrubTimeout = window.setTimeout(enableScrub, 120);
+    }
+
+    return () => {
+      cancelled = true;
+      if (scrubIdle && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(scrubIdle);
+      }
+      if (scrubTimeout) window.clearTimeout(scrubTimeout);
+    };
   }, []);
 
   const structureBackdrop =
@@ -127,7 +145,7 @@ function CanvasServicesIndex() {
       {structureBackdrop}
       <div className="canvas-services__content">
         <section className="canvas-services__hero canvas-about__mission">
-          <CanvasReveal variant="riseSoft">
+          <CanvasReveal variant="riseSoft" immediate>
             <p className="font-[family-name:var(--font-display)] text-sm font-medium tracking-[0.14em] text-[var(--color-text-muted)] uppercase sm:text-base">
               {overview.eyebrow}
             </p>
@@ -137,17 +155,23 @@ function CanvasServicesIndex() {
               as="h1"
               lines={[overview.title]}
               className="mx-auto w-full max-w-4xl font-[family-name:var(--font-display)] text-[clamp(2rem,5.5vw,3.75rem)] font-medium leading-[1.08] tracking-[-0.04em] text-[var(--color-text-strong)]"
-              delay={0.1}
+              delay={0.06}
             />
           </div>
-          <CanvasReveal variant="blurIn" delay={0.12} className="mx-auto mt-6 max-w-xl">
+          <CanvasReveal
+            variant="riseSoft"
+            delay={0.08}
+            immediate
+            className="mx-auto mt-6 max-w-xl"
+          >
             <p className="text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
               {overview.body}
             </p>
           </CanvasReveal>
           <CanvasReveal
-            variant="rise"
-            delay={0.18}
+            variant="riseSoft"
+            delay={0.12}
+            immediate
             className="mt-8 flex flex-wrap items-center justify-center gap-3"
           >
             <ProblemCtaButton>{overview.primaryCta}</ProblemCtaButton>
@@ -175,8 +199,9 @@ function CanvasServicesIndex() {
                     lines={splitSectionTitle(category.name)}
                     className="canvas-about__split-title"
                     lineClassName="canvas-about__split-title-line"
+                    scrub={scrubReady}
                   />
-                  <CanvasReveal variant="blurIn" delay={0.06}>
+                  <CanvasReveal variant="riseSoft" delay={0.04}>
                     <p className="canvas-services__cat-support">
                       <DualColorText
                         text={category.description}
@@ -207,10 +232,11 @@ function CanvasServicesIndex() {
                 className="canvas-about__split-title"
                 lineClassName="canvas-about__split-title-line"
                 emphasize={["paths"]}
+                scrub={scrubReady}
               />
             </aside>
             <div className="canvas-about__split-body">
-              <CanvasReveal variant="blurIn" className="space-y-4">
+              <CanvasReveal variant="riseSoft" className="space-y-4">
                 <p className="font-[family-name:var(--font-display)] text-[clamp(1.35rem,2.5vw,1.75rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]">
                   Build · Transform · Automate · Evolve
                 </p>
@@ -219,40 +245,36 @@ function CanvasServicesIndex() {
                 </p>
               </CanvasReveal>
 
-              <CanvasStagger
-                className="mt-6 grid grid-cols-2 gap-px border border-[var(--color-border-subtle)] bg-[var(--color-border-subtle)]"
-                stagger={0.05}
-              >
+              <div className="mt-6 grid grid-cols-2 gap-px border border-[var(--color-border-subtle)] bg-[var(--color-border-subtle)]">
                 {calicapStrategicPillars.map((pillar) => {
                   const Icon = pillar.icon;
                   return (
-                    <CanvasStaggerItem key={pillar.id}>
-                      <Link
-                        href={pillar.href}
-                        className="group flex h-full flex-col gap-2 bg-[var(--color-surface)] px-3 py-3 transition-colors duration-300 hover:bg-[var(--color-surface-elevated)]"
-                      >
-                        <span className="flex items-center gap-2.5">
-                          <Icon
-                            className="h-3.5 w-3.5 shrink-0 text-[var(--color-accent)]"
-                            strokeWidth={1.6}
-                            aria-hidden
-                          />
-                          <span className="font-[family-name:var(--font-display)] text-[12px] font-medium leading-snug tracking-[-0.015em] text-[var(--color-text-strong)] sm:text-[13px]">
-                            {pillar.label}
-                          </span>
+                    <Link
+                      key={pillar.id}
+                      href={pillar.href}
+                      className="group flex h-full flex-col gap-2 bg-[var(--color-surface)] px-3 py-3 transition-colors duration-300 hover:bg-[var(--color-surface-elevated)]"
+                    >
+                      <span className="flex items-center gap-2.5">
+                        <Icon
+                          className="h-3.5 w-3.5 shrink-0 text-[var(--color-accent)]"
+                          strokeWidth={1.6}
+                          aria-hidden
+                        />
+                        <span className="font-[family-name:var(--font-display)] text-[12px] font-medium leading-snug tracking-[-0.015em] text-[var(--color-text-strong)] sm:text-[13px]">
+                          {pillar.label}
                         </span>
-                        <span className="text-[12px] leading-relaxed text-[var(--color-text-muted)] sm:text-[13px]">
-                          {pillar.tagline}
-                        </span>
-                        <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-[11px] uppercase tracking-[0.14em] text-[var(--color-text-muted)] transition group-hover:text-[var(--color-link-hover)]">
-                          {pillar.cta}
-                          <ArrowRight className="h-3 w-3" strokeWidth={1.75} aria-hidden />
-                        </span>
-                      </Link>
-                    </CanvasStaggerItem>
+                      </span>
+                      <span className="text-[12px] leading-relaxed text-[var(--color-text-muted)] sm:text-[13px]">
+                        {pillar.tagline}
+                      </span>
+                      <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-[11px] uppercase tracking-[0.14em] text-[var(--color-text-muted)] transition group-hover:text-[var(--color-link-hover)]">
+                        {pillar.cta}
+                        <ArrowRight className="h-3 w-3" strokeWidth={1.75} aria-hidden />
+                      </span>
+                    </Link>
                   );
                 })}
-              </CanvasStagger>
+              </div>
             </div>
           </div>
         </section>

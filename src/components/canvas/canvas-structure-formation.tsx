@@ -76,6 +76,7 @@ export function CanvasStructureFormation({ className = "" }: Props) {
     let mobile = false;
     let webglOk = true;
     let builtForMobile: boolean | null = null;
+    let visible = true;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(26, 1, 0.1, 50);
@@ -205,12 +206,13 @@ export function CanvasStructureFormation({ className = "" }: Props) {
         const size = cube.half * 2;
         const box = new THREE.BoxGeometry(size, size, size);
 
+        /* Settled opacities on create — no separate fade-in / assemble pass */
         let glassMat: THREE.MeshPhysicalMaterial | THREE.MeshBasicMaterial;
         try {
           glassMat = new THREE.MeshPhysicalMaterial({
             color: cube.core ? 0xf4f7fa : 0xd5dee6,
             transparent: true,
-            opacity: 0,
+            opacity: cube.glass,
             roughness: cube.core ? 0.25 : 0.18,
             metalness: 0.05,
             transmission: cube.core ? 0.15 : 0.55,
@@ -223,7 +225,7 @@ export function CanvasStructureFormation({ className = "" }: Props) {
           glassMat = new THREE.MeshBasicMaterial({
             color: cube.core ? 0xf4f7fa : 0xd5dee6,
             transparent: true,
-            opacity: 0,
+            opacity: cube.glass,
             depthWrite: false,
             side: THREE.DoubleSide,
           });
@@ -238,7 +240,7 @@ export function CanvasStructureFormation({ className = "" }: Props) {
         const edgeMat = new THREE.LineBasicMaterial({
           color: 0xffffff,
           transparent: true,
-          opacity: 0,
+          opacity: cube.edge * 0.92,
           depthWrite: false,
         });
         const edges = new THREE.LineSegments(edgeGeom, edgeMat);
@@ -262,7 +264,7 @@ export function CanvasStructureFormation({ className = "" }: Props) {
           const iconMat = new THREE.MeshBasicMaterial({
             map: tex,
             transparent: true,
-            opacity: 0,
+            opacity: 0.7,
             depthWrite: false,
             side: THREE.DoubleSide,
           });
@@ -321,7 +323,7 @@ export function CanvasStructureFormation({ className = "" }: Props) {
         const mat = new THREE.LineBasicMaterial({
           color: 0xe8eef2,
           transparent: true,
-          opacity: 0,
+          opacity: 0.32,
           depthWrite: false,
         });
         const line = new THREE.Line(geom, mat);
@@ -342,7 +344,7 @@ export function CanvasStructureFormation({ className = "" }: Props) {
           const bitMat = new THREE.LineBasicMaterial({
             color: 0xe8eef2,
             transparent: true,
-            opacity: 0,
+            opacity: 0.9,
             depthWrite: false,
           });
           const wire = new THREE.LineSegments(edgeGeom, bitMat);
@@ -419,27 +421,27 @@ export function CanvasStructureFormation({ className = "" }: Props) {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
 
-      if (!reduced) {
+      if (visible && !reduced) {
         spinY += YAW_SPEED * dt;
+
+        pointer.x += (pointer.tx - pointer.x) * Math.min(1, dt * 3.4);
+        pointer.y += (pointer.ty - pointer.y) * Math.min(1, dt * 3.4);
+
+        camera.position.set(
+          camBase.x + pointer.x * 0.42,
+          camBase.y - pointer.y * 0.28,
+          camBase.z,
+        );
+        camera.lookAt(pointer.x * 0.08, 0.05 - pointer.y * 0.05, 0);
+
+        /* Vertical-axis rotation + hover parallax on the full 3D assembly */
+        root.rotation.set(
+          0.18 + pointer.y * 0.1,
+          spinY + pointer.x * 0.24,
+          -pointer.x * 0.05,
+        );
+        update(now);
       }
-
-      pointer.x += (pointer.tx - pointer.x) * Math.min(1, dt * 3.4);
-      pointer.y += (pointer.ty - pointer.y) * Math.min(1, dt * 3.4);
-
-      camera.position.set(
-        camBase.x + pointer.x * 0.42,
-        camBase.y - pointer.y * 0.28,
-        camBase.z,
-      );
-      camera.lookAt(pointer.x * 0.08, 0.05 - pointer.y * 0.05, 0);
-
-      /* Vertical-axis rotation + hover parallax on the full 3D assembly */
-      root.rotation.set(
-        0.18 + pointer.y * 0.1,
-        spinY + pointer.x * 0.24,
-        -pointer.x * 0.05,
-      );
-      update(now);
 
       if (!reduced) raf = requestAnimationFrame(tick);
     };
@@ -456,6 +458,17 @@ export function CanvasStructureFormation({ className = "" }: Props) {
     ro.observe(wrap);
     window.addEventListener("pointermove", onPointerMove, { passive: true });
 
+    const servicesEl = document.querySelector(".canvas-services");
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry?.isIntersecting ?? true;
+        if (visible) update(performance.now());
+      },
+      { threshold: 0.01 },
+    );
+    if (servicesEl) io.observe(servicesEl);
+    else visible = true;
+
     if (!reduced) {
       last = performance.now();
       raf = requestAnimationFrame(tick);
@@ -467,6 +480,7 @@ export function CanvasStructureFormation({ className = "" }: Props) {
       disposed = true;
       cancelAnimationFrame(raf);
       ro.disconnect();
+      io.disconnect();
       window.removeEventListener("pointermove", onPointerMove);
       clearScene();
       for (const tex of iconTextures) tex.dispose();

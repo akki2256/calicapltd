@@ -24,6 +24,13 @@ export const viewportOnce = {
   margin: "0px 0px -8% 0px",
 } as const;
 
+/** Trigger earlier — dense card grids that should not wait mid-scroll */
+export const viewportEager = {
+  once: true,
+  amount: 0.06,
+  margin: "0px 0px 18% 0px",
+} as const;
+
 export const viewportReplay = {
   once: false,
   amount: 0.35,
