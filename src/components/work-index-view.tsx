@@ -12,28 +12,76 @@ import { WorkProjectFlipCard } from "@/components/work-project-flip-card";
 import {
   calicapWorkIndex,
   calicapWorkStudies,
+  getWorkStudyBySlug,
   getWorkStudyImage,
+  type CalicapWorkStudy,
 } from "@/lib/calicap-work";
+
+/** Website cases — share one row, sandwiched between the two full-width product cases */
+const WORK_INDEX_TRIO_SLUGS = [
+  "yog-mantram",
+  "chaitanya-computers",
+  "amazing-art-architects",
+] as const;
+
+function studyCard(
+  study: CalicapWorkStudy,
+  opts: { priority?: boolean; sizes: string },
+) {
+  const image = getWorkStudyImage(study);
+  return (
+    <WorkProjectFlipCard
+      key={study.slug}
+      href={`/work/${study.slug}`}
+      title={study.title}
+      label={study.label}
+      description={study.context}
+      result={study.result}
+      image={image}
+      priority={opts.priority}
+      sizes={opts.sizes}
+    />
+  );
+}
+
+function CanvasWorkProjectGrid() {
+  const top = getWorkStudyBySlug("calicap-india")!;
+  const bottom = getWorkStudyBySlug("lungconnect-india")!;
+  const trio = WORK_INDEX_TRIO_SLUGS.map((slug) => getWorkStudyBySlug(slug)!);
+
+  return (
+    <div className="work-flip-layout">
+      <div className="work-flip-grid">
+        {studyCard(top, {
+          priority: true,
+          sizes: "(max-width: 920px) 100vw, 1400px",
+        })}
+      </div>
+      <div className="work-flip-grid work-flip-grid--trio">
+        {trio.map((s) =>
+          studyCard(s, {
+            sizes: "(max-width: 900px) 100vw, 33vw",
+          }),
+        )}
+      </div>
+      <div className="work-flip-grid">
+        {studyCard(bottom, {
+          sizes: "(max-width: 920px) 100vw, 1400px",
+        })}
+      </div>
+    </div>
+  );
+}
 
 function WorkProjectGrid() {
   return (
     <div className="work-flip-grid">
-      {calicapWorkStudies.map((s, i) => {
-        const image = getWorkStudyImage(s);
-        return (
-          <WorkProjectFlipCard
-            key={s.slug}
-            href={`/work/${s.slug}`}
-            title={s.title}
-            label={s.label}
-            description={s.context}
-            result={s.result}
-            image={image}
-            priority={i === 0}
-            sizes="(max-width: 920px) 100vw, 1400px"
-          />
-        );
-      })}
+      {calicapWorkStudies.map((s, i) =>
+        studyCard(s, {
+          priority: i === 0,
+          sizes: "(max-width: 920px) 100vw, 1400px",
+        }),
+      )}
     </div>
   );
 }
@@ -71,7 +119,7 @@ function CanvasWorkIndex() {
       </CanvasReveal>
 
       <div className="mt-16 sm:mt-20">
-        <WorkProjectGrid />
+        <CanvasWorkProjectGrid />
       </div>
     </div>
   );

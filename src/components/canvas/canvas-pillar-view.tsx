@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ButtonLink } from "@/components/button-link";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { CanvasTextScrub } from "@/components/canvas/motion";
@@ -26,7 +25,6 @@ export function CanvasPillarView({
   pillarId,
   embedded = false,
 }: Props) {
-  const router = useRouter();
   const page = getPillarPage(pillarId);
   const section = getPillarSection(pillarId);
   if (!page || !section) return null;
@@ -41,63 +39,65 @@ export function CanvasPillarView({
 
   /**
    * Circuit detail layout (Build reference): title, body, service cards under
-   * examplesTitle, bottom CTAs. Card click → /services except problem CTA.
+   * examplesTitle, bottom CTAs. Card click → /services (page leave) except problem CTA.
    */
   if (embedded) {
     return (
-      <article
-        className="canvas-pillar w-full min-w-0 cursor-pointer py-0"
-        onClick={() => router.push("/services")}
-      >
-        <CanvasTextScrub
-          as="h1"
-          text={page.title}
-          scrub={false}
-          className={titleClass}
+      <article className="canvas-pillar relative w-full min-w-0 py-0">
+        <Link
+          href="/services"
+          className="absolute inset-0 z-[1]"
+          aria-label="Explore services"
         />
-        <p className="mt-4 max-w-3xl text-sm leading-[1.75] text-[var(--color-text-muted)]">
-          {page.body}
-        </p>
-
-        <section className={`border-t border-[var(--color-border-subtle)] ${firstGap}`}>
+        <div className="relative z-[2] pointer-events-none">
           <CanvasTextScrub
-            as="h2"
-            text={page.examplesTitle}
+            as="h1"
+            text={page.title}
             scrub={false}
-            className={HEADLINE}
+            className={titleClass}
           />
-          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-            {section.groups.map((g) => (
-              <li
-                key={g.title}
-                className="canvas-detail-item border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 p-4"
-              >
-                <h3 className="font-[family-name:var(--font-display)] text-sm font-medium text-[var(--color-text-strong)]">
-                  {g.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
-                  {g.body}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
+          <p className="mt-4 max-w-3xl text-sm leading-[1.75] text-[var(--color-text-muted)]">
+            {page.body}
+          </p>
+
+          <section className={`border-t border-[var(--color-border-subtle)] ${firstGap}`}>
+            <CanvasTextScrub
+              as="h2"
+              text={page.examplesTitle}
+              scrub={false}
+              className={HEADLINE}
+            />
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+              {section.groups.map((g) => (
+                <li
+                  key={g.title}
+                  className="canvas-detail-item border border-[var(--color-border-subtle)] bg-[var(--color-surface)]/40 p-4"
+                >
+                  <h3 className="font-[family-name:var(--font-display)] text-sm font-medium text-[var(--color-text-strong)]">
+                    {g.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                    {g.body}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
 
         <div
-          className={`flex flex-wrap gap-3 border-t border-[var(--color-border-subtle)] ${sectionGap}`}
+          className={`relative z-[2] flex flex-wrap gap-3 border-t border-[var(--color-border-subtle)] ${sectionGap}`}
         >
-          <span
-            className="inline-flex"
-            onClick={(e) => e.stopPropagation()}
-            onKeyDown={(e) => e.stopPropagation()}
-          >
+          <span className="pointer-events-auto inline-flex">
             <ProblemCtaButton variant="primary">
               Tell us your problem
             </ProblemCtaButton>
           </span>
-          <ButtonLink href="/services" variant="ghost">
-            Explore services
-          </ButtonLink>
+          <span className="pointer-events-auto inline-flex">
+            <ButtonLink href="/services" variant="ghost">
+              Explore services
+            </ButtonLink>
+          </span>
         </div>
       </article>
     );

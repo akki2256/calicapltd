@@ -59,6 +59,16 @@ export const siteImages = {
     src: "/images/case-studies/amazing-art-portfolio.jpg",
     alt: "Amazing Art Architects portfolio grid — day and night residential architecture renders",
   },
+  /** Temporary stand-in until client product captures are supplied */
+  chaitanyaComputersHero: {
+    src: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1400&q=85",
+    alt: "Chaitanya Computers — digital presence and retail operations (product snapshots forthcoming)",
+  },
+  /** Temporary stand-in until client product captures are supplied */
+  lungconnectIndiaHero: {
+    src: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1400&q=85",
+    alt: "LungConnect India Foundation — patient care operations MIS (product snapshots forthcoming)",
+  },
 } as const;
 
 export type SiteImageKey = keyof typeof siteImages;

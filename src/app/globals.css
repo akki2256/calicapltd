@@ -1713,6 +1713,39 @@ html.menu-visible .canvas-nav-trigger-float {
   min-width: 0;
 }
 
+/* Full-width product cases, then website trio in one row (Canvas) */
+.work-flip-layout {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.work-flip-grid--trio {
+  grid-template-columns: 1fr;
+  column-gap: 0;
+  row-gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+@media (min-width: 900px) {
+  .work-flip-grid--trio {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  /* Flush edges + taller crop so the trio reads larger than default 3/2 cards */
+  .work-flip-grid--trio .work-flip__scene {
+    aspect-ratio: 5 / 4;
+    border-radius: 0;
+  }
+
+  .work-flip-grid--trio .work-flip:not(:first-child) .work-flip__scene {
+    border-left-width: 0;
+  }
+}
+
 .work-flip {
   --work-flip-duration: 0.62s;
   --work-flip-ease: cubic-bezier(0.33, 0.02, 0.18, 1);
@@ -2933,6 +2966,26 @@ html.menu-visible .canvas-nav-trigger-float {
   text-shadow:
     0 0 22px color-mix(in srgb, var(--color-surface) 88%, transparent),
     0 1px 12px color-mix(in srgb, var(--color-surface) 70%, transparent);
+}
+
+.canvas-services__cat-support {
+  margin: 1rem 0 0;
+  max-width: min(22rem, 100%);
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 1024px) {
+  .canvas-services__cat-aside {
+    position: sticky;
+    top: 6rem;
+  }
+
+  /* Sticky lives on the aside (title + support), not the title alone */
+  .canvas-services__cat-aside .canvas-about__split-title {
+    position: static;
+  }
 }
 
 .canvas-services__hero {
