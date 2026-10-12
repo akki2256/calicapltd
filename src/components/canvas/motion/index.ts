@@ -1,4 +1,11 @@
-export { canvasDur, canvasEase, canvasEaseOut, canvasStagger, viewportOnce } from "./tokens";
+export {
+  canvasDur,
+  canvasEase,
+  canvasEaseOut,
+  canvasStagger,
+  viewportEager,
+  viewportOnce,
+} from "./tokens";
 export { CanvasReveal } from "./canvas-reveal";
 export { CanvasStagger, CanvasStaggerItem } from "./canvas-stagger";
 export { CanvasTextReveal, CanvasTextRevealInView } from "./canvas-text-reveal";

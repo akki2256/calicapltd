@@ -2699,18 +2699,63 @@ html.menu-visible .canvas-nav-trigger-float {
   opacity: 0.95;
 }
 
-/* ========== Canvas home testimonials ========== */
+/* ========== Canvas home testimonials — 3D platform scene ========== */
 
 .canvas-testimonials {
   position: relative;
+  isolation: isolate;
   width: 100%;
-  border-top: 1px solid var(--color-border-subtle);
-  background: color-mix(in srgb, var(--color-surface) 96%, #000);
+  border-top: 1px solid rgba(58, 212, 255, 0.08);
+  background:
+    radial-gradient(ellipse 80% 55% at 70% 55%, rgba(20, 70, 100, 0.35), transparent 60%),
+    linear-gradient(180deg, #05070c 0%, #070b12 45%, #05070c 100%);
   /* Last home section — clear the Canvas FAB / footer stack */
   padding-bottom: max(78px, var(--canvas-content-bottom));
+  overflow: hidden;
+  min-height: min(92vh, 860px);
+}
+
+.canvas-testimonials__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.canvas-testimonial-platform {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas-testimonial-platform__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Keep quote copy readable over the neon board; right side stays open for the 3D */
+.canvas-testimonials__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      105deg,
+      rgba(5, 7, 12, 0.78) 0%,
+      rgba(5, 7, 12, 0.55) 26%,
+      rgba(5, 7, 12, 0.12) 48%,
+      transparent 68%,
+      rgba(5, 7, 12, 0.2) 100%
+    ),
+    linear-gradient(180deg, rgba(5, 7, 12, 0.35) 0%, transparent 18%, transparent 82%, rgba(5, 7, 12, 0.5) 100%);
 }
 
 .canvas-testimonials__frame {
+  position: relative;
+  z-index: 1;
   padding-top: clamp(3rem, 7vw, 5.5rem);
   padding-bottom: clamp(3.25rem, 7vw, 5.75rem);
 }
@@ -2737,49 +2782,40 @@ html.menu-visible .canvas-nav-trigger-float {
   color: var(--color-text-muted);
 }
 
-.canvas-testimonials__list {
+.canvas-testimonials__voices {
   margin-top: clamp(2.5rem, 5vw, 3.75rem);
+  max-width: 42rem;
+}
+
+.canvas-testimonials__stage {
+  position: relative;
   display: grid;
-  gap: 0;
-  border-top: 1px solid var(--color-border-subtle);
-}
-
-@media (min-width: 1024px) {
-  .canvas-testimonials__list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.canvas-testimonials__item {
   min-width: 0;
-  padding: 1.75rem 0 0;
-  border-top: 1px solid var(--color-border-subtle);
 }
 
-.canvas-testimonials__item:first-child {
-  border-top: none;
-  padding-top: 1.75rem;
+.canvas-testimonials__sizer,
+.canvas-testimonials__active {
+  grid-area: 1 / 1;
+  min-width: 0;
 }
 
-@media (min-width: 1024px) {
-  .canvas-testimonials__item {
-    border-top: none;
-    padding: 1.75rem 0 0;
-  }
+.canvas-testimonials__sizer {
+  visibility: hidden;
+  pointer-events: none;
+  display: grid;
+}
 
-  .canvas-testimonials__item + .canvas-testimonials__item {
-    border-left: 1px solid var(--color-border-subtle);
-    padding-left: 1.75rem;
-    margin-left: 0;
-  }
+.canvas-testimonials__sizer > * {
+  grid-area: 1 / 1;
+}
 
-  .canvas-testimonials__item:first-child {
-    padding-right: 1.75rem;
-  }
+.canvas-testimonials__active {
+  position: relative;
+  z-index: 1;
+}
 
-  .canvas-testimonials__item:nth-child(2) {
-    padding-right: 1.75rem;
-  }
+.canvas-testimonials__motion {
+  width: 100%;
 }
 
 .canvas-testimonials__quote {
@@ -2791,11 +2827,12 @@ html.menu-visible .canvas-nav-trigger-float {
   margin: 0;
   padding-top: 0.35rem;
   font-family: var(--font-display);
-  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
   font-weight: 450;
-  line-height: 1.55;
-  letter-spacing: -0.015em;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
   color: var(--color-text-strong);
+  text-wrap: pretty;
 }
 
 .canvas-testimonials__quote > p::before {
@@ -2806,7 +2843,7 @@ html.menu-visible .canvas-nav-trigger-float {
 }
 
 .canvas-testimonials__cite {
-  margin-top: 1.35rem;
+  margin-top: 1.5rem;
 }
 
 .canvas-testimonials__name {
@@ -2823,6 +2860,124 @@ html.menu-visible .canvas-nav-trigger-float {
   font-size: 0.8125rem;
   line-height: 1.45;
   color: var(--color-text-muted);
+}
+
+.canvas-testimonials__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.canvas-testimonials__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-subtle);
+  background: transparent;
+  color: var(--color-text-muted);
+  transition:
+    color 200ms var(--motion-ease),
+    border-color 200ms var(--motion-ease),
+    background-color 200ms var(--motion-ease);
+}
+
+.canvas-testimonials__nav:hover {
+  color: var(--color-text-strong);
+  border-color: var(--color-btn-ghost-hover-border);
+  background: var(--color-btn-ghost-hover-bg);
+}
+
+.canvas-testimonials__nav:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  color: var(--color-text-strong);
+}
+
+.canvas-testimonials__dots {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.canvas-testimonials__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  padding: 0;
+  border-radius: 999px;
+  border: none;
+  background: rgba(245, 245, 243, 0.22);
+  transition:
+    background-color 280ms var(--motion-ease),
+    transform 280ms var(--motion-ease),
+    box-shadow 280ms var(--motion-ease);
+}
+
+.canvas-testimonials__dot:hover {
+  background: rgba(245, 245, 243, 0.45);
+}
+
+.canvas-testimonials__dot.is-active {
+  background: var(--color-accent);
+  transform: scale(1.2);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+.canvas-testimonials__dot:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.canvas-testimonials__count {
+  margin-left: auto;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.canvas-testimonials__count-sep {
+  margin-inline: 0.2em;
+  opacity: 0.55;
+}
+
+@media (max-width: 639px) {
+  .canvas-testimonials {
+    min-height: min(88vh, 720px);
+  }
+
+  .canvas-testimonials__scrim {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 7, 12, 0.82) 0%,
+        rgba(5, 7, 12, 0.55) 38%,
+        rgba(5, 7, 12, 0.35) 62%,
+        rgba(5, 7, 12, 0.7) 100%
+      );
+  }
+
+  .canvas-testimonials__voices {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas-testimonials__nav,
+  .canvas-testimonials__dot {
+    transition: none;
+  }
+
+  .canvas-testimonials__dot.is-active {
+    transform: none;
+  }
 }
 
 /* Shared Canvas content frame */
@@ -2976,17 +3131,7 @@ html.menu-visible .canvas-nav-trigger-float {
   color: var(--color-text-muted);
 }
 
-@media (min-width: 1024px) {
-  .canvas-services__cat-aside {
-    position: sticky;
-    top: 6rem;
-  }
-
-  /* Sticky lives on the aside (title + support), not the title alone */
-  .canvas-services__cat-aside .canvas-about__split-title {
-    position: static;
-  }
-}
+/* Category sticky matches About: title-only via .canvas-about__split-title */
 
 .canvas-services__hero {
   position: relative;
