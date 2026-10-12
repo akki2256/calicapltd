@@ -13,10 +13,29 @@ import {
 } from "lucide-react";
 import {
   PILLARS,
+  getService,
   getServicesForPillar,
   type PillarId,
 } from "@/lib/brand-architecture";
+import {
+  SERVICE_CATALOGUE,
+  CATALOGUE_SERVICES,
+  getCatalogueCategory,
+  getCatalogueService,
+  getCatalogueServicesForCategory,
+  validateServiceCatalogue,
+} from "@/lib/service-catalogue";
 import { siteImages } from "@/lib/site-images";
+
+/** Services-page catalogue — re-exported so page content stays in one import surface */
+export {
+  SERVICE_CATALOGUE,
+  CATALOGUE_SERVICES,
+  getCatalogueCategory,
+  getCatalogueService,
+  getCatalogueServicesForCategory,
+  validateServiceCatalogue,
+};
 
 export type CalicapEngageTextBlock =
   | { type: "text"; value: string }
@@ -214,8 +233,6 @@ export type CalicapPillarPage = {
   challenges: readonly string[];
   examplesTitle: string;
   examples: readonly string[];
-  flexibleTitle: string;
-  flexibleBody: string;
   contactHref: string;
   contactCta: string;
   problemCta?: string;
@@ -228,8 +245,8 @@ export const calicapPillarPages: Record<PillarId, CalicapPillarPage> = {
     id: "build",
     path: "/build",
     eyebrow: "Build",
-    title: "Whether there is a clear specification or just an idea, we can help build it.",
-    body: "Applications, software, digital products, and integrations shaped around customers and how work actually happens.",
+    title: "Create what's needed.",
+    body: "Whether there is a clear specification or just an idea, we can help build it. You don't need to know exactly what technology you need — only what you want to achieve.",
     challengesTitle: "What we can build",
     challenges: [
       "Web & mobile applications",
@@ -244,9 +261,6 @@ export const calicapPillarPages: Record<PillarId, CalicapPillarPage> = {
       "E-commerce experiences and internal software",
       "Custom workflows and integrated systems",
     ],
-    flexibleTitle: "How a project can begin",
-    flexibleBody:
-      "A clear specification, a rough idea, or a real problem. You don't need to know exactly what technology you need — only what you want to achieve.",
     contactHref: "/contact?mode=know",
     contactCta: "Tell us what you want to build",
     problemCta: "Tell us your problem",
@@ -259,7 +273,7 @@ export const calicapPillarPages: Record<PillarId, CalicapPillarPage> = {
     path: "/transform",
     eyebrow: "Transform",
     title: "Improve how things operate through technology.",
-    body: "Technology should evolve as operations evolve — websites, systems, workflows, and digital experiences.",
+    body: "Modernize what already exists. Improve operations through better technology.",
     challengesTitle: "Problems worth fixing",
     challenges: [
       "Outdated software",
@@ -275,9 +289,6 @@ export const calicapPillarPages: Record<PillarId, CalicapPillarPage> = {
       "Digital transformation",
       "Technology consulting",
     ],
-    flexibleTitle: "How we approach it",
-    flexibleBody:
-      "Modernize what already exists. Improve operations through better technology — without forcing a one-size package.",
     contactHref: "/contact?mode=know",
     contactCta: "Modernize your technology",
     problemCta: "Tell us your problem",
@@ -290,7 +301,7 @@ export const calicapPillarPages: Record<PillarId, CalicapPillarPage> = {
     path: "/automate",
     eyebrow: "Automate",
     title: "Eliminate repetitive manual work.",
-    body: "Save time, reduce avoidable errors, improve consistency, and free people for higher-value work. AI is one set of capabilities within a broader automation offering.",
+    body: "Fewer manual steps. Better use of people's time. More efficient operations.",
     challengesTitle: "What can be automated?",
     challenges: [
       "Repetitive workflows",
@@ -305,9 +316,6 @@ export const calicapPillarPages: Record<PillarId, CalicapPillarPage> = {
       "Workflow automation",
       "AI integrations",
     ],
-    flexibleTitle: "The business impact",
-    flexibleBody:
-      "Time saved. Better consistency. Fewer manual steps. Better use of people's time. More efficient operations.",
     contactHref: "/contact?mode=unsure",
     contactCta: "Tell us what's taking too much time",
     problemCta: "Tell us your problem",
@@ -320,7 +328,7 @@ export const calicapPillarPages: Record<PillarId, CalicapPillarPage> = {
     path: "/evolve",
     eyebrow: "Evolve",
     title: "Have a technology partner for the long term.",
-    body: "Technology does not stop needing attention after launch. Keep it reliable, relevant, and improving.",
+    body: "Continuous improvement and a long-term technology relationship — not a commodity ticket queue.",
     challengesTitle: "Why technology needs to evolve",
     challenges: [
       "Requirements change",
@@ -335,9 +343,6 @@ export const calicapPillarPages: Record<PillarId, CalicapPillarPage> = {
       "AMC",
       "Continuous development",
     ],
-    flexibleTitle: "The ongoing cycle",
-    flexibleBody:
-      "Fix → Maintain → Improve → Extend → Evolve. Continuous improvement and a long-term technology relationship — not a commodity ticket queue.",
     contactHref: "/contact?mode=know",
     contactCta: "Keep your technology moving",
     problemCta: "Tell us your problem",
@@ -353,6 +358,59 @@ export function getPillarSection(id: PillarId) {
 
 export function getPillarPage(id: PillarId) {
   return calicapPillarPages[id];
+}
+
+/** Circuit-board detail copy for outcomes that are not 1:1 with a pillar page */
+export type CalicapOutcomeDetail = {
+  id: string;
+  title: string;
+  body: string;
+  examplesTitle: string;
+  examples: readonly string[];
+  servicesTitle: string;
+  servicesIntro: string;
+  groups: readonly { title: string; body: string }[];
+  contactHref: string;
+  contactCta: string;
+  problemCta?: string;
+};
+
+const CONNECT_SERVICE_IDS = [
+  "apis-integrations",
+  "ai-integrations",
+  "workflow-automation",
+] as const;
+
+export const calicapOutcomeDetails: Record<string, CalicapOutcomeDetail> = {
+  connect: {
+    id: "connect",
+    title: "Bring systems, data, and workflows together.",
+    body: "APIs, integrations, and connected systems so information moves cleanly and processes stop living in silos.",
+    examplesTitle: "Integrations we offer",
+    examples: [
+      "APIs between products, platforms, and internal tools",
+      "Integrations across CRM, ERP, and operational systems",
+      "Connected systems that share a single source of truth",
+      "Data flows for sync, migration, and event-driven updates",
+    ],
+    servicesTitle: "Integration capabilities",
+    servicesIntro:
+      "Practical connection work — not middleware for its own sake. Wire what needs to talk, and keep the rest simple.",
+    groups: CONNECT_SERVICE_IDS.map((id) => {
+      const service = getService(id);
+      return {
+        title: service?.title ?? id,
+        body: service?.body ?? "",
+      };
+    }),
+    contactHref: "/contact?mode=know",
+    contactCta: "Tell us what needs to connect",
+    problemCta: "Tell us your problem",
+  },
+};
+
+export function getOutcomeDetail(id: string) {
+  return calicapOutcomeDetails[id] ?? null;
 }
 
 export type CalicapServiceOffering = {

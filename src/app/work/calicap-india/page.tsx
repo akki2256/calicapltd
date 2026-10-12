@@ -152,7 +152,7 @@ export default function CalicapIndiaCasePage() {
           src="/images/case-studies/crm-dashboard.png"
           alt="Calicap India CRM dashboard preview with sensitive data redacted"
           fill
-          className="object-cover object-top"
+          className="object-contain object-top"
           sizes="(max-width: 768px) 100vw, 720px"
           priority
         />
@@ -375,7 +375,7 @@ export default function CalicapIndiaCasePage() {
                 alt={shot.alt}
                 width={1024}
                 height={474}
-                className="h-auto w-full object-cover object-top"
+                className="h-auto w-full object-contain object-top"
                 sizes="(max-width: 768px) 100vw, 720px"
               />
               <div

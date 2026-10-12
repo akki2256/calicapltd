@@ -8,7 +8,8 @@ export const CALICON_SITE_NAME = "Calicon";
 
 export const calicapContact = {
   brand: CALICON_SITE_NAME,
-  email: process.env.CONTACT_INBOX_EMAIL ?? "info@calicon.com",
+  /** Public mailto / NAP display. Form delivery uses CONTACT_INBOX_EMAIL server-side only. */
+  email: "info@calicon.com",
   /** Display placeholder until a live number is confirmed */
   phone: "+1 (000) 000-0000",
   phoneHref: "tel:+10000000000",

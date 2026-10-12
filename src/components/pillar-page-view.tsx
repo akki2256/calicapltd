@@ -2,16 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowRight, MessageCircle, PhoneForwarded } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { CanvasPillarView } from "@/components/canvas/canvas-pillar-view";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { JsonLd } from "@/components/JsonLd";
-import { ProjectApproach } from "@/components/project-approach";
 import { ThemeSplit } from "@/components/theme-split";
-import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import {
   calicapBuildDetailLinks,
   calicapServicesApproach,
@@ -19,10 +17,8 @@ import {
   getPillarPage,
   getPillarSection,
 } from "@/lib/calicap-services";
-import { calicapHomeProcess } from "@/lib/calicap-home";
 import { getWorkStudiesForPillar, getWorkStudyImage } from "@/lib/calicap-work";
 import { getPillar, type PillarId } from "@/lib/brand-architecture";
-import { PILLAR_DELIVERY } from "@/lib/delivery-architecture";
 import { siteImages } from "@/lib/site-images";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/structured-data";
 
@@ -33,6 +29,15 @@ type Props = {
   /** Denser chrome for constrained surfaces (circuit detail panel) */
   embedded?: boolean;
 };
+
+/** Canvas no longer ships standalone pillar pages — send visitors to Services. */
+function CanvasPillarPageRedirect() {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace("/services");
+  }, [router]);
+  return null;
+}
 
 export function PillarPageView({ pillarId }: Props) {
   const page = getPillarPage(pillarId);
@@ -56,7 +61,7 @@ export function PillarPageView({ pillarId }: Props) {
         />
       ) : null}
       <ThemeSplit
-        canvas={<CanvasPillarView pillarId={pillarId} />}
+        canvas={<CanvasPillarPageRedirect />}
         calicon={<CaliconPillarView pillarId={pillarId} />}
       />
     </>
@@ -71,13 +76,7 @@ export function PillarEmbeddedView({
 }: Props) {
   return (
     <ThemeSplit
-      canvas={
-        <CanvasPillarView
-          pillarId={pillarId}
-          omitRelatedWork={omitRelatedWork}
-          embedded={embedded}
-        />
-      }
+      canvas={<CanvasPillarView pillarId={pillarId} embedded={embedded} />}
       calicon={
         <CaliconPillarView
           pillarId={pillarId}
@@ -89,90 +88,12 @@ export function PillarEmbeddedView({
   );
 }
 
-function CaliconProcessRail() {
-  const steps = calicapHomeProcess.steps;
-  const reduced = usePrefersReducedMotion();
-  const [active, setActive] = useState(0);
-  const step = steps[active];
-  const StepIcon = step.icon;
-
-  return (
-    <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-8">
-      <h2 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-        {calicapHomeProcess.title}
-      </h2>
-
-      <div className="relative mt-7">
-        <div
-          className="pointer-events-none absolute left-0 right-0 top-[1.125rem] hidden h-px bg-[var(--color-border-subtle)] lg:block"
-          aria-hidden
-        />
-        <ol className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3 lg:grid-cols-5 lg:gap-0">
-          {steps.map((s, index) => {
-            const Icon = s.icon;
-            const isActive = active === index;
-            return (
-              <li key={s.n}>
-                <button
-                  type="button"
-                  onClick={() => setActive(index)}
-                  onMouseEnter={() => setActive(index)}
-                  className="group flex w-full flex-col items-start text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] lg:items-center lg:text-center"
-                  aria-current={isActive ? "step" : undefined}
-                >
-                  <span
-                    className={`relative z-[1] flex h-9 w-9 items-center justify-center rounded-full border transition duration-300 ${
-                      isActive
-                        ? "border-gold-600 bg-gold-600 text-[var(--color-btn-primary-text)] shadow-[0_0_0_4px_var(--color-accent-soft)]"
-                        : "border-[var(--color-border-subtle)] bg-[var(--color-surface)] text-slate-500 group-hover:border-gold-500/50"
-                    }`}
-                  >
-                    <Icon className="h-4 w-4" strokeWidth={2} aria-hidden />
-                  </span>
-                  <span className="mt-3 text-[11px] font-mono text-gold-600">{s.n}</span>
-                  <span
-                    className={`mt-1 font-[family-name:var(--font-display)] text-base ${
-                      isActive ? "text-slate-900" : "text-slate-500"
-                    }`}
-                  >
-                    {s.t}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
-
-      <div className="mt-7 min-h-[5.5rem] border-t border-[var(--color-border-subtle)] pt-5">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step.n}
-            initial={reduced ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduced ? undefined : { opacity: 0, y: -6 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-start gap-3"
-          >
-            <StepIcon className="mt-0.5 h-5 w-5 shrink-0 text-gold-600" strokeWidth={1.75} aria-hidden />
-            <div>
-              <p className="font-[family-name:var(--font-display)] text-lg text-slate-900">
-                {step.t}
-              </p>
-              <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-slate-600">{step.d}</p>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    </section>
-  );
-}
-
 function CaliconPillarView({
   pillarId,
   omitRelatedWork = false,
   embedded = false,
 }: Props) {
+  const router = useRouter();
   const page = getPillarPage(pillarId);
   const section = getPillarSection(pillarId);
   if (!page || !section) return null;
@@ -181,6 +102,62 @@ function CaliconPillarView({
   const approach = calicapServicesApproach;
   const related = omitRelatedWork ? [] : getWorkStudiesForPillar(pillarId);
   const sectionGap = embedded ? "mt-8 pt-6" : "mt-12 pt-8";
+
+  /** Circuit detail — same layout as Build for every embedded pillar */
+  if (embedded) {
+    return (
+      <div
+        className="w-full min-w-0 cursor-pointer px-0 py-0"
+        onClick={() => router.push("/services")}
+      >
+        <header>
+          <h1 className="max-w-xl text-balance font-[family-name:var(--font-display)] text-2xl font-medium leading-snug tracking-tight text-slate-900 md:text-[1.75rem] md:leading-[1.2]">
+            {page.title}
+          </h1>
+          <p className="mt-4 max-w-lg text-sm leading-relaxed text-slate-600">
+            {page.body}
+          </p>
+        </header>
+
+        <section className={`border-t border-[var(--color-border-subtle)] ${sectionGap}`}>
+          <h2 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-tight text-slate-900">
+            {page.examplesTitle}
+          </h2>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+            {section.groups.map((g) => (
+              <li
+                key={g.title}
+                className="rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm shadow-slate-900/5"
+              >
+                <h3 className="font-[family-name:var(--font-display)] text-sm font-medium text-slate-900">
+                  {g.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">{g.body}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <div
+          className={`flex flex-wrap gap-3 border-t border-[var(--color-border-subtle)] ${sectionGap}`}
+        >
+          <span
+            className="inline-flex"
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+          >
+            <ProblemCtaButton variant="primary">
+              <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+              Tell us your problem
+            </ProblemCtaButton>
+          </span>
+          <ButtonLink href="/services" variant="ghost">
+            Explore services
+          </ButtonLink>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -198,14 +175,16 @@ function CaliconPillarView({
         }
       >
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-700/95">
-            {page.eyebrow}
-          </p>
+          {!embedded ? (
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-700/95">
+              {page.eyebrow}
+            </p>
+          ) : null}
           <h1
-            className={`mt-3 max-w-xl text-balance font-[family-name:var(--font-display)] font-medium tracking-tight text-slate-900 ${
+            className={`max-w-xl text-balance font-[family-name:var(--font-display)] font-medium tracking-tight text-slate-900 ${
               embedded
-                ? "text-2xl leading-snug md:text-[1.75rem] md:leading-[1.2]"
-                : "text-4xl md:text-[2.5rem] md:leading-[1.12]"
+                ? "mt-0 text-2xl leading-snug md:text-[1.75rem] md:leading-[1.2]"
+                : "mt-3 text-4xl md:text-[2.5rem] md:leading-[1.12]"
             }`}
           >
             {page.title}
@@ -292,12 +271,6 @@ function CaliconPillarView({
               </li>
             ))}
           </ul>
-          <div className="mt-6 border-l-2 border-gold-500/40 pl-4">
-            <h3 className="font-[family-name:var(--font-display)] text-lg text-slate-900">
-              {page.flexibleTitle}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">{page.flexibleBody}</p>
-          </div>
         </div>
       </section>
 
@@ -341,13 +314,6 @@ function CaliconPillarView({
           </div>
         ) : null}
       </section>
-
-      <CaliconProcessRail />
-
-      <ProjectApproach
-        title={PILLAR_DELIVERY[pillarId].title}
-        body={PILLAR_DELIVERY[pillarId].body}
-      />
 
       {related.length > 0 ? (
         <section className={`border-t border-[var(--color-border-subtle)] ${sectionGap}`}>

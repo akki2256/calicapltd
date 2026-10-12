@@ -16,5 +16,9 @@ export {
   CanvasSectionExit,
 } from "./canvas-section-transition";
 export { CanvasWordReveal, CanvasTextScrub } from "./canvas-word-reveal";
+export {
+  CanvasScrollContainerContext,
+  useCanvasScrollContainer,
+} from "./canvas-scroll-container";
 export { CanvasImageReveal, CanvasClipReveal } from "./canvas-image-reveal";
 export { CanvasCursor } from "./canvas-cursor";

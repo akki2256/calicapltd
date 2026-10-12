@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { ButtonLink } from "@/components/button-link";
+import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { DeliveryProcess } from "@/components/delivery-process";
 import {
   CanvasReveal,
@@ -15,9 +17,11 @@ import { ThemeSplit } from "@/components/theme-split";
 import {
   ABOUT_OBSERVATION_ID,
   ABOUT_RESPONSE_ID,
+  ABOUT_STATS_ID,
   ABOUT_THE_APPROACH_ID,
   calicapAbout,
 } from "@/lib/calicap-about";
+import { calicapHomeImpact } from "@/lib/calicap-home";
 import { canvasWordKey } from "@/lib/canvas-dual-color";
 
 const OBSERVATION_ACCENT = new Set(
@@ -52,6 +56,97 @@ function DualColorText({
       </span>
     );
   });
+}
+
+function AboutStatsColumns({ variant }: { variant: "canvas" | "calicon" }) {
+  const metrics = calicapHomeImpact.metrics;
+
+  if (variant === "canvas") {
+    return (
+      <section
+        id={ABOUT_STATS_ID}
+        className="canvas-about-stats border-t"
+        aria-label={calicapHomeImpact.title}
+      >
+        <CanvasStagger className="canvas-about-stats__grid" stagger={0.06}>
+          {metrics.map((metric, i) => (
+            <CanvasStaggerItem key={metric.label} className="canvas-about-stats__col">
+              <p className="canvas-about-stats__index">
+                {String(i + 1).padStart(2, "0")}
+              </p>
+              <h3 className="canvas-about-stats__value">{metric.value}</h3>
+              <p className="canvas-about-stats__label">{metric.label}</p>
+            </CanvasStaggerItem>
+          ))}
+        </CanvasStagger>
+      </section>
+    );
+  }
+
+  return (
+    <section
+      id={ABOUT_STATS_ID}
+      className="mt-12 scroll-mt-8 border-t border-[var(--color-border-subtle)] pt-10"
+      aria-label={calicapHomeImpact.title}
+    >
+      <div className="calicon-about-stats__grid grid grid-cols-1 border border-[var(--color-border-subtle)] sm:grid-cols-2 lg:grid-cols-4">
+        {metrics.map((metric, i) => (
+          <article
+            key={metric.label}
+            className={`calicon-about-stats__col flex min-h-[16rem] flex-col gap-4 px-5 py-6 sm:min-h-[18rem] lg:min-h-[22rem] ${
+              i === 0 ? "" : "border-t border-[var(--color-border-subtle)]"
+            }`}
+          >
+            <p className="font-[family-name:var(--font-display)] text-[11px] font-medium tracking-[0.16em] text-slate-500">
+              {String(i + 1).padStart(2, "0")}
+            </p>
+            <h3 className="font-[family-name:var(--font-display)] text-[clamp(1.65rem,3.2vw,2.15rem)] font-medium leading-tight tracking-tight text-slate-900">
+              <span className="text-gradient tabular-nums">{metric.value}</span>
+            </h3>
+            <p className="mt-auto max-w-[16rem] text-[13px] leading-relaxed text-slate-600">
+              {metric.label}
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AboutCloseCta({ variant }: { variant: "canvas" | "calicon" }) {
+  const about = calicapAbout;
+
+  if (variant === "canvas") {
+    return (
+      <section className="canvas-about-close border-t" aria-labelledby="about-close-title">
+        <CanvasReveal variant="riseSoft">
+          <h2 id="about-close-title" className="canvas-about-close__title">
+            {about.aboutCloseTitle}
+          </h2>
+        </CanvasReveal>
+        <CanvasReveal variant="riseSoft" delay={0.08} className="canvas-about-close__actions">
+          <ProblemCtaButton>{about.aboutCloseCta}</ProblemCtaButton>
+          <ButtonLink href={about.aboutCloseWorkHref} variant="ghost">
+            {about.aboutCloseWorkCta}
+          </ButtonLink>
+        </CanvasReveal>
+      </section>
+    );
+  }
+
+  return (
+    <section className="mt-12 border-t border-[var(--color-border-subtle)] pt-10 pb-2">
+      <h2 className="max-w-xl font-[family-name:var(--font-display)] text-[clamp(1.5rem,3vw,2rem)] font-medium tracking-tight text-slate-900">
+        {about.aboutCloseTitle}
+      </h2>
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        <ProblemCtaButton>{about.aboutCloseCta}</ProblemCtaButton>
+        <ButtonLink href={about.aboutCloseWorkHref} variant="ghost">
+          {about.aboutCloseWorkCta}
+        </ButtonLink>
+      </div>
+    </section>
+  );
 }
 
 function CanvasObservationGaps() {
@@ -152,7 +247,7 @@ function CanvasAbout() {
 
         <section
           id={ABOUT_OBSERVATION_ID}
-          className="canvas-about__split"
+          className="canvas-about__split border-t"
           aria-labelledby="about-observation-label"
         >
           <div className="canvas-about__split-layout">
@@ -217,7 +312,7 @@ function CanvasAbout() {
 
         <section
           id={ABOUT_RESPONSE_ID}
-          className="canvas-about__split"
+          className="canvas-about__split border-t"
           aria-labelledby="about-response-label"
         >
           <div className="canvas-about__split-layout">
@@ -249,7 +344,7 @@ function CanvasAbout() {
 
         <section
           id={ABOUT_THE_APPROACH_ID}
-          className="canvas-about__split"
+          className="canvas-about__split border-t"
           aria-labelledby="about-the-approach-label"
         >
           <div className="canvas-about__split-layout">
@@ -277,6 +372,9 @@ function CanvasAbout() {
             </div>
           </div>
         </section>
+
+        <AboutStatsColumns variant="canvas" />
+        <AboutCloseCta variant="canvas" />
       </div>
     </article>
   );
@@ -453,6 +551,9 @@ function CaliconAbout() {
           </div>
         </div>
       </section>
+
+      <AboutStatsColumns variant="calicon" />
+      <AboutCloseCta variant="calicon" />
     </div>
   );
 }

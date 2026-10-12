@@ -641,7 +641,7 @@ html.menu-visible .canvas-menu-item {
 
 .canvas-home-chapter {
   padding-right: 0;
-  padding-bottom: max(78px, var(--canvas-content-bottom));
+  padding-bottom: 0;
   background: var(--color-surface);
   /* Full-bleed section rules need this wrapper at the viewport edge. */
   overflow: visible;
@@ -886,28 +886,28 @@ html.menu-visible .canvas-nav-trigger-float {
 }
 
 /*
- * Canvas section rules match the marquee / about hairline:
- * 1px, viewport-wide, and fluid with the screen. Content stays in the column.
- * The border box itself grows with the header.
- * Calicon is outside .canvas-main-inner, so these rules do not apply there.
+ * Canvas section rules: 1px hairline, viewport-wide, centered so scrollbar
+ * clipping stays symmetric and the line covers the visible screen width.
+ * Content stays in the shared frame; Calicon is outside .canvas-main-inner.
  */
 [data-theme="canvas"] .canvas-main-inner :is(section, nav).border-t,
 [data-theme="canvas"] .canvas-main-inner article > .border-t {
-  /* Bleed hairlines to the viewport edge from inside the shared content frame */
-  --canvas-rule-bleed-left: calc(
-    (100vw - var(--canvas-frame-width)) / 2 + var(--canvas-frame-pad-left)
-  );
-  --canvas-rule-bleed-right: calc(
-    (100vw - var(--canvas-frame-width)) / 2 + var(--canvas-frame-pad-right)
-  );
-  box-sizing: border-box;
-  width: calc(100% + var(--canvas-rule-bleed-left) + var(--canvas-rule-bleed-right));
-  max-width: none;
-  margin-left: calc(-1 * var(--canvas-rule-bleed-left));
-  margin-right: 0;
-  padding-left: var(--canvas-rule-bleed-left);
-  padding-right: var(--canvas-rule-bleed-right);
-  border-top-color: var(--color-border-subtle) !important;
+  position: relative;
+  border-top-color: transparent !important;
+}
+
+[data-theme="canvas"] .canvas-main-inner :is(section, nav).border-t::before,
+[data-theme="canvas"] .canvas-main-inner article > .border-t::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 1px;
+  transform: translateX(-50%);
+  background: var(--color-border-subtle);
+  pointer-events: none;
 }
 
 .canvas-main-inner .text-gradient {
@@ -971,10 +971,10 @@ html.menu-visible .canvas-nav-trigger-float {
 
   .canvas-home-chapter {
     padding-right: 0;
-    padding-bottom: max(64px, var(--canvas-content-bottom));
+    padding-bottom: 0;
   }
 
-  .canvas-work-home {
+  .canvas-testimonials {
     padding-bottom: max(64px, var(--canvas-content-bottom));
   }
 
@@ -1001,10 +1001,10 @@ html.menu-visible .canvas-nav-trigger-float {
 
   .canvas-home-chapter {
     padding-right: 0;
-    padding-bottom: max(56px, var(--canvas-content-bottom));
+    padding-bottom: 0;
   }
 
-  .canvas-work-home {
+  .canvas-testimonials {
     padding-bottom: max(56px, var(--canvas-content-bottom));
   }
 
@@ -1652,15 +1652,13 @@ html.menu-visible .canvas-nav-trigger-float {
   max-width: 100%;
   min-width: 0;
   background: var(--color-surface);
-  /* Bottom clearance used to live on .canvas-home-chapter */
-  padding-bottom: max(78px, var(--canvas-content-bottom));
 }
 
 .canvas-work-home__frame {
   /* Same gutters as .canvas-testimonials__frame / .canvas-content-frame */
   padding-left: var(--canvas-frame-pad-left);
   padding-right: var(--canvas-frame-pad-right);
-  padding-top: clamp(2.75rem, 6vw, 5.5rem);
+  padding-top: clamp(2rem, 4.5vw, 3.5rem);
   padding-bottom: clamp(2.75rem, 6vw, 4.5rem);
 }
 
@@ -1769,14 +1767,12 @@ html.menu-visible .canvas-nav-trigger-float {
   width: 100% !important;
   height: 100% !important;
   max-width: none !important;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
 .work-flip__media {
-  transform: scale(1.01);
-  transition: transform calc(var(--work-flip-duration) + 0.15s) var(--work-flip-ease);
-  will-change: transform;
+  transform: none;
 }
 
 .work-flip__shade {
@@ -1915,10 +1911,6 @@ html.menu-visible .canvas-nav-trigger-float {
     opacity calc(var(--work-flip-duration) * 0.85) var(--work-flip-ease);
 }
 
-.work-flip.is-open .work-flip__media {
-  transform: scale(1.06);
-}
-
 .work-flip.is-open .work-flip__cta-line {
   transform: scaleX(1);
   opacity: 1;
@@ -1985,9 +1977,6 @@ html.menu-visible .canvas-nav-trigger-float {
     transition-delay: 0ms !important;
   }
 
-  .work-flip.is-open .work-flip__media {
-    transform: scale(1.02);
-  }
 }
 
 /* Prefer whole-word wraps; avoid mid-word breaks and orphan-heavy lines */
@@ -2040,7 +2029,7 @@ html.menu-visible .canvas-nav-trigger-float {
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 0 0 max(4rem, var(--canvas-content-bottom));
+  padding: 0;
   overflow-x: clip;
 }
 
@@ -2069,6 +2058,8 @@ html.menu-visible .canvas-nav-trigger-float {
 /* Let the outcomes board reclaim horizontal space without clipping */
 .canvas-chapter-block:has(.outcomes-circuit) {
   overflow: visible;
+  /* Work follows immediately — keep the handoff tight */
+  padding-bottom: clamp(1.5rem, 3.5vw, 2.5rem);
 }
 
 /* Kinetic Results Ledger */
@@ -2682,6 +2673,8 @@ html.menu-visible .canvas-nav-trigger-float {
   width: 100%;
   border-top: 1px solid var(--color-border-subtle);
   background: color-mix(in srgb, var(--color-surface) 96%, #000);
+  /* Last home section — clear the Canvas FAB / footer stack */
+  padding-bottom: max(78px, var(--canvas-content-bottom));
 }
 
 .canvas-testimonials__frame {
@@ -2904,12 +2897,94 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 }
 
-/* ========== Canvas About Us teaser (below marquee) ========== */
+/* ========== Canvas Services — digital structure formation ========== */
+
+/*
+ * Portaled to document.body — fixed full-viewport backdrop for the
+ * entire Services scroll (same pattern as About world map).
+ */
+.canvas-services__backdrop {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.canvas-services__structure {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  opacity: 0.11;
+}
+
+.canvas-services__content {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  max-width: 100%;
+  text-shadow:
+    0 0 22px color-mix(in srgb, var(--color-surface) 88%, transparent),
+    0 1px 12px color-mix(in srgb, var(--color-surface) 70%, transparent);
+}
+
+.canvas-services__hero {
+  position: relative;
+  overflow: visible;
+  padding-top: 1.5rem;
+  padding-bottom: 3.5rem;
+  text-align: center;
+}
+
+.canvas-structure-formation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+}
+
+.canvas-structure-formation__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .canvas-services__hero {
+    padding-top: 1rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .canvas-services__structure {
+    opacity: 0.11;
+  }
+}
+
+@media (min-width: 1024px) {
+  .canvas-services__structure {
+    opacity: 0.11;
+  }
+}
+
+/* ========== Canvas About Us teaser (after work / below outcomes) ========== */
 
 .canvas-about-teaser {
   position: relative;
   z-index: 2;
   overflow: visible;
+  border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--color-border-subtle) 55%, transparent);
   background:
     linear-gradient(
@@ -2938,13 +3013,6 @@ html.menu-visible .canvas-nav-trigger-float {
   z-index: 2;
   max-width: min(52rem, 100%);
   min-width: 0;
-}
-
-.canvas-about-teaser__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
 }
 
 .canvas-about-teaser__title {
@@ -3421,11 +3489,10 @@ html.menu-visible .canvas-menu-item {
   text-align: center;
 }
 
-/* Observation / Response */
+/* Observation / Response — use .border-t for viewport-wide Canvas section rules */
 .canvas-about__split {
   margin-top: 3.5rem;
   padding-top: 2.5rem;
-  border-top: 1px solid var(--color-border-subtle);
   scroll-margin-top: 2rem;
 }
 
@@ -3471,6 +3538,164 @@ html.menu-visible .canvas-menu-item {
     line-height: 0.92;
   }
 }
+
+/* About — index stats as tall editorial columns (.border-t = full-bleed rule) */
+.canvas-about-stats {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  scroll-margin-top: 2rem;
+}
+
+.canvas-about-stats__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border: 1px solid var(--color-border-subtle);
+}
+
+.canvas-about-stats__col {
+  display: flex;
+  min-height: clamp(16rem, 38vh, 22rem);
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.canvas-about-stats__col:first-child {
+  border-top: 0;
+}
+
+.canvas-about-stats__index {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--color-text-muted);
+}
+
+.canvas-about-stats__value {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 3.2vw, 2.15rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--color-text-strong);
+}
+
+.canvas-about-stats__label {
+  margin: auto 0 0;
+  max-width: 16rem;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+.canvas-about-close {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 1rem;
+}
+
+.canvas-about-close__title {
+  margin: 0;
+  max-width: 28rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.2vw, 2rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--color-text-strong);
+}
+
+.canvas-about-close__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .canvas-about-stats__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .canvas-about-stats__col {
+    border-top: 0;
+    border-left: 1px solid var(--color-border-subtle);
+  }
+
+  .canvas-about-stats__col:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .canvas-about-stats__col:nth-child(n + 3) {
+    border-top: 1px solid var(--color-border-subtle);
+  }
+}
+
+@media (min-width: 1024px) {
+  .canvas-about-stats__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .canvas-about-stats__col {
+    min-height: clamp(18rem, 42vh, 24rem);
+    border-top: 0;
+    border-left: 1px solid var(--color-border-subtle);
+  }
+
+  .canvas-about-stats__col:nth-child(odd) {
+    border-left: 1px solid var(--color-border-subtle);
+  }
+
+  .canvas-about-stats__col:first-child {
+    border-left: 0;
+  }
+
+  .canvas-about-stats__col:nth-child(n + 3) {
+    border-top: 0;
+  }
+}
+
+/* Calicon About stats — same column rhythm */
+@media (min-width: 640px) {
+  .calicon-about-stats__col {
+    border-top: 0;
+    border-left: 1px solid var(--color-border-subtle);
+  }
+
+  .calicon-about-stats__col:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .calicon-about-stats__col:nth-child(n + 3) {
+    border-top: 1px solid var(--color-border-subtle);
+  }
+}
+
+@media (min-width: 1024px) {
+  .calicon-about-stats__col {
+    border-top: 0;
+    border-left: 1px solid var(--color-border-subtle);
+  }
+
+  .calicon-about-stats__col:nth-child(odd) {
+    border-left: 1px solid var(--color-border-subtle);
+  }
+
+  .calicon-about-stats__col:first-child {
+    border-left: 0;
+  }
+
+  .calicon-about-stats__col:nth-child(n + 3) {
+    border-top: 0;
+  }
+}
 /* ==========================================================================
    Outcomes circuit board
    ========================================================================== */
@@ -3514,7 +3739,7 @@ html.menu-visible .canvas-menu-item {
   border: none;
   background: transparent;
   overflow: visible;
-  transition: min-height 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: min-height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Active: give the detail panel a taller stage that tracks the viewport */
@@ -3856,6 +4081,7 @@ html.menu-visible .canvas-menu-item {
   pointer-events: auto;
   min-height: 0;
   scroll-margin-block: 1.25rem;
+  will-change: transform, opacity;
 }
 
 .outcomes-circuit__panel-inner {
@@ -3965,57 +4191,15 @@ html.menu-visible .canvas-menu-item {
   color: var(--color-link-hover);
 }
 
-/* Calicon */
-[data-theme="calicon"] .outcomes-circuit {
-  --oc-depth: rgba(15, 23, 42, 0.28);
-  --oc-trace-ambient: color-mix(in srgb, var(--color-accent) 40%, transparent);
-  --oc-trace-idle: color-mix(in srgb, var(--color-accent) 52%, transparent);
-  --oc-node-border: #ffffff;
-}
-
-[data-theme="calicon"] .outcomes-circuit__node-btn,
-[data-theme="calicon"] .outcomes-circuit__panel-inner {
-  border-radius: 0.75rem;
-}
-
-[data-theme="calicon"] .outcomes-circuit__node-btn {
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.95),
-    0 10px 28px -10px rgba(15, 23, 42, 0.28),
-    0 22px 44px -18px rgba(15, 23, 42, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-[data-theme="calicon"] .outcomes-circuit__node-btn:hover {
-  color: var(--color-link-hover);
-  border-color: color-mix(in srgb, var(--color-accent) 55%, white);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.95),
-    0 0 0 1px color-mix(in srgb, var(--color-accent) 28%, transparent),
-    0 16px 40px rgba(15, 23, 42, 0.12),
-    0 0 28px -6px color-mix(in srgb, var(--color-accent) 35%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+/* Canvas-only circuit board */
+[data-theme="canvas"] .outcomes-circuit__node-btn,
+[data-theme="canvas"] .outcomes-circuit__panel-inner {
+  border-radius: 0;
 }
 
 [data-theme="canvas"] .outcomes-circuit__node-btn:hover {
   /* Participates in sitewide Canvas link-hover lift via button color */
   border-color: color-mix(in srgb, var(--color-link-hover) 55%, white);
-}
-
-[data-theme="calicon"] .outcomes-circuit__field {
-  opacity: 0.14;
-}
-
-[data-theme="calicon"] .outcomes-circuit__stage {
-  width: calc(100% + clamp(2.5rem, 12vw, 10rem));
-  margin-left: 0;
-  margin-right: calc(clamp(2.5rem, 12vw, 10rem) * -1);
-}
-
-/* Canvas */
-[data-theme="canvas"] .outcomes-circuit__node-btn,
-[data-theme="canvas"] .outcomes-circuit__panel-inner {
-  border-radius: 0;
 }
 
 [data-theme="canvas"] .outcomes-circuit__stage {
@@ -4036,6 +4220,31 @@ html.menu-visible .canvas-menu-item {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 500;
+}
+
+/* Detail-card list/card rows — accent lift on hover */
+[data-theme="canvas"] .canvas-detail-item {
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+[data-theme="canvas"] .canvas-detail-item :where(h3, p, span) {
+  transition: color 180ms ease;
+}
+
+[data-theme="canvas"] .canvas-detail-item:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--color-link-hover) 50%,
+    var(--color-border-subtle)
+  );
+  color: var(--color-link-hover);
+}
+
+[data-theme="canvas"] .canvas-detail-item:hover :where(h3, p, span) {
+  color: var(--color-link-hover);
 }
 
 /* Tablet */

@@ -11,6 +11,11 @@ type Props = {
   stagger?: number;
   delayChildren?: number;
   as?: "div" | "ul" | "ol" | "dl";
+  /**
+   * Play on mount instead of whileInView.
+   * Use for above-the-fold lists where a tall parent would delay intersection.
+   */
+  immediate?: boolean;
 };
 
 /** Parent that staggers child CanvasReveal / motion children */
@@ -20,6 +25,7 @@ export function CanvasStagger({
   stagger = canvasStagger.base,
   delayChildren = 0.08,
   as = "div",
+  immediate = false,
 }: Props) {
   const reduced = usePrefersReducedMotion();
   const MotionTag = motion[as];
@@ -34,8 +40,9 @@ export function CanvasStagger({
     <MotionTag
       className={className}
       initial="hidden"
-      whileInView="visible"
-      viewport={viewportOnce}
+      {...(immediate
+        ? { animate: "visible" as const }
+        : { whileInView: "visible" as const, viewport: viewportOnce })}
       variants={{
         hidden: {},
         visible: {

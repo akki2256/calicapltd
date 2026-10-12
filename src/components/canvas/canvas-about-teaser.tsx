@@ -10,7 +10,7 @@ import { calicapAbout } from "@/lib/calicap-about";
 import { calicapHomeHero } from "@/lib/calicap-home";
 
 /**
- * Home teaser for About — Canvas indexing page only, after outcomes.
+ * Home teaser for About — Canvas indexing page only, after the work chapter.
  */
 export function CanvasAboutTeaser() {
   const about = calicapAbout;
@@ -24,13 +24,6 @@ export function CanvasAboutTeaser() {
       <div className="canvas-about-teaser__frame canvas-content-frame">
         <div className="canvas-about-teaser__layout">
           <div className="canvas-about-teaser__copy">
-            <CanvasReveal variant="riseSoft">
-              <div className="canvas-about-teaser__eyebrow">
-                <span className="h-px w-8 bg-[var(--color-accent)]" aria-hidden />
-                <p className="canvas-micro text-[var(--color-accent)]">About Us</p>
-              </div>
-            </CanvasReveal>
-
             <CanvasTextScrub
               as="h2"
               lines={["We understand", "before we create."]}

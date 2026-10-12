@@ -190,7 +190,7 @@ function CanvasCase() {
               src={studyImage.src}
               alt={studyImage.alt}
               fill
-              className="object-cover object-center"
+              className="object-contain object-center"
               sizes="(max-width: 960px) 100vw, 920px"
               priority
             />
@@ -394,7 +394,7 @@ function CanvasCase() {
               src={portfolioImage.src}
               alt={portfolioImage.alt}
               fill
-              className="object-cover object-center"
+              className="object-contain object-center"
               sizes="(max-width: 960px) 100vw, 920px"
             />
           </div>
@@ -495,7 +495,7 @@ function CaliconCase() {
           src={studyImage.src}
           alt={studyImage.alt}
           fill
-          className="object-cover object-center"
+          className="object-contain object-center"
           sizes="(max-width: 768px) 100vw, 720px"
           priority
         />
@@ -693,7 +693,7 @@ function CaliconCase() {
           src={portfolioImage.src}
           alt={portfolioImage.alt}
           fill
-          className="object-cover object-center"
+          className="object-contain object-center"
           sizes="(max-width: 768px) 100vw, 720px"
         />
       </div>

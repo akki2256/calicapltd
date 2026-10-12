@@ -169,7 +169,13 @@ export const SERVICES: readonly ServiceRecord[] = [
     id: "ai-applications",
     pillar: "automate",
     title: "AI applications",
-    body: "Practical AI applications and intelligent functionality inside useful products and processes.",
+    body: "Practical AI applications and intelligent functionality inside useful products.",
+  },
+  {
+    id: "ai-integrations",
+    pillar: "automate",
+    title: "AI integrations",
+    body: "Connect AI capabilities to existing systems and AI-enabled workflows.",
   },
   {
     id: "ai-chatbots",
@@ -182,12 +188,6 @@ export const SERVICES: readonly ServiceRecord[] = [
     pillar: "automate",
     title: "Workflow automation",
     body: "Repetitive processes, approvals, notifications, data movement, and routine operations.",
-  },
-  {
-    id: "ai-integrations",
-    pillar: "automate",
-    title: "AI integrations",
-    body: "Connect AI capabilities to existing systems and AI-enabled workflows.",
   },
   {
     id: "application-maintenance",
@@ -205,13 +205,7 @@ export const SERVICES: readonly ServiceRecord[] = [
     id: "amc-support",
     pillar: "evolve",
     title: "AMC & support",
-    body: "An ongoing technology relationship — maintenance, issue resolution, improvements, and continued development.",
-  },
-  {
-    id: "continuous-development",
-    pillar: "evolve",
-    title: "Continuous development",
-    body: "New features, improvements, product evolution, and long-term development as requirements change.",
+    body: "Maintenance, issue resolution, improvements, and continued development.",
   },
 ];
 
@@ -276,13 +270,13 @@ export const CUSTOMER_OUTCOMES: readonly CustomerOutcome[] = [
   },
   {
     id: "connect",
-    label: "Connect",
+    label: "Integrate",
     value: "Bring systems, data, and workflows together.",
     examples: ["APIs", "Integrations", "Connected systems", "Data flows"],
     primaryPillar: "build",
     relatedPillars: ["build", "automate"],
     relatedServiceIds: ["apis-integrations", "ai-integrations", "workflow-automation"],
-    href: "/build",
+    href: "/services",
     linkLabel: "Explore integrations",
   },
   {

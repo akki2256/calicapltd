@@ -7,6 +7,7 @@ import {
   resolveCanvasEmphasize,
 } from "@/lib/canvas-dual-color";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { useCanvasScrollContainer } from "./canvas-scroll-container";
 import { canvasDur, canvasEase, canvasStagger } from "./tokens";
 
 type WordRevealProps = {
@@ -120,6 +121,11 @@ type ScrubProps = {
   /** Accent words. Omit for auto dual-color; pass `[]` to disable. */
   emphasize?: string[];
   id?: string;
+  /**
+   * Scroll-driven muted→strong word reveal. Set `false` for static dual-color
+   * (e.g. nested detail panels where panel scroll should not scrub).
+   */
+  scrub?: boolean;
 };
 
 /**
@@ -135,8 +141,10 @@ export function CanvasTextScrub({
   as = "h2",
   emphasize,
   id,
+  scrub = true,
 }: ScrubProps) {
   const ref = useRef<HTMLElement>(null);
+  const scrollContainer = useCanvasScrollContainer();
   const reduced = usePrefersReducedMotion();
   const lineList = useMemo(() => {
     if (lines?.length) return lines;
@@ -154,16 +162,21 @@ export function CanvasTextScrub({
   );
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.9", "start 0.25"],
+    ...(scrollContainer ? { container: scrollContainer } : {}),
+    offset: scrollContainer
+      ? ["start 0.92", "start 0.18"]
+      : ["start 0.9", "start 0.25"],
   });
   const Tag = as;
+  const staticDual = reduced || !scrub;
 
-  if (reduced) {
+  if (staticDual) {
     return (
       <Tag
         id={id}
         className={`${className ?? ""} canvas-wrap-heading canvas-text-safe`}
         ref={ref as never}
+        data-canvas-authored=""
       >
         {lineList.map((line, lineIdx) => {
           const words = splitWords(line);

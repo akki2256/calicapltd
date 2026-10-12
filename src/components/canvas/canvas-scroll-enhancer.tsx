@@ -3,6 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { useCanvasScrollContainer } from "@/components/canvas/motion/canvas-scroll-container";
 import { canvasDur, canvasEase } from "@/components/canvas/motion/tokens";
 
 /**
@@ -11,6 +12,7 @@ import { canvasDur, canvasEase } from "@/components/canvas/motion/tokens";
  */
 export function CanvasScrollEnhancer({ children }: { children: ReactNode }) {
   const rootRef = useRef<HTMLDivElement>(null);
+  const scrollContainer = useCanvasScrollContainer();
   const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -45,6 +47,7 @@ export function CanvasScrollEnhancer({ children }: { children: ReactNode }) {
       el.classList.add("canvas-motion-in");
     };
 
+    const ioRoot = scrollContainer?.current ?? null;
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -54,7 +57,11 @@ export function CanvasScrollEnhancer({ children }: { children: ReactNode }) {
           }
         }
       },
-      { root: null, rootMargin: "0px 0px -4% 0px", threshold: [0, 0.05, 0.15] },
+      {
+        root: ioRoot,
+        rootMargin: "0px 0px -4% 0px",
+        threshold: [0, 0.05, 0.15],
+      },
     );
 
     targets.forEach((el) => {
@@ -77,7 +84,7 @@ export function CanvasScrollEnhancer({ children }: { children: ReactNode }) {
       io.disconnect();
       window.clearTimeout(fallback);
     };
-  }, [reduced, children]);
+  }, [reduced, children, scrollContainer]);
 
   return (
     <motion.div

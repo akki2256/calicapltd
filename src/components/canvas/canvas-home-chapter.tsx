@@ -36,7 +36,7 @@ export function CanvasHomeOutcomes() {
 }
 
 /**
- * Work chapter — premium flip cards after impact / testimonials.
+ * Work chapter — premium flip cards after outcomes, before About.
  * Same canvas-content-frame as testimonials so left/right edges match.
  */
 export function CanvasHomeChapter() {
@@ -48,11 +48,10 @@ export function CanvasHomeChapter() {
       <div className="canvas-content-frame canvas-work-home__frame">
         <div className="canvas-work-home__header">
           <div>
-            <p className="canvas-micro text-[var(--color-accent)]">Work</p>
             <CanvasTextScrub
               as="h2"
               text="What we've built."
-              className="mt-5 font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]"
+              className="font-[family-name:var(--font-display)] text-[clamp(1.75rem,4vw,2.5rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]"
               emphasize={["built"]}
             />
           </div>

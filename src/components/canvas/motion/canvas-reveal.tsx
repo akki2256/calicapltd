@@ -47,6 +47,8 @@ type Props = Omit<HTMLMotionProps<"div">, "children"> & {
   delay?: number;
   duration?: number;
   once?: boolean;
+  /** Play on mount instead of whileInView */
+  immediate?: boolean;
 };
 
 /** Viewport-triggered reveal — not a plain fade */
@@ -56,6 +58,7 @@ export function CanvasReveal({
   delay = 0,
   duration = canvasDur.base,
   once = true,
+  immediate = false,
   className,
   ...rest
 }: Props) {
@@ -71,8 +74,12 @@ export function CanvasReveal({
       className={className}
       data-canvas-authored=""
       initial="hidden"
-      whileInView="visible"
-      viewport={once ? viewportOnce : { ...viewportOnce, once: false }}
+      {...(immediate
+        ? { animate: "visible" as const }
+        : {
+            whileInView: "visible" as const,
+            viewport: once ? viewportOnce : { ...viewportOnce, once: false },
+          })}
       variants={{
         hidden: v.hidden,
         visible: {
