@@ -10,8 +10,6 @@ type Props = {
 
 const CYAN = 0x3ad4ff;
 const GOLD = 0xd4a84b;
-const METAL = 0x141820;
-const METAL_MID = 0x222833;
 
 function seeded(i: number) {
   const s = Math.sin(i * 12.9898) * 43758.5453;
@@ -262,7 +260,8 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
     let mobile = false;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050910, 0.022);
+    /* Deep fog — only the near cyan core punches through */
+    scene.fog = new THREE.FogExp2(0x04060a, 0.055);
 
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 140);
     const camBase = new THREE.Vector3(0, 6.4, 8.6);
@@ -285,7 +284,7 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 0.72;
     wrap.appendChild(renderer.domElement);
     const canvasEl = renderer.domElement;
     canvasEl.className = "canvas-testimonial-platform__canvas";
@@ -316,57 +315,57 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
       ),
     );
 
-    /* Circuit floor */
+    /* Circuit floor — barely readable, overshadowed */
     const circuitTex = trackT(createCircuitTexture(1024));
     circuitTex.repeat.set(5, 5);
     const floorMat = track(
       new THREE.MeshStandardMaterial({
         map: circuitTex,
-        color: 0xffffff,
-        roughness: 0.78,
-        metalness: 0.4,
-        emissive: 0x1a5070,
+        color: 0x4a5560,
+        roughness: 0.92,
+        metalness: 0.25,
+        emissive: 0x0a2030,
         emissiveMap: circuitTex,
-        emissiveIntensity: 1.15,
+        emissiveIntensity: 0.22,
       }),
     );
     const floor = new THREE.Mesh(trackG(new THREE.PlaneGeometry(56, 56)), floorMat);
     floor.rotation.x = -Math.PI / 2;
     root.add(floor);
 
-    /* Horizon mist */
+    /* Horizon mist — swallows the far field */
     const mist = new THREE.Mesh(
-      trackG(new THREE.PlaneGeometry(60, 10)),
+      trackG(new THREE.PlaneGeometry(60, 14)),
       track(
         new THREE.MeshBasicMaterial({
-          color: 0x0a2032,
+          color: 0x04060a,
           transparent: true,
-          opacity: 0.5,
+          opacity: 0.72,
           depthWrite: false,
         }),
       ),
     );
-    mist.position.set(2, 2.8, -20);
+    mist.position.set(2, 2.2, -14);
     root.add(mist);
 
-    /* Distant skyline */
+    /* Distant skyline — silhouette only */
     const city = new THREE.Group();
     city.position.set(2.5, 0, -12.5);
     root.add(city);
     const buildingMat = track(
       new THREE.MeshStandardMaterial({
-        color: 0x080e16,
-        roughness: 0.5,
-        metalness: 0.75,
-        emissive: 0x0c3a55,
-        emissiveIntensity: 0.55,
+        color: 0x05080e,
+        roughness: 0.85,
+        metalness: 0.4,
+        emissive: 0x061018,
+        emissiveIntensity: 0.12,
       }),
     );
     const windowMat = track(
       new THREE.MeshBasicMaterial({
         color: CYAN,
         transparent: true,
-        opacity: 0.4,
+        opacity: 0.08,
       }),
     );
     const cityGeoms: THREE.BufferGeometry[] = [];
@@ -418,25 +417,25 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
     extrude.computeVertexNormals();
     trackG(extrude);
 
+    /* Body as near-black silhouette — only cyan rim light defines it */
     const bodyMat = track(
       new THREE.MeshStandardMaterial({
-        color: METAL,
-        roughness: 0.38,
-        metalness: 0.92,
+        color: 0x05070c,
+        roughness: 0.92,
+        metalness: 0.35,
         flatShading: false,
       }),
     );
     const body = new THREE.Mesh(extrude, bodyMat);
     platform.add(body);
 
-    /* Side highlight so thickness reads against the glow */
     const sideShell = new THREE.Mesh(
       trackG(new THREE.CylinderGeometry(cogR * 0.78, cogR * 0.78, depth * 0.92, 48, 1, true)),
       track(
         new THREE.MeshStandardMaterial({
-          color: METAL_MID,
-          roughness: 0.45,
-          metalness: 0.85,
+          color: 0x080a10,
+          roughness: 0.9,
+          metalness: 0.3,
           side: THREE.BackSide,
         }),
       ),
@@ -450,11 +449,11 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
       track(
         new THREE.MeshStandardMaterial({
           map: deckTex,
-          color: 0xffffff,
-          roughness: 0.32,
-          metalness: 0.75,
-          emissive: 0x143048,
-          emissiveIntensity: 0.45,
+          color: 0x1a1e26,
+          roughness: 0.75,
+          metalness: 0.4,
+          emissive: 0x061018,
+          emissiveIntensity: 0.08,
         }),
       ),
     );
@@ -462,17 +461,18 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
     deck.position.y = depth + 0.01;
     platform.add(deck);
 
+    /* Gold barely whispers — overshadowed with the rest */
     const rimMat = track(
       new THREE.MeshStandardMaterial({
-        color: GOLD,
-        roughness: 0.22,
-        metalness: 1,
+        color: 0x6a5520,
+        roughness: 0.55,
+        metalness: 0.7,
         emissive: GOLD,
-        emissiveIntensity: 0.45,
+        emissiveIntensity: 0.06,
       }),
     );
     const rim = new THREE.Mesh(
-      trackG(new THREE.TorusGeometry(cogR * 0.7, 0.042, 16, 96)),
+      trackG(new THREE.TorusGeometry(cogR * 0.7, 0.038, 12, 64)),
       rimMat,
     );
     rim.rotation.x = Math.PI / 2;
@@ -480,43 +480,48 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
     platform.add(rim);
 
     const rimInner = new THREE.Mesh(
-      trackG(new THREE.TorusGeometry(cogR * 0.44, 0.018, 12, 64)),
+      trackG(new THREE.TorusGeometry(cogR * 0.44, 0.014, 10, 48)),
       rimMat,
     );
     rimInner.rotation.x = Math.PI / 2;
     rimInner.position.y = depth + 0.022;
     platform.add(rimInner);
 
-    /* Cyan lip under the cog */
+    /*
+     * Hero: tight cyan core only.
+     * Keep spill off the cog teeth so the body stays a dark silhouette.
+     */
     const underMat = track(
       new THREE.MeshBasicMaterial({
         color: CYAN,
         transparent: true,
-        opacity: 0.98,
+        opacity: 0.9,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
       }),
     );
     const underRing = new THREE.Mesh(
-      trackG(new THREE.RingGeometry(cogR * 0.7, cogR * 1.05, 64)),
+      trackG(new THREE.RingGeometry(cogR * 0.2, cogR * 0.72, 64)),
       underMat,
     );
     underRing.rotation.x = -Math.PI / 2;
-    underRing.position.y = 0.008;
+    underRing.position.y = 0.01;
     platform.add(underRing);
 
     const lip = new THREE.Mesh(
-      trackG(new THREE.CylinderGeometry(cogR * 1.0, cogR * 0.9, 0.28, 64, 1, true)),
+      trackG(new THREE.CylinderGeometry(cogR * 0.7, cogR * 0.55, 0.22, 48, 1, true)),
       track(
         new THREE.MeshBasicMaterial({
           color: CYAN,
           transparent: true,
-          opacity: 0.62,
+          opacity: 0.55,
           side: THREE.DoubleSide,
           depthWrite: false,
           blending: THREE.AdditiveBlending,
         }),
       ),
     );
-    lip.position.y = 0.12;
+    lip.position.y = 0.1;
     platform.add(lip);
 
     const glowTex = trackT(createGlowTexture());
@@ -529,18 +534,35 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
         blending: THREE.AdditiveBlending,
       }),
     );
-    const glowNear = new THREE.Mesh(trackG(new THREE.PlaneGeometry(7.5, 7.5)), glowMat);
+    /* Soft bloom pools — the shiny blue the early preview had */
+    const glowNear = new THREE.Mesh(trackG(new THREE.PlaneGeometry(6.2, 6.2)), glowMat);
     glowNear.rotation.x = -Math.PI / 2;
-    glowNear.position.y = 0.03;
+    glowNear.position.y = 0.04;
     root.add(glowNear);
 
-    const glowFar = new THREE.Mesh(
-      trackG(new THREE.PlaneGeometry(14, 14)),
+    const glowMid = new THREE.Mesh(
+      trackG(new THREE.PlaneGeometry(3.6, 3.6)),
       track(
         new THREE.MeshBasicMaterial({
           map: glowTex,
           transparent: true,
-          opacity: 0.55,
+          opacity: 1,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+        }),
+      ),
+    );
+    glowMid.rotation.x = -Math.PI / 2;
+    glowMid.position.y = 0.055;
+    root.add(glowMid);
+
+    const glowFar = new THREE.Mesh(
+      trackG(new THREE.PlaneGeometry(11, 11)),
+      track(
+        new THREE.MeshBasicMaterial({
+          map: glowTex,
+          transparent: true,
+          opacity: 0.28,
           depthWrite: false,
           blending: THREE.AdditiveBlending,
         }),
@@ -550,29 +572,20 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
     glowFar.position.y = 0.02;
     root.add(glowFar);
 
-    /* Lights */
-    scene.add(new THREE.AmbientLight(0x243040, 0.65));
-    const key = new THREE.DirectionalLight(0xd0dce8, 1.05);
-    key.position.set(-5, 10, 6);
-    scene.add(key);
-    const fill = new THREE.DirectionalLight(0x4a7090, 0.4);
-    fill.position.set(6, 3, -4);
-    scene.add(fill);
-    const underLight = new THREE.PointLight(CYAN, 7.2, 14, 1.25);
-    underLight.position.set(0, 0.25, 0);
+    /* Lights — cyan core only; keep mesh dark */
+    scene.add(new THREE.AmbientLight(0x0a1018, 0.1));
+    const underLight = new THREE.PointLight(CYAN, 6.5, 7.5, 1.4);
+    underLight.position.set(0, 0.15, 0);
     platform.add(underLight);
-    const goldLight = new THREE.PointLight(GOLD, 0.85, 7, 2);
-    goldLight.position.set(0, depth + 0.8, 0);
-    platform.add(goldLight);
 
-    /* Amber signal points on the board */
-    const nodeCount = 70;
+    /* Sparse faint nodes — atmosphere only */
+    const nodeCount = 36;
     const nodePos = new Float32Array(nodeCount * 3);
     const nodePhase = new Float32Array(nodeCount);
     for (let i = 0; i < nodeCount; i++) {
-      nodePos[i * 3] = (seeded(i * 1.3) - 0.5) * 30;
+      nodePos[i * 3] = (seeded(i * 1.3) - 0.5) * 28;
       nodePos[i * 3 + 1] = 0.06;
-      nodePos[i * 3 + 2] = (seeded(i * 3.7) - 0.5) * 30;
+      nodePos[i * 3 + 2] = (seeded(i * 3.7) - 0.5) * 28;
       nodePhase[i] = seeded(i * 4.4) * Math.PI * 2;
     }
     const nodeGeom = trackG(new THREE.BufferGeometry());
@@ -582,10 +595,10 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
         nodeGeom,
         track(
           new THREE.PointsMaterial({
-            color: 0xe8a840,
-            size: 0.07,
+            color: 0x3ad4ff,
+            size: 0.045,
             transparent: true,
-            opacity: 0.8,
+            opacity: 0.22,
             depthWrite: false,
             sizeAttenuation: true,
           }),
@@ -596,11 +609,13 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
     const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
 
     const placePlatform = () => {
-      const px = mobile ? 0.35 : 2.1;
-      const pz = mobile ? 0.5 : 0.35;
-      const py = mobile ? 1.45 : 1.7;
+      /* Centered under the quote zone — glow is the focal point */
+      const px = mobile ? 0.15 : 0.55;
+      const pz = mobile ? 0.35 : 0.2;
+      const py = mobile ? 1.35 : 1.55;
       platform.position.set(px, py, pz);
-      glowNear.position.set(px, 0.03, pz);
+      glowNear.position.set(px, 0.04, pz);
+      glowMid.position.set(px, 0.05, pz);
       glowFar.position.set(px, 0.02, pz);
     };
 
@@ -617,18 +632,18 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
       camera.updateProjectionMatrix();
 
       if (mobile) {
-        camBase.set(0.2, 7.8, 9.2);
-        lookAt.set(0.3, 0.9, -0.4);
+        camBase.set(0.1, 7.4, 9.0);
+        lookAt.set(0.15, 0.85, -0.3);
       } else {
-        camBase.set(-1.0, 6.8, 8.0);
-        lookAt.set(1.8, 1.0, -0.2);
+        camBase.set(-0.35, 6.4, 7.8);
+        lookAt.set(0.55, 0.9, -0.15);
       }
       camera.position.copy(camBase);
       camera.lookAt(lookAt);
       placePlatform();
 
       if (wasMobile !== mobile || city.children.length === 0) {
-        buildCity(mobile ? 24 : 48);
+        buildCity(mobile ? 14 : 28);
       }
     };
 
@@ -651,44 +666,46 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
 
     const renderFrame = (now: number) => {
       const t = now * 0.001;
-      const bob = reduced ? 0 : Math.sin(t * 0.9) * 0.08;
-      const spin = reduced ? 0.25 : t * 0.055;
+      /* Slow, quiet motion — glow pulse is the main life */
+      const bob = reduced ? 0 : Math.sin(t * 0.55) * 0.045;
+      const spin = reduced ? 0.2 : t * 0.028;
 
       placePlatform();
       platform.position.y += bob;
       platform.rotation.y = spin;
-      platform.rotation.x = 0.32;
-      platform.rotation.z = -0.08;
+      platform.rotation.x = 0.28;
+      platform.rotation.z = -0.06;
 
-      underMat.opacity = 0.82 + Math.sin(t * 1.7) * 0.14;
-      underLight.intensity = 4.8 + Math.sin(t * 1.7) * 0.9;
-      glowMat.opacity = 0.9 + Math.sin(t * 1.7) * 0.1;
+      const pulse = 0.5 + 0.5 * Math.sin(t * 1.15);
+      underMat.opacity = 0.78 + pulse * 0.14;
+      underLight.intensity = 5.8 + pulse * 1.2;
+      glowMat.opacity = 0.9 + pulse * 0.1;
 
-      pointer.x += (pointer.tx - pointer.x) * 0.05;
-      pointer.y += (pointer.ty - pointer.y) * 0.05;
+      pointer.x += (pointer.tx - pointer.x) * 0.04;
+      pointer.y += (pointer.ty - pointer.y) * 0.04;
 
       camera.position.set(
-        camBase.x + pointer.x * 0.6,
-        camBase.y - pointer.y * 0.4,
+        camBase.x + pointer.x * 0.35,
+        camBase.y - pointer.y * 0.22,
         camBase.z,
       );
       camera.lookAt(
-        lookAt.x + pointer.x * 0.15,
-        lookAt.y - pointer.y * 0.1,
+        lookAt.x + pointer.x * 0.08,
+        lookAt.y - pointer.y * 0.05,
         lookAt.z,
       );
 
-      root.rotation.y = pointer.x * 0.05;
-      root.rotation.x = -pointer.y * 0.025;
+      root.rotation.y = pointer.x * 0.03;
+      root.rotation.x = -pointer.y * 0.015;
 
       const pos = nodeGeom.getAttribute("position") as THREE.BufferAttribute;
       for (let i = 0; i < nodeCount; i++) {
-        pos.setY(i, 0.05 + Math.sin(t * 1.5 + nodePhase[i]) * 0.035);
+        pos.setY(i, 0.05 + Math.sin(t * 0.9 + nodePhase[i]) * 0.02);
       }
       pos.needsUpdate = true;
 
-      circuitTex.offset.x = (t * 0.01) % 1;
-      circuitTex.offset.y = (t * 0.006) % 1;
+      circuitTex.offset.x = (t * 0.004) % 1;
+      circuitTex.offset.y = (t * 0.0025) % 1;
 
       renderer.render(scene, camera);
     };

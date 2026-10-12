@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ArrowRight } from "lucide-react";
@@ -12,7 +13,6 @@ import {
   CanvasTextReveal,
   CanvasTextScrub,
 } from "@/components/canvas/motion";
-import { CanvasStructureFormation } from "@/components/canvas/canvas-structure-formation";
 import { ThemeSplit } from "@/components/theme-split";
 import {
   calicapServicesOverview,
@@ -23,6 +23,15 @@ import {
   canvasWordKey,
   resolveCanvasEmphasize,
 } from "@/lib/canvas-dual-color";
+
+/** WebGL chunk stays out of the critical hydrate path */
+const CanvasStructureFormation = dynamic(
+  () =>
+    import("@/components/canvas/canvas-structure-formation").then(
+      (m) => m.CanvasStructureFormation,
+    ),
+  { ssr: false },
+);
 
 /** Match About sticky split titles: first word, then the rest. */
 function splitSectionTitle(title: string): string[] {
@@ -104,27 +113,52 @@ function CanvasServicesIndex() {
   const [scrubReady, setScrubReady] = useState(false);
 
   useEffect(() => {
-    setPortalReady(true);
-
     let cancelled = false;
+    let structureIdle = 0;
     let scrubIdle = 0;
+    let structureTimeout = 0;
     let scrubTimeout = 0;
 
-    const enableScrub = () => {
-      if (!cancelled) setScrubReady(true);
+    const schedule = (fn: () => void, timeout: number) => {
+      if (typeof window.requestIdleCallback === "function") {
+        return {
+          idle: window.requestIdleCallback(fn, { timeout }),
+          timeout: 0,
+        };
+      }
+      return { idle: 0, timeout: window.setTimeout(fn, Math.min(timeout, 120)) };
     };
 
-    if (typeof window.requestIdleCallback === "function") {
-      scrubIdle = window.requestIdleCallback(enableScrub, { timeout: 520 });
-    } else {
-      scrubTimeout = window.setTimeout(enableScrub, 120);
-    }
+    /* Content paints first; structure mounts settled (no fade) after idle. */
+    const kick = () => {
+      if (cancelled) return;
+      const structure = schedule(() => {
+        if (!cancelled) setPortalReady(true);
+      }, 280);
+      structureIdle = structure.idle;
+      structureTimeout = structure.timeout;
+
+      const scrub = schedule(() => {
+        if (!cancelled) setScrubReady(true);
+      }, 520);
+      scrubIdle = scrub.idle;
+      scrubTimeout = scrub.timeout;
+    };
+
+    const raf = window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(kick);
+    });
 
     return () => {
       cancelled = true;
+      window.cancelAnimationFrame(raf);
+      if (structureIdle && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(structureIdle);
+      }
       if (scrubIdle && typeof window.cancelIdleCallback === "function") {
         window.cancelIdleCallback(scrubIdle);
       }
+      if (structureTimeout) window.clearTimeout(structureTimeout);
       if (scrubTimeout) window.clearTimeout(scrubTimeout);
     };
   }, []);

@@ -206,24 +206,37 @@ export function CanvasStructureFormation({ className = "" }: Props) {
         const size = cube.half * 2;
         const box = new THREE.BoxGeometry(size, size, size);
 
-        /* Settled opacities on create — no separate fade-in / assemble pass */
+        /*
+         * Core cube keeps full glass transmission (the 3D hero).
+         * Satellite cubes stay MeshBasic — same silhouette, far less compile cost.
+         */
         let glassMat: THREE.MeshPhysicalMaterial | THREE.MeshBasicMaterial;
-        try {
-          glassMat = new THREE.MeshPhysicalMaterial({
-            color: cube.core ? 0xf4f7fa : 0xd5dee6,
-            transparent: true,
-            opacity: cube.glass,
-            roughness: cube.core ? 0.25 : 0.18,
-            metalness: 0.05,
-            transmission: cube.core ? 0.15 : 0.55,
-            thickness: cube.core ? 0.4 : 0.8,
-            ior: 1.35,
-            depthWrite: false,
-            side: THREE.DoubleSide,
-          });
-        } catch {
+        if (cube.core) {
+          try {
+            glassMat = new THREE.MeshPhysicalMaterial({
+              color: 0xf4f7fa,
+              transparent: true,
+              opacity: cube.glass,
+              roughness: 0.25,
+              metalness: 0.05,
+              transmission: 0.15,
+              thickness: 0.4,
+              ior: 1.35,
+              depthWrite: false,
+              side: THREE.DoubleSide,
+            });
+          } catch {
+            glassMat = new THREE.MeshBasicMaterial({
+              color: 0xf4f7fa,
+              transparent: true,
+              opacity: cube.glass,
+              depthWrite: false,
+              side: THREE.DoubleSide,
+            });
+          }
+        } else {
           glassMat = new THREE.MeshBasicMaterial({
-            color: cube.core ? 0xf4f7fa : 0xd5dee6,
+            color: 0xd5dee6,
             transparent: true,
             opacity: cube.glass,
             depthWrite: false,
@@ -368,13 +381,14 @@ export function CanvasStructureFormation({ className = "" }: Props) {
       const w = wrap.clientWidth;
       const h = wrap.clientHeight;
       if (w < 2 || h < 2) return;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      mobile = w < 768;
+      /* Cap DPR lightly — keep core glass sharp without full 2× cost everywhere */
+      const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 1.75);
       renderer.setPixelRatio(dpr);
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.fov = w / h > 1.35 ? 22 : 26;
       camera.updateProjectionMatrix();
-      mobile = w < 768;
     };
 
     const onPointerMove = (e: PointerEvent) => {
