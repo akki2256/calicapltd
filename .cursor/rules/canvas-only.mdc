@@ -1,0 +1,27 @@
+---
+description: Canvas-only changes — do not modify Calicon theme unless the owner explicitly asks
+alwaysApply: true
+---
+
+# Canvas-only change scope
+
+The site still has two themes in the codebase:
+
+- **Calicon** — steel-grey + gold marketing chrome (`data-theme="calicon"`)
+- **Canvas Group** — dark editorial shell with hamburger rail (`data-theme="canvas"`)
+
+Default theme is Canvas. **Calicon is frozen unless the owner explicitly asks to change it.**
+
+## Do this on every UI, content, routing, or layout change
+
+- Implement the change for **Canvas only** (`data-theme="canvas"`, `ThemeSplit` canvas branch, `src/components/canvas/*`, Canvas-scoped CSS).
+- Do **not** change Calicon shells, components, styles, or copy: `SiteHeader` / `SiteFooter`, Calicon `ThemeSplit` branches, gold/slate marketing layouts, or Calicon-only CSS.
+- Prefer Canvas-specific markup and tokens. Do not “keep Calicon in sync” or mirror the change into Calicon.
+- After the change, **verify Canvas**. Do not spend effort updating or re-testing Calicon unless the owner requested a Calicon change.
+- Watch for regressions that leak into Calicon: shared components without a Canvas branch, global CSS that overrides Calicon chrome, edits inside `calicon={<...>}` ThemeSplit arms.
+
+## Exceptions
+
+Only touch Calicon when the owner explicitly says to change Calicon / both themes / remove a theme.
+
+This rule supersedes the previous dual-theme requirement.

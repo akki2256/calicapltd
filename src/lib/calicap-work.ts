@@ -7,7 +7,6 @@ import {
 import { siteImages, type SiteImageKey } from "@/lib/site-images";
 
 export const calicapWorkIndex = {
-  eyebrow: "Work",
   title: "What we've built.",
   intro:
     "Evidence of capability — real products, systems, and digital experiences. Challenge, solution, and outcome.",
@@ -101,7 +100,7 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     industryIds: ["fitness-wellness"],
     engagement: "project",
     icon: Flower2,
-    imageKey: "yogMantramStudio",
+    imageKey: "yogMantramHero",
     metaTitle: "Yog Mantram — studio website & local SEO",
     metaDescription:
       "Case study: Yog Mantram in Bareilly—a conversion-first website with 25+ programs, WhatsApp enquire, and local search pages that turn seekers into students.",

@@ -14,6 +14,7 @@ import { siteImages } from "@/lib/site-images";
 export const ABOUT_THE_APPROACH_ID = "the-approach";
 export const ABOUT_OBSERVATION_ID = "observation";
 export const ABOUT_RESPONSE_ID = "response";
+export const ABOUT_STATS_ID = "about-stats";
 
 export const calicapAbout = {
   missionEyebrow: "Our Mission",
@@ -102,6 +103,8 @@ export const calicapAbout = {
   aboutCloseTitle: "Have something you're trying to solve?",
   aboutCloseCta: "Tell us your problem",
   aboutCloseHref: "/contact",
+  aboutCloseWorkCta: "Explore our work",
+  aboutCloseWorkHref: "/work",
   metaTitle: "About",
   metaDescription:
     "Calicon — technology that starts with understanding. Digital products, custom software, and practical automation.",

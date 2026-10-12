@@ -21,11 +21,31 @@ import { WorkViewTracker } from "@/components/work-view-tracker";
 import { WorkDeliveryNotes } from "@/components/work-delivery-notes";
 import { getWorkStudyBySlug, getWorkStudyImage } from "@/lib/calicap-work";
 import { pageMetadata } from "@/lib/seo";
+import { siteImages } from "@/lib/site-images";
 import { breadcrumbJsonLd, creativeWorkJsonLd } from "@/lib/structured-data";
 
 const study = getWorkStudyBySlug("yog-mantram")!;
 const studyImage = getWorkStudyImage(study);
 const liveUrl = "https://yogmantram.com";
+
+const snapshots = [
+  {
+    src: siteImages.yogMantramHero.src,
+    alt: siteImages.yogMantramHero.alt,
+    label: "Homepage hero",
+    caption: "Full-bleed studio hero with clear next steps — Start Your Journey and Explore Programs.",
+    width: 1024,
+    height: 471,
+  },
+  {
+    src: siteImages.yogMantramStudio.src,
+    alt: siteImages.yogMantramStudio.alt,
+    label: "Studio atmosphere",
+    caption: "The calm practice room the brand is built around — mats, light, and space to arrive.",
+    width: 1400,
+    height: 933,
+  },
+] as const;
 
 export const metadata = pageMetadata({
   title: study.metaTitle,
@@ -122,22 +142,15 @@ export default function YogMantramCasePage() {
         Work
       </Link>
 
-      <div className="relative mb-10 mt-8 aspect-[2.2/1] w-full max-h-56 overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80 sm:max-h-64">
+      <div className="relative mb-10 mt-8 aspect-[1024/471] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
         <Image
           src={studyImage.src}
           alt={studyImage.alt}
           fill
-          className="object-cover object-center"
+          className="object-contain object-center"
           sizes="(max-width: 768px) 100vw, 720px"
           priority
         />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-slate-900/10 to-transparent"
-          aria-hidden
-        />
-        <p className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-slate-950/55 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm">
-          Site captures to follow
-        </p>
       </div>
 
       <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold-700/95">
@@ -322,7 +335,7 @@ export default function YogMantramCasePage() {
         Product snapshots
       </h2>
       <p className="mt-4 text-base leading-relaxed text-slate-600">
-        Live site captures will sit here. Until then, the studio is live at{" "}
+        Captures from the live site and the studio atmosphere behind it. See it live at{" "}
         <a
           href={liveUrl}
           target="_blank"
@@ -334,6 +347,29 @@ export default function YogMantramCasePage() {
         </a>
         .
       </p>
+
+      <div className="mt-8 space-y-8">
+        {snapshots.map((shot) => (
+          <figure key={shot.src}>
+            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+              {shot.label}
+            </p>
+            <div className="relative overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
+              <Image
+                src={shot.src}
+                alt={shot.alt}
+                width={shot.width}
+                height={shot.height}
+                className="h-auto w-full object-contain"
+                sizes="(max-width: 768px) 100vw, 720px"
+              />
+            </div>
+            <figcaption className="mt-3 text-sm leading-relaxed text-slate-600">
+              {shot.caption}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
 
       <p className="mt-14 text-base leading-relaxed text-slate-600">
         The studio that used to live on word of mouth now has a search-ready

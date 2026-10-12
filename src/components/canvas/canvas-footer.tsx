@@ -1,19 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { BrandLogo } from "@/components/brand-logo";
-import { PILLAR_PATHS } from "@/lib/brand-architecture";
 import {
   calicapContact,
   calicapFooterLinks,
   calicapQuickLinks,
 } from "@/lib/calicap-contact";
-import { calicapHomeHero } from "@/lib/calicap-home";
+import { calicapHomeHero, calicapHomeOutcomes } from "@/lib/calicap-home";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 
-const pillarHrefs = new Set<string>(PILLAR_PATHS);
-const practiceLinks = calicapFooterLinks.filter((l) => pillarHrefs.has(l.href));
 const companyLinks = calicapFooterLinks.filter(
   (l) =>
     l.href === "/work" ||
@@ -24,8 +22,13 @@ const companyLinks = calicapFooterLinks.filter(
 
 /** Canvas footer — structured editorial close */
 export function CanvasFooter() {
+  const router = useRouter();
   const hero = calicapHomeHero;
   const email = calicapContact.email || "info@calicon.com";
+
+  const openOutcome = () => {
+    router.push("/services");
+  };
 
   return (
     <footer className="canvas-site-footer border-t border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
@@ -67,11 +70,20 @@ export function CanvasFooter() {
 
           <div className="min-w-0">
             <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:gap-10">
-              <FooterColumn title="Practice">
-                {practiceLinks.map((l) => (
-                  <FooterLink key={l.href} href={l.href}>
-                    {l.label}
-                  </FooterLink>
+              <FooterColumn title="Outcomes">
+                {calicapHomeOutcomes.map((outcome) => (
+                  <li key={outcome.id}>
+                    <button
+                      type="button"
+                      className="canvas-site-footer__link group w-full cursor-pointer border-0 bg-transparent p-0 text-left"
+                      onClick={openOutcome}
+                    >
+                      <span>{outcome.label}</span>
+                      <span className="canvas-site-footer__link-mark" aria-hidden>
+                        →
+                      </span>
+                    </button>
+                  </li>
                 ))}
               </FooterColumn>
               <FooterColumn title="Company">

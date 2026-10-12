@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -10,28 +9,34 @@ import {
   useState,
 } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { OutcomeEmbeddedView } from "@/components/outcome-detail-view";
 import { PillarEmbeddedView } from "@/components/pillar-page-view";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { calicapHomeDiscovery, calicapHomeOutcomes } from "@/lib/calicap-home";
+import { getOutcomeDetail } from "@/lib/calicap-services";
+import {
+  OPEN_OUTCOME_EVENT,
+  OUTCOME_QUERY_KEY,
+  type OpenOutcomeDetail,
+} from "@/lib/outcomes-circuit";
 
-/** Softer engineered motion — controlled attack, longer settle */
+/** Premium engineered motion — snappy attack, short settle */
 const easeCircuit = [0.4, 0.0, 0.2, 1] as const;
 const easeSettle = [0.22, 1, 0.36, 1] as const;
-const easePanel = [0.22, 1, 0.36, 1] as const;
+const easePanel = [0.16, 1, 0.3, 1] as const;
 
 const DUR = {
-  exit: 0.52,
-  select: 0.62,
-  traces: 0.64,
-  panel: 0.68,
-  settle: 0.48,
-  scroll: 780,
+  exit: 0.36,
+  select: 0.42,
+  traces: 0.4,
+  panel: 0.42,
+  settle: 0.28,
+  scroll: 520,
 } as const;
 
-/** easeOutCubic — used for viewport framing scrolls */
-function easeOutCubic(t: number) {
-  return 1 - (1 - t) ** 3;
+/** easeInOutCubic — viewport framing (no sticky settle tail) */
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
 }
 
 const OUTCOME_IDS = [
@@ -487,8 +492,8 @@ export function OutcomesCircuitBoard({
   }, [releaseScrollBehavior]);
 
   /**
-   * Single live-tracking scroll: each frame re-reads the board rect (which grows
-   * while active) and eases toward that moving target — no mid-flight restarts.
+   * One-shot viewport frame: eases to a live ideal for a fixed duration, then
+   * snaps — no rubber-band settle crawl.
    */
   const followBoardIntoView = useCallback(
     (duration: number = DUR.scroll) => {
@@ -501,7 +506,7 @@ export function OutcomesCircuitBoard({
           stage;
         const rect = board.getBoundingClientRect();
         const vh = window.innerHeight || 1;
-        const margin = Math.min(12, Math.round(vh * 0.012));
+        const margin = Math.min(16, Math.round(vh * 0.02));
         const next =
           rect.height >= vh * 0.82
             ? window.scrollY + rect.top - margin
@@ -527,25 +532,15 @@ export function OutcomesCircuitBoard({
 
       const startY = window.scrollY;
       const t0 = performance.now();
-      const settleMs = 320;
 
       const step = (now: number) => {
         const ideal = idealTop();
         const elapsed = now - t0;
         const p = Math.min(1, elapsed / duration);
+        const y = startY + (ideal - startY) * easeInOutCubic(p);
+        window.scrollTo(0, y);
 
         if (p < 1) {
-          // Ease from the original start toward the *live* ideal
-          const y = startY + (ideal - startY) * easeOutCubic(p);
-          window.scrollTo(0, y);
-          scrollAnimRef.current = window.requestAnimationFrame(step);
-          return;
-        }
-
-        // Short settle tail while the board min-height finishes expanding
-        const gap = ideal - window.scrollY;
-        if (Math.abs(gap) > 1.5 && elapsed < duration + settleMs) {
-          window.scrollTo(0, window.scrollY + gap * 0.22);
           scrollAnimRef.current = window.requestAnimationFrame(step);
           return;
         }
@@ -588,26 +583,22 @@ export function OutcomesCircuitBoard({
     const gen = ++genRef.current;
     cancelScrollAnim();
     setPanelReady(false);
+    setTracesReady(false);
     if (reduced) {
-      setTracesReady(false);
       setSelectedId(null);
       return;
     }
-    // 1) panel exits right → 2) traces retract → 3) nodes restore
-    window.setTimeout(() => {
-      if (gen !== genRef.current) return;
-      setTracesReady(false);
-    }, DUR.panel * 1000 * 0.35);
+    // Keep stage tall until the panel is mostly gone, then restore nodes promptly
     window.setTimeout(() => {
       if (gen !== genRef.current) return;
       setSelectedId(null);
-    }, DUR.panel * 1000 + DUR.traces * 1000 * 0.45);
+    }, DUR.panel * 1000 * 0.72);
   }, [cancelScrollAnim, reduced]);
 
-  // Start one continuous follow-scroll as soon as a card opens (board expands)
+  // Frame the expanded board as soon as a card opens
   useEffect(() => {
     if (selectedId == null) return;
-    followBoardIntoView(DUR.scroll + 120);
+    followBoardIntoView(DUR.scroll);
   }, [selectedId, followBoardIntoView]);
 
   // Click empty board / Escape → restore the idle circuit board
@@ -623,9 +614,15 @@ export function OutcomesCircuitBoard({
   const open = useCallback(
     (id: OutcomeId) => {
       const gen = ++genRef.current;
-      if (selectedId === id) return;
+      if (selectedId === id) {
+        // Already open (e.g. footer re-click) — re-frame the board
+        followBoardIntoView(DUR.scroll);
+        if (!panelReady) setPanelReady(true);
+        if (!tracesReady) setTracesReady(true);
+        return;
+      }
       if (selectedId != null && selectedId !== id) {
-        // Swap: retract panel/traces, then open the new node
+        // Swap: brief panel retract, then open the new node in parallel
         setPanelReady(false);
         setTracesReady(false);
         if (reduced) {
@@ -637,15 +634,12 @@ export function OutcomesCircuitBoard({
         window.setTimeout(() => {
           if (gen !== genRef.current) return;
           setSelectedId(id);
-          window.setTimeout(() => {
-            if (gen !== genRef.current) return;
-            setTracesReady(true);
-          }, DUR.select * 1000 * 0.45);
+          setTracesReady(true);
           window.setTimeout(() => {
             if (gen !== genRef.current) return;
             setPanelReady(true);
-          }, DUR.select * 1000 * 0.55);
-        }, DUR.panel * 1000 * 0.55);
+          }, 70);
+        }, DUR.panel * 1000 * 0.28);
         return;
       }
       setSelectedId(id);
@@ -654,17 +648,37 @@ export function OutcomesCircuitBoard({
         setPanelReady(true);
         return;
       }
+      // Parallel: nodes exit + traces draw while panel arrives almost immediately
       window.setTimeout(() => {
         if (gen !== genRef.current) return;
         setTracesReady(true);
-      }, DUR.exit * 1000 * 0.55);
+      }, 40);
       window.setTimeout(() => {
         if (gen !== genRef.current) return;
         setPanelReady(true);
-      }, DUR.exit * 1000 * 0.7 + DUR.select * 1000 * 0.25);
+      }, 90);
     },
-    [reduced, selectedId],
+    [followBoardIntoView, panelReady, reduced, selectedId, tracesReady],
   );
+
+  // Footer / deep-link / custom event → open the matching detail panel
+  useEffect(() => {
+    const openFromRaw = (raw: string | null | undefined) => {
+      if (!raw || !isOutcomeId(raw)) return;
+      open(raw);
+    };
+
+    const onCustom = (event: Event) => {
+      const detail = (event as CustomEvent<OpenOutcomeDetail>).detail;
+      openFromRaw(detail?.id);
+    };
+
+    openFromRaw(
+      new URLSearchParams(window.location.search).get(OUTCOME_QUERY_KEY),
+    );
+    window.addEventListener(OPEN_OUTCOME_EVENT, onCustom);
+    return () => window.removeEventListener(OPEN_OUTCOME_EVENT, onCustom);
+  }, [open]);
 
   const onNodeClick = (id: OutcomeId) => {
     if (selectedId === id) {
@@ -830,8 +844,8 @@ export function OutcomesCircuitBoard({
                       initial={reduced ? false : { scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{
-                        delay: reduced ? 0 : 0.12 + ji * 0.06,
-                        duration: 0.28,
+                        delay: reduced ? 0 : 0.06 + ji * 0.04,
+                        duration: 0.2,
                         ease: easeSettle,
                       }}
                     />
@@ -891,10 +905,10 @@ export function OutcomesCircuitBoard({
                           duration: isExiting ? DUR.exit : DUR.select,
                           ease: easeSettle,
                           delay: isExiting
-                            ? index * 0.028
+                            ? index * 0.016
                             : isSelected && isActive
-                              ? 0.06
-                              : index * 0.018,
+                              ? 0
+                              : index * 0.012,
                         }
                   }
                 >
@@ -948,8 +962,8 @@ export function OutcomesCircuitBoard({
                   reduced
                     ? false
                     : narrow
-                      ? { opacity: 0, y: 36 }
-                      : { opacity: 0, x: "38%" }
+                      ? { opacity: 0, y: 24 }
+                      : { opacity: 0, x: "22%" }
                 }
                 animate={
                   narrow
@@ -960,43 +974,25 @@ export function OutcomesCircuitBoard({
                   reduced
                     ? undefined
                     : narrow
-                      ? { opacity: 0, y: 28 }
-                      : { opacity: 0, x: "32%" }
+                      ? { opacity: 0, y: 18 }
+                      : { opacity: 0, x: "18%" }
                 }
                 transition={{
                   duration: reduced ? 0.01 : DUR.panel,
                   ease: easePanel,
+                  opacity: {
+                    duration: reduced ? 0.01 : DUR.panel * 0.75,
+                    ease: easePanel,
+                  },
                 }}
               >
                 <div className="outcomes-circuit__panel-inner">
-                  <div className="outcomes-circuit__panel-head">
-                    <button
-                      type="button"
-                      className="outcomes-circuit__back"
-                      onClick={close}
-                    >
-                      <ArrowLeft className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-                      View all
-                    </button>
-                    <div className="outcomes-circuit__panel-head-meta">
-                      <p className="outcomes-circuit__panel-kicker">
-                        {selected.label}
-                      </p>
-                      <Link
-                        href={selected.href}
-                        className="outcomes-circuit__panel-cta"
-                      >
-                        {selected.linkLabel}
-                        <ArrowRight
-                          className="h-3.5 w-3.5"
-                          strokeWidth={2}
-                          aria-hidden
-                        />
-                      </Link>
-                    </div>
-                  </div>
                   <div className="outcomes-circuit__panel-scroll">
-                    <PillarEmbeddedView pillarId={selected.primaryPillar} />
+                    {getOutcomeDetail(selected.id) ? (
+                      <OutcomeEmbeddedView outcomeId={selected.id} />
+                    ) : (
+                      <PillarEmbeddedView pillarId={selected.primaryPillar} />
+                    )}
                   </div>
                 </div>
               </motion.aside>

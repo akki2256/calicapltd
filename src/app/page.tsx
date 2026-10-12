@@ -155,7 +155,7 @@ export default function HomePage() {
               src={workSection.banner.src}
               alt={workSection.banner.alt}
               fill
-              className="object-cover"
+              className="object-contain"
               sizes="(max-width: 1152px) 100vw, 1152px"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-slate-900/5" aria-hidden />

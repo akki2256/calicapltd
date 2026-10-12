@@ -201,7 +201,7 @@ function CaliconDeliveryProcess() {
 
 function CanvasDeliveryPractices() {
   return (
-    <dl className="mt-14 grid gap-x-8 gap-y-6 border-t border-[var(--color-border-subtle)] pt-10 sm:grid-cols-2 lg:grid-cols-3">
+    <dl className="mt-10 grid gap-x-8 gap-y-6 border-t border-[var(--color-border-subtle)] pt-10 sm:grid-cols-2 lg:grid-cols-3">
       {DELIVERY_PRACTICES.map((item) => {
         const Icon = item.icon;
         return (

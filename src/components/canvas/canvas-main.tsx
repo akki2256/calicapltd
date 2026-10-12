@@ -125,10 +125,10 @@ export function CanvasMain({ children }: Props) {
               <div className="canvas-home-chapter">
                 <CanvasHomeOutcomes />
               </div>
+              <CanvasHomeChapter />
               <CanvasAboutTeaser />
               <CanvasImpactMetrics />
               <CanvasTestimonials />
-              <CanvasHomeChapter />
               <div className="hidden" aria-hidden>
                 {children}
               </div>
