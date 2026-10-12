@@ -161,7 +161,7 @@ export function CanvasConnectedVoicesNetwork({
       indexMap.clear();
 
       const voices = Math.max(1, Math.min(voiceCount, VOICE_SLOTS.length));
-      const voiceSet = new Set(VOICE_SLOTS.slice(0, voices));
+      const voiceSet = new Set<number>(VOICE_SLOTS.slice(0, voices));
 
       /* On mobile, drop farthest ambient points for clarity */
       const points = mobile
@@ -362,8 +362,9 @@ export function CanvasConnectedVoicesNetwork({
       raf = requestAnimationFrame(loop);
     };
 
-    const host =
-      canvas.closest(".canvas-testimonials") ?? canvas.parentElement;
+    const host: HTMLElement | null =
+      (canvas.closest(".canvas-testimonials") as HTMLElement | null) ??
+      canvas.parentElement;
 
     const onPointer = (e: PointerEvent) => {
       if (!finePointer || reduced || !host) return;
