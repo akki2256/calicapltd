@@ -1,4 +1,11 @@
-import { Building2, DraftingCompass, Flower2, type LucideIcon } from "lucide-react";
+import {
+  Building2,
+  DraftingCompass,
+  Flower2,
+  HeartPulse,
+  MonitorSmartphone,
+  type LucideIcon,
+} from "lucide-react";
 import {
   getService,
   type EngagementModel,
@@ -143,6 +150,77 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
       "Shipped UI/UX, visual direction, and responsive React development end-to-end in four weeks.",
     ],
   },
+  {
+    slug: "chaitanya-computers",
+    label: "Transform · Web + ops",
+    title: "Chaitanya Computers",
+    context:
+      "A computer retail business that needed a credible digital front door and a tighter grip on inventory and sales.",
+    built:
+      "Public website plus a customized inventory and sales management solution — presence and operations in one engagement.",
+    excerpt:
+      "Digital presence and operations in three weeks—chaitanyacomputers.com plus a custom inventory and sales system shaped to how the shop actually runs.",
+    result: "Live website · inventory & sales ops · 3 weeks",
+    beforeAfter: "Offline retail loop → Digital presence + managed operations",
+    pillar: "transform",
+    pillars: ["transform", "build", "automate"],
+    serviceIds: [
+      "web-ecommerce",
+      "web-mobile-apps",
+      "custom-software",
+      "business-management-systems",
+    ],
+    outcomeIds: ["modernize", "create", "automate"],
+    industryIds: ["retail-ecommerce"],
+    engagement: "project",
+    icon: MonitorSmartphone,
+    imageKey: "chaitanyaComputersHero",
+    metaTitle: "Chaitanya Computers — website & inventory ops",
+    metaDescription:
+      "Case study: Chaitanya Computers—a digital presence at chaitanyacomputers.com plus a customized inventory and sales management solution, delivered in three weeks.",
+    ctaLabel: "Need presence and ops in one build? Tell us your problem",
+    ctaHref: "/contact",
+    deliveryNotes: [
+      "Treated the website as the public face and the inventory/sales system as the operating floor — same engagement, two surfaces.",
+      "Stock, sales, and day-to-day retail workflow shaped the product model instead of a generic shop template.",
+      "Shipped the live site and the customized management solution together in three weeks.",
+    ],
+  },
+  {
+    slug: "lungconnect-india",
+    label: "Build · Custom MIS",
+    title: "LungConnect India Foundation",
+    context:
+      "A cancer-care foundation that needed one place for enrollment, follow-ups, patient profiles, and guidance history.",
+    built:
+      "MIS software for patient enrollment, follow-ups, data maintenance, profiles, and guidance history management.",
+    excerpt:
+      "Custom MIS for cancer patient enrollment, follow-ups, profiles, and guidance history—shipped in 60 days so care teams stop rebuilding the patient story from fragments.",
+    result: "Patient MIS · enrollment to guidance history · 60 days",
+    beforeAfter: "Fragmented patient records → One care operations system",
+    pillar: "build",
+    pillars: ["build", "transform", "automate"],
+    serviceIds: [
+      "custom-software",
+      "business-management-systems",
+      "workflow-automation",
+    ],
+    outcomeIds: ["modernize", "automate", "create"],
+    industryIds: ["healthcare"],
+    engagement: "project",
+    icon: HeartPulse,
+    imageKey: "lungconnectIndiaHero",
+    metaTitle: "LungConnect India — patient MIS",
+    metaDescription:
+      "Case study: LungConnect India Foundation—MIS software for cancer patient enrollment, follow-ups, data maintenance, patient profiles, and guidance history, delivered in 60 days.",
+    ctaLabel: "Running care operations on fragments? Tell us your problem",
+    ctaHref: "/contact?mode=unsure",
+    deliveryNotes: [
+      "Started from enrollment, follow-up, and guidance workflows — not a generic hospital template.",
+      "Patient identity, profile history, and guidance trail became the product model.",
+      "Shipped as one MIS from enrollment through ongoing follow-up and history in 60 days.",
+    ],
+  },
 ];
 
 /** Documented outcomes only — never invent metrics here */
@@ -176,6 +254,18 @@ export const calicapDocumentedOutcomes = [
     label: "Concept to launch",
     detail: "Amazing Art Architects — website",
     href: "/work/amazing-art-architects",
+  },
+  {
+    value: "3 wks",
+    label: "Concept to launch",
+    detail: "Chaitanya Computers — website & ops",
+    href: "/work/chaitanya-computers",
+  },
+  {
+    value: "60 days",
+    label: "Concept to delivery",
+    detail: "LungConnect India — patient MIS",
+    href: "/work/lungconnect-india",
   },
 ] as const;
 

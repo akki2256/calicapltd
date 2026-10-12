@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ArrowRight } from "lucide-react";
+import { ButtonLink } from "@/components/button-link";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { DeliveryPractices } from "@/components/delivery-process";
 import {
@@ -20,6 +21,10 @@ import {
   calicapStrategicPillars,
   SERVICE_CATALOGUE,
 } from "@/lib/calicap-services";
+import {
+  canvasWordKey,
+  resolveCanvasEmphasize,
+} from "@/lib/canvas-dual-color";
 
 /** Match About sticky split titles: first word, then the rest. */
 function splitSectionTitle(title: string): string[] {
@@ -30,6 +35,27 @@ function splitSectionTitle(title: string): string[] {
   return [title];
 }
 
+function DualColorText({
+  text,
+  accentWords,
+  accentClass,
+}: {
+  text: string;
+  accentWords: Set<string>;
+  accentClass: string;
+}) {
+  const words = text.split(/\s+/).filter(Boolean);
+  return words.map((word, i) => {
+    const accent = accentWords.has(canvasWordKey(word));
+    return (
+      <span key={`${word}-${i}`}>
+        <span className={accent ? accentClass : undefined}>{word}</span>
+        {i < words.length - 1 ? " " : null}
+      </span>
+    );
+  });
+}
+
 function CanvasServiceCards({
   services,
 }: {
@@ -37,7 +63,7 @@ function CanvasServiceCards({
 }) {
   return (
     <CanvasStagger
-      className="mt-6 grid grid-cols-2 gap-px border border-[var(--color-border-subtle)] bg-[var(--color-border-subtle)]"
+      className="grid grid-cols-2 gap-px border border-[var(--color-border-subtle)] bg-[var(--color-border-subtle)]"
       stagger={0.05}
     >
       {services.map((service) => {
@@ -119,54 +145,54 @@ function CanvasServicesIndex() {
               {overview.body}
             </p>
           </CanvasReveal>
-          <CanvasReveal variant="rise" delay={0.18} className="mt-8">
+          <CanvasReveal
+            variant="rise"
+            delay={0.18}
+            className="mt-8 flex flex-wrap items-center justify-center gap-3"
+          >
             <ProblemCtaButton>{overview.primaryCta}</ProblemCtaButton>
+            <ButtonLink href={overview.secondaryHref} variant="ghost">
+              {overview.secondaryCta}
+            </ButtonLink>
           </CanvasReveal>
         </section>
 
-        <section
-          className="canvas-about__split border-t"
-          aria-labelledby="services-catalogue-label"
-        >
-          <div className="canvas-about__split-layout">
-            <aside>
-              <CanvasTextScrub
-                as="h2"
-                id="services-catalogue-label"
-                lines={splitSectionTitle("Service catalogue")}
-                className="canvas-about__split-title"
-                lineClassName="canvas-about__split-title-line"
-                emphasize={["catalogue"]}
-              />
-            </aside>
-            <div className="canvas-about__split-body">
-              <CanvasReveal variant="blurIn">
-                <p className="font-[family-name:var(--font-display)] text-[clamp(1.35rem,2.5vw,1.75rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]">
-                  What we deliver.
-                </p>
-              </CanvasReveal>
-
-              <div className="mt-10 space-y-12">
-                {SERVICE_CATALOGUE.map((category, index) => (
-                  <div key={category.id}>
-                    <CanvasReveal variant="blurIn" className="space-y-2">
-                      <p className="font-mono text-[10px] tracking-[0.16em] text-[var(--color-accent)]">
-                        {String(index + 1).padStart(2, "0")}
-                      </p>
-                      <h3 className="font-[family-name:var(--font-display)] text-xl font-medium tracking-[-0.03em] text-[var(--color-text-strong)] sm:text-2xl">
-                        {category.name}
-                      </h3>
-                      <p className="max-w-2xl text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
-                        {category.description}
-                      </p>
-                    </CanvasReveal>
-                    <CanvasServiceCards services={category.services} />
-                  </div>
-                ))}
+        {SERVICE_CATALOGUE.map((category) => {
+          const supportAccent = resolveCanvasEmphasize(
+            category.description.split(/\s+/).filter(Boolean),
+          );
+          return (
+            <section
+              key={category.id}
+              className="canvas-about__split border-t"
+              aria-labelledby={`services-cat-${category.id}`}
+            >
+              <div className="canvas-about__split-layout">
+                <aside className="canvas-services__cat-aside">
+                  <CanvasTextScrub
+                    as="h2"
+                    id={`services-cat-${category.id}`}
+                    lines={splitSectionTitle(category.name)}
+                    className="canvas-about__split-title"
+                    lineClassName="canvas-about__split-title-line"
+                  />
+                  <CanvasReveal variant="blurIn" delay={0.06}>
+                    <p className="canvas-services__cat-support">
+                      <DualColorText
+                        text={category.description}
+                        accentWords={supportAccent}
+                        accentClass="canvas-em"
+                      />
+                    </p>
+                  </CanvasReveal>
+                </aside>
+                <div className="canvas-about__split-body">
+                  <CanvasServiceCards services={category.services} />
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
+          );
+        })}
 
         <section
           className="canvas-about__split border-t"

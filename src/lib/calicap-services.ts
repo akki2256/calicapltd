@@ -52,7 +52,8 @@ export const calicapServicesOverview = {
   body:
     "Whether the requirement is clear, an idea needs shaping, or a problem needs solving — define the right approach and turn it into something real.",
   primaryCta: "Start a project",
-  secondaryCta: "Talk to us",
+  secondaryCta: "Explore Our Work",
+  secondaryHref: "/work",
   heroImage: siteImages.cloudNetwork,
   metaTitle: "Services",
   metaDescription:

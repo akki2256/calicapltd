@@ -10,6 +10,13 @@ import { OutcomesCircuitBoard } from "@/components/outcomes-circuit-board";
 import { calicapHomeWorkTeasers } from "@/lib/calicap-home";
 import { siteImages } from "@/lib/site-images";
 
+/** Website cases — share one row, sandwiched between the two full-width product cases */
+const HOME_WORK_TRIO_SLUGS = [
+  "yog-mantram",
+  "chaitanya-computers",
+  "amazing-art-architects",
+] as const;
+
 /** Outcomes discovery — sits below the tech marquee on Canvas home */
 export function CanvasHomeOutcomes() {
   return (
@@ -40,6 +47,14 @@ export function CanvasHomeOutcomes() {
  * Same canvas-content-frame as testimonials so left/right edges match.
  */
 export function CanvasHomeChapter() {
+  const top = calicapHomeWorkTeasers.find((t) => t.slug === "calicap-india");
+  const bottom = calicapHomeWorkTeasers.find(
+    (t) => t.slug === "lungconnect-india",
+  );
+  const trio = HOME_WORK_TRIO_SLUGS.map((slug) =>
+    calicapHomeWorkTeasers.find((t) => t.slug === slug),
+  ).filter((t): t is NonNullable<typeof t> => Boolean(t));
+
   return (
     <section
       id="work"
@@ -59,10 +74,23 @@ export function CanvasHomeChapter() {
             View all work →
           </Link>
         </div>
-        <div className="work-flip-grid canvas-work-home__grid">
-          {calicapHomeWorkTeasers.map((w, i) => {
-            const image = siteImages[w.imageKey];
-            return (
+        <div className="work-flip-layout canvas-work-home__grid">
+          {top ? (
+            <div className="work-flip-grid">
+              <WorkProjectFlipCard
+                href={`/work/${top.slug}`}
+                title={top.title}
+                label={top.label}
+                description={top.context}
+                result={top.result}
+                image={siteImages[top.imageKey]}
+                priority
+                sizes="(max-width: 1024px) 100vw, 1320px"
+              />
+            </div>
+          ) : null}
+          <div className="work-flip-grid work-flip-grid--trio">
+            {trio.map((w) => (
               <WorkProjectFlipCard
                 key={w.slug}
                 href={`/work/${w.slug}`}
@@ -70,12 +98,24 @@ export function CanvasHomeChapter() {
                 label={w.label}
                 description={w.context}
                 result={w.result}
-                image={image}
-                priority={i === 0}
+                image={siteImages[w.imageKey]}
+                sizes="(max-width: 900px) 100vw, 33vw"
+              />
+            ))}
+          </div>
+          {bottom ? (
+            <div className="work-flip-grid">
+              <WorkProjectFlipCard
+                href={`/work/${bottom.slug}`}
+                title={bottom.title}
+                label={bottom.label}
+                description={bottom.context}
+                result={bottom.result}
+                image={siteImages[bottom.imageKey]}
                 sizes="(max-width: 1024px) 100vw, 1320px"
               />
-            );
-          })}
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

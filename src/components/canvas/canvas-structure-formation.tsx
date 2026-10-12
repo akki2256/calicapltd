@@ -357,9 +357,7 @@ export function CanvasStructureFormation({ className = "" }: Props) {
         streams.push({ line, mat, debris, debrisMats, streamIndex: si, t0 });
       }
 
-      /* Fully visible immediately — no assemble / fade-in */
       applySettledOpacities();
-
       builtForMobile = isMobile;
       last = performance.now();
     };
@@ -385,8 +383,8 @@ export function CanvasStructureFormation({ className = "" }: Props) {
       }
       const nx = (e.clientX / window.innerWidth) * 2 - 1;
       const ny = (e.clientY / window.innerHeight) * 2 - 1;
-      pointer.tx = Math.max(-1, Math.min(1, nx)) * 0.45;
-      pointer.ty = Math.max(-1, Math.min(1, ny)) * 0.35;
+      pointer.tx = Math.max(-1, Math.min(1, nx));
+      pointer.ty = Math.max(-1, Math.min(1, ny));
     };
 
     const update = (now: number) => {
@@ -425,18 +423,22 @@ export function CanvasStructureFormation({ className = "" }: Props) {
         spinY += YAW_SPEED * dt;
       }
 
-      pointer.x += (pointer.tx - pointer.x) * Math.min(1, dt * 3);
-      pointer.y += (pointer.ty - pointer.y) * Math.min(1, dt * 3);
+      pointer.x += (pointer.tx - pointer.x) * Math.min(1, dt * 3.4);
+      pointer.y += (pointer.ty - pointer.y) * Math.min(1, dt * 3.4);
 
       camera.position.set(
-        camBase.x + pointer.x * 0.25,
-        camBase.y - pointer.y * 0.15,
+        camBase.x + pointer.x * 0.42,
+        camBase.y - pointer.y * 0.28,
         camBase.z,
       );
-      camera.lookAt(pointer.x * 0.05, 0.05 - pointer.y * 0.03, 0);
+      camera.lookAt(pointer.x * 0.08, 0.05 - pointer.y * 0.05, 0);
 
-      /* Vertical-axis rotation of the full 3D assembly */
-      root.rotation.set(0.18 + pointer.y * 0.04, spinY + pointer.x * 0.12, 0);
+      /* Vertical-axis rotation + hover parallax on the full 3D assembly */
+      root.rotation.set(
+        0.18 + pointer.y * 0.1,
+        spinY + pointer.x * 0.24,
+        -pointer.x * 0.05,
+      );
       update(now);
 
       if (!reduced) raf = requestAnimationFrame(tick);

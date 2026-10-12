@@ -86,6 +86,14 @@ export function CanvasScrollEnhancer({ children }: { children: ReactNode }) {
     };
   }, [reduced, children, scrollContainer]);
 
+  /** Drop transform after enter so sticky section titles can use the viewport */
+  const clearContainingBlock = () => {
+    const el = rootRef.current;
+    if (!el) return;
+    el.style.transform = "none";
+    el.style.filter = "none";
+  };
+
   return (
     <motion.div
       ref={rootRef}
@@ -93,6 +101,7 @@ export function CanvasScrollEnhancer({ children }: { children: ReactNode }) {
       initial={reduced ? false : { opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: canvasDur.base, ease: canvasEase }}
+      onAnimationComplete={clearContainingBlock}
     >
       {children}
     </motion.div>
