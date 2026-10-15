@@ -32,8 +32,8 @@ export const calicapTestimonials: CalicapTestimonial[] = [
     id: "t1",
     quote:
       "They took time to understand how our operations actually ran before proposing anything. The CRM felt built around our process, not the other way around.",
-    name: "Placeholder Name",
-    role: "Operations lead",
+    name: "Mr. Varun Goyal",
+    role: "Chairman",
     company: "Calicap India Pvt. Ltd.",
     projectSlug: "calicap-india",
     theme: "understanding",
@@ -43,7 +43,7 @@ export const calicapTestimonials: CalicapTestimonial[] = [
     id: "t2",
     quote:
       "Clear scope, steady communication, and delivery we could put in front of the team. They solved the messy parts without making the project larger than it needed to be.",
-    name: "Placeholder Name",
+    name: "Mr. Shantanu Aggarwal",
     role: "Founder",
     company: "Yog Mantram",
     projectSlug: "yog-mantram",
@@ -54,8 +54,8 @@ export const calicapTestimonials: CalicapTestimonial[] = [
     id: "t3",
     quote:
       "The site finally matches the quality of our built work. Enquiries feel warmer, and the portfolio reads like the practice — not a template.",
-    name: "Placeholder Name",
-    role: "Principal architect",
+    name: "Ar. Khyati Chaubey",
+    role: "Project Manager",
     company: "Amazing Art Architects",
     projectSlug: "amazing-art-architects",
     theme: "business-impact",
@@ -65,8 +65,8 @@ export const calicapTestimonials: CalicapTestimonial[] = [
     id: "t4",
     quote:
       "We needed a credible digital front door and tighter grip on inventory. They shipped both without turning a three-week brief into a six-month programme.",
-    name: "Placeholder Name",
-    role: "Owner",
+    name: "Mr. Krishna Shrivastav",
+    role: "Founder",
     company: "Chaitanya Computers",
     projectSlug: "chaitanya-computers",
     theme: "delivery",
@@ -76,8 +76,8 @@ export const calicapTestimonials: CalicapTestimonial[] = [
     id: "t5",
     quote:
       "Patient follow-ups used to live in notebooks and chat threads. The MIS gave us one place from enrollment to guidance — and the team actually uses it.",
-    name: "Placeholder Name",
-    role: "Program lead",
+    name: "Mr. Ratan",
+    role: "Project Manager",
     company: "LungConnect India Foundation",
     projectSlug: "lungconnect-india",
     theme: "problem-solving",
