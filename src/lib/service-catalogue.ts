@@ -52,9 +52,6 @@ export type CatalogueCategory = {
 
 /**
  * Approved catalogue order. Every service appears in exactly one category.
- *
- * Workflow Automation and Business Process Automation stay distinct:
- * workflows = task/step automation; BPA = end-to-end multi-team processes.
  */
 export const SERVICE_CATALOGUE: readonly CatalogueCategory[] = [
   {
@@ -239,17 +236,10 @@ export const SERVICE_CATALOGUE: readonly CatalogueCategory[] = [
       },
       {
         id: "workflow-automation",
-        name: "Workflow Automation",
+        name: "Workflow & Process Automation",
         categoryId: "ai-automation",
         description:
-          "Automate repetitive steps — approvals, notifications, handoffs, and routine operational tasks.",
-      },
-      {
-        id: "business-process-automation",
-        name: "Business Process Automation",
-        categoryId: "ai-automation",
-        description:
-          "End-to-end automation of multi-step business processes across teams and systems.",
+          "Automate repetitive steps and end-to-end processes — approvals, handoffs, and multi-team workflows across systems.",
       },
       {
         id: "ai-integration",

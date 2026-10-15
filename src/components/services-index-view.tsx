@@ -24,14 +24,19 @@ import {
   resolveCanvasEmphasize,
 } from "@/lib/canvas-dual-color";
 
-/** WebGL chunk stays out of the critical hydrate path */
-const CanvasStructureFormation = dynamic(
-  () =>
-    import("@/components/canvas/canvas-structure-formation").then(
-      (m) => m.CanvasStructureFormation,
-    ),
-  { ssr: false },
-);
+/** WebGL chunk stays out of the critical hydrate path; preload so backdrop is ready sooner */
+const structureFormationImport = () =>
+  import("@/components/canvas/canvas-structure-formation").then(
+    (m) => m.CanvasStructureFormation,
+  );
+
+const CanvasStructureFormation = dynamic(structureFormationImport, {
+  ssr: false,
+});
+
+if (typeof window !== "undefined") {
+  void structureFormationImport();
+}
 
 /** Match About sticky split titles: first word, then the rest. */
 function splitSectionTitle(title: string): string[] {
@@ -109,56 +114,32 @@ function CanvasServiceCards({
 function CanvasServicesIndex() {
   const overview = calicapServicesOverview;
   const [portalReady, setPortalReady] = useState(false);
-  /** Scrub after first paint — 10 scroll listeners must not compete with hydrate */
+  /** Scrub after first paint — title scroll listeners must not compete with hydrate */
   const [scrubReady, setScrubReady] = useState(false);
 
   useEffect(() => {
+    /* Portal immediately (needs document.body). Structure fades in via CSS. */
+    setPortalReady(true);
+
     let cancelled = false;
-    let structureIdle = 0;
     let scrubIdle = 0;
-    let structureTimeout = 0;
     let scrubTimeout = 0;
 
-    const schedule = (fn: () => void, timeout: number) => {
-      if (typeof window.requestIdleCallback === "function") {
-        return {
-          idle: window.requestIdleCallback(fn, { timeout }),
-          timeout: 0,
-        };
-      }
-      return { idle: 0, timeout: window.setTimeout(fn, Math.min(timeout, 120)) };
+    const enableScrub = () => {
+      if (!cancelled) setScrubReady(true);
     };
 
-    /* Content paints first; structure mounts settled (no fade) after idle. */
-    const kick = () => {
-      if (cancelled) return;
-      const structure = schedule(() => {
-        if (!cancelled) setPortalReady(true);
-      }, 280);
-      structureIdle = structure.idle;
-      structureTimeout = structure.timeout;
-
-      const scrub = schedule(() => {
-        if (!cancelled) setScrubReady(true);
-      }, 520);
-      scrubIdle = scrub.idle;
-      scrubTimeout = scrub.timeout;
-    };
-
-    const raf = window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(kick);
-    });
+    if (typeof window.requestIdleCallback === "function") {
+      scrubIdle = window.requestIdleCallback(enableScrub, { timeout: 400 });
+    } else {
+      scrubTimeout = window.setTimeout(enableScrub, 120);
+    }
 
     return () => {
       cancelled = true;
-      window.cancelAnimationFrame(raf);
-      if (structureIdle && typeof window.cancelIdleCallback === "function") {
-        window.cancelIdleCallback(structureIdle);
-      }
       if (scrubIdle && typeof window.cancelIdleCallback === "function") {
         window.cancelIdleCallback(scrubIdle);
       }
-      if (structureTimeout) window.clearTimeout(structureTimeout);
       if (scrubTimeout) window.clearTimeout(scrubTimeout);
     };
   }, []);
@@ -175,7 +156,10 @@ function CanvasServicesIndex() {
     );
 
   return (
-    <article className="canvas-services w-full min-w-0 py-4">
+    <article
+      className="canvas-services w-full min-w-0 pt-4 pb-0"
+      data-canvas-authored=""
+    >
       {structureBackdrop}
       <div className="canvas-services__content">
         <section className="canvas-services__hero canvas-about__mission">
@@ -252,66 +236,6 @@ function CanvasServicesIndex() {
             </section>
           );
         })}
-
-        <section
-          className="canvas-about__split border-t"
-          aria-labelledby="services-capability-label"
-        >
-          <div className="canvas-about__split-layout">
-            <aside>
-              <CanvasTextScrub
-                as="h2"
-                id="services-capability-label"
-                lines={splitSectionTitle("Capability paths")}
-                className="canvas-about__split-title"
-                lineClassName="canvas-about__split-title-line"
-                emphasize={["paths"]}
-                scrub={scrubReady}
-              />
-            </aside>
-            <div className="canvas-about__split-body">
-              <CanvasReveal variant="riseSoft" className="space-y-4">
-                <p className="font-[family-name:var(--font-display)] text-[clamp(1.35rem,2.5vw,1.75rem)] font-medium tracking-[-0.03em] text-[var(--color-text-strong)]">
-                  Build · Transform · Automate · Evolve
-                </p>
-                <p className="text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
-                  Brand capabilities for how engagements start — not additional service categories.
-                </p>
-              </CanvasReveal>
-
-              <div className="mt-6 grid grid-cols-2 gap-px border border-[var(--color-border-subtle)] bg-[var(--color-border-subtle)]">
-                {calicapStrategicPillars.map((pillar) => {
-                  const Icon = pillar.icon;
-                  return (
-                    <Link
-                      key={pillar.id}
-                      href={pillar.href}
-                      className="group flex h-full flex-col gap-2 bg-[var(--color-surface)] px-3 py-3 transition-colors duration-300 hover:bg-[var(--color-surface-elevated)]"
-                    >
-                      <span className="flex items-center gap-2.5">
-                        <Icon
-                          className="h-3.5 w-3.5 shrink-0 text-[var(--color-accent)]"
-                          strokeWidth={1.6}
-                          aria-hidden
-                        />
-                        <span className="font-[family-name:var(--font-display)] text-[12px] font-medium leading-snug tracking-[-0.015em] text-[var(--color-text-strong)] sm:text-[13px]">
-                          {pillar.label}
-                        </span>
-                      </span>
-                      <span className="text-[12px] leading-relaxed text-[var(--color-text-muted)] sm:text-[13px]">
-                        {pillar.tagline}
-                      </span>
-                      <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-[11px] uppercase tracking-[0.14em] text-[var(--color-text-muted)] transition group-hover:text-[var(--color-link-hover)]">
-                        {pillar.cta}
-                        <ArrowRight className="h-3 w-3" strokeWidth={1.75} aria-hidden />
-                      </span>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
 
         <DeliveryPractices />
       </div>

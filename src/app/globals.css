@@ -634,6 +634,14 @@ html.menu-visible .canvas-menu-item {
   min-width: 0;
 }
 
+/*
+ * Inner pages sit above the site footer — drop FAB bottom clearance so the
+ * last section→footer gap matches section→section rhythm (not double-spaced).
+ */
+.canvas-main.canvas-main-inner {
+  padding-bottom: 0;
+}
+
 .canvas-main-home {
   padding: 0;
   overflow: visible;
@@ -679,6 +687,8 @@ html.menu-visible .canvas-menu-item {
   min-width: 0;
   padding-left: var(--canvas-frame-pad-left);
   padding-right: var(--canvas-frame-pad-right);
+  /* Same pre-border gap as .canvas-about__split / section rules before footer */
+  padding-bottom: 3.5rem;
 }
 
 /* Inner-page scroll choreography (CanvasScrollEnhancer) */
@@ -1544,6 +1554,26 @@ html.menu-visible .canvas-nav-trigger-float {
   margin-right: 0;
 }
 
+/* Match page sections — same frame width/gutters as .canvas-inner-content */
+.canvas-site-footer__frame {
+  box-sizing: border-box;
+  width: var(--canvas-frame-width);
+  max-width: 100%;
+  margin-inline: auto;
+  min-width: 0;
+  padding-top: 2.5rem;
+  padding-bottom: 0;
+  padding-left: var(--canvas-frame-pad-left);
+  padding-right: var(--canvas-frame-pad-right);
+}
+
+@media (min-width: 1024px) {
+  .canvas-site-footer__frame {
+    /* Keep a slightly taller editorial open after the rule on large screens */
+    padding-top: 3.5rem;
+  }
+}
+
 .footer-legal-bar {
   display: flex;
   flex-wrap: wrap;
@@ -1713,7 +1743,7 @@ html.menu-visible .canvas-nav-trigger-float {
   min-width: 0;
 }
 
-/* Full-width product cases, then website trio in one row (Canvas) */
+/* 1, 2, 2 setup for Canvas work section: full-width featured top, two 2-column rows below */
 .work-flip-layout {
   display: flex;
   flex-direction: column;
@@ -1723,26 +1753,29 @@ html.menu-visible .canvas-nav-trigger-float {
   min-width: 0;
 }
 
-.work-flip-grid--trio {
-  grid-template-columns: 1fr;
-  column-gap: 0;
-  row-gap: clamp(1rem, 2vw, 1.5rem);
+.work-flip-grid--featured .work-flip__scene {
+  aspect-ratio: 16 / 9;
 }
 
-@media (min-width: 900px) {
-  .work-flip-grid--trio {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0;
-  }
+.work-flip-grid--featured .work-flip__media-wrap > span,
+.work-flip-grid--featured .work-flip__media-wrap > img,
+.work-flip-grid--featured .work-flip__media {
+  object-fit: cover;
+  object-position: center;
+}
 
-  /* Flush edges + taller crop so the trio reads larger than default 3/2 cards */
-  .work-flip-grid--trio .work-flip__scene {
-    aspect-ratio: 5 / 4;
-    border-radius: 0;
-  }
+.work-flip-grid--pair {
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
 
-  .work-flip-grid--trio .work-flip:not(:first-child) .work-flip__scene {
-    border-left-width: 0;
+.work-flip-grid--pair .work-flip__scene {
+  aspect-ratio: 16 / 10;
+}
+
+@media (min-width: 820px) {
+  .work-flip-grid--pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1800,12 +1833,22 @@ html.menu-visible .canvas-nav-trigger-float {
   width: 100% !important;
   height: 100% !important;
   max-width: none !important;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 
 .work-flip__media {
   transform: none;
+}
+
+.work-flip-grid--featured .work-flip__media-wrap > span,
+.work-flip-grid--featured .work-flip__media-wrap > img,
+.work-flip-grid--featured .work-flip__media,
+.work-flip-grid--pair .work-flip__media-wrap > span,
+.work-flip-grid--pair .work-flip__media-wrap > img,
+.work-flip-grid--pair .work-flip__media {
+  object-fit: cover;
+  object-position: center;
 }
 
 .work-flip__shade {
@@ -2705,7 +2748,7 @@ html.menu-visible .canvas-nav-trigger-float {
   position: relative;
   isolation: isolate;
   width: 100%;
-  border-top: 1px solid rgba(58, 212, 255, 0.06);
+  border-top: 1px solid var(--color-border-subtle);
   background: #05070c;
   /* Last home section — clear the Canvas FAB / footer stack */
   padding-bottom: max(78px, var(--canvas-content-bottom));
@@ -2768,6 +2811,20 @@ html.menu-visible .canvas-nav-trigger-float {
   padding-bottom: clamp(3.25rem, 7vw, 5.75rem);
 }
 
+.canvas-testimonials__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.1fr);
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  align-items: start;
+  min-width: 0;
+}
+
+.canvas-testimonials__copy {
+  min-width: 0;
+  max-width: 22rem;
+  padding-top: 0.15rem;
+}
+
 .canvas-testimonials__headline {
   max-width: 18ch;
   font-family: var(--font-display);
@@ -2784,15 +2841,18 @@ html.menu-visible .canvas-nav-trigger-float {
 
 .canvas-testimonials__intro {
   margin-top: 1.25rem;
-  max-width: 36rem;
+  max-width: 28rem;
   font-size: 0.9375rem;
   line-height: 1.75;
   color: var(--color-text-muted);
 }
 
 .canvas-testimonials__voices {
-  margin-top: clamp(2.5rem, 5vw, 3.75rem);
-  max-width: 42rem;
+  margin-top: 0;
+  max-width: 34rem;
+  width: 100%;
+  justify-self: end;
+  min-width: 0;
 }
 
 .canvas-testimonials__stage {
@@ -2826,18 +2886,45 @@ html.menu-visible .canvas-nav-trigger-float {
   width: 100%;
 }
 
+.canvas-testimonials__card {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: clamp(17.5rem, 32vh, 22rem);
+  margin: 0;
+  padding: clamp(1.75rem, 3.2vw, 2.35rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 0;
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--color-card-start) 88%, transparent),
+      color-mix(in srgb, var(--color-card-end) 92%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 var(--color-card-inset),
+    0 18px 40px var(--color-card-shadow);
+  backdrop-filter: blur(10px);
+}
+
 .canvas-testimonials__quote {
   margin: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .canvas-testimonials__quote > p {
   position: relative;
   margin: 0;
-  padding-top: 0.35rem;
+  padding-top: 0.2rem;
   font-family: var(--font-display);
-  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
+  font-size: clamp(1.05rem, 1.9vw, 1.35rem);
   font-weight: 450;
-  line-height: 1.5;
+  line-height: 1.55;
   letter-spacing: -0.02em;
   color: var(--color-text-strong);
   text-wrap: pretty;
@@ -2851,7 +2938,9 @@ html.menu-visible .canvas-nav-trigger-float {
 }
 
 .canvas-testimonials__cite {
-  margin-top: 1.5rem;
+  margin-top: auto;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--color-border-subtle);
 }
 
 .canvas-testimonials__name {
@@ -2870,90 +2959,22 @@ html.menu-visible .canvas-nav-trigger-float {
   color: var(--color-text-muted);
 }
 
-.canvas-testimonials__controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1rem;
-  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--color-border-subtle);
-}
 
-.canvas-testimonials__nav {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-border-subtle);
-  background: transparent;
-  color: var(--color-text-muted);
-  transition:
-    color 200ms var(--motion-ease),
-    border-color 200ms var(--motion-ease),
-    background-color 200ms var(--motion-ease);
-}
+@media (max-width: 959px) {
+  .canvas-testimonials__layout {
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 4vw, 2.25rem);
+    align-items: start;
+  }
 
-.canvas-testimonials__nav:hover {
-  color: var(--color-text-strong);
-  border-color: var(--color-btn-ghost-hover-border);
-  background: var(--color-btn-ghost-hover-bg);
-}
+  .canvas-testimonials__copy {
+    max-width: none;
+  }
 
-.canvas-testimonials__nav:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-  color: var(--color-text-strong);
-}
-
-.canvas-testimonials__dots {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-
-.canvas-testimonials__dot {
-  width: 0.45rem;
-  height: 0.45rem;
-  padding: 0;
-  border-radius: 999px;
-  border: none;
-  background: rgba(245, 245, 243, 0.22);
-  transition:
-    background-color 280ms var(--motion-ease),
-    transform 280ms var(--motion-ease),
-    box-shadow 280ms var(--motion-ease);
-}
-
-.canvas-testimonials__dot:hover {
-  background: rgba(245, 245, 243, 0.45);
-}
-
-.canvas-testimonials__dot.is-active {
-  background: var(--color-accent);
-  transform: scale(1.2);
-  box-shadow: 0 0 0 3px var(--color-accent-soft);
-}
-
-.canvas-testimonials__dot:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-}
-
-.canvas-testimonials__count {
-  margin-left: auto;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  color: var(--color-text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.canvas-testimonials__count-sep {
-  margin-inline: 0.2em;
-  opacity: 0.55;
+  .canvas-testimonials__voices {
+    max-width: none;
+    justify-self: stretch;
+  }
 }
 
 @media (max-width: 639px) {
@@ -2980,21 +3001,11 @@ html.menu-visible .canvas-nav-trigger-float {
       );
   }
 
-  .canvas-testimonials__voices {
-    max-width: none;
+  .canvas-testimonials__card {
+    min-height: clamp(15.5rem, 38vh, 19rem);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .canvas-testimonials__nav,
-  .canvas-testimonials__dot {
-    transition: none;
-  }
-
-  .canvas-testimonials__dot.is-active {
-    transform: none;
-  }
-}
 
 /* Shared Canvas content frame */
 .canvas-content-frame {
@@ -3126,7 +3137,18 @@ html.menu-visible .canvas-nav-trigger-float {
   justify-content: center;
   width: 100%;
   height: 100%;
-  opacity: 0.11;
+  opacity: 0;
+  animation: canvas-services-structure-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.05s
+    forwards;
+}
+
+@keyframes canvas-services-structure-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.11;
+  }
 }
 
 .canvas-services__content {
@@ -3180,14 +3202,11 @@ html.menu-visible .canvas-nav-trigger-float {
     padding-top: 1rem;
     padding-bottom: 2.5rem;
   }
-
-  .canvas-services__structure {
-    opacity: 0.11;
-  }
 }
 
-@media (min-width: 1024px) {
+@media (prefers-reduced-motion: reduce) {
   .canvas-services__structure {
+    animation: none;
     opacity: 0.11;
   }
 }
@@ -3753,7 +3772,7 @@ html.menu-visible .canvas-menu-item {
   }
 }
 
-/* About — index stats as tall editorial columns (.border-t = full-bleed rule) */
+/* About — index stats as tall editorial columns (same frame margins as siblings) */
 .canvas-about-stats {
   margin-top: 3.5rem;
   padding-top: 2.5rem;
@@ -3764,15 +3783,19 @@ html.menu-visible .canvas-menu-item {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
+  width: 100%;
   border: 1px solid var(--color-border-subtle);
 }
 
 .canvas-about-stats__col {
   display: flex;
-  min-height: clamp(16rem, 38vh, 22rem);
-  flex-direction: column;
-  gap: 1rem;
-  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  min-height: clamp(4.5rem, 10vh, 6.5rem);
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: clamp(1.1rem, 2vw, 1.5rem);
   border-top: 1px solid var(--color-border-subtle);
 }
 
@@ -3780,17 +3803,9 @@ html.menu-visible .canvas-menu-item {
   border-top: 0;
 }
 
-.canvas-about-stats__index {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  color: var(--color-text-muted);
-}
-
 .canvas-about-stats__value {
-  margin: 0.35rem 0 0;
+  flex: none;
+  margin: 0;
   font-family: var(--font-display);
   font-size: clamp(1.65rem, 3.2vw, 2.15rem);
   font-weight: 500;
@@ -3800,18 +3815,38 @@ html.menu-visible .canvas-menu-item {
 }
 
 .canvas-about-stats__label {
-  margin: auto 0 0;
-  max-width: 16rem;
-  font-size: 13px;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin: 0;
+  min-width: 0;
+  font-size: clamp(0.95rem, 1.35vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.65;
+  line-height: 1.35;
+  white-space: nowrap;
   color: var(--color-text-muted);
+}
+
+.canvas-about-stats__arrow {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 1.05em;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-accent);
+}
+
+.canvas-about-stats__label-text {
+  flex: none;
 }
 
 .canvas-about-close {
   margin-top: 3.5rem;
   padding-top: 2.5rem;
-  padding-bottom: 1rem;
+  /* Bottom clearance comes from .canvas-inner-content padding-bottom */
+  padding-bottom: 0;
 }
 
 .canvas-about-close__title {
@@ -3852,13 +3887,16 @@ html.menu-visible .canvas-menu-item {
   }
 }
 
-@media (min-width: 1024px) {
+/* 4-up only when each cell can keep value + label on one row */
+@media (min-width: 1280px) {
   .canvas-about-stats__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .canvas-about-stats__col {
-    min-height: clamp(18rem, 42vh, 24rem);
+    min-height: clamp(4.75rem, 9vh, 6.25rem);
+    gap: 0.5rem;
+    padding: clamp(1.1rem, 1.4vw, 1.5rem);
     border-top: 0;
     border-left: 1px solid var(--color-border-subtle);
   }
@@ -3873,6 +3911,15 @@ html.menu-visible .canvas-menu-item {
 
   .canvas-about-stats__col:nth-child(n + 3) {
     border-top: 0;
+  }
+
+  .canvas-about-stats__value {
+    font-size: clamp(1.5rem, 1.8vw, 2rem);
+  }
+
+  .canvas-about-stats__label {
+    gap: 0.35rem;
+    font-size: clamp(0.75rem, 0.85vw, 0.875rem);
   }
 }
 

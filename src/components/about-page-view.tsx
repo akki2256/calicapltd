@@ -22,7 +22,7 @@ import {
   calicapAbout,
 } from "@/lib/calicap-about";
 import { calicapHomeImpact } from "@/lib/calicap-home";
-import { canvasWordKey } from "@/lib/canvas-dual-color";
+import { canvasWordKey, resolveCanvasEmphasize } from "@/lib/canvas-dual-color";
 
 const OBSERVATION_ACCENT = new Set(
   calicapAbout.observation.emphasize.map((w) => w.toLowerCase()),
@@ -58,6 +58,9 @@ function DualColorText({
   });
 }
 
+/** Matches home impact ledger: three gains, one cost reduction */
+const ABOUT_STATS_DIRECTION = ["up", "up", "up", "down"] as const;
+
 function AboutStatsColumns({ variant }: { variant: "canvas" | "calicon" }) {
   const metrics = calicapHomeImpact.metrics;
 
@@ -69,15 +72,33 @@ function AboutStatsColumns({ variant }: { variant: "canvas" | "calicon" }) {
         aria-label={calicapHomeImpact.title}
       >
         <CanvasStagger className="canvas-about-stats__grid" stagger={0.06}>
-          {metrics.map((metric, i) => (
-            <CanvasStaggerItem key={metric.label} className="canvas-about-stats__col">
-              <p className="canvas-about-stats__index">
-                {String(i + 1).padStart(2, "0")}
-              </p>
-              <h3 className="canvas-about-stats__value">{metric.value}</h3>
-              <p className="canvas-about-stats__label">{metric.label}</p>
-            </CanvasStaggerItem>
-          ))}
+          {metrics.map((metric, i) => {
+            const labelAccent = resolveCanvasEmphasize(
+              metric.label.split(/\s+/).filter(Boolean),
+            );
+            const direction = ABOUT_STATS_DIRECTION[i] ?? "up";
+            const arrow = direction === "up" ? "↑" : "↓";
+            return (
+              <CanvasStaggerItem key={metric.label} className="canvas-about-stats__col">
+                <h3 className="canvas-about-stats__value">{metric.value}</h3>
+                <p className="canvas-about-stats__label">
+                  <span
+                    className={`canvas-about-stats__arrow canvas-about-stats__arrow--${direction}`}
+                    aria-hidden
+                  >
+                    {arrow}
+                  </span>
+                  <span className="canvas-about-stats__label-text">
+                    <DualColorText
+                      text={metric.label}
+                      accentWords={labelAccent}
+                      accentClass="canvas-em"
+                    />
+                  </span>
+                </p>
+              </CanvasStaggerItem>
+            );
+          })}
         </CanvasStagger>
       </section>
     );
@@ -225,7 +246,7 @@ function CanvasAbout() {
     );
 
   return (
-    <article className="canvas-about w-full min-w-0 py-4">
+    <article className="canvas-about w-full min-w-0 pt-4 pb-0">
       {mapBackdrop}
       <div className="canvas-about__content">
         <section className="canvas-about__mission">

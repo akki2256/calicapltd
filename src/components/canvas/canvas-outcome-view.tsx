@@ -27,7 +27,7 @@ export function CanvasOutcomeView({ outcomeId, embedded = true }: Props) {
 
   return (
     <article
-      className={`canvas-pillar relative w-full min-w-0 ${embedded ? "py-0" : "py-4"}`}
+      className={`canvas-pillar relative w-full min-w-0 ${embedded ? "py-0" : "pt-4 pb-0"}`}
     >
       <Link
         href="/services"

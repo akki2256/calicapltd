@@ -182,7 +182,7 @@ export function WorkProjectFlipCard({
             fill
             priority={priority}
             sizes={sizes}
-            className="work-flip__media object-contain"
+            className="work-flip__media object-cover"
           />
         </div>
 

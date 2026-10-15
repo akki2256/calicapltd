@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { useCanvasScrollContainer } from "@/components/canvas/motion/canvas-scroll-container";
@@ -15,7 +15,8 @@ export function CanvasScrollEnhancer({ children }: { children: ReactNode }) {
   const scrollContainer = useCanvasScrollContainer();
   const reduced = usePrefersReducedMotion();
 
-  useEffect(() => {
+  /* useLayoutEffect: mark/hide before paint so SSR content does not flash full then vanish */
+  useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root || reduced) return;
 
@@ -98,7 +99,8 @@ export function CanvasScrollEnhancer({ children }: { children: ReactNode }) {
     <motion.div
       ref={rootRef}
       className="canvas-inner-motion"
-      initial={reduced ? false : { opacity: 0, y: 20 }}
+      /* Page enter lives on CanvasMain — avoid a second opacity-0 pass that flashes SSR content */
+      initial={false}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: canvasDur.base, ease: canvasEase }}
       onAnimationComplete={clearContainingBlock}

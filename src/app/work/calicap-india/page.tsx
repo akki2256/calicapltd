@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
+  BookOpen,
   Building2,
   Clock3,
   FileText,
@@ -10,7 +11,6 @@ import {
   GitMerge,
   LayoutDashboard,
   MessageCircle,
-  Shield,
   Target,
   TrendingUp,
   UsersRound,
@@ -28,6 +28,8 @@ import { breadcrumbJsonLd, creativeWorkJsonLd } from "@/lib/structured-data";
 
 const study = getWorkStudyBySlug("calicap-india")!;
 const studyImage = getWorkStudyImage(study);
+/** Self-contained product guide (copied from Quick Funding CRM docs). */
+const productGuideHref = "/guides/quick-funding-crm-guide.html";
 
 export const metadata = pageMetadata({
   title: study.metaTitle,
@@ -100,22 +102,52 @@ const delivered = [
 
 const snapshots = [
   {
-    src: "/images/case-studies/crm-dashboard.png",
-    alt: "CRM analytics dashboard with sensitive values redacted",
-    caption: "Operations dashboard — sources, performance, and win rate in one view",
-    label: "01 · Dashboard",
+    src: "/images/case-studies/crm-login.jpg",
+    alt: "CRM login — Quick Funding workspace sign-in",
+    caption: "Secure workspace entry — branded sign-in into the loan operations CRM",
+    label: "01 · Login",
+    width: 1024,
+    height: 571,
   },
   {
-    src: "/images/case-studies/crm-deals.png",
-    alt: "Deals pipeline board with customer and amount details redacted",
-    caption: "Pipeline board — stage, ownership, and follow-through without hunting for status",
-    label: "02 · Pipeline",
+    src: "/images/case-studies/crm-dashboard.jpg",
+    alt: "CRM analytics dashboard — pipeline snapshot and team performance",
+    caption: "Overview dashboard — pipeline snapshot, settlements, and team performance at a glance",
+    label: "02 · Dashboard",
+    width: 1024,
+    height: 571,
   },
   {
-    src: "/images/case-studies/crm-workflow.png",
-    alt: "Lead import workflow screen with emails and names redacted",
-    caption: "Lead intake — spreadsheet sync into the CRM without manual re-entry",
-    label: "03 · Intake",
+    src: "/images/case-studies/crm-deals.jpg",
+    alt: "Deals pipeline board — Open, Closed Won, Deferred, Closed Lost",
+    caption: "Deals board — Open, Closed Won, Deferred, and Closed Lost without hunting for status",
+    label: "03 · Pipeline",
+    width: 1024,
+    height: 571,
+  },
+  {
+    src: "/images/case-studies/crm-deal-detail.jpg",
+    alt: "CRM deal detail — loan stage workflow from lead through application",
+    caption: "Deal detail — stage-by-stage loan workflow from lead through application",
+    label: "04 · Deal detail",
+    width: 1024,
+    height: 571,
+  },
+  {
+    src: "/images/case-studies/crm-admin.jpg",
+    alt: "CRM control center for users, workflow, lenders, and communications",
+    caption: "Control center — users, stage checks, lenders, email, and message templates in one admin surface",
+    label: "05 · Admin",
+    width: 1024,
+    height: 571,
+  },
+  {
+    src: "/images/case-studies/crm-incentives.jpg",
+    alt: "CRM user incentives — current-month totals by role",
+    caption: "User incentives — current-month totals by role, expandable to deal-level detail",
+    label: "06 · Incentives",
+    width: 1024,
+    height: 571,
   },
 ] as const;
 
@@ -147,23 +179,15 @@ export default function CalicapIndiaCasePage() {
         Work
       </Link>
 
-      <div className="relative mb-10 mt-8 aspect-[2.2/1] w-full max-h-56 overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80 sm:max-h-64">
+      <div className="relative mb-10 mt-8 aspect-[1024/571] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
         <Image
-          src="/images/case-studies/crm-dashboard.png"
-          alt="Calicap India CRM dashboard preview with sensitive data redacted"
+          src="/images/case-studies/crm-dashboard.jpg"
+          alt="Calicap India CRM dashboard — pipeline snapshot and team performance"
           fill
-          className="object-contain object-top"
+          className="object-contain object-center"
           sizes="(max-width: 768px) 100vw, 720px"
           priority
         />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-slate-900/10 to-transparent"
-          aria-hidden
-        />
-        <p className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-slate-950/55 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm">
-          <Shield className="h-3 w-3" strokeWidth={2} aria-hidden />
-          Sensitive details redacted
-        </p>
       </div>
 
       <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold-700/95">
@@ -359,8 +383,17 @@ export default function CalicapIndiaCasePage() {
         Product snapshots
       </h2>
       <p className="mt-4 text-base leading-relaxed text-slate-600">
-        Captures from the live system. Names, emails, amounts, and partner labels
-        are redacted.
+        Captures from the live Quick Funding CRM — login through pipeline, deal
+        detail, and admin. For a full walkthrough of the product,{" "}
+        <a
+          href={productGuideHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-gold-600 hover:text-gold-700"
+        >
+          read the product guide
+        </a>
+        .
       </p>
 
       <div className="mt-8 space-y-8">
@@ -373,18 +406,13 @@ export default function CalicapIndiaCasePage() {
               <Image
                 src={shot.src}
                 alt={shot.alt}
-                width={1024}
-                height={474}
-                className="h-auto w-full object-contain object-top"
+                width={shot.width}
+                height={shot.height}
+                className="h-auto w-full object-contain object-center"
                 sizes="(max-width: 768px) 100vw, 720px"
               />
-              <div
-                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-900/25 via-transparent to-transparent opacity-80"
-                aria-hidden
-              />
             </div>
-            <figcaption className="mt-3 flex items-start gap-2 text-sm leading-relaxed text-slate-600">
-              <Shield className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold-600" strokeWidth={2} aria-hidden />
+            <figcaption className="mt-3 text-sm leading-relaxed text-slate-600">
               {shot.caption}
             </figcaption>
           </figure>
@@ -405,6 +433,10 @@ export default function CalicapIndiaCasePage() {
           <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           {study.ctaLabel}
         </ProblemCtaButton>
+        <ButtonLink href={productGuideHref} target="_blank" rel="noopener noreferrer" variant="ghost">
+          <BookOpen className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+          Read product guide
+        </ButtonLink>
         <ButtonLink href="/work" variant="ghost">
           <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           More case studies

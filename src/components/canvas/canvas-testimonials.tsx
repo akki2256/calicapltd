@@ -1,8 +1,14 @@
 "use client";
 
-import { useCallback, useId, useState, type KeyboardEvent } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from "react";
+import { AnimatePresence, motion, useInView } from "motion/react";
 import {
   CanvasReveal,
   CanvasSectionTransition,
@@ -19,19 +25,22 @@ import {
 } from "@/lib/calicap-testimonials";
 
 const QUOTE_MS = 0.55;
-const ATTRIB_DELAY = 0.14;
+const AUTO_MS = 5200;
 
 /**
- * Home testimonials — floating platform scene (Canvas theme only).
- * Preserves shared testimonial content; Calicon branch is untouched.
+ * Home testimonials — transitional card carousel over the platform scene.
+ * Canvas theme only. Background left as restored from git.
  */
 export function CanvasTestimonials() {
   const section = calicapTestimonialsSection;
   const items = getHomeTestimonials();
   const reduced = usePrefersReducedMotion();
   const labelId = useId();
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef, { amount: 0.35 });
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [paused, setPaused] = useState(false);
 
   const count = items.length;
   const current = items[Math.min(active, Math.max(0, count - 1))] ?? items[0];
@@ -48,6 +57,15 @@ export function CanvasTestimonials() {
 
   const goPrev = useCallback(() => goTo(active - 1, -1), [active, goTo]);
   const goNext = useCallback(() => goTo(active + 1, 1), [active, goTo]);
+
+  useEffect(() => {
+    if (reduced || paused || !inView || count < 2) return;
+    const id = window.setInterval(() => {
+      setDirection(1);
+      setActive((prev) => (prev + 1) % count);
+    }, AUTO_MS);
+    return () => window.clearInterval(id);
+  }, [reduced, paused, inView, count]);
 
   const onKeyNav = (e: KeyboardEvent) => {
     if (e.key === "ArrowLeft") {
@@ -67,6 +85,7 @@ export function CanvasTestimonials() {
 
   return (
     <section
+      ref={sectionRef}
       id={HOME_TESTIMONIALS_ID}
       className="canvas-testimonials"
       aria-labelledby="canvas-testimonials-heading"
@@ -78,45 +97,57 @@ export function CanvasTestimonials() {
       <div className="canvas-testimonials__scrim" aria-hidden />
 
       <div className="canvas-testimonials__frame canvas-content-frame">
-        <CanvasSectionTransition variant="wipeRight">
-          <p className="canvas-micro text-[var(--color-accent)]">
-            {section.eyebrow}
-          </p>
-        </CanvasSectionTransition>
+        <div className="canvas-testimonials__layout">
+          <div className="canvas-testimonials__copy">
+            <CanvasSectionTransition variant="wipeRight">
+              <p className="canvas-micro text-[var(--color-accent)]">
+                {section.eyebrow}
+              </p>
+            </CanvasSectionTransition>
 
-        <div className="mt-5">
-          <CanvasTextScrub
-            as="h2"
-            id="canvas-testimonials-heading"
-            lines={[...section.titleLines]}
-            className="canvas-testimonials__headline"
-            lineClassName="canvas-testimonials__headline-line"
-            emphasize={[...section.titleEmphasize]}
-          />
-        </div>
+            <div className="mt-5">
+              <CanvasTextScrub
+                as="h2"
+                id="canvas-testimonials-heading"
+                lines={[...section.titleLines]}
+                className="canvas-testimonials__headline"
+                lineClassName="canvas-testimonials__headline-line"
+                emphasize={[...section.titleEmphasize]}
+              />
+            </div>
 
-        <CanvasReveal variant="blurIn" delay={0.06}>
-          <p className="canvas-testimonials__intro">{section.intro}</p>
-        </CanvasReveal>
+            <CanvasReveal variant="blurIn" delay={0.06}>
+              <p className="canvas-testimonials__intro">{section.intro}</p>
+            </CanvasReveal>
+          </div>
 
-        <div
-          className="canvas-testimonials__voices"
-          role="region"
-          aria-roledescription="carousel"
-          aria-labelledby="canvas-testimonials-heading"
-          aria-describedby={labelId}
-          onKeyDown={onKeyNav}
-        >
+          <div
+            className="canvas-testimonials__voices"
+            role="region"
+            aria-roledescription="carousel"
+            aria-labelledby="canvas-testimonials-heading"
+            aria-describedby={labelId}
+            onKeyDown={onKeyNav}
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onFocusCapture={() => setPaused(true)}
+            onBlurCapture={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                setPaused(false);
+              }
+            }}
+          >
           <p id={labelId} className="sr-only">
-            Client testimonials. Use previous and next to change the active
-            quote.
+            Client testimonials. Advances automatically. Use left and right
+            arrow keys to change the active quote.
           </p>
 
           <div className="canvas-testimonials__stage">
-            {/* Stable height: all quotes occupy the same grid cell invisibly */}
             <div className="canvas-testimonials__sizer" aria-hidden>
               {items.map((item) => (
-                <TestimonialBody key={item.id} item={item} />
+                <article key={item.id} className="canvas-testimonials__card">
+                  <TestimonialBody item={item} />
+                </article>
               ))}
             </div>
 
@@ -126,23 +157,31 @@ export function CanvasTestimonials() {
               aria-atomic="true"
             >
               {reduced ? (
-                current ? <TestimonialBody item={current} /> : null
+                current ? (
+                  <article className="canvas-testimonials__card">
+                    <TestimonialBody item={current} />
+                  </article>
+                ) : null
               ) : (
                 <AnimatePresence mode="wait" custom={direction} initial={false}>
                   {current ? (
-                    <motion.div
+                    <motion.article
                       key={current.id}
-                      className="canvas-testimonials__motion"
+                      className="canvas-testimonials__card canvas-testimonials__motion"
                       custom={direction}
                       variants={{
                         enter: (d: number) => ({
                           opacity: 0,
-                          y: d >= 0 ? 18 : -18,
+                          x: d >= 0 ? 28 : -28,
+                          y: 8,
+                          scale: 0.985,
                         }),
-                        center: { opacity: 1, y: 0 },
+                        center: { opacity: 1, x: 0, y: 0, scale: 1 },
                         exit: (d: number) => ({
                           opacity: 0,
-                          y: d >= 0 ? -14 : 14,
+                          x: d >= 0 ? -22 : 22,
+                          y: -6,
+                          scale: 0.985,
                         }),
                       }}
                       initial="enter"
@@ -156,61 +195,14 @@ export function CanvasTestimonials() {
                       <TestimonialBody
                         item={current}
                         animateAttribution
-                        attribDelay={ATTRIB_DELAY}
+                        attribDelay={0.12}
                       />
-                    </motion.div>
+                    </motion.article>
                   ) : null}
                 </AnimatePresence>
               )}
             </div>
           </div>
-
-          <div className="canvas-testimonials__controls">
-            <button
-              type="button"
-              className="canvas-testimonials__nav"
-              onClick={goPrev}
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="h-4 w-4" strokeWidth={1.75} aria-hidden />
-            </button>
-
-            <div
-              className="canvas-testimonials__dots"
-              role="tablist"
-              aria-label="Select testimonial"
-            >
-              {items.map((item, i) => {
-                const selected = i === active;
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    aria-label={`Show testimonial from ${item.name}, ${item.company}`}
-                    tabIndex={selected ? 0 : -1}
-                    className={`canvas-testimonials__dot${selected ? " is-active" : ""}`}
-                    onClick={() => goTo(i, i > active ? 1 : -1)}
-                  />
-                );
-              })}
-            </div>
-
-            <button
-              type="button"
-              className="canvas-testimonials__nav"
-              onClick={goNext}
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="h-4 w-4" strokeWidth={1.75} aria-hidden />
-            </button>
-
-            <span className="canvas-testimonials__count" aria-hidden>
-              {String(active + 1).padStart(2, "0")}
-              <span className="canvas-testimonials__count-sep">/</span>
-              {String(count).padStart(2, "0")}
-            </span>
           </div>
         </div>
       </div>
