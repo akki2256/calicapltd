@@ -62,23 +62,25 @@ export function CanvasHome() {
     >
       <div className="absolute inset-0 bg-[var(--color-surface)]" aria-hidden />
 
-      {/* Ambient full-bleed field behind copy */}
+      {/* Ambient full-bleed field — inner opacity keeps mobile CSS from being overridden by scroll */}
       <motion.div
-        className="pointer-events-none absolute inset-0 opacity-40 max-md:opacity-25"
+        className="pointer-events-none absolute inset-0"
         style={reduced ? undefined : { opacity: visualOpacity }}
         initial={reduced ? false : { opacity: 0 }}
-        animate={{ opacity: reduced ? 0.25 : 0.4 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: canvasEase }}
       >
-        <CanvasSignal
-          scrollProgress={scrollYProgress}
-          pointer={pointerActive ? pointer : undefined}
-          intensity={0.7}
-        />
+        <div className="canvas-home-signal-ambient absolute inset-0">
+          <CanvasSignal
+            scrollProgress={scrollYProgress}
+            pointer={pointerActive ? pointer : undefined}
+            intensity={0.7}
+          />
+        </div>
       </motion.div>
 
       <motion.div
-        className="canvas-home-signal pointer-events-none absolute inset-y-[8%] right-0 w-[min(62%,760px)] max-md:inset-x-0 max-md:top-[4%] max-md:h-[28%] max-md:w-full max-md:opacity-50"
+        className="canvas-home-signal pointer-events-none absolute inset-y-[8%] right-0 w-[min(62%,760px)] max-md:inset-0 max-md:w-full"
         style={
           reduced
             ? undefined
@@ -96,7 +98,7 @@ export function CanvasHome() {
         transition={{ duration: canvasDur.hero, ease: canvasEase, delay: 0.08 }}
       >
         <motion.div
-          className="absolute inset-0"
+          className="canvas-home-signal-visual absolute inset-0"
           style={reduced ? undefined : { y: pointerY, x: pointerX * 0.4 }}
         >
           <CanvasSignal

@@ -2738,8 +2738,24 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 }
 
-.canvas-home-signal {
+/* Nested visual opacity — scroll motion can set outer opacity without wiping these */
+.canvas-home-signal-ambient {
+  opacity: 0.4;
+}
+
+.canvas-home-signal-visual {
   opacity: 0.95;
+}
+
+@media (max-width: 767px) {
+  /* Keep hero copy readable over the signal animation on small screens */
+  .canvas-home-signal-ambient {
+    opacity: 0.12;
+  }
+
+  .canvas-home-signal-visual {
+    opacity: 0.28;
+  }
 }
 
 /* ========== Canvas home testimonials — 3D platform scene ========== */
