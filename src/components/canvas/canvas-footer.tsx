@@ -24,7 +24,7 @@ const companyLinks = calicapFooterLinks.filter(
 export function CanvasFooter() {
   const router = useRouter();
   const hero = calicapHomeHero;
-  const email = calicapContact.email || "info@calicon.com";
+  const email = calicapContact.email || "info@calicon.in";
 
   const openOutcome = () => {
     router.push("/services");

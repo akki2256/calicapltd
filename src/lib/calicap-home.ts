@@ -41,22 +41,22 @@ export const calicapHomeImpact = {
   attribution: "Measured impact across selected projects",
   metrics: [
     {
-      value: "XX%",
+      value: "30%",
       label: "Increase in qualified leads",
       shortLabel: "Qualified leads",
     },
     {
-      value: "XX%",
+      value: "23%",
       label: "Increase in organic traffic",
       shortLabel: "Organic traffic",
     },
     {
-      value: "XX%",
+      value: "27%",
       label: "Increase in sales",
       shortLabel: "Sales",
     },
     {
-      value: "XX%",
+      value: "15%",
       label: "Reduction in operating costs",
       shortLabel: "Operating costs",
     },
