@@ -1,6 +1,7 @@
 /**
  * PLACEHOLDER TESTIMONIALS — replace quote/name/role/company with real approved text.
  * Do not treat these as published client endorsements until swapped.
+ * Company names pulled from the work section for dummy cards.
  */
 export type CalicapTestimonial = {
   id: string;
@@ -33,7 +34,7 @@ export const calicapTestimonials: CalicapTestimonial[] = [
       "They took time to understand how our operations actually ran before proposing anything. The CRM felt built around our process, not the other way around.",
     name: "Placeholder Name",
     role: "Operations lead",
-    company: "Calicap India",
+    company: "Calicap India Pvt. Ltd.",
     projectSlug: "calicap-india",
     theme: "understanding",
     published: false,
@@ -52,10 +53,33 @@ export const calicapTestimonials: CalicapTestimonial[] = [
   {
     id: "t3",
     quote:
-      "We didn't arrive with a perfect brief. They helped us define the problem, built what mattered, and left us with something the business could keep improving.",
+      "The site finally matches the quality of our built work. Enquiries feel warmer, and the portfolio reads like the practice — not a template.",
     name: "Placeholder Name",
-    role: "Director",
-    company: "Confidential client",
+    role: "Principal architect",
+    company: "Amazing Art Architects",
+    projectSlug: "amazing-art-architects",
+    theme: "business-impact",
+    published: false,
+  },
+  {
+    id: "t4",
+    quote:
+      "We needed a credible digital front door and tighter grip on inventory. They shipped both without turning a three-week brief into a six-month programme.",
+    name: "Placeholder Name",
+    role: "Owner",
+    company: "Chaitanya Computers",
+    projectSlug: "chaitanya-computers",
+    theme: "delivery",
+    published: false,
+  },
+  {
+    id: "t5",
+    quote:
+      "Patient follow-ups used to live in notebooks and chat threads. The MIS gave us one place from enrollment to guidance — and the team actually uses it.",
+    name: "Placeholder Name",
+    role: "Program lead",
+    company: "LungConnect India Foundation",
+    projectSlug: "lungconnect-india",
     theme: "problem-solving",
     published: false,
   },

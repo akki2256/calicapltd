@@ -35,15 +35,23 @@ const snapshots = [
     label: "Homepage hero",
     caption: "Full-bleed studio hero with clear next steps — Start Your Journey and Explore Programs.",
     width: 1024,
-    height: 471,
+    height: 571,
   },
   {
-    src: siteImages.yogMantramStudio.src,
-    alt: siteImages.yogMantramStudio.alt,
-    label: "Studio atmosphere",
-    caption: "The calm practice room the brand is built around — mats, light, and space to arrive.",
-    width: 1400,
-    height: 933,
+    src: siteImages.yogMantramVision.src,
+    alt: siteImages.yogMantramVision.alt,
+    label: "Vision & mission",
+    caption: "Brand story laid out clearly — why the studio exists and what it commits to deliver.",
+    width: 1024,
+    height: 571,
+  },
+  {
+    src: siteImages.yogMantramPrograms.src,
+    alt: siteImages.yogMantramPrograms.alt,
+    label: "Program paths",
+    caption: "Types of Yoga and sibling tracks — each style with a short description so visitors find their practice.",
+    width: 1024,
+    height: 571,
   },
 ] as const;
 
@@ -142,7 +150,7 @@ export default function YogMantramCasePage() {
         Work
       </Link>
 
-      <div className="relative mb-10 mt-8 aspect-[1024/471] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
+      <div className="relative mb-10 mt-8 aspect-[1024/571] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
         <Image
           src={studyImage.src}
           alt={studyImage.alt}

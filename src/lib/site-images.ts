@@ -40,29 +40,60 @@ export const siteImages = {
     alt: "Planning session with notes and sticky walls",
   },
   calicapIndiaCrm: {
-    src: "/images/case-studies/crm-dashboard.png",
-    alt: "Calicap India CRM dashboard with sensitive details redacted",
+    src: "/images/case-studies/crm-dashboard.jpg",
+    alt: "Calicap India CRM dashboard — pipeline snapshot, settlements, and team performance",
   },
-  yogMantramStudio: {
-    src: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1400&q=85",
-    alt: "Yoga practice in a calm studio interior",
+  calicapIndiaCrmDeal: {
+    src: "/images/case-studies/crm-deal-detail.jpg",
+    alt: "Calicap India CRM deal detail — loan stage workflow from lead through application",
+  },
+  calicapIndiaCrmDeals: {
+    src: "/images/case-studies/crm-deals.jpg",
+    alt: "Calicap India CRM deals board — Open, Closed Won, Deferred, and Closed Lost",
+  },
+  calicapIndiaCrmIncentives: {
+    src: "/images/case-studies/crm-incentives.jpg",
+    alt: "Calicap India CRM user incentives — current-month totals by role",
+  },
+  calicapIndiaCrmLogin: {
+    src: "/images/case-studies/crm-login.jpg",
+    alt: "Calicap India CRM login — Quick Funding workspace sign-in",
+  },
+  calicapIndiaCrmAdmin: {
+    src: "/images/case-studies/crm-admin.jpg",
+    alt: "Calicap India CRM control center — users, workflow, lenders, and communications admin",
   },
   yogMantramHero: {
-    src: "/images/case-studies/yog-mantram-hero.png",
-    alt: "Yog Mantram homepage — Flow Beyond Form hero over a sunlit studio",
+    src: "/images/case-studies/yog-mantram-hero.jpg",
+    alt: "Yog Mantram homepage — Flow Beyond Form hero over a sunlit studio with Start Your Journey and Explore Programs",
+  },
+  yogMantramVision: {
+    src: "/images/case-studies/yog-mantram-vision.jpg",
+    alt: "Yog Mantram vision and mission — Our Vision and Our Mission side by side",
+  },
+  yogMantramPrograms: {
+    src: "/images/case-studies/yog-mantram-programs.jpg",
+    alt: "Yog Mantram programs — Types of Yoga with Hatha, Vinyasa, and Power Yoga listings",
   },
   amazingArtHero: {
     src: "/images/case-studies/amazing-art-hero.jpg",
-    alt: "Amazing Art Architects homepage — brand wordmark over an architectural line drawing",
+    alt: "Amazing Art Architects homepage — brand wordmark over a sketch-to-render architectural hero",
   },
   amazingArtPortfolio: {
     src: "/images/case-studies/amazing-art-portfolio.jpg",
     alt: "Amazing Art Architects portfolio grid — day and night residential architecture renders",
   },
-  /** Temporary stand-in until client product captures are supplied */
   chaitanyaComputersHero: {
-    src: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1400&q=85",
-    alt: "Chaitanya Computers — digital presence and retail operations (product snapshots forthcoming)",
+    src: "/images/case-studies/chaitanya-computers-hero.jpg",
+    alt: "Chaitanya Computers homepage — Everything that computes, under one roof",
+  },
+  chaitanyaComputersPcBuilder: {
+    src: "/images/case-studies/chaitanya-computers-pc-builder.jpg",
+    alt: "Chaitanya Computers PC Builder — component picker with live build summary",
+  },
+  chaitanyaComputersChatbot: {
+    src: "/images/case-studies/chaitanya-computers-chatbot.jpg",
+    alt: "Chaitanya Computers services page with Nexi chatbot open for visitor questions",
   },
   /** Temporary stand-in until client product captures are supplied */
   lungconnectIndiaHero: {

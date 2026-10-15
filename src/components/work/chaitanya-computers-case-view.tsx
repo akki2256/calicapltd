@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import {
   ArrowLeft,
   ArrowRight,
+  Bot,
   Boxes,
   Clock3,
   ExternalLink,
@@ -31,6 +32,7 @@ import {
 import { ThemeSplit } from "@/components/theme-split";
 import { WorkViewTracker } from "@/components/work-view-tracker";
 import { getWorkStudyBySlug, getWorkStudyImage } from "@/lib/calicap-work";
+import { siteImages } from "@/lib/site-images";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
 const study = getWorkStudyBySlug("chaitanya-computers")!;
@@ -38,16 +40,40 @@ const studyImage = getWorkStudyImage(study);
 const liveUrl = "https://chaitanyacomputers.com";
 const liveHost = "chaitanyacomputers.com";
 
+const productSnapshots = [
+  {
+    src: siteImages.chaitanyaComputersHero.src,
+    alt: siteImages.chaitanyaComputersHero.alt,
+    label: "Homepage hero",
+    caption:
+      "Full-bleed retail front door — Shahdol, sales and service, clear next steps to quote or WhatsApp.",
+  },
+  {
+    src: siteImages.chaitanyaComputersPcBuilder.src,
+    alt: siteImages.chaitanyaComputersPcBuilder.alt,
+    label: "PC Builder",
+    caption:
+      "Guided custom builds — study, creator, or workstation — with a live parts summary and quote path.",
+  },
+  {
+    src: siteImages.chaitanyaComputersChatbot.src,
+    alt: siteImages.chaitanyaComputersChatbot.alt,
+    label: "Nexi chatbot",
+    caption:
+      "On-site assistant for hours, location, products, and services — without leaving the page.",
+  },
+] as const;
+
 const snapshot = [
   { value: "3 wks", label: "Concept to launch", icon: Clock3 },
-  { value: "Web + ops", label: "Presence & inventory/sales", icon: MonitorSmartphone },
+  { value: "Web + ops", label: "Site, chatbot & inventory/sales", icon: MonitorSmartphone },
   { value: "Live", label: liveHost, icon: Globe2 },
 ] as const;
 
 const meta = [
   { label: "Client", value: "Chaitanya Computers" },
   { label: "Industry", value: "Computer retail & services" },
-  { label: "Services", value: "Website · Inventory & sales management" },
+  { label: "Services", value: "Website · Chatbot · Inventory & sales management" },
   { label: "Timeline", value: "3 weeks" },
   { label: "Agency", value: "Calicon" },
 ] as const;
@@ -71,7 +97,7 @@ const challenges = [
 ] as const;
 
 const objectives = [
-  "Establish a clear, trustworthy digital presence for the retail business.",
+  "Establish a clear, trustworthy digital presence — including a chatbot that answers visitors without waiting on a call.",
   "Give the team a customized way to manage inventory and sales without generic retail software friction.",
   "Reduce the cost of coordination between what the public sees and how the shop actually runs.",
 ] as const;
@@ -81,6 +107,16 @@ const capabilities = [
     t: "A website that represents the business",
     d: "chaitanyacomputers.com as the digital front desk — brand, offerings, and a path to contact — built to match the seriousness of the retail operation.",
     icon: Globe2,
+  },
+  {
+    t: "A chatbot on the site",
+    d: "Nexi — an on-site assistant so visitors can ask about hours, products, services, and next steps without leaving the page.",
+    icon: Bot,
+  },
+  {
+    t: "PC Builder for custom machines",
+    d: "A guided builder for study, creator, and workstation builds — pick parts, see the live summary, and send the configuration for a quote.",
+    icon: MonitorSmartphone,
   },
   {
     t: "Inventory shaped to how they stock",
@@ -97,7 +133,7 @@ const capabilities = [
 const impact = [
   {
     t: "Digital presence",
-    d: "A live public site that gives the business a searchable, referral-ready face online.",
+    d: "A live public site — with a chatbot — that gives the business a searchable, referral-ready face online.",
   },
   {
     t: "Operational clarity",
@@ -105,7 +141,7 @@ const impact = [
   },
   {
     t: "Faster delivery",
-    d: "Website and customized management solution shipped together in three weeks.",
+    d: "Website, chatbot, and customized management solution shipped together in three weeks.",
   },
   {
     t: "Room to grow",
@@ -115,6 +151,8 @@ const impact = [
 
 const delivered = [
   "Public marketing website",
+  "On-site chatbot (Nexi)",
+  "PC Builder experience",
   "Brand-led digital presence",
   "Contact / enquiry paths",
   "Custom inventory management",
@@ -182,8 +220,8 @@ function CanvasCase() {
       <CanvasReveal variant="blurIn" delay={0.12} className="mt-6 max-w-2xl">
         <p className="text-[17px] leading-[1.7] text-[var(--color-text-muted)]">
           Enhancing digital presence and optimizing retail operations — a live
-          website plus a customized inventory and sales management solution,
-          delivered in three weeks.
+          website with an on-site chatbot, plus a customized inventory and sales
+          management solution, delivered in three weeks.
         </p>
       </CanvasReveal>
 
@@ -194,7 +232,7 @@ function CanvasCase() {
       </CanvasReveal>
 
       <CanvasReveal variant="rise" delay={0.1} className="mt-14">
-        <div className="relative aspect-[16/9] overflow-hidden border border-[var(--color-border-subtle)]">
+        <div className="relative aspect-[1024/571] overflow-hidden border border-[var(--color-border-subtle)]">
           <motion.div
             className="absolute inset-0"
             initial={reduced ? false : { clipPath: "inset(0 100% 0 0)" }}
@@ -205,13 +243,13 @@ function CanvasCase() {
               src={studyImage.src}
               alt={studyImage.alt}
               fill
-              className="object-cover object-center"
+              className="object-contain object-center"
               sizes="(max-width: 960px) 100vw, 920px"
               priority
             />
           </motion.div>
           <p className="pointer-events-none absolute bottom-4 left-4 z-10 text-[10px] uppercase tracking-[0.18em] text-white/85">
-            Atmosphere stand-in · product snapshots forthcoming
+            Live site · brand &amp; hero
           </p>
         </div>
       </CanvasReveal>
@@ -268,13 +306,15 @@ function CanvasCase() {
             shows up online and how inventory and sales are run day to day.
           </p>
           <p className="text-[15px] leading-[1.8] text-[var(--color-text-muted)]">
-            The objective was dual: enhance digital presence for customers and
-            optimize operations — and cost of coordination — with a customized
-            inventory and sales management solution shaped to their retail floor.
+            The objective was dual: enhance digital presence for customers — with
+            a chatbot that can field questions on the site — and optimize
+            operations with a customized inventory and sales management solution
+            shaped to their retail floor.
           </p>
           <p className="text-[15px] leading-[1.8] text-[var(--color-text-muted)]">
             Calicon delivered both surfaces in one engagement: the public website
-            at {liveHost} and the internal management system behind the counter.
+            at {liveHost} (including the chatbot) and the internal management
+            system behind the counter.
           </p>
         </CanvasReveal>
       </section>
@@ -315,9 +355,9 @@ function CanvasCase() {
         />
         <CanvasReveal variant="blurIn" delay={0.08} className="mt-6 max-w-2xl space-y-4">
           <p className="text-[15px] leading-[1.8] text-[var(--color-text-muted)]">
-            We treated the website and the management system as one operating story:
-            how customers find the business, and how the team runs stock and sales
-            once demand arrives.
+            We treated the website — chatbot included — and the management system
+            as one operating story: how customers find and ask the business, and
+            how the team runs stock and sales once demand arrives.
           </p>
           <p className="text-[15px] leading-[1.8] text-[var(--color-text-muted)]">
             Off-the-shelf retail software would have forced process change first.
@@ -428,10 +468,10 @@ function CanvasCase() {
               Presence + managed operations
             </p>
             <ul className="mt-4 space-y-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
-              <li>Live site at {liveHost}</li>
+              <li>Live site at {liveHost} with an on-site chatbot</li>
               <li>Inventory and sales in one customized system</li>
               <li>Public face and floor workflow delivered together</li>
-              <li>Less time stitching tools to answer basic questions</li>
+              <li>Fewer basic questions stuck waiting on a call or visit</li>
             </ul>
           </div>
         </div>
@@ -445,12 +485,33 @@ function CanvasCase() {
         />
         <CanvasReveal variant="blurIn" delay={0.08} className="mt-6 max-w-2xl">
           <p className="text-[15px] leading-[1.8] text-[var(--color-text-muted)]">
-            Client product captures for the live site and inventory/sales system
-            will be added here. Until then, visit{" "}
+            Captures from the live site — homepage, PC Builder, and Nexi. See it
+            live at{" "}
             <VisitSiteLink className="inline-flex items-center gap-1 font-medium text-[var(--color-accent)] transition hover:text-[var(--color-text-strong)]" />
             .
           </p>
         </CanvasReveal>
+        <div className="mt-10 space-y-12">
+          {productSnapshots.map((shot) => (
+            <CanvasReveal key={shot.src} variant="riseSoft">
+              <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+                {shot.label}
+              </p>
+              <div className="relative aspect-[1024/571] overflow-hidden border border-[var(--color-border-subtle)]">
+                <Image
+                  src={shot.src}
+                  alt={shot.alt}
+                  fill
+                  className="object-contain object-center"
+                  sizes="(max-width: 960px) 100vw, 920px"
+                />
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                {shot.caption}
+              </p>
+            </CanvasReveal>
+          ))}
+        </div>
       </section>
 
       <section className="mt-20 border-t border-[var(--color-border-subtle)] pt-12">
@@ -462,8 +523,9 @@ function CanvasCase() {
         <CanvasReveal variant="blurIn" delay={0.08} className="mt-6 max-w-2xl space-y-4">
           <p className="text-[15px] leading-[1.8] text-[var(--color-text-muted)]">
             Delivered in three weeks, the engagement gave Chaitanya Computers a
-            digital front door and a customized way to run inventory and sales —
-            presence and operations improved in the same build.
+            digital front door with a chatbot, and a customized way to run
+            inventory and sales — presence and operations improved in the same
+            build.
           </p>
         </CanvasReveal>
       </section>
@@ -519,12 +581,12 @@ function CaliconCase() {
         Work
       </Link>
 
-      <div className="relative mb-10 mt-8 aspect-[16/9] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
+      <div className="relative mb-10 mt-8 aspect-[1024/571] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
         <Image
           src={studyImage.src}
           alt={studyImage.alt}
           fill
-          className="object-cover object-center"
+          className="object-contain object-center"
           sizes="(max-width: 768px) 100vw, 720px"
           priority
         />

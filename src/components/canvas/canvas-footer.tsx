@@ -24,7 +24,7 @@ const companyLinks = calicapFooterLinks.filter(
 export function CanvasFooter() {
   const router = useRouter();
   const hero = calicapHomeHero;
-  const email = calicapContact.email || "info@calicon.com";
+  const email = calicapContact.email || "info@calicon.in";
 
   const openOutcome = () => {
     router.push("/services");
@@ -32,7 +32,7 @@ export function CanvasFooter() {
 
   return (
     <footer className="canvas-site-footer border-t border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
-      <div className="mx-auto max-w-6xl px-6 pt-16 pb-0 sm:px-10 lg:px-14 lg:pt-24">
+      <div className="canvas-site-footer__frame">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.1fr)] lg:items-start lg:gap-14">
           <div className="min-w-0">
             <Link
@@ -53,12 +53,6 @@ export function CanvasFooter() {
               {hero.headlineAfter}
             </p>
             <div className="mt-5 flex flex-col gap-1.5 text-sm text-[var(--color-text-muted)]">
-              <a
-                href={calicapContact.phoneHref}
-                className="w-fit transition hover:text-[var(--color-link-hover)]"
-              >
-                {calicapContact.phone}
-              </a>
               <a
                 href={`mailto:${email}`}
                 className="w-fit transition hover:text-[var(--color-link-hover)]"

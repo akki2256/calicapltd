@@ -681,22 +681,22 @@ export function CanvasTestimonialPlatform({ className = "" }: Props) {
       underLight.intensity = 5.8 + pulse * 1.2;
       glowMat.opacity = 0.9 + pulse * 0.1;
 
-      pointer.x += (pointer.tx - pointer.x) * 0.04;
-      pointer.y += (pointer.ty - pointer.y) * 0.04;
+      pointer.x += (pointer.tx - pointer.x) * 0.12;
+      pointer.y += (pointer.ty - pointer.y) * 0.12;
 
       camera.position.set(
-        camBase.x + pointer.x * 0.35,
-        camBase.y - pointer.y * 0.22,
+        camBase.x + pointer.x * 0.85,
+        camBase.y - pointer.y * 0.55,
         camBase.z,
       );
       camera.lookAt(
-        lookAt.x + pointer.x * 0.08,
-        lookAt.y - pointer.y * 0.05,
+        lookAt.x + pointer.x * 0.22,
+        lookAt.y - pointer.y * 0.14,
         lookAt.z,
       );
 
-      root.rotation.y = pointer.x * 0.03;
-      root.rotation.x = -pointer.y * 0.015;
+      root.rotation.y = pointer.x * 0.08;
+      root.rotation.x = -pointer.y * 0.045;
 
       const pos = nodeGeom.getAttribute("position") as THREE.BufferAttribute;
       for (let i = 0; i < nodeCount; i++) {

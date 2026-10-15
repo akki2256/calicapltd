@@ -105,7 +105,7 @@ export function CanvasPillarView({
 
   return (
     <article
-      className={`canvas-pillar w-full min-w-0 ${embedded ? "py-0" : "py-4"}`}
+      className={`canvas-pillar w-full min-w-0 ${embedded ? "py-0" : "pt-4 pb-0"}`}
     >
       {!embedded ? (
         <p className="canvas-micro text-[var(--color-accent)]">{page.eyebrow}</p>

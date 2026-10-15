@@ -78,7 +78,7 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     industryIds: ["financial-services"],
     engagement: "project",
     icon: Building2,
-    imageKey: "calicapIndiaCrm",
+    imageKey: "calicapIndiaCrmLogin",
     metaTitle: "Calicap India · custom CRM",
     metaDescription:
       "Case study: Calicap India Pvt. Ltd.—a custom CRM built around their process in 60 days, cutting operational cost 23% and lifting average sales 37%.",
@@ -157,10 +157,10 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     context:
       "A computer retail business that needed a credible digital front door and a tighter grip on inventory and sales.",
     built:
-      "Public website plus a customized inventory and sales management solution — presence and operations in one engagement.",
+      "Public website with an on-site chatbot, plus a customized inventory and sales management solution — presence and operations in one engagement.",
     excerpt:
-      "Digital presence and operations in three weeks—chaitanyacomputers.com plus a custom inventory and sales system shaped to how the shop actually runs.",
-    result: "Live website · inventory & sales ops · 3 weeks",
+      "Digital presence and operations in three weeks—chaitanyacomputers.com with a chatbot, plus a custom inventory and sales system shaped to how the shop actually runs.",
+    result: "Live website · chatbot · inventory & sales ops · 3 weeks",
     beforeAfter: "Offline retail loop → Digital presence + managed operations",
     pillar: "transform",
     pillars: ["transform", "build", "automate"],
@@ -175,15 +175,15 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     engagement: "project",
     icon: MonitorSmartphone,
     imageKey: "chaitanyaComputersHero",
-    metaTitle: "Chaitanya Computers — website & inventory ops",
+    metaTitle: "Chaitanya Computers — website, chatbot & inventory ops",
     metaDescription:
-      "Case study: Chaitanya Computers—a digital presence at chaitanyacomputers.com plus a customized inventory and sales management solution, delivered in three weeks.",
+      "Case study: Chaitanya Computers—a digital presence at chaitanyacomputers.com with an on-site chatbot, plus a customized inventory and sales management solution, delivered in three weeks.",
     ctaLabel: "Need presence and ops in one build? Tell us your problem",
     ctaHref: "/contact",
     deliveryNotes: [
-      "Treated the website as the public face and the inventory/sales system as the operating floor — same engagement, two surfaces.",
+      "Treated the website as the public face — including a chatbot for visitor questions — and the inventory/sales system as the operating floor.",
       "Stock, sales, and day-to-day retail workflow shaped the product model instead of a generic shop template.",
-      "Shipped the live site and the customized management solution together in three weeks.",
+      "Shipped the live site, chatbot, and customized management solution together in three weeks.",
     ],
   },
   {
@@ -258,7 +258,7 @@ export const calicapDocumentedOutcomes = [
   {
     value: "3 wks",
     label: "Concept to launch",
-    detail: "Chaitanya Computers — website & ops",
+    detail: "Chaitanya Computers — website, chatbot & ops",
     href: "/work/chaitanya-computers",
   },
   {

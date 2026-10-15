@@ -17,16 +17,20 @@ import {
   type CalicapWorkStudy,
 } from "@/lib/calicap-work";
 
-/** Website cases — share one row, sandwiched between the two full-width product cases */
-const WORK_INDEX_TRIO_SLUGS = [
-  "yog-mantram",
-  "chaitanya-computers",
+/** 1, 2, 2 row setup for Canvas work index */
+const WORK_INDEX_ROW_2_SLUGS = [
   "amazing-art-architects",
+  "yog-mantram",
+] as const;
+
+const WORK_INDEX_ROW_3_SLUGS = [
+  "lungconnect-india",
+  "chaitanya-computers",
 ] as const;
 
 function studyCard(
   study: CalicapWorkStudy,
-  opts: { priority?: boolean; sizes: string },
+  opts: { priority?: boolean; featured?: boolean; sizes: string },
 ) {
   const image = getWorkStudyImage(study);
   return (
@@ -38,6 +42,7 @@ function studyCard(
       description={study.context}
       result={study.result}
       image={image}
+      featured={opts.featured}
       priority={opts.priority}
       sizes={opts.sizes}
     />
@@ -46,28 +51,31 @@ function studyCard(
 
 function CanvasWorkProjectGrid() {
   const top = getWorkStudyBySlug("calicap-india")!;
-  const bottom = getWorkStudyBySlug("lungconnect-india")!;
-  const trio = WORK_INDEX_TRIO_SLUGS.map((slug) => getWorkStudyBySlug(slug)!);
+  const row2 = WORK_INDEX_ROW_2_SLUGS.map((slug) => getWorkStudyBySlug(slug)!);
+  const row3 = WORK_INDEX_ROW_3_SLUGS.map((slug) => getWorkStudyBySlug(slug)!);
 
   return (
     <div className="work-flip-layout">
-      <div className="work-flip-grid">
+      <div className="work-flip-grid work-flip-grid--featured">
         {studyCard(top, {
           priority: true,
+          featured: true,
           sizes: "(max-width: 920px) 100vw, 1400px",
         })}
       </div>
-      <div className="work-flip-grid work-flip-grid--trio">
-        {trio.map((s) =>
+      <div className="work-flip-grid work-flip-grid--pair">
+        {row2.map((s) =>
           studyCard(s, {
-            sizes: "(max-width: 900px) 100vw, 33vw",
+            sizes: "(max-width: 820px) 100vw, 50vw",
           }),
         )}
       </div>
-      <div className="work-flip-grid">
-        {studyCard(bottom, {
-          sizes: "(max-width: 920px) 100vw, 1400px",
-        })}
+      <div className="work-flip-grid work-flip-grid--pair">
+        {row3.map((s) =>
+          studyCard(s, {
+            sizes: "(max-width: 820px) 100vw, 50vw",
+          }),
+        )}
       </div>
     </div>
   );
@@ -103,7 +111,7 @@ function CanvasWorkIndex() {
   const index = calicapWorkIndex;
 
   return (
-    <div className="w-full min-w-0 py-4">
+    <div className="w-full min-w-0 pt-4 pb-0">
       <div>
         <CanvasTextRevealInView
           as="h1"

@@ -179,7 +179,7 @@ function CanvasCase() {
       </CanvasReveal>
 
       <CanvasReveal variant="rise" delay={0.1} className="mt-14">
-        <div className="relative aspect-[1024/469] overflow-hidden border border-[var(--color-border-subtle)]">
+        <div className="relative aspect-[1024/571] overflow-hidden border border-[var(--color-border-subtle)]">
           <motion.div
             className="absolute inset-0"
             initial={reduced ? false : { clipPath: "inset(0 100% 0 0)" }}
@@ -490,7 +490,7 @@ function CaliconCase() {
         Work
       </Link>
 
-      <div className="relative mb-10 mt-8 aspect-[1024/469] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
+      <div className="relative mb-10 mt-8 aspect-[1024/571] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
         <Image
           src={studyImage.src}
           alt={studyImage.alt}

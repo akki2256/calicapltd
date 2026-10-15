@@ -9,10 +9,7 @@ export const CALICON_SITE_NAME = "Calicon";
 export const calicapContact = {
   brand: CALICON_SITE_NAME,
   /** Public mailto / NAP display. Form delivery uses CONTACT_INBOX_EMAIL server-side only. */
-  email: "info@calicon.com",
-  /** Display placeholder until a live number is confirmed */
-  phone: "+1 (000) 000-0000",
-  phoneHref: "tel:+10000000000",
+  email: "info@calicon.in",
   locale: "en_US",
   footerBlurb:
     "Technology built around what needs to happen next — from ideas and problems to digital products, practical automation, and everything that comes after launch.",
