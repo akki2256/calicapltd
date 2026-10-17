@@ -12,7 +12,7 @@ import { CaliconImpactMetrics } from "@/components/calicon-impact-metrics";
 import { CaliconTestimonials } from "@/components/calicon-testimonials";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { WorkProjectFlipCard } from "@/components/work-project-flip-card";
-import { SITE_NAME, pageMetadata } from "@/lib/seo";
+import { SITE_NAME, SOCIAL_DESCRIPTION, pageMetadata } from "@/lib/seo";
 import {
   calicapHomeEntryDoors,
   calicapHomeHero,
@@ -29,6 +29,7 @@ export const metadata = {
     title: "Build what's next",
     description:
       "Turn ideas and challenges into digital products, software, and technology that moves things forward. We understand before we build.",
+    socialDescription: SOCIAL_DESCRIPTION,
     path: "/",
   }),
   title: {

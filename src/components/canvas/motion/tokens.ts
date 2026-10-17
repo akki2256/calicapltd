@@ -1,8 +1,6 @@
 /** Canvas motion scale — keep timings intentional and shared */
 
 export const canvasEase = [0.22, 1, 0.36, 1] as const;
-export const canvasEaseOut = [0.16, 1, 0.3, 1] as const;
-export const canvasEaseIn = [0.4, 0, 1, 1] as const;
 
 export const canvasDur = {
   micro: 0.22,
@@ -29,10 +27,4 @@ export const viewportEager = {
   once: true,
   amount: 0.06,
   margin: "0px 0px 18% 0px",
-} as const;
-
-export const viewportReplay = {
-  once: false,
-  amount: 0.35,
-  margin: "0px 0px -10% 0px",
 } as const;

@@ -1,31 +1,14 @@
 export {
   canvasDur,
   canvasEase,
-  canvasEaseOut,
   canvasStagger,
-  viewportEager,
-  viewportOnce,
 } from "./tokens";
 export { CanvasReveal } from "./canvas-reveal";
 export { CanvasStagger, CanvasStaggerItem } from "./canvas-stagger";
 export { CanvasTextReveal, CanvasTextRevealInView } from "./canvas-text-reveal";
-export { CanvasParallax } from "./canvas-parallax";
-export { CanvasScrollProgress } from "./canvas-scroll-progress";
 export { CanvasProgressRail } from "./canvas-progress-rail";
 export { useCanvasPointer } from "./use-canvas-pointer";
-export {
-  CanvasScrollScene,
-  CanvasScrollMap,
-  useCanvasScrollScene,
-} from "./canvas-scroll-scene";
-export {
-  CanvasSectionTransition,
-  CanvasSectionExit,
-} from "./canvas-section-transition";
-export { CanvasWordReveal, CanvasTextScrub } from "./canvas-word-reveal";
-export {
-  CanvasScrollContainerContext,
-  useCanvasScrollContainer,
-} from "./canvas-scroll-container";
-export { CanvasImageReveal, CanvasClipReveal } from "./canvas-image-reveal";
+export { CanvasSectionTransition } from "./canvas-section-transition";
+export { CanvasTextScrub } from "./canvas-word-reveal";
+export { useCanvasScrollContainer } from "./canvas-scroll-container";
 export { CanvasCursor } from "./canvas-cursor";

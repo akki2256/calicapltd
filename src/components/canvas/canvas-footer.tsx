@@ -24,7 +24,7 @@ const companyLinks = calicapFooterLinks.filter(
 export function CanvasFooter() {
   const router = useRouter();
   const hero = calicapHomeHero;
-  const email = calicapContact.email || "info@calicon.in";
+  const email = calicapContact.email || "communications@calicon.in";
 
   const openOutcome = () => {
     router.push("/services");
@@ -121,12 +121,20 @@ export function CanvasFooter() {
           <p className="text-xs tracking-[0.04em] text-[var(--color-text-muted)]">
             © {new Date().getFullYear()} {calicapContact.brand}
           </p>
-          <Link
-            href="/privacy"
-            className="text-xs tracking-[0.04em] text-[var(--color-text-muted)] transition hover:text-[var(--color-link-hover)]"
-          >
-            Privacy
-          </Link>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <Link
+              href="/privacy-policy"
+              className="text-xs tracking-[0.04em] text-[var(--color-text-muted)] transition hover:text-[var(--color-link-hover)]"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms-and-conditions"
+              className="text-xs tracking-[0.04em] text-[var(--color-text-muted)] transition hover:text-[var(--color-link-hover)]"
+            >
+              Terms & Conditions
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

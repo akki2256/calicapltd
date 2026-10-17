@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -9,6 +10,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { AnimatePresence, motion, useInView } from "motion/react";
+import { ArrowRight } from "lucide-react";
 import {
   CanvasReveal,
   CanvasSectionTransition,
@@ -23,13 +25,14 @@ import {
   getHomeTestimonials,
   type CalicapTestimonial,
 } from "@/lib/calicap-testimonials";
+import { getWorkStudyBySlug } from "@/lib/calicap-work";
 
 const QUOTE_MS = 0.55;
-const AUTO_MS = 5200;
+const AUTO_MS = 6200;
 
 /**
- * Home testimonials — transitional card carousel over the platform scene.
- * Canvas theme only. Background left as restored from git.
+ * Home testimonials — engagement-tied voices over the platform scene.
+ * Canvas theme only.
  */
 export function CanvasTestimonials() {
   const section = calicapTestimonialsSection;
@@ -101,7 +104,7 @@ export function CanvasTestimonials() {
           <div className="canvas-testimonials__copy">
             <CanvasSectionTransition variant="wipeRight">
               <p className="canvas-micro text-[var(--color-accent)]">
-                {section.eyebrow}
+                {section.canvasEyebrow}
               </p>
             </CanvasSectionTransition>
 
@@ -117,8 +120,44 @@ export function CanvasTestimonials() {
             </div>
 
             <CanvasReveal variant="blurIn" delay={0.06}>
-              <p className="canvas-testimonials__intro">{section.intro}</p>
+              <p className="canvas-testimonials__intro">{section.canvasIntro}</p>
             </CanvasReveal>
+
+            {count > 1 ? (
+              <CanvasReveal variant="riseSoft" delay={0.1}>
+                <div
+                  className="canvas-testimonials__voices-nav"
+                  role="tablist"
+                  aria-label="Client voices"
+                >
+                  {items.map((item, i) => {
+                    const selected = i === active;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        role="tab"
+                        id={`canvas-testimonial-tab-${item.id}`}
+                        aria-selected={selected}
+                        aria-controls="canvas-testimonial-panel"
+                        tabIndex={selected ? 0 : -1}
+                        className={`canvas-testimonials__voice${
+                          selected ? " canvas-testimonials__voice--active" : ""
+                        }`}
+                        onClick={() => goTo(i, i > active ? 1 : -1)}
+                      >
+                        <span className="canvas-testimonials__voice-index" aria-hidden>
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="canvas-testimonials__voice-label">
+                          {item.voiceLabel}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </CanvasReveal>
+            ) : null}
           </div>
 
           <div
@@ -137,72 +176,78 @@ export function CanvasTestimonials() {
               }
             }}
           >
-          <p id={labelId} className="sr-only">
-            Client testimonials. Advances automatically. Use left and right
-            arrow keys to change the active quote.
-          </p>
+            <p id={labelId} className="sr-only">
+              Client testimonials tied to shipped work. Advances automatically.
+              Use left and right arrow keys, or the voice list, to change the
+              active quote.
+            </p>
 
-          <div className="canvas-testimonials__stage">
-            <div className="canvas-testimonials__sizer" aria-hidden>
-              {items.map((item) => (
-                <article key={item.id} className="canvas-testimonials__card">
-                  <TestimonialBody item={item} />
-                </article>
-              ))}
-            </div>
-
-            <div
-              className="canvas-testimonials__active"
-              aria-live="polite"
-              aria-atomic="true"
-            >
-              {reduced ? (
-                current ? (
-                  <article className="canvas-testimonials__card">
-                    <TestimonialBody item={current} />
+            <div className="canvas-testimonials__stage">
+              <div className="canvas-testimonials__sizer" aria-hidden>
+                {items.map((item) => (
+                  <article key={item.id} className="canvas-testimonials__card">
+                    <TestimonialBody item={item} />
                   </article>
-                ) : null
-              ) : (
-                <AnimatePresence mode="wait" custom={direction} initial={false}>
-                  {current ? (
-                    <motion.article
-                      key={current.id}
-                      className="canvas-testimonials__card canvas-testimonials__motion"
-                      custom={direction}
-                      variants={{
-                        enter: (d: number) => ({
-                          opacity: 0,
-                          x: d >= 0 ? 28 : -28,
-                          y: 8,
-                          scale: 0.985,
-                        }),
-                        center: { opacity: 1, x: 0, y: 0, scale: 1 },
-                        exit: (d: number) => ({
-                          opacity: 0,
-                          x: d >= 0 ? -22 : 22,
-                          y: -6,
-                          scale: 0.985,
-                        }),
-                      }}
-                      initial="enter"
-                      animate="center"
-                      exit="exit"
-                      transition={{
-                        duration: QUOTE_MS,
-                        ease: canvasEase,
-                      }}
-                    >
-                      <TestimonialBody
-                        item={current}
-                        animateAttribution
-                        attribDelay={0.12}
-                      />
-                    </motion.article>
-                  ) : null}
-                </AnimatePresence>
-              )}
+                ))}
+              </div>
+
+              <div
+                id="canvas-testimonial-panel"
+                className="canvas-testimonials__active"
+                role="tabpanel"
+                aria-labelledby={
+                  current
+                    ? `canvas-testimonial-tab-${current.id}`
+                    : undefined
+                }
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                {reduced ? (
+                  current ? (
+                    <article className="canvas-testimonials__card">
+                      <TestimonialBody item={current} />
+                    </article>
+                  ) : null
+                ) : (
+                  <AnimatePresence mode="wait" custom={direction} initial={false}>
+                    {current ? (
+                      <motion.article
+                        key={current.id}
+                        className="canvas-testimonials__card canvas-testimonials__motion"
+                        custom={direction}
+                        variants={{
+                          enter: (d: number) => ({
+                            opacity: 0,
+                            x: d >= 0 ? 28 : -28,
+                            y: 8,
+                          }),
+                          center: { opacity: 1, x: 0, y: 0 },
+                          exit: (d: number) => ({
+                            opacity: 0,
+                            x: d >= 0 ? -22 : 22,
+                            y: -6,
+                          }),
+                        }}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{
+                          duration: QUOTE_MS,
+                          ease: canvasEase,
+                        }}
+                      >
+                        <TestimonialBody
+                          item={current}
+                          animateAttribution
+                          attribDelay={0.12}
+                        />
+                      </motion.article>
+                    ) : null}
+                  </AnimatePresence>
+                )}
+              </div>
             </div>
-          </div>
           </div>
         </div>
       </div>
@@ -219,22 +264,49 @@ function TestimonialBody({
   animateAttribution?: boolean;
   attribDelay?: number;
 }) {
+  const study = item.projectSlug
+    ? getWorkStudyBySlug(item.projectSlug)
+    : undefined;
+
   const cite = (
     <footer className="canvas-testimonials__cite">
       <cite className="not-italic">
         <span className="canvas-testimonials__name">{item.name}</span>
         <span className="canvas-testimonials__meta">
           {item.role}
-          <span aria-hidden>{" / "}</span>
+          <span aria-hidden> · </span>
           {item.company}
         </span>
       </cite>
+      {study ? (
+        <Link
+          href={`/work/${study.slug}`}
+          className="canvas-testimonials__case"
+        >
+          Open case study
+          <ArrowRight className="h-3.5 w-3.5 shrink-0" strokeWidth={1.75} aria-hidden />
+        </Link>
+      ) : null}
     </footer>
   );
 
   return (
     <blockquote className="canvas-testimonials__quote">
+      <header className="canvas-testimonials__project">
+        {study ? (
+          <>
+            <p className="canvas-testimonials__project-label">{study.label}</p>
+            {study.result ? (
+              <p className="canvas-testimonials__project-result">{study.result}</p>
+            ) : null}
+          </>
+        ) : (
+          <p className="canvas-testimonials__project-label">{item.company}</p>
+        )}
+      </header>
+
       <p>{item.quote}</p>
+
       {animateAttribution ? (
         <motion.div
           initial={{ opacity: 0, y: 8 }}

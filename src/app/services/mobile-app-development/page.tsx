@@ -12,7 +12,10 @@ import { ButtonLink } from "@/components/button-link";
 import { JsonLd } from "@/components/JsonLd";
 import { RelatedWork } from "@/components/related-work";
 import { ProjectApproach } from "@/components/project-approach";
+import { ThemeSplit } from "@/components/theme-split";
+import { CanvasServiceDetail } from "@/components/canvas/canvas-service-detail";
 import { calicapMobileAppService } from "@/lib/calicap-services";
+import { getCanvasServiceDetailBySlug } from "@/lib/canvas-service-details";
 import { getWorkStudiesForService } from "@/lib/calicap-work";
 import { SERVICE_DELIVERY } from "@/lib/delivery-architecture";
 import { pageMetadata } from "@/lib/seo";
@@ -24,7 +27,7 @@ export const metadata = pageMetadata({
   path: calicapMobileAppService.path,
 });
 
-export default function MobileAppDevelopmentPage() {
+function CaliconMobileAppDevelopmentPage() {
   const service = calicapMobileAppService;
   const related = getWorkStudiesForService(service.serviceId);
 
@@ -148,5 +151,16 @@ export default function MobileAppDevelopmentPage() {
         .
       </p>
     </div>
+  );
+}
+
+export default function MobileAppDevelopmentPage() {
+  const detail = getCanvasServiceDetailBySlug("mobile-app-development");
+  if (!detail) return null;
+  return (
+    <ThemeSplit
+      canvas={<CanvasServiceDetail detail={detail} />}
+      calicon={<CaliconMobileAppDevelopmentPage />}
+    />
   );
 }

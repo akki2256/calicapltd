@@ -4,6 +4,7 @@ import { calicapContact } from "@/lib/calicap-contact";
 import { getPublishedCampaigns } from "@/lib/campaigns";
 import { getPublishedContentPaths } from "@/lib/content";
 import { getWorkStudySlugs } from "@/lib/calicap-work";
+import { CANVAS_SERVICE_DETAIL_PATHS } from "@/lib/canvas-service-details";
 
 type JsonLd = Record<string, unknown>;
 
@@ -96,7 +97,8 @@ export const STATIC_SITEMAP_PATHS = [
   "/work",
   "/about",
   "/contact",
-  "/privacy",
+  "/faqs",
+  // /privacy-policy stays out of the sitemap until owner review clears noIndex.
 ] as const;
 
 export function allSitemapPaths(): string[] {
@@ -106,6 +108,7 @@ export function allSitemapPaths(): string[] {
   return [
     ...new Set([
       ...STATIC_SITEMAP_PATHS,
+      ...CANVAS_SERVICE_DETAIL_PATHS,
       ...workPaths,
       ...contentPaths,
       ...campaignPaths,
@@ -130,5 +133,23 @@ export function serviceJsonLd(input: {
       url: SITE_URL,
     },
     areaServed: "Worldwide",
+  };
+}
+
+/** FAQPage schema — only for Q&A pairs rendered on the page by default. */
+export function faqPageJsonLd(
+  items: { question: string; answer: string }[],
+): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   };
 }

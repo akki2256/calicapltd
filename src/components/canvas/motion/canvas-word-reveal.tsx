@@ -8,16 +8,6 @@ import {
 } from "@/lib/canvas-dual-color";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { useCanvasScrollContainer } from "./canvas-scroll-container";
-import { canvasDur, canvasEase, canvasStagger } from "./tokens";
-
-type WordRevealProps = {
-  text: string;
-  className?: string;
-  as?: "h1" | "h2" | "h3" | "p";
-  delay?: number;
-  /** Accent words. Omit for auto dual-color; pass `[]` to disable. */
-  emphasize?: string[];
-};
 
 function splitWords(text: string): string[] {
   return text.split(/\s+/).filter(Boolean);
@@ -25,65 +15,6 @@ function splitWords(text: string): string[] {
 
 function DualWord({ word, hot }: { word: string; hot: boolean }) {
   return <span className={hot ? "canvas-em" : undefined}>{word}</span>;
-}
-
-/** Word-level entrance for major statements */
-export function CanvasWordReveal({
-  text,
-  className,
-  as = "h2",
-  delay = 0,
-  emphasize,
-}: WordRevealProps) {
-  const reduced = usePrefersReducedMotion();
-  const words = useMemo(() => splitWords(text), [text]);
-  const emp = useMemo(
-    () => resolveCanvasEmphasize(words, emphasize),
-    [words, emphasize],
-  );
-  const Tag = as;
-
-  if (reduced) {
-    return (
-      <Tag className={`${className ?? ""} canvas-wrap-heading canvas-text-safe`}>
-        {words.map((word, i) => (
-          <Fragment key={`${word}-${i}`}>
-            <DualWord word={word} hot={isCanvasEmphasized(word, emp)} />
-            {i < words.length - 1 ? " " : null}
-          </Fragment>
-        ))}
-      </Tag>
-    );
-  }
-
-  return (
-    <Tag className={`${className ?? ""} canvas-wrap-heading canvas-text-safe`}>
-      {words.map((word, i) => {
-        const hot = isCanvasEmphasized(word, emp);
-        return (
-          <Fragment key={`${word}-${i}`}>
-            <span className="inline-block max-w-full overflow-hidden align-bottom">
-              <motion.span
-                className={`inline-block whitespace-nowrap${hot ? " canvas-em" : ""}`}
-                initial={{ y: "115%", opacity: 0, rotateX: 18 }}
-                whileInView={{ y: "0%", opacity: 1, rotateX: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{
-                  duration: canvasDur.slow,
-                  delay: delay + i * canvasStagger.tight,
-                  ease: canvasEase,
-                }}
-                style={{ transformPerspective: 800 }}
-              >
-                {word}
-              </motion.span>
-            </span>
-            {i < words.length - 1 ? " " : null}
-          </Fragment>
-        );
-      })}
-    </Tag>
-  );
 }
 
 function ScrubWord({

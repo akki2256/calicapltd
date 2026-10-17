@@ -58,6 +58,21 @@ export default function OpenGraphImage() {
           >
             Digital products · custom software · AI in the workflow
           </div>
+          <div
+            style={{
+              display: "flex",
+              marginTop: 28,
+              alignSelf: "flex-start",
+              padding: "16px 28px",
+              background: "#f5f5f5",
+              color: "#141414",
+              fontSize: 26,
+              fontWeight: 600,
+              letterSpacing: "0.01em",
+            }}
+          >
+            Tell us your problem
+          </div>
         </div>
       </div>
     ),

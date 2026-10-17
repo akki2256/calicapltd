@@ -73,19 +73,6 @@ const ALLOWED_PROP_KEYS = new Set<keyof AnalyticsProps>([
   "outbound_type",
 ]);
 
-/** Future internal dashboard grouping — not a public UI */
-export const MEASUREMENT_AREAS = {
-  acquisition: ["source", "medium", "campaign"],
-  engagement: ["page_viewed", "work_item_viewed"],
-  conversion: [
-    "contact_cta_clicked",
-    "contact_path_selected",
-    "contact_form_started",
-    "contact_form_submitted",
-  ],
-  commercial: ["service_cta_clicked", "case_study_cta_clicked", "outbound_clicked"],
-} as const;
-
 const GA_ID_PATTERN = /^G-[A-Z0-9]+$/i;
 const EMAIL_PATTERN = /\S+@\S+\.\S+/;
 const PHONE_PATTERN = /^\+?[\d\s().-]{8,}$/;
@@ -127,10 +114,6 @@ function analyticsEnabled(): boolean {
   return Boolean(measurementId() || endpoint());
 }
 
-export function isAnalyticsConfigured(): boolean {
-  return Boolean(measurementId() || endpoint());
-}
-
 export function getGaMeasurementId(): string | undefined {
   return measurementId();
 }
@@ -154,6 +137,7 @@ export function pageContextFromPath(pathname: string): AnalyticsProps {
     page_path === "/privacy" ||
     page_path === "/privacy-policy" ||
     page_path === "/terms" ||
+    page_path === "/terms-and-conditions" ||
     page_path === "/faqs" ||
     page_path === "/online-safety"
   ) {

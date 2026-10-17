@@ -19,6 +19,7 @@ import {
   calicapStrategicPillars,
   SERVICE_CATALOGUE,
 } from "@/lib/calicap-services";
+import { canvasServicePathForCategory } from "@/lib/canvas-service-details";
 import {
   canvasWordKey,
   resolveCanvasEmphasize,
@@ -77,34 +78,23 @@ function CanvasServiceCards({
   return (
     <div className="grid grid-cols-2 gap-px border border-[var(--color-border-subtle)] bg-[var(--color-border-subtle)]">
       {services.map((service) => {
+        const href = canvasServicePathForCategory(service.categoryId);
         const cardClass =
           "group flex h-full flex-col gap-1.5 bg-[var(--color-surface)] px-3 py-3 transition-colors duration-300 hover:bg-[var(--color-surface-elevated)]";
-        const body = (
-          <>
+        return (
+          <Link key={service.id} href={href} className={cardClass}>
             <p className="font-[family-name:var(--font-display)] text-[12px] font-medium leading-snug tracking-[-0.015em] text-[var(--color-text-strong)] sm:text-[13px]">
               {service.name}
-              {service.href ? (
-                <ArrowRight
-                  className="ml-1.5 inline h-3 w-3 -translate-y-px text-[var(--color-accent)] transition group-hover:translate-x-0.5"
-                  strokeWidth={1.75}
-                  aria-hidden
-                />
-              ) : null}
+              <ArrowRight
+                className="ml-1.5 inline h-3 w-3 -translate-y-px text-[var(--color-accent)] transition group-hover:translate-x-0.5"
+                strokeWidth={1.75}
+                aria-hidden
+              />
             </p>
             <p className="text-[12px] leading-relaxed text-[var(--color-text-muted)] sm:text-[13px]">
               {service.description}
             </p>
-          </>
-        );
-
-        return service.href ? (
-          <Link key={service.id} href={service.href} className={cardClass}>
-            {body}
           </Link>
-        ) : (
-          <article key={service.id} className={cardClass}>
-            {body}
-          </article>
         );
       })}
     </div>

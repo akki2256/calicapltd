@@ -5,14 +5,9 @@
  * Insights, technical notes, and perspective pieces can be added here
  * when they exist — do not invent filler. No Blog nav item.
  */
-import {
-  getPillar,
-  type PillarId,
-} from "@/lib/brand-architecture";
+import { type PillarId } from "@/lib/brand-architecture";
 import {
   calicapWorkStudies,
-  getWorkStudiesForService,
-  getWorkStudyImage,
   type CalicapWorkStudy,
 } from "@/lib/calicap-work";
 
@@ -101,33 +96,6 @@ export function getPublishedContent(type?: ContentType) {
   );
 }
 
-export function getContentBySlug(slug: string) {
-  return ALL_CONTENT.find((entry) => entry.slug === slug);
-}
-
-export function getContentForPillar(pillar: PillarId, type?: ContentType) {
-  return getPublishedContent(type).filter((entry) =>
-    entry.pillarIds.includes(pillar),
-  );
-}
-
-export function getContentForService(serviceId: string) {
-  return getPublishedContent().filter((entry) =>
-    entry.serviceIds.includes(serviceId),
-  );
-}
-
-export function getRelatedWorkForContent(entry: ContentEntry): CalicapWorkStudy[] {
-  const slugs = new Set(entry.relatedWorkSlugs);
-  return calicapWorkStudies.filter((study) => slugs.has(study.slug));
-}
-
-export function getRelatedWorkForService(serviceId: string): CalicapWorkStudy[] {
-  return getWorkStudiesForService(serviceId);
-}
-
 export function getPublishedContentPaths() {
   return getPublishedContent().map((entry) => entry.canonicalPath ?? entry.path);
 }
-
-export { getPillar, getWorkStudyImage };

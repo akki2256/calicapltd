@@ -25,7 +25,3 @@ export const CAMPAIGN_LANDINGS: readonly CampaignLanding[] = [];
 export function getPublishedCampaigns() {
   return CAMPAIGN_LANDINGS.filter((item) => item.status === "published");
 }
-
-export function getCampaignBySlug(slug: string) {
-  return CAMPAIGN_LANDINGS.find((item) => item.slug === slug);
-}

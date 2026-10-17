@@ -12,6 +12,10 @@ export const SITE_URL = (
 export const DEFAULT_DESCRIPTION =
   "Turn ideas and challenges into digital products, software, and technology that moves things forward. We understand before we build.";
 
+/** Share cards truncate near 125 characters. Keep the search description longer. */
+export const SOCIAL_DESCRIPTION =
+  "Turn ideas into digital products and software. We understand before we build.";
+
 export const DEFAULT_KEYWORDS = [
   "Calicon",
   "custom software",
@@ -33,6 +37,8 @@ type PageMetadataInput = {
   imagePath?: string;
   noIndex?: boolean;
   ogType?: "website" | "article";
+  /** Overrides Open Graph and Twitter copy when the search description is long. */
+  socialDescription?: string;
 };
 
 export function pageMetadata({
@@ -42,8 +48,10 @@ export function pageMetadata({
   imagePath,
   noIndex,
   ogType = "website",
+  socialDescription,
 }: PageMetadataInput): Metadata {
   const url = absoluteUrl(path);
+  const shareDescription = socialDescription ?? description;
   const ogImage = imagePath
     ? imagePath.startsWith("http")
       ? imagePath
@@ -56,7 +64,7 @@ export function pageMetadata({
     alternates: { canonical: url },
     openGraph: {
       title: `${title} · ${SITE_NAME}`,
-      description,
+      description: shareDescription,
       url,
       siteName: SITE_NAME,
       locale: "en_US",
@@ -66,7 +74,7 @@ export function pageMetadata({
     twitter: {
       card: "summary_large_image",
       title: `${title} · ${SITE_NAME}`,
-      description,
+      description: shareDescription,
       images: [ogImage],
     },
     ...(noIndex
@@ -88,7 +96,7 @@ export const rootMetadata: Metadata = {
   creator: SITE_NAME,
   openGraph: {
     title: `${SITE_NAME} · Build what's next.`,
-    description: DEFAULT_DESCRIPTION,
+    description: SOCIAL_DESCRIPTION,
     type: "website",
     locale: "en_US",
     siteName: SITE_NAME,
@@ -98,7 +106,7 @@ export const rootMetadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} · Build what's next.`,
-    description: DEFAULT_DESCRIPTION,
+    description: SOCIAL_DESCRIPTION,
     images: [absoluteUrl("/opengraph-image")],
   },
   robots: {

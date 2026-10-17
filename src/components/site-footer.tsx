@@ -12,7 +12,6 @@ import {
   Cpu,
   RefreshCw,
   Shield,
-  ShieldCheck,
   Workflow,
   type LucideIcon,
 } from "lucide-react";
@@ -46,8 +45,7 @@ const footerIcons: Record<string, LucideIcon> = {
   "/contact": Mail,
   "/faqs": CircleHelp,
   "/privacy-policy": Shield,
-  "/terms": FileText,
-  "/online-safety": ShieldCheck,
+  "/terms-and-conditions": FileText,
 };
 
 const footerLabels = new Map<string, string>([
@@ -131,12 +129,20 @@ export function SiteFooter() {
           <p className="text-sm text-[var(--color-text-muted)]">
             © {new Date().getFullYear()} {calicapContact.brand}. All rights reserved.
           </p>
-          <Link
-            href="/privacy"
-            className="text-sm text-[var(--color-text-muted)] transition hover:text-slate-900"
-          >
-            Privacy
-          </Link>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <Link
+              href="/privacy-policy"
+              className="text-sm text-[var(--color-text-muted)] transition hover:text-slate-900"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms-and-conditions"
+              className="text-sm text-[var(--color-text-muted)] transition hover:text-slate-900"
+            >
+              Terms & Conditions
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

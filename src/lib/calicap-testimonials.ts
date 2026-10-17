@@ -9,6 +9,8 @@ export type CalicapTestimonial = {
   name: string;
   role: string;
   company: string;
+  /** Short label for the voice selector (Canvas) */
+  voiceLabel: string;
   /** Optional link to related case study */
   projectSlug?: string;
   theme: "understanding" | "delivery" | "problem-solving" | "business-impact";
@@ -21,20 +23,24 @@ export const HOME_TESTIMONIALS_ID = "testimonials";
 export const calicapTestimonialsSection = {
   eyebrow: "Testimonials",
   title: "Trusted by the businesses we work with.",
-  /** Canvas stacked headline */
-  titleLines: ["Trusted by the", "businesses we work with."] as const,
-  titleEmphasize: ["Trusted", "businesses"] as const,
   intro: "Feedback from people we've built with.",
+  /** Canvas-only framing */
+  canvasEyebrow: "From the work",
+  titleLines: ["What clients say", "about the build."] as const,
+  titleEmphasize: ["clients", "build"] as const,
+  canvasIntro:
+    "Each voice is tied to a shipped engagement — not a generic review strip.",
 } as const;
 
 export const calicapTestimonials: CalicapTestimonial[] = [
   {
     id: "t1",
     quote:
-      "They took time to understand how our operations actually ran before proposing anything. The CRM felt built around our process, not the other way around.",
+      "They mapped our loan stages before writing a line of product. The CRM follows how we already close deals — pipeline, handoffs, and settlement in one place — instead of forcing us into someone else's template.",
     name: "Mr. Varun Goyal",
     role: "Chairman",
     company: "Calicap India Pvt. Ltd.",
+    voiceLabel: "Calicap",
     projectSlug: "calicap-india",
     theme: "understanding",
     published: false,
@@ -42,10 +48,11 @@ export const calicapTestimonials: CalicapTestimonial[] = [
   {
     id: "t2",
     quote:
-      "Clear scope, steady communication, and delivery we could put in front of the team. They solved the messy parts without making the project larger than it needed to be.",
+      "We needed a studio site that could convert seekers in Bareilly — not a brochure. Clear scope, 25+ program pages, WhatsApp enquire, and a launch we could put in front of students without a six-month delay.",
     name: "Mr. Shantanu Aggarwal",
     role: "Founder",
     company: "Yog Mantram",
+    voiceLabel: "Yog Mantram",
     projectSlug: "yog-mantram",
     theme: "delivery",
     published: false,
@@ -53,10 +60,11 @@ export const calicapTestimonials: CalicapTestimonial[] = [
   {
     id: "t3",
     quote:
-      "The site finally matches the quality of our built work. Enquiries feel warmer, and the portfolio reads like the practice — not a template.",
+      "The site finally reads like the practice. Portfolio, process, and enquiry path feel like Amazing Art — not a theme with our logo dropped in. Enquiries come warmer because the work is visible.",
     name: "Ar. Khyati Chaubey",
     role: "Project Manager",
     company: "Amazing Art Architects",
+    voiceLabel: "Amazing Art",
     projectSlug: "amazing-art-architects",
     theme: "business-impact",
     published: false,
@@ -64,10 +72,11 @@ export const calicapTestimonials: CalicapTestimonial[] = [
   {
     id: "t4",
     quote:
-      "We needed a credible digital front door and tighter grip on inventory. They shipped both without turning a three-week brief into a six-month programme.",
+      "Three weeks: a live front door with Nexi for visitor questions, and a customized inventory and sales system for the floor. Presence and ops shipped together — the brief stayed a brief.",
     name: "Mr. Krishna Shrivastav",
     role: "Founder",
     company: "Chaitanya Computers",
+    voiceLabel: "Chaitanya",
     projectSlug: "chaitanya-computers",
     theme: "delivery",
     published: false,
@@ -75,10 +84,11 @@ export const calicapTestimonials: CalicapTestimonial[] = [
   {
     id: "t5",
     quote:
-      "Patient follow-ups used to live in notebooks and chat threads. The MIS gave us one place from enrollment to guidance — and the team actually uses it.",
+      "Enrollment, follow-ups, and guidance history used to live in notebooks and chat. The MIS put patient care operations in one record — and the navigators actually run the day from it.",
     name: "Mr. Ratan",
     role: "Project Manager",
     company: "LungConnect India Foundation",
+    voiceLabel: "LungConnect",
     projectSlug: "lungconnect-india",
     theme: "problem-solving",
     published: false,
