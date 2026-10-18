@@ -10,13 +10,11 @@ import {
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { JsonLd } from "@/components/JsonLd";
-import { RelatedWork } from "@/components/related-work";
 import { ProjectApproach } from "@/components/project-approach";
 import { ThemeSplit } from "@/components/theme-split";
 import { CanvasServiceDetail } from "@/components/canvas/canvas-service-detail";
 import { calicapMobileAppService } from "@/lib/calicap-services";
 import { getCanvasServiceDetailBySlug } from "@/lib/canvas-service-details";
-import { getWorkStudiesForService } from "@/lib/calicap-work";
 import { SERVICE_DELIVERY } from "@/lib/delivery-architecture";
 import { pageMetadata } from "@/lib/seo";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/structured-data";
@@ -29,7 +27,6 @@ export const metadata = pageMetadata({
 
 function CaliconMobileAppDevelopmentPage() {
   const service = calicapMobileAppService;
-  const related = getWorkStudiesForService(service.serviceId);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
@@ -136,8 +133,6 @@ function CaliconMobileAppDevelopmentPage() {
         title={SERVICE_DELIVERY["mobile-app-development"].title}
         body={SERVICE_DELIVERY["mobile-app-development"].body}
       />
-
-      <RelatedWork studies={related} />
 
       <p className="mt-14 text-sm text-slate-600">
         {service.footerPrompt}{" "}

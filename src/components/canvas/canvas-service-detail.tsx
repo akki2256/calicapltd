@@ -3,12 +3,10 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { JsonLd } from "@/components/JsonLd";
-import { RelatedWork } from "@/components/related-work";
 import {
   canvasServiceImage,
   type CanvasServiceDetail,
 } from "@/lib/canvas-service-details";
-import { getWorkStudiesForServices } from "@/lib/calicap-work";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/structured-data";
 
 type Props = {
@@ -18,7 +16,6 @@ type Props = {
 /** Canvas service family page — one route shared by every card in the category */
 export function CanvasServiceDetail({ detail }: Props) {
   const image = canvasServiceImage(detail);
-  const related = getWorkStudiesForServices(detail.workServiceIds);
 
   return (
     <article className="canvas-service-detail w-full min-w-0 pt-4 pb-4" data-canvas-authored="">
@@ -155,7 +152,6 @@ export function CanvasServiceDetail({ detail }: Props) {
           </p>
         </div>
       </section>
-      <RelatedWork studies={related} />
 
       <p className="mt-14 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)]">
         {detail.footerPrompt}{" "}

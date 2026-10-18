@@ -112,6 +112,23 @@ function CanvasContact({ initialMode }: Props) {
         ))}
       </CanvasStagger>
 
+      <p className="mt-8 text-sm leading-relaxed text-[var(--color-text-muted)]">
+        Want to look first?{" "}
+        <Link
+          href="/services"
+          className="font-medium text-[var(--color-link)] hover:text-[var(--color-link-hover)]"
+        >
+          Services
+        </Link>
+        {" · "}
+        <Link
+          href="/work"
+          className="font-medium text-[var(--color-link)] hover:text-[var(--color-link-hover)]"
+        >
+          Work
+        </Link>
+      </p>
+
       <CanvasReveal variant="rise" delay={0.1} className="mt-14 border-t border-[var(--color-border-subtle)] pt-12">
         <Suspense
           fallback={

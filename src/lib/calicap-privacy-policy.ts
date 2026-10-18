@@ -17,8 +17,8 @@ export const calicapPrivacyPolicy = {
   metaDescription:
     "How Calicon handles personal information submitted through this website and related communications.",
   path: "/privacy-policy",
-  lastUpdatedLabel: "17 October 2026",
-  lastUpdatedIso: "2026-10-17",
+  lastUpdatedLabel: "18 October 2026",
+  lastUpdatedIso: "2026-10-18",
   brandName: "Calicon",
   privacyEmail: "communications@calicon.in",
   businessAddress:
@@ -214,7 +214,7 @@ export const PRIVACY_POLICY_REVIEW_CHECKLIST = [
   {
     id: "analytics",
     status: "verified-in-code" as const,
-    item: "Local env has no NEXT_PUBLIC_GA_MEASUREMENT_ID / analytics endpoint; owner reports analytics unused. Re-check production Vercel env before claiming analytics are off in production.",
+    item: "Production loads Google Analytics when NEXT_PUBLIC_GA_MEASUREMENT_ID is set. Events exclude form contents and direct personal details. Script stays off when Do Not Track is enabled. Confirm the live privacy wording still matches the Vercel measurement ID.",
   },
   {
     id: "cookies-storage",
