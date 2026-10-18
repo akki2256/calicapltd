@@ -27,10 +27,6 @@ export const siteImages = {
     src: "https://images.unsplash.com/photo-1497366216548-375260702997?auto=format&fit=crop&w=1200&q=85",
     alt: "Bright open-plan office with large windows",
   },
-  retailStore: {
-    src: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=85",
-    alt: "Retail clothing store interior with warm lighting",
-  },
   productLaunch: {
     src: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85",
     alt: "Team collaborating at laptops in a bright modern workspace",
@@ -39,29 +35,9 @@ export const siteImages = {
     src: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=85",
     alt: "Planning session with notes and sticky walls",
   },
-  calicapIndiaCrm: {
-    src: "/images/case-studies/crm-dashboard.jpg",
-    alt: "Calicap India CRM dashboard — pipeline snapshot, settlements, and team performance",
-  },
-  calicapIndiaCrmDeal: {
-    src: "/images/case-studies/crm-deal-detail.jpg",
-    alt: "Calicap India CRM deal detail — loan stage workflow from lead through application",
-  },
-  calicapIndiaCrmDeals: {
-    src: "/images/case-studies/crm-deals.jpg",
-    alt: "Calicap India CRM deals board — Open, Closed Won, Deferred, and Closed Lost",
-  },
-  calicapIndiaCrmIncentives: {
-    src: "/images/case-studies/crm-incentives.jpg",
-    alt: "Calicap India CRM user incentives — current-month totals by role",
-  },
   calicapIndiaCrmLogin: {
     src: "/images/case-studies/crm-login.jpg",
     alt: "Calicap India CRM login — Quick Funding workspace sign-in",
-  },
-  calicapIndiaCrmAdmin: {
-    src: "/images/case-studies/crm-admin.jpg",
-    alt: "Calicap India CRM control center — users, workflow, lenders, and communications admin",
   },
   yogMantramHero: {
     src: "/images/case-studies/yog-mantram-hero.jpg",
@@ -95,10 +71,25 @@ export const siteImages = {
     src: "/images/case-studies/chaitanya-computers-chatbot.jpg",
     alt: "Chaitanya Computers services page with Nexi chatbot open for visitor questions",
   },
-  /** Temporary stand-in until client product captures are supplied */
   lungconnectIndiaHero: {
-    src: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1400&q=85",
-    alt: "LungConnect India Foundation — patient care operations MIS (product snapshots forthcoming)",
+    src: "/images/case-studies/lungconnect-dashboard.jpg",
+    alt: "LungConnect MIS reporting dashboard — enrollment, follow-up, and service KPIs with diagnosis and state charts",
+  },
+  lungconnectIndiaLogin: {
+    src: "/images/case-studies/lungconnect-login.jpg",
+    alt: "LungConnect / Utsaah Foundation MIS sign-in — username and password for care operations access",
+  },
+  lungconnectIndiaCharts: {
+    src: "/images/case-studies/lungconnect-charts.jpg",
+    alt: "LungConnect MIS charts — cases by category and service type, social enrollments, and ration distribution",
+  },
+  lungconnectIndiaPatientData: {
+    src: "/images/case-studies/lungconnect-patient-data.jpg",
+    alt: "LungConnect MIS patient data table — enrollment records with filters, CSV export, and pagination",
+  },
+  lungconnectIndiaPatientDetail: {
+    src: "/images/case-studies/lungconnect-patient-detail.jpg",
+    alt: "LungConnect MIS patient detail — profile, follow-up history, thoracic history, and add follow-up form",
   },
 } as const;
 

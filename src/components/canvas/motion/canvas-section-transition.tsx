@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef, type ReactNode } from "react";
+import { motion } from "motion/react";
+import type { ReactNode } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { canvasDur, canvasEase } from "./tokens";
 
@@ -51,38 +51,6 @@ export function CanvasSectionTransition({
       transition={{ duration: canvasDur.slow, ease: canvasEase }}
       style={variant === "riseDepth" ? { transformPerspective: 1100 } : undefined}
     >
-      {children}
-    </motion.div>
-  );
-}
-
-type ExitProps = {
-  children: ReactNode;
-  className?: string;
-};
-
-/** Scroll exit — compresses as section leaves viewport top */
-export function CanvasSectionExit({ children, className }: ExitProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduced = usePrefersReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0.15]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
-
-  if (reduced) {
-    return (
-      <div ref={ref} className={className}>
-        {children}
-      </div>
-    );
-  }
-
-  return (
-    <motion.div ref={ref} className={className} style={{ y, opacity, scale }}>
       {children}
     </motion.div>
   );

@@ -21,7 +21,6 @@ import {
   Wrench,
   type LucideIcon,
 } from "lucide-react";
-import type { PillarId } from "@/lib/brand-architecture";
 
 export const DELIVERY_PROCESS = {
   title: "How we deliver",
@@ -75,10 +74,6 @@ export const DELIVERY_PROCESS = {
   }[],
 } as const;
 
-/** Homepage — short, sits under the existing customer journey */
-export const DELIVERY_HOME_NOTE =
-  "That's how we think about the work. How we execute — envision, create, transform — scales with the project's complexity. Simple work starts efficiently. Complex work gets deeper discovery, architecture, and testing.";
-
 export const DELIVERY_PRACTICES = [
   {
     label: "Discovery",
@@ -128,29 +123,6 @@ export const DELIVERY_PRACTICES = [
   value: string;
   icon: LucideIcon;
 }[];
-
-
-export const PILLAR_DELIVERY: Record<
-  PillarId,
-  { title: string; body: string }
-> = {
-  build: {
-    title: "Delivery on Build",
-    body: "Whether the brief is clear or still forming, we define enough to start well — then build around how the work actually happens. A focused application stays straightforward. A larger system gets deeper architecture, integration, and testing.",
-  },
-  transform: {
-    title: "Delivery on Transform",
-    body: "We start with how things operate today. The plan can be a focused modernization or a broader change in systems and workflows — not a package dropped onto the business. Change is controlled so the operation can keep running.",
-  },
-  automate: {
-    title: "Delivery on Automate",
-    body: "We look at the work being done by hand, then automate where it creates time, consistency, or fewer errors. AI is used when it is the right tool — not as the default. Testing follows the workflow, not a generic checklist.",
-  },
-  evolve: {
-    title: "Delivery on Evolve",
-    body: "Launch is not always the end. After a defined support period, maintenance, improvements, and new work can continue when they are useful — including AMC. Not every engagement needs a long-term contract.",
-  },
-};
 
 export const SERVICE_DELIVERY: Record<
   "web-app-development" | "mobile-app-development",

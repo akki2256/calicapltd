@@ -17,11 +17,4 @@ export const DEFAULT_THEME: ThemeId = "canvas";
 
 export const THEME_STORAGE_KEY = "calicon-theme";
 
-/** @deprecated migrated to THEME_STORAGE_KEY */
-export const LEGACY_THEME_STORAGE_KEY = "calicap-theme";
-
-export function isThemeId(value: string | null | undefined): value is ThemeId {
-  return value === "calicon" || value === "canvas";
-}
-
 export { PRIMARY_NAV_LINKS as CANVAS_NAV_LINKS } from "@/lib/primary-nav";

@@ -31,10 +31,49 @@ import {
 import { ThemeSplit } from "@/components/theme-split";
 import { WorkViewTracker } from "@/components/work-view-tracker";
 import { getWorkStudyBySlug, getWorkStudyImage } from "@/lib/calicap-work";
+import { siteImages } from "@/lib/site-images";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
 const study = getWorkStudyBySlug("lungconnect-india")!;
 const studyImage = getWorkStudyImage(study);
+
+const productSnapshots = [
+  {
+    src: siteImages.lungconnectIndiaLogin.src,
+    alt: siteImages.lungconnectIndiaLogin.alt,
+    label: "Sign-in",
+    caption:
+      "Secure access to the LungConnect / Utsaah Foundation MIS for care operations teams.",
+  },
+  {
+    src: siteImages.lungconnectIndiaHero.src,
+    alt: siteImages.lungconnectIndiaHero.alt,
+    label: "Reporting dashboard",
+    caption:
+      "Enrollment, follow-up, and service KPIs — with diagnosis mix and geographic distribution at a glance.",
+  },
+  {
+    src: siteImages.lungconnectIndiaCharts.src,
+    alt: siteImages.lungconnectIndiaCharts.alt,
+    label: "Operational charts",
+    caption:
+      "Category and service-type caseload, outreach channels at enrollment, and ration distribution by item.",
+  },
+  {
+    src: siteImages.lungconnectIndiaPatientData.src,
+    alt: siteImages.lungconnectIndiaPatientData.alt,
+    label: "Patient data",
+    caption:
+      "Filterable enrollment ledger with CSV and print export — navigators, service type, and case status in one table.",
+  },
+  {
+    src: siteImages.lungconnectIndiaPatientDetail.src,
+    alt: siteImages.lungconnectIndiaPatientDetail.alt,
+    label: "Patient detail & follow-up",
+    caption:
+      "Profile, thoracic history, and guidance capture in one record — so the next conversation starts from what already happened.",
+  },
+] as const;
 
 const snapshot = [
   { value: "60 days", label: "Concept to delivery", icon: Clock3 },
@@ -171,7 +210,7 @@ function CanvasCase() {
       </CanvasReveal>
 
       <CanvasReveal variant="rise" delay={0.1} className="mt-14">
-        <div className="relative aspect-[16/9] overflow-hidden border border-[var(--color-border-subtle)]">
+        <div className="relative aspect-[16/10] overflow-hidden border border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
           <motion.div
             className="absolute inset-0"
             initial={reduced ? false : { clipPath: "inset(0 100% 0 0)" }}
@@ -182,19 +221,11 @@ function CanvasCase() {
               src={studyImage.src}
               alt={studyImage.alt}
               fill
-              className="object-cover object-center"
+              className="object-contain object-center"
               sizes="(max-width: 960px) 100vw, 920px"
               priority
             />
           </motion.div>
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent"
-            aria-hidden
-          />
-          <p className="pointer-events-none absolute bottom-4 left-4 z-10 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-white/90">
-            <Shield className="h-3 w-3" strokeWidth={1.75} aria-hidden />
-            Atmosphere stand-in · product snapshots forthcoming · PHI redacted
-          </p>
         </div>
       </CanvasReveal>
 
@@ -419,11 +450,31 @@ function CanvasCase() {
         />
         <CanvasReveal variant="blurIn" delay={0.08} className="mt-6 max-w-2xl">
           <p className="text-[15px] leading-[1.8] text-[var(--color-text-muted)]">
-            Product captures from the live MIS will be added here once available.
-            Patient identifiers and clinical details will be redacted before
-            publication.
+            Captures from the live MIS — sign-in, reporting, operational charts,
+            patient ledger, and follow-up detail.
           </p>
         </CanvasReveal>
+        <div className="mt-10 space-y-12">
+          {productSnapshots.map((shot) => (
+            <CanvasReveal key={shot.src} variant="riseSoft">
+              <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+                {shot.label}
+              </p>
+              <div className="relative aspect-[16/10] overflow-hidden border border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
+                <Image
+                  src={shot.src}
+                  alt={shot.alt}
+                  fill
+                  className="object-contain object-center"
+                  sizes="(max-width: 960px) 100vw, 920px"
+                />
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                {shot.caption}
+              </p>
+            </CanvasReveal>
+          ))}
+        </div>
       </section>
 
       <section className="mt-20 border-t border-[var(--color-border-subtle)] pt-12">

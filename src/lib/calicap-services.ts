@@ -1,14 +1,10 @@
 import {
-  BarChart3,
-  Compass,
   LayoutTemplate,
   Megaphone,
   Monitor,
-  Scale,
   Search,
   Smartphone,
   Store,
-  Target,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -37,15 +33,6 @@ export {
   validateServiceCatalogue,
 };
 
-export type CalicapEngageTextBlock =
-  | { type: "text"; value: string }
-  | { type: "em"; value: string };
-
-export type CalicapEngageParagraph = {
-  icon: LucideIcon;
-  blocks: CalicapEngageTextBlock[];
-};
-
 export const calicapServicesOverview = {
   eyebrow: "Services",
   title: "Technology built around what needs to happen next.",
@@ -58,68 +45,6 @@ export const calicapServicesOverview = {
   metaTitle: "Services",
   metaDescription:
     "Build, transform, automate, and evolve — digital products, custom software, business systems, practical AI, and ongoing technology support.",
-} as const;
-
-export const calicapHowWeEngage = {
-  title: "How we engage",
-  paragraphs: [
-    {
-      icon: Target,
-      blocks: [
-        {
-          type: "text",
-          value:
-            "Engagements stay lead-senior: you work with the people shipping the work. Stacks businesses actually ship on — ",
-        },
-        {
-          type: "em",
-          value:
-            "React for product UIs, Node.js and Spring for services and APIs, thoughtful AI integrations, and native iOS, Android, or React Native on mobile",
-        },
-        {
-          type: "text",
-          value: ". Cloud defaults lean toward ",
-        },
-        { type: "em", value: "AWS" },
-        { type: "text", value: " and " },
-        { type: "em", value: "Azure" },
-        {
-          type: "text",
-          value: ", aligned to residency and compliance needs.",
-        },
-      ],
-    },
-    {
-      icon: Scale,
-      blocks: [
-        {
-          type: "text",
-          value:
-            "No revolving cast. No unnecessary process. The approach adapts to the project — and we say when something isn't ready to build yet.",
-        },
-      ],
-    },
-    {
-      icon: BarChart3,
-      blocks: [
-        {
-          type: "text",
-          value:
-            "The aim is simple: technology that makes work move better — products that ship, systems that fit, and support that continues as priorities change.",
-        },
-      ],
-    },
-    {
-      icon: Compass,
-      blocks: [
-        {
-          type: "text",
-          value:
-            "Team information stays minimal on purpose. The work, the philosophy, and how projects actually run should do most of the proving.",
-        },
-      ],
-    },
-  ] satisfies CalicapEngageParagraph[],
 } as const;
 
 export type CalicapStrategicPillar = {
@@ -146,15 +71,6 @@ export const calicapStrategicPillars: CalicapStrategicPillar[] = PILLARS.map(
     icon: p.icon,
   }),
 );
-
-/** @deprecated alias — header/footer still map service links from pillars */
-export const calicapServicePillars = calicapStrategicPillars.map((p) => ({
-  href: p.href,
-  title: p.label,
-  description: p.body,
-  icon: p.icon,
-  image: siteImages.cloudNetwork,
-}));
 
 export type CalicapServiceGroup = {
   title: string;

@@ -291,6 +291,14 @@ export function getWorkStudiesForService(serviceId: string) {
   return calicapWorkStudies.filter((s) => s.serviceIds.includes(serviceId));
 }
 
+export function getWorkStudiesForServices(serviceIds: readonly string[]) {
+  if (serviceIds.length === 0) return [];
+  const ids = new Set(serviceIds);
+  return calicapWorkStudies.filter((study) =>
+    study.serviceIds.some((id) => ids.has(id)),
+  );
+}
+
 export function getWorkStudiesForOutcome(outcomeId: string) {
   return calicapWorkStudies.filter((s) => s.outcomeIds?.includes(outcomeId));
 }

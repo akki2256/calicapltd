@@ -1,44 +1,9 @@
 /**
- * Marketing measurement model — primary outcomes first.
- * Channel metrics are secondary. No dashboard UI until there is data to show.
- *
- * Website analytics (src/lib/analytics.ts) exists to support these outcomes.
- * Review pages when evidence shows a problem. Do not chase traffic volume,
- * time-on-site, or social engagement as success.
- *
- * Nurture philosophy: understand → educate → build confidence → continue
- * the conversation. Never an aggressive automated sales sequence.
+ * Quiet lead segmentation for enquiry handling — not a visitor-facing quiz.
+ * Website analytics (src/lib/analytics.ts) exists to support commercial outcomes.
  */
-export const MEASUREMENT_HIERARCHY = [
-  "business_value",
-  "qualified_inquiries",
-  "conversion_quality",
-  "relevant_user_behavior",
-  "traffic",
-] as const;
 
-export const PRIMARY_GROWTH_METRICS = [
-  "qualified_inquiries",
-  "qualified_opportunities",
-  "conversations",
-  "projects_generated",
-  "business_results",
-] as const;
-
-export const SECONDARY_GROWTH_METRICS = [
-  "conversion_behavior",
-  "service_interest",
-  "case_study_engagement",
-  "content_engagement",
-  "organic_traffic",
-  "search_impressions",
-  "referral_activity",
-] as const;
-
-export type PrimaryGrowthMetric = (typeof PRIMARY_GROWTH_METRICS)[number];
-export type SecondaryGrowthMetric = (typeof SECONDARY_GROWTH_METRICS)[number];
-
-export const GROWTH_CHANNELS = [
+const GROWTH_CHANNELS = [
   "seo",
   "content",
   "case-study",
@@ -49,7 +14,7 @@ export const GROWTH_CHANNELS = [
   "direct",
 ] as const;
 
-export type GrowthChannel = (typeof GROWTH_CHANNELS)[number];
+type GrowthChannel = (typeof GROWTH_CHANNELS)[number];
 
 /** How a lead can be understood later — not a public form taxonomy */
 export type LeadSegment = {
@@ -86,7 +51,6 @@ function inferChannel(input: AttributionInput): GrowthChannel | undefined {
   return undefined;
 }
 
-/** Quiet segmentation for enquiry handling — not a visitor-facing quiz */
 export function segmentFromEnquiry(input: AttributionInput): LeadSegment {
   return {
     inquiryType: input.inquiryType,

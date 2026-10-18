@@ -9,7 +9,7 @@ export const CALICON_SITE_NAME = "Calicon";
 export const calicapContact = {
   brand: CALICON_SITE_NAME,
   /** Public mailto / NAP display. Form delivery uses CONTACT_INBOX_EMAIL server-side only. */
-  email: "info@calicon.in",
+  email: "communications@calicon.in",
   locale: "en_US",
   footerBlurb:
     "Technology built around what needs to happen next — from ideas and problems to digital products, practical automation, and everything that comes after launch.",
@@ -49,12 +49,11 @@ export const calicapFooterLinks = [
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
-  { href: "/privacy", label: "Privacy" },
+  { href: "/privacy-policy", label: "Privacy" },
 ] as const;
 
 export const calicapQuickLinks = [
   { href: "/faqs", label: "FAQs" },
   { href: "/privacy-policy", label: "Privacy Policy" },
-  { href: "/terms", label: "Terms & Conditions" },
-  { href: "/online-safety", label: "Online Safety" },
+  { href: "/terms-and-conditions", label: "Terms & Conditions" },
 ] as const;
