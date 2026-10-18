@@ -28,8 +28,6 @@ export function localBusinessJsonLd(): JsonLd {
     url: SITE_URL,
     description: DEFAULT_DESCRIPTION,
     ...(calicapContact.email ? { email: calicapContact.email } : {}),
-    areaServed: "Worldwide",
-    priceRange: "$$",
   };
 }
 
@@ -132,7 +130,6 @@ export function serviceJsonLd(input: {
       name: SITE_NAME,
       url: SITE_URL,
     },
-    areaServed: "Worldwide",
   };
 }
 
