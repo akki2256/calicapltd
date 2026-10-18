@@ -138,8 +138,7 @@ export function pageContextFromPath(pathname: string): AnalyticsProps {
     page_path === "/privacy-policy" ||
     page_path === "/terms" ||
     page_path === "/terms-and-conditions" ||
-    page_path === "/faqs" ||
-    page_path === "/online-safety"
+    page_path === "/faqs"
   ) {
     return { page_type: "legal", page_path };
   }
