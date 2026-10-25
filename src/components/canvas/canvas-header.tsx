@@ -72,7 +72,6 @@ export function CanvasHeader() {
         <BrandLogo
           size="lg"
           variant="on-dark"
-          layout="lockup"
           priority
           label=""
         />
