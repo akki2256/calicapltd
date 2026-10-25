@@ -2,7 +2,6 @@
  * Single source for Calicon NAP, form copy, and contact-related constants.
  */
 import { PILLARS } from "@/lib/brand-architecture";
-import { CONTACT_DELIVERY_NOTE } from "@/lib/delivery-architecture";
 
 export const CALICON_SITE_NAME = "Calicon";
 
@@ -25,18 +24,6 @@ export const calicapContact = {
     { id: "instagram", label: "Instagram", href: "https://www.instagram.com/calicon" },
     { id: "facebook", label: "Facebook", href: "https://www.facebook.com/calicon" },
   ] as const,
-  page: {
-    eyebrow: "Contact",
-    title: "Tell us your problem.",
-    intro:
-      "Whether the requirement is clear or still taking shape, share a little context and we'll take it from there.",
-    bullets: [
-      "Every note is reviewed personally",
-      "Follow-up happens once the context is understood",
-      CONTACT_DELIVERY_NOTE,
-      "Remote-first; onsite when the work needs it",
-    ] as const,
-  },
   formSuccess: {
     title: "Thanks for reaching out.",
     body: "We'll review your requirements and someone from our team will contact you.",

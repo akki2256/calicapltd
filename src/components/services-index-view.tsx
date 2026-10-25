@@ -13,10 +13,8 @@ import {
   CanvasTextReveal,
   CanvasTextScrub,
 } from "@/components/canvas/motion";
-import { ThemeSplit } from "@/components/theme-split";
 import {
   calicapServicesOverview,
-  calicapStrategicPillars,
   SERVICE_CATALOGUE,
 } from "@/lib/calicap-services";
 import { canvasServicePathForCategory } from "@/lib/canvas-service-details";
@@ -101,7 +99,7 @@ function CanvasServiceCards({
   );
 }
 
-function CanvasServicesIndex() {
+export function ServicesIndexView() {
   const overview = calicapServicesOverview;
   const [portalReady, setPortalReady] = useState(false);
   /** Scrub after first paint — title scroll listeners must not compete with hydrate */
@@ -230,124 +228,5 @@ function CanvasServicesIndex() {
         <DeliveryPractices />
       </div>
     </article>
-  );
-}
-
-function CaliconServicesIndex() {
-  const overview = calicapServicesOverview;
-
-  return (
-    <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-700/95">
-        {overview.eyebrow}
-      </p>
-      <h1 className="mt-4 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-medium tracking-tight text-slate-900">
-        {overview.title}
-      </h1>
-      <p className="mt-6 max-w-2xl text-lg text-slate-600">{overview.body}</p>
-      <div className="mt-10">
-        <ProblemCtaButton>{overview.primaryCta}</ProblemCtaButton>
-      </div>
-
-      <section className="mt-16" aria-label="Service catalogue">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-700/95">
-          Service catalogue
-        </p>
-        <h2 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
-          What we deliver.
-        </h2>
-
-        <div className="mt-10 space-y-10">
-          {SERVICE_CATALOGUE.map((category, index) => (
-            <article
-              key={category.id}
-              className="border-t border-[var(--color-border-subtle)] pt-8"
-            >
-              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                <span className="font-mono text-[11px] tracking-[0.14em] text-gold-600">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3 className="font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-                  {category.name}
-                </h3>
-              </div>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">
-                {category.description}
-              </p>
-              <ul className="mt-6 grid gap-4 sm:grid-cols-2">
-                {category.services.map((service) => (
-                  <li key={service.id} className="min-w-0">
-                    {service.href ? (
-                      <Link
-                        href={service.href}
-                        className="group block rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)]/40 p-4 transition hover:border-gold-500/30"
-                      >
-                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-900 group-hover:text-gold-700">
-                          {service.name}
-                          <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-                        </span>
-                        <span className="mt-2 block text-sm leading-relaxed text-slate-600">
-                          {service.description}
-                        </span>
-                      </Link>
-                    ) : (
-                      <div className="rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)]/40 p-4">
-                        <p className="text-sm font-semibold text-slate-900">{service.name}</p>
-                        <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                          {service.description}
-                        </p>
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-16" aria-label="How we organise the work">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-700/95">
-          Capability paths
-        </p>
-        <h2 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
-          Build · Transform · Automate · Evolve
-        </h2>
-        <p className="mt-3 max-w-2xl text-sm text-slate-600">
-          Brand capabilities for how engagements start — not additional service categories.
-        </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          {calicapStrategicPillars.map((pillar) => {
-            const Icon = pillar.icon;
-            return (
-              <Link
-                key={pillar.id}
-                href={pillar.href}
-                className="group surface-card flex h-full flex-col rounded-2xl p-6 transition hover:border-gold-500/25"
-              >
-                <Icon className="h-5 w-5 text-gold-600" strokeWidth={1.75} aria-hidden />
-                <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl text-slate-900">
-                  {pillar.label}
-                </h3>
-                <p className="mt-1 text-sm font-medium text-slate-800">{pillar.tagline}</p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-gold-700 transition group-hover:text-slate-900">
-                  {pillar.cta}
-                  <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden />
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      <DeliveryPractices />
-    </div>
-  );
-}
-
-export function ServicesIndexView() {
-  /* Structure formation + About-style layout: Canvas only. Calicon branch is untouched. */
-  return (
-    <ThemeSplit canvas={<CanvasServicesIndex />} calicon={<CaliconServicesIndex />} />
   );
 }

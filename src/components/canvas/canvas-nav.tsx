@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/brand-logo";
-import { CANVAS_NAV_LINKS } from "@/lib/themes";
+import { PRIMARY_NAV_LINKS } from "@/lib/primary-nav";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 import { CanvasBurger } from "@/components/canvas/canvas-burger";
 
@@ -11,7 +11,7 @@ export function CanvasNav() {
   const pathname = usePathname();
   const { open, toggleMenu, closeMenu } = useCanvasMenu();
 
-  const navLinks = CANVAS_NAV_LINKS;
+  const navLinks = PRIMARY_NAV_LINKS;
 
   return (
     <nav className="canvas-nav" aria-label="Primary">
@@ -42,7 +42,6 @@ export function CanvasNav() {
               <BrandLogo
                 size="lg"
                 variant="on-dark"
-                layout="lockup"
                 priority
                 label=""
               />

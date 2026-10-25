@@ -56,9 +56,25 @@ export function CanvasMain({ children }: Props) {
 
       const url = new URL(anchor.href, window.location.origin);
       if (url.origin !== window.location.origin) return;
-      if (url.pathname === pathname && url.search === window.location.search) return;
+      if (
+        url.pathname === pathname &&
+        url.search === window.location.search &&
+        url.hash === window.location.hash
+      ) {
+        return;
+      }
 
       event.preventDefault();
+
+      // Same page, different query/hash — soft update only. A leave transition
+      // never remounts (AnimatePresence keys on pathname), so canvas-out would stick.
+      if (url.pathname === pathname) {
+        setLeaving(false);
+        document.documentElement.classList.remove("canvas-out");
+        router.replace(url.pathname + url.search + url.hash, { scroll: false });
+        return;
+      }
+
       if (reduced) {
         router.push(url.pathname + url.search + url.hash);
         return;

@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
-  ArrowRight,
   BookOpen,
   Building2,
   Clock3,
@@ -17,7 +16,6 @@ import {
   Workflow,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
-import { CapabilityTrail } from "@/components/capability-trail";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { JsonLd } from "@/components/JsonLd";
 import { WorkViewTracker } from "@/components/work-view-tracker";
@@ -426,8 +424,6 @@ export default function CalicapIndiaCasePage() {
         going back to a patchwork of tools.
       </p>
 
-      <CapabilityTrail pillarIds={study.pillars} serviceIds={study.serviceIds} />
-
       <div className="mt-12 flex flex-wrap gap-4">
         <ProblemCtaButton>
           <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
@@ -438,7 +434,6 @@ export default function CalicapIndiaCasePage() {
           Read product guide
         </ButtonLink>
         <ButtonLink href="/work" variant="ghost">
-          <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           More case studies
         </ButtonLink>
       </div>

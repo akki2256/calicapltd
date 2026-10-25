@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
-  ArrowRight,
-  ExternalLink,
   FileText,
   Flower2,
   LayoutGrid,
@@ -14,7 +12,6 @@ import {
   Target,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
-import { CapabilityTrail } from "@/components/capability-trail";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import { JsonLd } from "@/components/JsonLd";
 import { WorkViewTracker } from "@/components/work-view-tracker";
@@ -26,7 +23,6 @@ import { breadcrumbJsonLd, creativeWorkJsonLd } from "@/lib/structured-data";
 
 const study = getWorkStudyBySlug("yog-mantram")!;
 const studyImage = getWorkStudyImage(study);
-const liveUrl = "https://yogmantram.com";
 
 const snapshots = [
   {
@@ -195,15 +191,7 @@ export default function YogMantramCasePage() {
             Live
           </dt>
           <dd className="mt-2 text-sm font-medium text-slate-800">
-            <a
-              href={liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-gold-600 hover:text-gold-700"
-            >
-              yogmantram.com
-              <ExternalLink className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-            </a>
+            yogmantram.com
           </dd>
         </div>
       </dl>
@@ -343,17 +331,7 @@ export default function YogMantramCasePage() {
         Product snapshots
       </h2>
       <p className="mt-4 text-base leading-relaxed text-slate-600">
-        Captures from the live site and the studio atmosphere behind it. See it live at{" "}
-        <a
-          href={liveUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 font-medium text-gold-600 hover:text-gold-700"
-        >
-          yogmantram.com
-          <ExternalLink className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-        </a>
-        .
+        Captures from the live site and the studio atmosphere behind it.
       </p>
 
       <div className="mt-8 space-y-8">
@@ -386,19 +364,12 @@ export default function YogMantramCasePage() {
         practice. Enquiry numbers stay off this page until they are real.
       </p>
 
-      <CapabilityTrail pillarIds={study.pillars} serviceIds={study.serviceIds} />
-
       <div className="mt-12 flex flex-wrap gap-4">
         <ProblemCtaButton>
           <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           {study.ctaLabel}
         </ProblemCtaButton>
-        <ButtonLink href={liveUrl} target="_blank" rel="noopener noreferrer" variant="ghost">
-          <ExternalLink className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-          View live site
-        </ButtonLink>
         <ButtonLink href="/work" variant="ghost">
-          <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           More case studies
         </ButtonLink>
       </div>

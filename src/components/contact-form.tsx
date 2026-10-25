@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import {
   Building2,
-  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Loader2,
@@ -13,32 +11,85 @@ import {
   Send,
   User,
 } from "lucide-react";
-import { useActionState, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useActionState,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { useSearchParams } from "next/navigation";
+import type { CountryCode } from "libphonenumber-js";
 import { submitContact, type ContactState } from "@/app/actions/contact";
-import { useTheme } from "@/components/theme-provider";
+import { ContactPhoneInput } from "@/components/contact-phone-input";
 import { track } from "@/lib/analytics";
 import { readStoredAttribution } from "@/lib/attribution";
-import { calicapContact } from "@/lib/calicap-contact";
 import {
   calicapDiscovery,
   calicapDiscoveryQuestions,
   parseContactMode,
   type ContactMode,
 } from "@/lib/calicap-discovery";
+import {
+  validateContactField,
+  validateContactFields,
+  type ContactFieldErrors,
+  type ContactFieldKey,
+} from "@/lib/contact-form-validation";
+import { FALLBACK_PHONE_COUNTRY } from "@/lib/phone-countries";
 
 const initial: ContactState = {};
 
 const fieldClassName =
   "mt-2 w-full rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)] px-4 py-3 text-sm text-[var(--color-text-strong)] outline-none shadow-inner shadow-[var(--color-card-shadow)] placeholder:text-[var(--color-text-muted)] transition focus:border-[var(--color-accent)]/50 focus:ring-2 focus:ring-[var(--color-accent)]/25";
 
+const fieldErrorClassName =
+  "mt-2 w-full rounded-xl border border-red-500/60 bg-[var(--color-surface-elevated)] px-4 py-3 text-sm text-[var(--color-text-strong)] outline-none shadow-inner shadow-[var(--color-card-shadow)] placeholder:text-[var(--color-text-muted)] transition focus:border-red-500 focus:ring-2 focus:ring-red-500/25";
+
 type Props = {
   initialMode?: ContactMode;
+  /** ISO country from server-side IP geolocation — sets dialing-code default only */
+  initialCountry?: CountryCode;
+  onSuccess?: () => void;
 };
 
-export function ContactForm({ initialMode = "know" }: Props) {
-  const { theme } = useTheme();
-  const isCanvas = theme === "canvas";
+type FormValues = {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  achieve: string;
+  problem: string;
+  built: string;
+  message: string;
+};
+
+const emptyValues: FormValues = {
+  name: "",
+  email: "",
+  company: "",
+  phone: "",
+  achieve: "",
+  problem: "",
+  built: "",
+  message: "",
+};
+
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+  return (
+    <p id={id} className="mt-1.5 text-sm text-red-500" role="alert">
+      {message}
+    </p>
+  );
+}
+
+export function ContactForm({
+  initialMode = "know",
+  initialCountry = FALLBACK_PHONE_COUNTRY,
+  onSuccess,
+}: Props) {
   const searchParams = useSearchParams();
   const modeFromUrl = parseContactMode(searchParams.get("mode"));
   const [mode, setMode] = useState<ContactMode>(
@@ -46,6 +97,11 @@ export function ContactForm({ initialMode = "know" }: Props) {
   );
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [values, setValues] = useState<FormValues>(emptyValues);
+  const [fieldErrors, setFieldErrors] = useState<ContactFieldErrors>({});
+  const [touched, setTouched] = useState<Partial<Record<ContactFieldKey, boolean>>>(
+    {},
+  );
   const [attribution, setAttribution] = useState({
     source: "",
     medium: "",
@@ -55,19 +111,17 @@ export function ContactForm({ initialMode = "know" }: Props) {
   const startedRef = useRef(false);
   const submittedRef = useRef(false);
   const [state, formAction, pending] = useActionState(submitContact, initial);
-  const success = calicapContact.formSuccess;
   const copy = calicapDiscovery;
-  const pill = isCanvas ? "rounded-none" : "rounded-full";
-  const card = isCanvas
-    ? "border border-[var(--color-border-subtle)] bg-transparent p-0 sm:p-0"
-    : "surface-card rounded-2xl p-8 md:p-10";
+  const pill = "rounded-none";
+  const card = "bg-transparent p-0 sm:p-0";
 
   useEffect(() => {
-    if (searchParams.has("mode")) {
-      setMode(modeFromUrl);
-      setStep(0);
-    }
-  }, [modeFromUrl, searchParams]);
+    const next = searchParams.has("mode") ? modeFromUrl : initialMode;
+    setMode(next);
+    setStep(0);
+    setFieldErrors({});
+    setTouched({});
+  }, [modeFromUrl, searchParams, initialMode]);
 
   useEffect(() => {
     const stored = readStoredAttribution();
@@ -89,12 +143,61 @@ export function ContactForm({ initialMode = "know" }: Props) {
       medium: attribution.medium || undefined,
       campaign: attribution.campaign || undefined,
     });
-  }, [state, mode, attribution.source, attribution.medium, attribution.campaign]);
+    onSuccess?.();
+  }, [state, mode, attribution.source, attribution.medium, attribution.campaign, onSuccess]);
+
+  useEffect(() => {
+    if (!("error" in state && state.fieldErrors)) return;
+    setFieldErrors(state.fieldErrors);
+    setTouched((prev) => {
+      const next = { ...prev };
+      for (const key of Object.keys(state.fieldErrors!) as ContactFieldKey[]) {
+        next[key] = true;
+      }
+      return next;
+    });
+  }, [state]);
 
   const markStarted = () => {
     if (startedRef.current) return;
     startedRef.current = true;
     track("contact_form_started", { contact_path: mode });
+  };
+
+  const setFieldValue = (field: keyof FormValues, value: string) => {
+    setValues((prev) => ({ ...prev, [field]: value }));
+    if (touched[field]) {
+      const error = validateContactField(field, value, mode);
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        if (error) next[field] = error;
+        else delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const blurField = (field: ContactFieldKey) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    const value = field === "discovery" ? "" : (values[field as keyof FormValues] ?? "");
+    const error = validateContactField(field, value, mode);
+    setFieldErrors((prev) => {
+      const next = { ...prev };
+      if (error) next[field] = error;
+      else delete next[field];
+      return next;
+    });
+  };
+
+  const blurPhone = () => {
+    setTouched((prev) => ({ ...prev, phone: true }));
+    const error = validateContactField("phone", values.phone, mode);
+    setFieldErrors((prev) => {
+      const next = { ...prev };
+      if (error) next.phone = error;
+      else delete next.phone;
+      return next;
+    });
   };
 
   const questions = calicapDiscoveryQuestions;
@@ -103,34 +206,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
   const currentQuestion = questions[step];
 
   const discoveryJson = useMemo(() => JSON.stringify(answers), [answers]);
-
-  if ("ok" in state && state.ok) {
-    return (
-      <div className={card}>
-        <div className="flex items-start gap-3">
-          <CheckCircle2
-            className="h-8 w-8 shrink-0 text-[var(--color-accent)]"
-            strokeWidth={2}
-            aria-hidden
-          />
-          <div>
-            <p className="font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
-              {success.title}
-            </p>
-            <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
-              {success.body}
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const switchMode = (next: ContactMode) => {
-    setMode(next);
-    setStep(0);
-    track("contact_path_selected", { contact_path: next });
-  };
+  const submitted = "ok" in state && state.ok;
 
   const canAdvanceDiscovery = () => {
     if (!currentQuestion) return false;
@@ -138,65 +214,38 @@ export function ContactForm({ initialMode = "know" }: Props) {
     return Boolean(answers[currentQuestion.id]?.trim());
   };
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const errors = validateContactFields(values, mode, answers);
+    if (Object.keys(errors).length > 0) {
+      event.preventDefault();
+      setFieldErrors(errors);
+      setTouched({
+        name: true,
+        email: true,
+        company: true,
+        phone: true,
+        achieve: true,
+      });
+      const firstInvalid = (
+        ["name", "email", "company", "phone", "achieve"] as const
+      ).find((key) => errors[key]);
+      if (firstInvalid) {
+        document.getElementById(firstInvalid)?.focus();
+      }
+    }
+  };
+
+  const inputClass = (field: ContactFieldKey) =>
+    fieldErrors[field] ? fieldErrorClassName : fieldClassName;
+
+  const formError =
+    "error" in state && state.error && !state.fieldErrors ? state.error : null;
+
   return (
     <div className={`${card} space-y-6`}>
-      {!isCanvas ? (
-        <>
-          <div>
-            <p className="font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
-              {copy.formIntroTitle}
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
-              {copy.formIntroBody}
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Contact path">
-            <Link
-              href="/contact?mode=know"
-              scroll={false}
-              onClick={() => switchMode("know")}
-              className={`${pill} px-4 py-2 text-sm font-semibold transition ${
-                mode === "know"
-                  ? "bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)]"
-                  : "border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-[var(--color-text-strong)]"
-              }`}
-            >
-              {copy.modeKnowLabel}
-            </Link>
-            <Link
-              href="/contact?mode=unsure"
-              scroll={false}
-              onClick={() => switchMode("unsure")}
-              className={`${pill} px-4 py-2 text-sm font-semibold transition ${
-                mode === "unsure"
-                  ? "bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)]"
-                  : "border border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-[var(--color-text-strong)]"
-              }`}
-            >
-              {copy.modeUnsureLabel}
-            </Link>
-          </div>
-
-          <div>
-            <p className="text-sm font-medium text-[var(--color-text-strong)]">
-              {mode === "know" ? copy.knowCtaLabel : copy.unsureCtaLabel}
-            </p>
-            <p className="mt-1 text-sm leading-relaxed text-[var(--color-text-muted)]">
-              {mode === "know" ? copy.knowIntro : copy.unsureIntro}
-            </p>
-          </div>
-        </>
-      ) : (
-        <div>
-          <p className="canvas-micro text-[var(--color-accent)]">
-            {mode === "know" ? "01 · Clear brief" : "02 · Guided path"}
-          </p>
-          <p className="mt-3 font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
-            {mode === "know" ? copy.knowCtaLabel : copy.unsureCtaLabel}
-          </p>
-        </div>
-      )}
+      {/* <p className="font-[family-name:var(--font-display)] text-xl text-[var(--color-text-strong)]">
+        {mode === "know" ? copy.knowCtaLabel : copy.unsureCtaLabel}
+      </p> */}
 
       {onDiscoverySteps && currentQuestion ? (
         <div className="space-y-5">
@@ -276,7 +325,7 @@ export function ContactForm({ initialMode = "know" }: Props) {
           </div>
         </div>
       ) : (
-        <form action={formAction} className="space-y-5">
+        <form action={formAction} noValidate onSubmit={handleSubmit} className="space-y-5">
           <input type="hidden" name="mode" value={mode} />
           <input type="hidden" name="discovery" value={discoveryJson} />
           <input type="hidden" name="source" value={attribution.source} />
@@ -295,6 +344,12 @@ export function ContactForm({ initialMode = "know" }: Props) {
             </button>
           ) : null}
 
+          {fieldErrors.discovery ? (
+            <p className="text-sm text-red-500" role="alert">
+              {fieldErrors.discovery}
+            </p>
+          ) : null}
+
           <div className="grid gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <label
@@ -309,10 +364,15 @@ export function ContactForm({ initialMode = "know" }: Props) {
                 name="name"
                 required
                 autoComplete="name"
-                className={fieldClassName}
-                placeholder="Alex Morgan"
+                value={values.name}
+                aria-invalid={Boolean(fieldErrors.name)}
+                aria-describedby={fieldErrors.name ? "name-error" : undefined}
+                className={inputClass("name")}
                 onFocus={markStarted}
+                onChange={(e) => setFieldValue("name", e.target.value)}
+                onBlur={() => blurField("name")}
               />
+              <FieldError id="name-error" message={fieldErrors.name} />
             </div>
             <div>
               <label
@@ -328,8 +388,14 @@ export function ContactForm({ initialMode = "know" }: Props) {
                 type="email"
                 required
                 autoComplete="email"
-                className={fieldClassName}
+                value={values.email}
+                aria-invalid={Boolean(fieldErrors.email)}
+                aria-describedby={fieldErrors.email ? "email-error" : undefined}
+                className={inputClass("email")}
+                onChange={(e) => setFieldValue("email", e.target.value)}
+                onBlur={() => blurField("email")}
               />
+              <FieldError id="email-error" message={fieldErrors.email} />
             </div>
             <div>
               <label
@@ -344,11 +410,16 @@ export function ContactForm({ initialMode = "know" }: Props) {
                 name="company"
                 required
                 autoComplete="organization"
-                className={fieldClassName}
-                placeholder="Northwind"
+                value={values.company}
+                aria-invalid={Boolean(fieldErrors.company)}
+                aria-describedby={fieldErrors.company ? "company-error" : undefined}
+                className={inputClass("company")}
+                onChange={(e) => setFieldValue("company", e.target.value)}
+                onBlur={() => blurField("company")}
               />
+              <FieldError id="company-error" message={fieldErrors.company} />
             </div>
-            <div className="sm:col-span-2">
+            <div className="relative z-[1] sm:col-span-2">
               <label
                 htmlFor="phone"
                 className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--color-text-muted)]"
@@ -356,14 +427,18 @@ export function ContactForm({ initialMode = "know" }: Props) {
                 <Phone className="h-3.5 w-3.5 text-[var(--color-accent)]" strokeWidth={2} aria-hidden />
                 Phone / WhatsApp (optional)
               </label>
-              <input
+              <ContactPhoneInput
                 id="phone"
                 name="phone"
-                type="tel"
-                autoComplete="tel"
-                className={fieldClassName}
-                placeholder="+91 …"
+                initialCountry={initialCountry}
+                value={values.phone}
+                invalid={Boolean(fieldErrors.phone)}
+                describedBy={fieldErrors.phone ? "phone-error" : undefined}
+                onFocus={markStarted}
+                onChange={(e164) => setFieldValue("phone", e164)}
+                onBlur={blurPhone}
               />
+              <FieldError id="phone-error" message={fieldErrors.phone} />
             </div>
 
             {mode === "know" ? (
@@ -385,11 +460,17 @@ export function ContactForm({ initialMode = "know" }: Props) {
                     name="achieve"
                     required
                     rows={3}
-                    className={`${fieldClassName} resize-y`}
+                    value={values.achieve}
+                    aria-invalid={Boolean(fieldErrors.achieve)}
+                    aria-describedby={fieldErrors.achieve ? "achieve-error" : undefined}
+                    className={`${inputClass("achieve")} resize-y`}
                     placeholder="The outcome that would make this worthwhile…"
+                    onChange={(e) => setFieldValue("achieve", e.target.value)}
+                    onBlur={() => blurField("achieve")}
                   />
+                  <FieldError id="achieve-error" message={fieldErrors.achieve} />
                 </div>
-                <div className="sm:col-span-2">
+                {/* <div className="sm:col-span-2">
                   <label
                     htmlFor="problem"
                     className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--color-text-muted)]"
@@ -401,9 +482,15 @@ export function ContactForm({ initialMode = "know" }: Props) {
                     name="problem"
                     required
                     rows={3}
-                    className={`${fieldClassName} resize-y`}
+                    value={values.problem}
+                    aria-invalid={Boolean(fieldErrors.problem)}
+                    aria-describedby={fieldErrors.problem ? "problem-error" : undefined}
+                    className={`${inputClass("problem")} resize-y`}
                     placeholder="What's not working, or what's missing today?"
+                    onChange={(e) => setFieldValue("problem", e.target.value)}
+                    onBlur={() => blurField("problem")}
                   />
+                  <FieldError id="problem-error" message={fieldErrors.problem} />
                 </div>
                 <div className="sm:col-span-2">
                   <label
@@ -417,10 +504,16 @@ export function ContactForm({ initialMode = "know" }: Props) {
                     name="built"
                     required
                     rows={3}
-                    className={`${fieldClassName} resize-y`}
+                    value={values.built}
+                    aria-invalid={Boolean(fieldErrors.built)}
+                    aria-describedby={fieldErrors.built ? "built-error" : undefined}
+                    className={`${inputClass("built")} resize-y`}
                     placeholder="A product, system, site, workflow, or something else…"
+                    onChange={(e) => setFieldValue("built", e.target.value)}
+                    onBlur={() => blurField("built")}
                   />
-                </div>
+                  <FieldError id="built-error" message={fieldErrors.built} />
+                </div> */}
               </>
             ) : (
               <div className="sm:col-span-2">
@@ -439,29 +532,35 @@ export function ContactForm({ initialMode = "know" }: Props) {
                   id="message"
                   name="message"
                   rows={3}
+                  value={values.message}
                   className={`${fieldClassName} resize-y`}
-                  placeholder="Optional note — your discovery answers are already included."
-                  defaultValue=""
+                  placeholder="Optional note — your previous answers are already included."
+                  onChange={(e) => setFieldValue("message", e.target.value)}
                 />
               </div>
             )}
           </div>
 
-          {"error" in state && state.error ? (
-            <p className="text-sm text-red-600" role="alert">
-              {state.error}
+          {formError ? (
+            <p className="text-sm text-red-500" role="alert">
+              {formError}
             </p>
           ) : null}
 
           <button
             type="submit"
-            disabled={pending}
+            disabled={pending || submitted}
             className={`inline-flex min-h-11 w-full items-center justify-center gap-2 ${pill} bg-[var(--color-btn-primary-bg)] py-3 text-sm font-semibold text-[var(--color-btn-primary-text)] transition hover:bg-[var(--color-btn-primary-hover)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-10`}
           >
             {pending ? (
               <>
                 <Loader2 className="h-4 w-4 shrink-0 animate-spin" aria-hidden />
                 Sending…
+              </>
+            ) : submitted ? (
+              <>
+                <Send className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
+                Sent
               </>
             ) : (
               <>

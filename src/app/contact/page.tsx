@@ -3,6 +3,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { parseContactMode } from "@/lib/calicap-discovery";
 import { pageMetadata } from "@/lib/seo";
 import { breadcrumbJsonLd } from "@/lib/structured-data";
+import { getVisitorCountryCode } from "@/lib/visitor-country";
 
 export const metadata = pageMetadata({
   title: "Contact",
@@ -11,6 +12,9 @@ export const metadata = pageMetadata({
   path: "/contact",
 });
 
+/** Always read request geo headers — do not bake a country at build time. */
+export const dynamic = "force-dynamic";
+
 type Props = {
   searchParams?: Promise<{ mode?: string }>;
 };
@@ -18,6 +22,7 @@ type Props = {
 export default async function ContactPage({ searchParams }: Props) {
   const params = searchParams ? await searchParams : {};
   const initialMode = parseContactMode(params.mode);
+  const initialCountry = await getVisitorCountryCode();
 
   return (
     <>
@@ -27,7 +32,10 @@ export default async function ContactPage({ searchParams }: Props) {
           { name: "Contact", path: "/contact" },
         ])}
       />
-      <ContactPageView initialMode={initialMode} />
+      <ContactPageView
+        initialMode={initialMode}
+        initialCountry={initialCountry}
+      />
     </>
   );
 }

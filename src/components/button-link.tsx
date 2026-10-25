@@ -2,16 +2,8 @@
 
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
-import { useTheme } from "@/components/theme-provider";
 import { useMagnetic } from "@/hooks/use-magnetic";
 import { trackCta } from "@/lib/analytics";
-
-const caliconVariants = {
-  primary:
-    "btn-calicon btn-calicon-primary rounded-full px-6 py-2.5 text-sm font-semibold",
-  ghost:
-    "btn-calicon btn-calicon-ghost rounded-full border px-6 py-2.5 text-sm font-semibold",
-} as const;
 
 const canvasVariants = {
   primary:
@@ -24,7 +16,7 @@ type Props = Omit<ComponentProps<typeof Link>, "className"> & {
   variant?: "primary" | "ghost";
   className?: string;
   children: ReactNode;
-  /** Force magnetic even on Calicon (default: Canvas only) */
+  /** Magnetic hover pull (default: on) */
   magnetic?: boolean;
 };
 
@@ -37,12 +29,9 @@ export function ButtonLink({
   onClick,
   ...props
 }: Props) {
-  const { theme } = useTheme();
-  const isCanvas = theme === "canvas";
-  const variants = isCanvas ? canvasVariants : caliconVariants;
   const mag = useMagnetic({
-    enabled: magnetic ?? isCanvas,
-    strength: isCanvas ? 10 : 12,
+    enabled: magnetic ?? true,
+    strength: 10,
   });
   const hrefString = typeof href === "string" ? href : href.pathname ?? "";
 
@@ -57,15 +46,13 @@ export function ButtonLink({
         if (hrefString) trackCta(hrefString);
         onClick?.(event);
       }}
-      className={`inline-flex items-center justify-center gap-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${variants[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${canvasVariants[variant]} ${className}`}
       {...props}
     >
       {children}
-      {isCanvas ? (
-        <span className="btn-canvas-arrow" aria-hidden>
-          →
-        </span>
-      ) : null}
+      <span className="btn-canvas-arrow" aria-hidden>
+        →
+      </span>
     </Link>
   );
 }

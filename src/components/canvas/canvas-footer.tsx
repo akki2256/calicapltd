@@ -43,7 +43,6 @@ export function CanvasFooter() {
               <BrandLogo
                 size="lg"
                 variant="on-dark"
-                layout="lockup"
                 label=""
               />
             </Link>
