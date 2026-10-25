@@ -46,13 +46,6 @@ export const calicapDiscoveryQuestions: readonly DiscoveryQuestion[] = [
     required: true,
   },
   {
-    id: "improve",
-    label: "What are you trying to improve, build, or change?",
-    placeholder: "A new product, a better process, a replacement system…",
-    type: "textarea",
-    required: true,
-  },
-  {
     id: "outcome",
     label: "What would success look like?",
     placeholder: "Time saved, clearer operations, a shipped product…",
@@ -70,12 +63,5 @@ export const calicapDiscoveryQuestions: readonly DiscoveryQuestion[] = [
       { value: "no", label: "Not really — starting fresh" },
       { value: "unsure", label: "Not sure how to describe it" },
     ],
-  },
-  {
-    id: "context",
-    label: "Anything else we should know? (optional)",
-    placeholder: "Explain the situation in your own words…",
-    type: "textarea",
-    required: false,
   },
 ] as const;

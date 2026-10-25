@@ -66,9 +66,9 @@ export function CanvasTextReveal({
 
   if (reduced || !animate) {
     return (
-      <Tag className={`${className ?? ""} canvas-text-safe`}>
+      <Tag className={`${className ?? ""} canvas-text-safe flex flex-col gap-[0.14em]`}>
         {lines.map((line) => (
-          <span key={line} className={`block ${lineClassName ?? ""}`}>
+          <span key={line} className={`block min-w-0 ${lineClassName ?? ""}`}>
             {renderLine(line)}
           </span>
         ))}
@@ -77,11 +77,14 @@ export function CanvasTextReveal({
   }
 
   return (
-    <Tag className={`${className ?? ""} canvas-text-safe`} data-canvas-authored="">
+    <Tag
+      className={`${className ?? ""} canvas-text-safe flex flex-col gap-[0.14em]`}
+      data-canvas-authored=""
+    >
       {lines.map((line, i) => (
         <span key={`${line}-${i}`} className="canvas-text-line-mask">
           <motion.span
-            className={`block max-w-full ${lineClassName ?? ""}`}
+            className={`block max-w-full min-w-0 ${lineClassName ?? ""}`}
             initial={{ y: "100%", opacity: 0 }}
             animate={ready ? { y: "0%", opacity: 1 } : { y: "100%", opacity: 0 }}
             transition={{

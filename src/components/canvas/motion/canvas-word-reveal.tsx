@@ -33,7 +33,7 @@ function ScrubWord({
   const opacity = useTransform(progress, [start, end], [0.22, 1]);
   return (
     <motion.span
-      className={`inline-block whitespace-nowrap${hot ? " canvas-em" : ""}`}
+      className={`whitespace-nowrap${hot ? " canvas-em" : ""}`}
       style={{ opacity }}
     >
       {word}
@@ -101,18 +101,20 @@ export function CanvasTextScrub({
   const Tag = as;
   const staticDual = reduced || !scrub;
 
+  const headingClass = `${className ?? ""} canvas-wrap-heading canvas-text-safe flex flex-col gap-[0.14em]`;
+
   if (staticDual) {
     return (
       <Tag
         id={id}
-        className={`${className ?? ""} canvas-wrap-heading canvas-text-safe`}
+        className={headingClass}
         ref={ref as never}
         data-canvas-authored=""
       >
         {lineList.map((line, lineIdx) => {
           const words = splitWords(line);
           return (
-            <span key={`${line}-${lineIdx}`} className={`block ${lineClassName ?? ""}`}>
+            <span key={`${line}-${lineIdx}`} className={`block min-w-0 ${lineClassName ?? ""}`}>
               {words.map((word, i) => (
                 <Fragment key={`${word}-${i}`}>
                   <DualWord word={word} hot={isCanvasEmphasized(word, emp)} />
@@ -131,14 +133,14 @@ export function CanvasTextScrub({
   return (
     <Tag
       id={id}
-      className={`${className ?? ""} canvas-wrap-heading canvas-text-safe`}
+      className={headingClass}
       ref={ref as never}
       data-canvas-authored=""
     >
       {lineList.map((line, lineIdx) => {
         const words = splitWords(line);
         return (
-          <span key={`${line}-${lineIdx}`} className={`block ${lineClassName ?? ""}`}>
+          <span key={`${line}-${lineIdx}`} className={`block min-w-0 ${lineClassName ?? ""}`}>
             {words.map((word, i) => {
               const idx = wordIndex++;
               const start = idx / total;

@@ -68,7 +68,7 @@ export const PRIVACY_POLICY_SECTIONS: readonly PrivacySection[] = [
       "Company or business name",
       "Phone or WhatsApp number (optional)",
       "Details you provide about your goals, challenges, project needs, or situation",
-      "Answers to guided discovery questions, if you use the “I’m not sure what I need” path (for example, what your organisation does, what is not working well, what you want to improve, what success would look like, and whether you already use related systems)",
+      "Answers to guided discovery questions, if you use the “I’m not sure what I need” path (for example, what your organisation does, what is not working well, what success would look like, and whether you already use related systems)",
       "Optional notes you choose to add",
     ],
     note:

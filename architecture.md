@@ -1,6 +1,6 @@
 # Calicon Website Architecture
 
-**Purpose:** How this marketing site is built. Copy, case studies, and photography stay in data modules and `public/`; routes compose them; themes only change chrome.
+**Purpose:** How this marketing site is built. Copy, case studies, and photography stay in data modules and `public/`; routes compose them under a single Canvas presentation.
 
 ---
 
@@ -8,14 +8,14 @@
 
 | Principle | What it means here |
 |-----------|-------------------|
-| **Separation of concerns** | Routes orchestrate; components render; `src/lib/` holds copy, SEO, contact, and theme config |
+| **Separation of concerns** | Routes orchestrate; components render; `src/lib/` holds copy, SEO, and contact |
 | **Content outside JSX** | Narrative copy lives in `src/lib/calicap-*.ts`; images in `src/lib/site-images.ts` and `public/` |
-| **Server-first** | Pages are React Server Components; `"use client"` only for theme, nav, forms, and canvas chrome |
+| **Server-first** | Pages are React Server Components; `"use client"` only for nav, forms, and canvas chrome |
 | **Static where possible** | App Router static generation; no CMS or database in v1 |
 | **SEO as infrastructure** | `seo.ts`, `structured-data.ts`, sitemap, robots, manifest, OG image, JSON-LD |
-| **Two skins, one content tree** | Calicon (light agency) and Canvas (dark editorial) read the same pages |
+| **One skin** | Canvas (`data-theme="canvas"`) is the only presentation; Calicon is the company brand |
 
-**Not in v1:** filesystem catalog loaders (`specs.txt`), Framer Motion, BottomNav, or a third theme.
+**Not in v1:** filesystem catalog loaders (`specs.txt`), Framer Motion, or BottomNav.
 
 ---
 
@@ -46,7 +46,6 @@ flowchart TB
     ImagesMod[site-images.ts]
     SEO[seo.ts + structured-data.ts]
     Contact[validation + send-contact-email]
-    Themes[themes.ts]
   end
 
   subgraph app_layer [src/app/ — Routes]
@@ -56,8 +55,8 @@ flowchart TB
   end
 
   subgraph ui_layer [src/components/ — Presentation]
-    Shell[SiteShell → Calicon header/footer or Canvas chrome]
-    Float[FloatingActions + ThemeToggle]
+    Shell[SiteShell → Canvas chrome]
+    Float[FloatingActions]
     Form[ContactForm]
   end
 
@@ -79,30 +78,27 @@ project-root/
 │   └── images/                 # Hero banner, case-study screenshots
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx          # Fonts, rootMetadata, theme boot script, JSON-LD
-│   │   ├── page.tsx            # Home
+│   │   ├── layout.tsx          # Fonts, rootMetadata, JSON-LD, data-theme=canvas
+│   │   ├── page.tsx            # Home metadata (UI via CanvasMain)
 │   │   ├── about/page.tsx
 │   │   ├── services/page.tsx
 │   │   ├── services/web-app-development/page.tsx
 │   │   ├── services/mobile-app-development/page.tsx
 │   │   ├── work/page.tsx
 │   │   ├── work/calicap-india/page.tsx
-│   │   ├── work/retail-growth/  # MDX case study + layout
-│   │   ├── work/saas-launch/
 │   │   ├── contact/page.tsx
-│   │   ├── privacy/
+│   │   ├── privacy-policy/
+│   │   ├── terms-and-conditions/
+│   │   ├── faq/
 │   │   ├── actions/contact.ts
 │   │   ├── sitemap.ts
 │   │   ├── robots.ts
 │   │   ├── manifest.ts
 │   │   └── opengraph-image.tsx
 │   ├── components/
-│   │   ├── site-shell.tsx      # Theme fork
-│   │   ├── site-header.tsx / site-footer.tsx / mobile-nav.tsx
-│   │   ├── canvas/             # Canvas rail, menu, home, footer
+│   │   ├── site-shell.tsx      # Canvas chrome
+│   │   ├── canvas/             # Header, rail, menu, home, footer
 │   │   ├── floating-actions.tsx
-│   │   ├── theme-toggle.tsx
-│   │   ├── theme-provider.tsx
 │   │   ├── contact-form.tsx
 │   │   ├── JsonLd.tsx
 │   │   └── button-link.tsx
@@ -117,7 +113,7 @@ project-root/
 │       ├── structured-data.ts
 │       ├── contact-form-validation.ts
 │       ├── send-contact-email.ts
-│       └── themes.ts
+│       └── primary-nav.ts
 ├── .env.example
 └── next.config.ts
 ```
@@ -130,16 +126,17 @@ project-root/
 
 | Route | Role |
 |-------|------|
-| `/` | Home (Calicon: full marketing page; Canvas: `CanvasHome` hero, then inner pages share the same tree) |
+| `/` | Home (`CanvasHome` hero, then shared page tree) |
 | `/about` | Practice narrative |
 | `/services` | Two pillars |
 | `/services/web-app-development` | Web service detail |
 | `/services/mobile-app-development` | Mobile service detail |
 | `/work` | Case-study index from `calicap-work.ts` |
 | `/work/calicap-india` | Dedicated TSX case study |
-| `/work/retail-growth`, `/work/saas-launch` | MDX case studies |
 | `/contact` | Form + NAP copy |
-| `/privacy` | Privacy policy |
+| `/privacy-policy` | Privacy policy |
+| `/terms-and-conditions` | Terms |
+| `/faq` | FAQs |
 | `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/opengraph-image` | SEO / PWA infra |
 
 Work listing metadata (slug, title, excerpt, teaser image) lives in `calicap-work.ts`. Detail bodies stay on their routes (no `public/work/.../specs.txt` loader yet).
@@ -167,25 +164,15 @@ Keep dedicated pages/layouts. Adding a study: extend `calicapWorkStudies`, add a
 
 ---
 
-## 7. Dual theme / shell
+## 7. Shell (Canvas only)
 
-`layout.tsx` wraps the tree in `ThemeProvider` → `SiteShell`.
+`layout.tsx` sets `data-theme="canvas"` and wraps the tree in `SiteShell` (Canvas header, nav rail, main, footer).
 
-| Theme | Chrome |
-|-------|--------|
-| **canvas** (default) | Right rail, full-screen menu, `CanvasHome` on `/`, inner pages restyled via `[data-theme="canvas"]` and `.canvas-main-inner` |
-| **calicon** | Sticky header, footer, full marketing home |
+Home UI is rendered by `CanvasMain` on `/`. Inner pages use Canvas tokens via `:root` / `[data-theme="canvas"]` and `.canvas-main-inner`.
 
-`data-theme` is set on `<html>` (boot script + `ThemeProvider`). Tokens live in `globals.css` under `:root` / `[data-theme="calicon"]` and `[data-theme="canvas"]`.
+`FloatingActions` (WhatsApp / call) sit clear of the Canvas fab column. `--canvas-rail` / frame vars scale by breakpoint so padding, rail, footer, and floaters stay aligned.
 
-**Theme switching**
-
-- `ThemeToggle`: icon control; cycles `calicon` ↔ `canvas`
-- Canvas rail: palette always visible at the bottom of the rail
-- `FloatingActions`: palette always visible; Book a call (phone) is a floater that hides after 5s idle and returns on activity
-- Floaters sit `right: calc(var(--canvas-rail) + …)` in Canvas so they are not under the rail
-
-`--canvas-rail` scales by breakpoint (`78px` → `52px`) so Canvas padding, rail, footer, and floaters stay aligned.
+There is no theme switcher. **Calicon** is the company brand name in copy and assets, not a second UI theme.
 
 ---
 
@@ -227,9 +214,9 @@ Fields: name, email, company, budget, message. Returns `{ ok }` or `{ error, fie
 
 Visual identity flows through CSS variables, not one-off hex in primitives (`button-link`, floating actions, footer).
 
-Calicon: steel surface, gold accent. Canvas: `#141414`, white/grey accent, Outfit. Components that must work in both themes use `var(--color-*)`.
+Canvas: dark editorial surface, cool accent, Outfit + Syne. Prefer `var(--color-*)` over one-off hex in shared primitives.
 
-Responsive behaviour is layout-only: rail width, padding, header density. Do not fork copy per breakpoint or theme.
+Responsive behaviour is layout-only: rail width, padding, header density. Do not fork copy per breakpoint.
 
 ---
 
@@ -250,9 +237,9 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 | Server (default) | Client |
 |------------------|--------|
-| `page.tsx`, loaders, `generateMetadata` | `ThemeProvider`, `SiteShell`, `ThemeToggle`, `FloatingActions` |
+| `page.tsx`, loaders, `generateMetadata` | `SiteShell`, `FloatingActions` |
 | `seo.ts` / JSON-LD data | Canvas nav / menu / home |
-| Contact server action | `ContactForm`, `MobileNav` |
+| Contact server action | `ContactForm` |
 
 Push `"use client"` to the smallest leaf that needs state or browser APIs.
 
@@ -274,8 +261,8 @@ This is a **Next.js App Router marketing site** for Calicon with:
 1. Calicap-named content modules in `src/lib/`
 2. Thin routes that compose those modules
 3. Centralized SEO (metadata, sitemap, JSON-LD, OG)
-4. Dual chrome (Calicon / Canvas) over one content tree
+4. Single Canvas chrome over one content tree
 5. Server Actions + optional Resend for enquiries
 6. Design tokens and a responsive Canvas rail
 
-The product (agency services and case studies) lives in the data files and `public/` images — not in a second page tree per theme.
+The product (agency services and case studies) lives in the data files and `public/` images.

@@ -3,12 +3,8 @@
 import { useEffect, useRef } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
-type Tone = "dark" | "light";
-
 type Props = {
   className?: string;
-  /** Dark editorial (Canvas) vs light marketing (Calicon) */
-  tone?: Tone;
   /** Overall draw strength 0–1 */
   intensity?: number;
 };
@@ -29,7 +25,6 @@ type Particle = {
  */
 export function CanvasNodeMesh({
   className = "",
-  tone = "dark",
   intensity = 1,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -99,9 +94,8 @@ export function CanvasNodeMesh({
     const linkWidth = 1;
     const nodeRadius = 1.15;
 
-    const [cr, cg, cb] =
-      tone === "dark" ? ([255, 255, 255] as const) : ([71, 85, 105] as const);
-    const baseMul = tone === "dark" ? 1 : 0.75;
+    const [cr, cg, cb] = [255, 255, 255] as const;
+    const baseMul = 1;
 
     const step = () => {
       for (const p of particles) {
@@ -182,7 +176,7 @@ export function CanvasNodeMesh({
       window.removeEventListener("resize", resize);
       io.disconnect();
     };
-  }, [reduced, intensity, tone]);
+  }, [reduced, intensity]);
 
   return (
     <canvas

@@ -82,7 +82,7 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     metaTitle: "Calicap India · custom CRM",
     metaDescription:
       "Case study: Calicap India Pvt. Ltd.—a custom CRM built around their process in 60 days, cutting operational cost 23% and lifting average sales 37%.",
-    ctaLabel: "Have a similar challenge? Tell us your problem",
+    ctaLabel: "Tell us your problem",
     ctaHref: "/contact?mode=unsure",
     deliveryNotes: [
       "Started from the live loan workflow, not a generic CRM template.",
@@ -111,7 +111,7 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     metaTitle: "Yog Mantram — studio website & local SEO",
     metaDescription:
       "Case study: Yog Mantram in Bareilly—a conversion-first website with 25+ programs, WhatsApp enquire, and local search pages that turn seekers into students.",
-    ctaLabel: "Looking to build something similar? Tell us your problem",
+    ctaLabel: "Tell us your problem",
     ctaHref: "/contact",
     deliveryNotes: [
       "Designed as a digital front desk: programs, enquire paths, and local search.",
@@ -142,7 +142,7 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     metaTitle: "Amazing Art Architects — architecture website",
     metaDescription:
       "Case study: Amazing Art Architects—a premium portfolio website designed and built by Calicon in four weeks to showcase projects and generate client enquiries.",
-    ctaLabel: "Want a site like this? Tell us your problem",
+    ctaLabel: "Tell us your problem",
     ctaHref: "/contact",
     deliveryNotes: [
       "Treated the site as an extension of the firm’s design philosophy — clean, considered, intentional.",
@@ -178,7 +178,7 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     metaTitle: "Chaitanya Computers — website, chatbot & inventory ops",
     metaDescription:
       "Case study: Chaitanya Computers—a digital presence at chaitanyacomputers.com with an on-site chatbot, plus a customized inventory and sales management solution, delivered in three weeks.",
-    ctaLabel: "Need presence and ops in one build? Tell us your problem",
+    ctaLabel: "Tell us your problem",
     ctaHref: "/contact",
     deliveryNotes: [
       "Treated the website as the public face — including a chatbot for visitor questions — and the inventory/sales system as the operating floor.",
@@ -213,7 +213,7 @@ export const calicapWorkStudies: CalicapWorkStudy[] = [
     metaTitle: "LungConnect India — patient MIS",
     metaDescription:
       "Case study: LungConnect India Foundation—MIS software for cancer patient enrollment, follow-ups, data maintenance, patient profiles, and guidance history, delivered in 60 days.",
-    ctaLabel: "Running care operations on fragments? Tell us your problem",
+    ctaLabel: "Tell us your problem",
     ctaHref: "/contact?mode=unsure",
     deliveryNotes: [
       "Started from enrollment, follow-up, and guidance workflows — not a generic hospital template.",

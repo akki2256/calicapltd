@@ -38,5 +38,5 @@ Submissions are logged server-side in development. Wire `src/app/actions/contact
 
 ## Customisation
 
-- Branding and nav: `src/components/site-header.tsx`, `site-footer.tsx`, and copy in `src/app/**`.
-- Global styling: `src/app/globals.css` (Tailwind v4 `@theme` tokens).
+- Branding and nav: `src/components/canvas/` (header, nav, footer) and copy in `src/lib/calicap-*.ts`.
+- Global styling: `src/app/globals.css` (Tailwind v4 `@theme` tokens; `data-theme="canvas"`).

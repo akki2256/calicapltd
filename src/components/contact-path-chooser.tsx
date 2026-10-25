@@ -11,7 +11,6 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useTheme } from "@/components/theme-provider";
 import { useMagnetic } from "@/hooks/use-magnetic";
 import { track } from "@/lib/analytics";
 
@@ -30,10 +29,15 @@ export function useContactPathChooser() {
   return ctx;
 }
 
+const dialogClass =
+  "chooser-dialog w-full max-w-lg border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)] p-6 sm:p-8";
+
+const pathClass =
+  "group border border-[var(--color-border-subtle)] p-5 transition hover:border-[var(--color-accent)]/50";
+
 export function ContactPathChooserProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const titleId = useId();
-  const { theme } = useTheme();
 
   const openChooser = useCallback(() => {
     track("contact_cta_clicked", {
@@ -58,16 +62,6 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
     };
   }, [open, closeChooser]);
 
-  const dialogClass =
-    theme === "canvas"
-      ? "chooser-dialog w-full max-w-lg border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)] p-6 sm:p-8"
-      : "chooser-dialog chooser-dialog-calicon surface-card w-full max-w-lg rounded-2xl p-6 shadow-2xl sm:p-8";
-
-  const pathClass =
-    theme === "canvas"
-      ? "group border border-[var(--color-border-subtle)] p-5 transition hover:border-[var(--color-accent)]/50"
-      : "group rounded-2xl border border-[var(--color-border-subtle)] p-5 transition hover:border-gold-500/40 hover:bg-[var(--color-accent-soft)]/40";
-
   return (
     <ContactPathChooserContext.Provider value={{ openChooser }}>
       {children}
@@ -88,11 +82,7 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
               <div>
                 <p
                   id={titleId}
-                  className={`font-[family-name:var(--font-display)] tracking-tight text-[var(--color-text-strong)] ${
-                    theme === "canvas"
-                      ? "text-2xl font-light uppercase tracking-[0.08em]"
-                      : "text-2xl font-medium"
-                  }`}
+                  className="font-[family-name:var(--font-display)] text-2xl font-light uppercase tracking-[0.08em] text-[var(--color-text-strong)]"
                 >
                   Tell us your problem
                 </p>
@@ -103,11 +93,7 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
               <button
                 type="button"
                 onClick={closeChooser}
-                className={`inline-flex h-10 w-10 shrink-0 items-center justify-center text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)] ${
-                  theme === "canvas"
-                    ? "border border-white/20"
-                    : "rounded-full border border-[var(--color-border-subtle)]"
-                }`}
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center border border-white/20 text-[var(--color-text-muted)] transition hover:text-[var(--color-text-strong)]"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" strokeWidth={2} aria-hidden />
@@ -121,7 +107,7 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
               }} className={pathClass}>
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-strong)]">
                   <PhoneForwarded
-                    className={`h-4 w-4 ${theme === "canvas" ? "text-[var(--color-accent)]" : "text-gold-600"}`}
+                    className="h-4 w-4 text-[var(--color-accent)]"
                     strokeWidth={2}
                     aria-hidden
                   />
@@ -137,7 +123,7 @@ export function ContactPathChooserProvider({ children }: { children: ReactNode }
               }} className={pathClass}>
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-strong)]">
                   <MessageCircle
-                    className={`h-4 w-4 ${theme === "canvas" ? "text-[var(--color-accent)]" : "text-gold-600"}`}
+                    className="h-4 w-4 text-[var(--color-accent)]"
                     strokeWidth={2}
                     aria-hidden
                   />
@@ -161,6 +147,14 @@ type ProblemCtaProps = {
   variant?: "primary" | "ghost" | "link";
 };
 
+const problemCtaVariants = {
+  primary:
+    "btn-canvas btn-canvas-primary rounded-none px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em]",
+  ghost:
+    "btn-canvas btn-canvas-ghost rounded-none border px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em]",
+  link: "gap-1.5 p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-accent)] hover:text-[var(--color-link-hover)]",
+} as const;
+
 /** Opens the two-path contact chooser instead of dumping into a form */
 export function ProblemCtaButton({
   children,
@@ -168,28 +162,10 @@ export function ProblemCtaButton({
   variant = "primary",
 }: ProblemCtaProps) {
   const { openChooser } = useContactPathChooser();
-  const { theme } = useTheme();
-  const isCanvas = theme === "canvas";
   const mag = useMagnetic({
-    enabled: isCanvas,
+    enabled: true,
     strength: 10,
   });
-
-  const variants = isCanvas
-    ? {
-        primary:
-          "btn-canvas btn-canvas-primary rounded-none px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em]",
-        ghost:
-          "btn-canvas btn-canvas-ghost rounded-none border px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em]",
-        link: "gap-1.5 p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-accent)] hover:text-[var(--color-link-hover)]",
-      }
-    : {
-        primary:
-          "btn-calicon btn-calicon-primary rounded-full px-6 py-2.5 text-sm font-semibold",
-        ghost:
-          "btn-calicon btn-calicon-ghost rounded-full border px-6 py-2.5 text-sm font-semibold",
-        link: "gap-1.5 p-0 text-sm font-semibold text-gold-600 hover:text-gold-700",
-      };
 
   return (
     <button
@@ -199,10 +175,10 @@ export function ProblemCtaButton({
       onPointerMove={mag.onPointerMove as never}
       onPointerLeave={mag.onPointerLeave}
       onClick={openChooser}
-      className={`inline-flex items-center justify-center gap-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${variants[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${problemCtaVariants[variant]} ${className}`}
     >
       {children}
-      {isCanvas && variant !== "link" ? (
+      {variant !== "link" ? (
         <span className="btn-canvas-arrow" aria-hidden>
           →
         </span>

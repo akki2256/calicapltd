@@ -2,34 +2,47 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { BrandLogo } from "@/components/brand-logo";
 import { useCanvasMenu } from "@/components/canvas/canvas-menu-context";
 
-/** Home hero lockup clearance — tuck only when the index headline rises into the mark. */
-const BRAND_CLEARANCE_PX = 112;
+/** Fallback when the lockup has not painted yet. */
+const BRAND_CLEARANCE_FALLBACK_PX = 112;
+/** Breathing room below the lockup before a headline may enter. */
+const BRAND_CLEARANCE_GAP_PX = 28;
+
+function findPageHeadline(): HTMLElement | null {
+  const home = document.querySelector<HTMLElement>(
+    '[data-canvas-section="hero"] .canvas-home-headline, [data-canvas-section="hero"] h1',
+  );
+  if (home) return home;
+  return document.querySelector<HTMLElement>("#canvas-main h1");
+}
+
+function brandClearancePx(): number {
+  const brand = document.querySelector<HTMLElement>(".canvas-header .canvas-brand");
+  if (!brand) return BRAND_CLEARANCE_FALLBACK_PX;
+  return brand.getBoundingClientRect().bottom + BRAND_CLEARANCE_GAP_PX;
+}
 
 export function CanvasHeader() {
   const { open } = useCanvasMenu();
   const pathname = usePathname();
   const [tucked, setTucked] = useState(false);
 
-  useEffect(() => {
-    const isHome = pathname === "/";
-
+  useLayoutEffect(() => {
     const update = () => {
-      if (isHome) {
-        const hero = document.querySelector<HTMLElement>('[data-canvas-section="hero"]');
-        const headline = hero?.querySelector<HTMLElement>(".canvas-home-headline, h1");
-        if (headline) {
-          setTucked(headline.getBoundingClientRect().top < BRAND_CLEARANCE_PX);
-          return;
-        }
+      const headline = findPageHeadline();
+      const pastMidPage = window.scrollY > window.innerHeight * 0.55;
+
+      if (headline) {
+        // Hide while the headline occupies the lockup band, and stay hidden
+        // deeper on the page so the mark never stacks on the footer lockup.
+        setTucked(headline.getBoundingClientRect().top < brandClearancePx() || pastMidPage);
+        return;
       }
 
-      // Inner pages: keep the index-scale mark visible at the top; tuck after
-      // leaving the first screen so it never stacks on the footer lockup.
-      setTucked(window.scrollY > window.innerHeight * 0.55);
+      setTucked(pastMidPage);
     };
 
     update();

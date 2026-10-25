@@ -102,7 +102,7 @@ export function CanvasImpactMetrics() {
     >
       <div className="canvas-impact-stage">
         <div className="canvas-impact-mesh" aria-hidden>
-          <CanvasNodeMesh tone="dark" intensity={1} />
+          <CanvasNodeMesh intensity={1} />
         </div>
         <div className="canvas-impact-frame">
           <div className="canvas-impact-layout">

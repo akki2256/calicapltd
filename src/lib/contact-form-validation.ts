@@ -1,4 +1,11 @@
-import type { ContactMode } from "@/lib/calicap-discovery";
+import {
+  calicapDiscoveryQuestions,
+  type ContactMode,
+} from "@/lib/calicap-discovery";
+import {
+  normalizePhoneForSubmit,
+  validateOptionalPhoneE164,
+} from "@/lib/phone-countries";
 
 export type { ContactMode };
 
@@ -39,10 +46,81 @@ export type ContactValidationResult =
   | { ok: true; data: ContactPayload }
   | { ok: false; error: string; fieldErrors: ContactFieldErrors };
 
+export type ContactFieldKey = keyof ContactFieldErrors;
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function parseMode(raw: string): ContactMode {
   return raw === "unsure" ? "unsure" : "know";
+}
+
+export function validateContactField(
+  field: ContactFieldKey,
+  value: string,
+  mode: ContactMode = "know",
+): string | undefined {
+  const trimmed = value.trim();
+
+  switch (field) {
+    case "name":
+      return trimmed ? undefined : "Please enter your name.";
+    case "email":
+      if (!trimmed) return "Please enter your email address.";
+      if (!EMAIL_RE.test(trimmed)) return "Please enter a valid email address.";
+      return undefined;
+    case "company":
+      return trimmed ? undefined : "Please enter your company or business.";
+    case "phone":
+      return validateOptionalPhoneE164(trimmed);
+    case "achieve":
+      if (mode !== "know") return undefined;
+      return trimmed ? undefined : "Please tell us what you're trying to achieve.";
+    case "problem":
+      return undefined;
+    case "built":
+      return undefined;
+    case "message":
+      return undefined;
+    case "discovery":
+      return undefined;
+    default:
+      return undefined;
+  }
+}
+
+export function validateContactFields(
+  values: Partial<Record<ContactFieldKey, string>>,
+  mode: ContactMode,
+  discovery: Record<string, string> = {},
+): ContactFieldErrors {
+  const fieldErrors: ContactFieldErrors = {};
+
+  const nameError = validateContactField("name", values.name ?? "");
+  if (nameError) fieldErrors.name = nameError;
+
+  const emailError = validateContactField("email", values.email ?? "");
+  if (emailError) fieldErrors.email = emailError;
+
+  const companyError = validateContactField("company", values.company ?? "");
+  if (companyError) fieldErrors.company = companyError;
+
+  const phoneError = validateContactField("phone", values.phone ?? "");
+  if (phoneError) fieldErrors.phone = phoneError;
+
+  if (mode === "know") {
+    const achieveError = validateContactField("achieve", values.achieve ?? "", mode);
+    if (achieveError) fieldErrors.achieve = achieveError;
+  } else {
+    const requiredDiscovery = calicapDiscoveryQuestions
+      .filter((q) => q.required)
+      .map((q) => q.id);
+    const missing = requiredDiscovery.some((id) => !discovery[id]?.trim());
+    if (missing) {
+      fieldErrors.discovery = "Please complete the discovery questions.";
+    }
+  }
+
+  return fieldErrors;
 }
 
 export function validateContactForm(
@@ -80,41 +158,19 @@ export function validateContactForm(
     }
   }
 
-  const fieldErrors: ContactFieldErrors = {};
-
-  if (!name) fieldErrors.name = "Please enter your name.";
-  if (!email) fieldErrors.email = "Please enter your email address.";
-  else if (!EMAIL_RE.test(email))
-    fieldErrors.email = "Please enter a valid email address.";
-
-  if (mode === "know") {
-    if (!company) fieldErrors.company = "Please enter your company or business.";
-    if (!achieve) fieldErrors.achieve = "Please tell us what you're trying to achieve.";
-    if (!problem) fieldErrors.problem = "Please tell us what problem you're facing.";
-    if (!built) fieldErrors.built = "Please tell us what you need built or improved.";
-  } else {
-    const requiredDiscovery = [
-      "business",
-      "problem",
-      "improve",
-      "outcome",
-      "existing",
-    ];
-    const missing = requiredDiscovery.some((id) => !discovery[id]?.trim());
-    if (missing) {
-      fieldErrors.discovery = "Please complete the discovery questions.";
-    }
-    if (!company) fieldErrors.company = "Please enter your company or business.";
-  }
+  const fieldErrors = validateContactFields(
+    { name, email, company, phone, achieve, problem, built, message },
+    mode,
+    discovery,
+  );
 
   if (Object.keys(fieldErrors).length > 0) {
     const first =
       fieldErrors.name ||
       fieldErrors.email ||
       fieldErrors.company ||
+      fieldErrors.phone ||
       fieldErrors.achieve ||
-      fieldErrors.problem ||
-      fieldErrors.built ||
       fieldErrors.discovery ||
       "Please fill in the required fields so we can respond properly.";
     return {
@@ -127,9 +183,9 @@ export function validateContactForm(
   const composedMessage =
     mode === "know"
       ? [
-          `Trying to achieve: ${achieve}`,
-          `Problem: ${problem}`,
-          `Build or improve: ${built}`,
+          achieve ? `Trying to achieve: ${achieve}` : "",
+          problem ? `Problem: ${problem}` : "",
+          built ? `Build or improve: ${built}` : "",
           message ? `Note: ${message}` : "",
         ]
           .filter(Boolean)
@@ -143,7 +199,7 @@ export function validateContactForm(
       name,
       email,
       company,
-      phone,
+      phone: normalizePhoneForSubmit(phone),
       achieve,
       problem,
       built,

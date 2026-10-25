@@ -1,27 +1,24 @@
 ---
-description: Canvas-only changes — do not modify Calicon theme unless the owner explicitly asks
+description: Canvas is the only site theme — do not reintroduce Calicon theme dual-track
 alwaysApply: true
 ---
 
-# Canvas-only change scope
+# Canvas-only site
 
-The site still has two themes in the codebase:
+This site has a single presentation theme: **Canvas Group** (`data-theme="canvas"`).
 
-- **Calicon** — steel-grey + gold marketing chrome (`data-theme="calicon"`)
-- **Canvas Group** — dark editorial shell with hamburger rail (`data-theme="canvas"`)
+The former Calicon steel-grey + gold marketing theme was removed. Do not reintroduce:
 
-Default theme is Canvas. **Calicon is frozen unless the owner explicitly asks to change it.**
+- `ThemeSplit`, `ThemeProvider`, or `useTheme` theme switching
+- `data-theme="calicon"` tokens or Calicon chrome (`SiteHeader` / `SiteFooter`, `btn-calicon-*`)
+- Dual Canvas/Calicon page trees
 
-## Do this on every UI, content, routing, or layout change
+## Do this on every UI change
 
-- Implement the change for **Canvas only** (`data-theme="canvas"`, `ThemeSplit` canvas branch, `src/components/canvas/*`, Canvas-scoped CSS).
-- Do **not** change Calicon shells, components, styles, or copy: `SiteHeader` / `SiteFooter`, Calicon `ThemeSplit` branches, gold/slate marketing layouts, or Calicon-only CSS.
-- Prefer Canvas-specific markup and tokens. Do not “keep Calicon in sync” or mirror the change into Calicon.
-- After the change, **verify Canvas**. Do not spend effort updating or re-testing Calicon unless the owner requested a Calicon change.
-- Watch for regressions that leak into Calicon: shared components without a Canvas branch, global CSS that overrides Calicon chrome, edits inside `calicon={<...>}` ThemeSplit arms.
+- Implement for Canvas (`src/components/canvas/*`, Canvas-scoped CSS, existing page views).
+- Prefer Canvas markup and tokens already in the design system.
+- Verify Canvas after changes.
 
-## Exceptions
+## Brand vs theme
 
-Only touch Calicon when the owner explicitly says to change Calicon / both themes / remove a theme.
-
-This rule supersedes the previous dual-theme requirement.
+**Calicon** remains the company/brand name in copy, SEO, contact, and assets (`calicon-lockup.svg`, `calicap-*` content modules). That is not a second theme — keep brand content; do not revive the dual theme architecture.

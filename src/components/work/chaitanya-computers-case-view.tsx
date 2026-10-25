@@ -6,10 +6,8 @@ import type { ReactNode } from "react";
 import { motion } from "motion/react";
 import {
   ArrowLeft,
-  ArrowRight,
   Bot,
   Boxes,
-  Clock3,
   ExternalLink,
   Globe2,
   MessageCircle,
@@ -19,7 +17,6 @@ import {
   Target,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
-import { CapabilityTrail } from "@/components/capability-trail";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import {
   CanvasReveal,
@@ -29,7 +26,6 @@ import {
   canvasDur,
   canvasEase,
 } from "@/components/canvas/motion";
-import { ThemeSplit } from "@/components/theme-split";
 import { WorkViewTracker } from "@/components/work-view-tracker";
 import { getWorkStudyBySlug, getWorkStudyImage } from "@/lib/calicap-work";
 import { siteImages } from "@/lib/site-images";
@@ -65,9 +61,9 @@ const productSnapshots = [
 ] as const;
 
 const snapshot = [
-  { value: "3 wks", label: "Concept to launch", icon: Clock3 },
-  { value: "Web + ops", label: "Site, chatbot & inventory/sales", icon: MonitorSmartphone },
-  { value: "Live", label: liveHost, icon: Globe2 },
+  { value: "3 wks", label: "Concept to launch" },
+  { value: "Web + ops", label: "Site, chatbot & inventory/sales" },
+  { value: "Live", label: liveHost },
 ] as const;
 
 const meta = [
@@ -548,8 +544,6 @@ function CanvasCase() {
         </CanvasStagger>
       </section>
 
-      <CapabilityTrail pillarIds={study.pillars} serviceIds={study.serviceIds} />
-
       <div className="mt-12 flex flex-wrap gap-4">
         <ProblemCtaButton>
           <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={1.75} aria-hidden />
@@ -560,151 +554,6 @@ function CanvasCase() {
           Visit website
         </ButtonLink>
         <ButtonLink href="/work" variant="ghost">
-          <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={1.75} aria-hidden />
-          More case studies
-        </ButtonLink>
-      </div>
-    </article>
-  );
-}
-
-function CaliconCase() {
-  return (
-    <article className="mx-auto max-w-3xl px-6 py-16 lg:px-8 lg:py-20">
-      <SharedTracker />
-
-      <Link
-        href="/work"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gold-700/90 hover:text-gold-600"
-      >
-        <ArrowLeft className="h-3.5 w-3.5 shrink-0" strokeWidth={2} aria-hidden />
-        Work
-      </Link>
-
-      <div className="relative mb-10 mt-8 aspect-[1024/571] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
-        <Image
-          src={studyImage.src}
-          alt={studyImage.alt}
-          fill
-          className="object-contain object-center"
-          sizes="(max-width: 768px) 100vw, 720px"
-          priority
-        />
-      </div>
-
-      <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold-700/95">
-        <MonitorSmartphone className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-        Web · inventory · sales
-      </p>
-
-      <h1 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900 sm:text-4xl">
-        Chaitanya Computers
-      </h1>
-      <p className="mt-3 text-lg leading-relaxed text-slate-600">
-        Digital presence plus customized inventory and sales management — shipped
-        in three weeks.
-      </p>
-
-      <dl className="mt-8 grid gap-4 sm:grid-cols-3">
-        <div className="surface-card rounded-2xl p-4">
-          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            Engagement
-          </dt>
-          <dd className="mt-2 text-sm font-medium text-slate-800">
-            Website · inventory &amp; sales
-          </dd>
-        </div>
-        <div className="surface-card rounded-2xl p-4">
-          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            Timeline
-          </dt>
-          <dd className="mt-2 text-sm font-medium text-slate-800">3 weeks</dd>
-        </div>
-        <div className="surface-card rounded-2xl p-4">
-          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            Live
-          </dt>
-          <dd className="mt-2 text-sm font-medium text-slate-800">
-            <VisitSiteLink className="inline-flex items-center gap-1 text-gold-600 hover:text-gold-700" />
-          </dd>
-        </div>
-      </dl>
-
-      <div className="mt-10 grid gap-4 sm:grid-cols-3">
-        {snapshot.map(({ value, label, icon: Icon }) => (
-          <div key={label} className="surface-card rounded-2xl p-5 text-center sm:text-left">
-            <Icon className="mx-auto h-5 w-5 text-gold-600 sm:mx-0" strokeWidth={2} aria-hidden />
-            <p className="mt-3 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
-              {value}
-            </p>
-            <p className="mt-1 text-sm text-slate-600">{label}</p>
-          </div>
-        ))}
-      </div>
-
-      <h2 className="mt-14 font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-        Overview
-      </h2>
-      <p className="mt-4 text-base leading-relaxed text-slate-600">
-        Chaitanya Computers needed a credible digital front door and a tighter grip
-        on inventory and sales. Calicon delivered both: a public website and a
-        customized management solution shaped to how the shop actually runs.
-      </p>
-
-      <h2 className="mt-14 font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-        The challenge
-      </h2>
-      <ul className="mt-6 space-y-4 text-slate-600">
-        {challenges.map(({ t, d, icon: Icon }) => (
-          <li key={t} className="flex gap-3 leading-relaxed">
-            <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-accent-soft)]">
-              <Icon className="h-4 w-4 text-gold-700" strokeWidth={2} aria-hidden />
-            </span>
-            <span>
-              <span className="font-medium text-slate-800">{t}.</span> {d}
-            </span>
-          </li>
-        ))}
-      </ul>
-
-      <h2 className="mt-14 font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-        What we delivered
-      </h2>
-      <ul className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        {delivered.map((item) => (
-          <li
-            key={item}
-            className="flex items-center gap-2 border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)]/50 px-3 py-2 text-sm text-slate-700"
-          >
-            <span
-              className="h-1 w-1 shrink-0 rounded-full bg-[var(--color-accent)]"
-              aria-hidden
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
-
-      <p className="mt-14 text-base leading-relaxed text-slate-600">
-        Product snapshots will be added when client captures are available. See the
-        live site at{" "}
-        <VisitSiteLink className="inline-flex items-center gap-1 font-medium text-gold-600 hover:text-gold-700" />
-        .
-      </p>
-
-      <CapabilityTrail pillarIds={study.pillars} serviceIds={study.serviceIds} />
-
-      <div className="mt-12 flex flex-wrap gap-4">
-        <ProblemCtaButton>
-          <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-          {study.ctaLabel}
-        </ProblemCtaButton>
-        <ButtonLink href={liveUrl} target="_blank" rel="noopener noreferrer" variant="ghost">
-          <ExternalLink className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-          Visit website
-        </ButtonLink>
-        <ButtonLink href="/work" variant="ghost">
-          <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           More case studies
         </ButtonLink>
       </div>
@@ -713,5 +562,5 @@ function CaliconCase() {
 }
 
 export function ChaitanyaComputersCaseView() {
-  return <ThemeSplit canvas={<CanvasCase />} calicon={<CaliconCase />} />;
+  return <CanvasCase />;
 }

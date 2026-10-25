@@ -3,18 +3,15 @@
  * Website analytics (src/lib/analytics.ts) exists to support commercial outcomes.
  */
 
-const GROWTH_CHANNELS = [
-  "seo",
-  "content",
-  "case-study",
-  "referral",
-  "outbound",
-  "partnership",
-  "email",
-  "direct",
-] as const;
-
-type GrowthChannel = (typeof GROWTH_CHANNELS)[number];
+type GrowthChannel =
+  | "seo"
+  | "content"
+  | "case-study"
+  | "referral"
+  | "outbound"
+  | "partnership"
+  | "email"
+  | "direct";
 
 /** How a lead can be understood later — not a public form taxonomy */
 export type LeadSegment = {

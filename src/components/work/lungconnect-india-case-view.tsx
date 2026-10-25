@@ -5,20 +5,15 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import {
   ArrowLeft,
-  ArrowRight,
+  BookOpen,
   ClipboardList,
-  Clock3,
-  FolderHeart,
-  HeartPulse,
   History,
   MessageCircle,
-  Shield,
   Target,
   UserRound,
   UsersRound,
 } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
-import { CapabilityTrail } from "@/components/capability-trail";
 import { ProblemCtaButton } from "@/components/contact-path-chooser";
 import {
   CanvasReveal,
@@ -28,7 +23,6 @@ import {
   canvasDur,
   canvasEase,
 } from "@/components/canvas/motion";
-import { ThemeSplit } from "@/components/theme-split";
 import { WorkViewTracker } from "@/components/work-view-tracker";
 import { getWorkStudyBySlug, getWorkStudyImage } from "@/lib/calicap-work";
 import { siteImages } from "@/lib/site-images";
@@ -36,6 +30,8 @@ import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
 const study = getWorkStudyBySlug("lungconnect-india")!;
 const studyImage = getWorkStudyImage(study);
+/** Self-contained product guide for the LungConnect MIS. */
+const productGuideHref = "/guides/lungconnect-mis-guide.html";
 
 const productSnapshots = [
   {
@@ -76,9 +72,9 @@ const productSnapshots = [
 ] as const;
 
 const snapshot = [
-  { value: "60 days", label: "Concept to delivery", icon: Clock3 },
-  { value: "MIS", label: "Patient care operations", icon: HeartPulse },
-  { value: "One record", label: "Enrollment → guidance history", icon: FolderHeart },
+  { value: "60 days", label: "Concept to delivery" },
+  { value: "MIS", label: "Patient care operations" },
+  { value: "One record", label: "Enrollment → guidance history" },
 ] as const;
 
 const meta = [
@@ -451,7 +447,17 @@ function CanvasCase() {
         <CanvasReveal variant="blurIn" delay={0.08} className="mt-6 max-w-2xl">
           <p className="text-[15px] leading-[1.8] text-[var(--color-text-muted)]">
             Captures from the live MIS — sign-in, reporting, operational charts,
-            patient ledger, and follow-up detail.
+            patient ledger, and follow-up detail. For a full walkthrough of the
+            product,{" "}
+            <a
+              href={productGuideHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-[var(--color-accent)] transition hover:text-[var(--color-text-strong)]"
+            >
+              read the product guide
+            </a>
+            .
           </p>
         </CanvasReveal>
         <div className="mt-10 space-y-12">
@@ -511,162 +517,21 @@ function CanvasCase() {
         </CanvasStagger>
       </section>
 
-      <CapabilityTrail pillarIds={study.pillars} serviceIds={study.serviceIds} />
-
       <div className="mt-12 flex flex-wrap gap-4">
         <ProblemCtaButton>
           <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={1.75} aria-hidden />
           {study.ctaLabel}
         </ProblemCtaButton>
-        <ButtonLink href="/work" variant="ghost">
-          <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={1.75} aria-hidden />
-          More case studies
+        <ButtonLink
+          href={productGuideHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="ghost"
+        >
+          <BookOpen className="h-4 w-4 shrink-0" strokeWidth={1.75} aria-hidden />
+          Read product guide
         </ButtonLink>
-      </div>
-    </article>
-  );
-}
-
-function CaliconCase() {
-  return (
-    <article className="mx-auto max-w-3xl px-6 py-16 lg:px-8 lg:py-20">
-      <SharedTracker />
-
-      <Link
-        href="/work"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gold-700/90 hover:text-gold-600"
-      >
-        <ArrowLeft className="h-3.5 w-3.5 shrink-0" strokeWidth={2} aria-hidden />
-        Work
-      </Link>
-
-      <div className="relative mb-10 mt-8 aspect-[16/9] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
-        <Image
-          src={studyImage.src}
-          alt={studyImage.alt}
-          fill
-          className="object-cover object-center"
-          sizes="(max-width: 768px) 100vw, 720px"
-          priority
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-slate-900/55 via-slate-900/10 to-transparent"
-          aria-hidden
-        />
-        <p className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-slate-950/55 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-white/90 backdrop-blur-sm">
-          <Shield className="h-3 w-3" strokeWidth={2} aria-hidden />
-          Product snapshots forthcoming
-        </p>
-      </div>
-
-      <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold-700/95">
-        <HeartPulse className="h-4 w-4 text-gold-600" strokeWidth={2} aria-hidden />
-        Product · MIS · healthcare
-      </p>
-
-      <h1 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900 sm:text-4xl">
-        LungConnect India Foundation
-      </h1>
-      <p className="mt-3 text-lg leading-relaxed text-slate-600">
-        Custom MIS for cancer patient enrollment, follow-ups, profiles, and
-        guidance history — delivered in 60 days.
-      </p>
-
-      <dl className="mt-8 grid gap-4 sm:grid-cols-3">
-        <div className="surface-card rounded-2xl p-4">
-          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            Engagement
-          </dt>
-          <dd className="mt-2 text-sm font-medium text-slate-800">
-            Discovery, product design, build
-          </dd>
-        </div>
-        <div className="surface-card rounded-2xl p-4">
-          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            Scope
-          </dt>
-          <dd className="mt-2 text-sm font-medium text-slate-800">
-            Patient care MIS
-          </dd>
-        </div>
-        <div className="surface-card rounded-2xl p-4">
-          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            Timeline
-          </dt>
-          <dd className="mt-2 text-sm font-medium text-slate-800">60 days</dd>
-        </div>
-      </dl>
-
-      <div className="mt-10 grid gap-4 sm:grid-cols-3">
-        {snapshot.map(({ value, label, icon: Icon }) => (
-          <div key={label} className="surface-card rounded-2xl p-5 text-center sm:text-left">
-            <Icon className="mx-auto h-5 w-5 text-gold-600 sm:mx-0" strokeWidth={2} aria-hidden />
-            <p className="mt-3 font-[family-name:var(--font-display)] text-3xl font-medium tracking-tight text-slate-900">
-              {value}
-            </p>
-            <p className="mt-1 text-sm text-slate-600">{label}</p>
-          </div>
-        ))}
-      </div>
-
-      <h2 className="mt-14 font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-        Overview
-      </h2>
-      <p className="mt-4 text-base leading-relaxed text-slate-600">
-        LungConnect India Foundation needed one system for cancer patient enrollment,
-        follow-ups, data maintenance, patient profiles, and guidance history — so
-        care operations could run without reconstructing the patient story from
-        fragments.
-      </p>
-
-      <h2 className="mt-14 font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-        The challenge
-      </h2>
-      <ul className="mt-6 space-y-4 text-slate-600">
-        {challenges.map(({ t, d, icon: Icon }) => (
-          <li key={t} className="flex gap-3 leading-relaxed">
-            <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-accent-soft)]">
-              <Icon className="h-4 w-4 text-gold-700" strokeWidth={2} aria-hidden />
-            </span>
-            <span>
-              <span className="font-medium text-slate-800">{t}.</span> {d}
-            </span>
-          </li>
-        ))}
-      </ul>
-
-      <h2 className="mt-14 font-[family-name:var(--font-display)] text-2xl font-medium tracking-tight text-slate-900">
-        What we delivered
-      </h2>
-      <ul className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        {delivered.map((item) => (
-          <li
-            key={item}
-            className="flex items-center gap-2 border border-[var(--color-border-subtle)] bg-[var(--color-surface-elevated)]/50 px-3 py-2 text-sm text-slate-700"
-          >
-            <span
-              className="h-1 w-1 shrink-0 rounded-full bg-[var(--color-accent)]"
-              aria-hidden
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
-
-      <p className="mt-14 text-base leading-relaxed text-slate-600">
-        Product snapshots will be added when client captures are available. Sensitive
-        patient details will be redacted before publication.
-      </p>
-
-      <CapabilityTrail pillarIds={study.pillars} serviceIds={study.serviceIds} />
-
-      <div className="mt-12 flex flex-wrap gap-4">
-        <ProblemCtaButton>
-          <MessageCircle className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-          {study.ctaLabel}
-        </ProblemCtaButton>
         <ButtonLink href="/work" variant="ghost">
-          <ArrowRight className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
           More case studies
         </ButtonLink>
       </div>
@@ -675,5 +540,5 @@ function CaliconCase() {
 }
 
 export function LungconnectIndiaCaseView() {
-  return <ThemeSplit canvas={<CanvasCase />} calicon={<CaliconCase />} />;
+  return <CanvasCase />;
 }

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-syne), var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
 
   --color-gold-50: #faf8f0;
   --color-gold-100: #f5eed9;
@@ -72,53 +72,6 @@
   color-scheme: dark;
 }
 
-[data-theme="calicon"] {
-  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
-
-  --color-surface: #e8ebf0;
-  --color-surface-elevated: #f4f6f8;
-  --color-surface-muted: rgba(148, 163, 184, 0.28);
-  --color-border-subtle: rgba(71, 85, 105, 0.16);
-  --color-accent: #b8942a;
-  --color-accent-soft: rgba(184, 148, 42, 0.16);
-  --color-accent-muted: rgba(146, 120, 33, 0.28);
-  --color-text: #1e293b;
-  --color-text-muted: #334155;
-  --color-text-strong: #0f172a;
-  --color-selection-bg: rgba(184, 148, 42, 0.4);
-  --color-selection-text: #0f172a;
-  --color-card-start: rgba(255, 255, 255, 0.98);
-  --color-card-end: rgba(248, 250, 252, 0.95);
-  --color-card-inset: rgba(255, 255, 255, 0.7);
-  --color-card-shadow: rgba(15, 23, 42, 0.07);
-  --color-gradient-start: #6b5614;
-  --color-gradient-mid: #b8942a;
-  --color-gradient-end: #927821;
-  --color-btn-primary-bg: #b8942a;
-  --color-btn-primary-text: #0a0a0a;
-  --color-btn-primary-hover: #c9a227;
-  --color-btn-primary-ring: rgba(184, 148, 42, 0.3);
-  --color-btn-ghost-text: #1e293b;
-  --color-btn-ghost-hover-bg: rgba(255, 255, 255, 0.75);
-  --color-btn-ghost-hover-border: rgba(146, 120, 33, 0.45);
-  --color-noise-opacity: 0.02;
-  --color-link: #6b5614;
-  --color-link-hover: #927821;
-  /* Calicon gold lockup */
-  --color-logo-glow: rgba(184, 148, 42, 0.28);
-
-  --color-gold-50: #faf8f0;
-  --color-gold-100: #f5eed9;
-  --color-gold-200: #ead8a8;
-  --color-gold-300: #dfc069;
-  --color-gold-400: #d4af37;
-  --color-gold-500: #b8942a;
-  --color-gold-600: #6b5614;
-  --color-gold-700: #5c4a12;
-
-  color-scheme: light;
-}
 
 html {
   scroll-behavior: smooth;
@@ -207,10 +160,6 @@ body {
   letter-spacing: 0.012em;
 }
 
-[data-theme="calicon"] p,
-[data-theme="calicon"] li {
-  line-height: 1.7;
-}
 
 ::selection {
   background-color: var(--color-selection-bg);
@@ -335,27 +284,9 @@ html.menu-visible .canvas-system-cursor {
   max-width: 42rem;
 }
 
-[data-theme="calicon"] a.text-gold-600,
-[data-theme="calicon"] a.text-gold-700,
-[data-theme="calicon"] .text-gold-600,
-[data-theme="calicon"] .text-gold-700 {
-  color: var(--color-link);
-}
-
-[data-theme="calicon"] a.text-gold-600:hover,
-[data-theme="calicon"] a.text-gold-700:hover,
-[data-theme="calicon"] .hover\:text-gold-700:hover {
-  color: var(--color-link-hover);
-}
 
 /* Meta labels / captions */
-[data-theme="calicon"] [class*="text-slate-500"] {
-  color: #334155;
-}
 
-[data-theme="calicon"] .font-\[family-name\:var\(--font-display\)\] {
-  letter-spacing: -0.02em;
-}
 
 .noise-overlay {
   pointer-events: none;
@@ -417,7 +348,6 @@ html.menu-visible .canvas-system-cursor {
  * Canvas dual-color appearance
  * Resting pair: text-strong + accent. Interactive lift: link-hover.
  * Clickables only for hover; logo lockup keeps opacity/glow (excluded below).
- * Calicon is untouched.
  */
 [data-theme="canvas"] .canvas-em {
   color: var(--color-accent);
@@ -444,14 +374,14 @@ html.menu-visible .canvas-system-cursor {
   [role="button"],
   [role="link"],
   summary
-):not(.brand-logo-link):not(.btn-canvas-primary):not(.btn-canvas-ghost):not(.btn-calicon-primary):not(.btn-calicon-ghost):not(:disabled):not([aria-disabled="true"]):hover,
+):not(.brand-logo-link):not(.btn-canvas-primary):not(.btn-canvas-ghost):not(:disabled):not([aria-disabled="true"]):hover,
 [data-theme="canvas"] :is(
   a,
   button,
   [role="button"],
   [role="link"],
   summary
-):not(.brand-logo-link):not(.btn-canvas-primary):not(.btn-canvas-ghost):not(.btn-calicon-primary):not(.btn-calicon-ghost):not(:disabled):not([aria-disabled="true"]):focus-visible {
+):not(.brand-logo-link):not(.btn-canvas-primary):not(.btn-canvas-ghost):not(:disabled):not([aria-disabled="true"]):focus-visible {
   color: var(--color-link-hover);
 }
 
@@ -512,7 +442,7 @@ html.menu-visible .canvas-system-cursor {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-[data-theme="canvas"] .calicon-noise {
+[data-theme="canvas"] .site-noise {
   display: none;
 }
 
@@ -807,10 +737,6 @@ html.menu-visible .canvas-nav-trigger-float {
   scrollbar-gutter: stable;
 }
 
-.canvas-footer {
-  right: 0;
-}
-
 .canvas-home-copy-wrap {
   box-sizing: border-box;
   width: var(--canvas-frame-width);
@@ -944,15 +870,6 @@ html.menu-visible .canvas-nav-trigger-float {
   background-color: currentColor;
 }
 
-.canvas-footer {
-  background: linear-gradient(
-    to top,
-    #121212 0%,
-    rgba(18, 18, 18, 0.88) 35%,
-    transparent 100%
-  );
-}
-
 .canvas-main-inner .canvas-inner-content figure {
   margin: 0;
 }
@@ -993,10 +910,6 @@ html.menu-visible .canvas-nav-trigger-float {
     padding-bottom: max(64px, var(--canvas-content-bottom));
     padding-left: var(--canvas-frame-pad-left);
     padding-right: var(--canvas-frame-pad-right);
-  }
-
-  .canvas-footer {
-    height: 160px;
   }
 }
 
@@ -1053,10 +966,6 @@ html.menu-visible .canvas-nav-trigger-float {
     flex-direction: column;
   }
 
-  .canvas-footer {
-    height: 120px;
-  }
-
   .canvas-burger-line {
     width: 20px;
   }
@@ -1084,43 +993,8 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 }
 
-/* ========== Step 12: dual button systems ========== */
+/* ========== Canvas buttons ========== */
 
-.btn-calicon-primary {
-  background: linear-gradient(165deg, #d4af37 0%, var(--color-btn-primary-bg) 55%, #927821 100%);
-  color: var(--color-btn-primary-text);
-  box-shadow:
-    0 0 0 1px rgba(146, 120, 33, 0.25),
-    0 8px 24px rgba(146, 120, 33, 0.18);
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    filter 0.25s ease;
-}
-
-.btn-calicon-primary:hover {
-  filter: brightness(1.05);
-  box-shadow:
-    0 0 0 1px rgba(146, 120, 33, 0.35),
-    0 12px 28px rgba(146, 120, 33, 0.22);
-  transform: translateY(-1px);
-}
-
-.btn-calicon-ghost {
-  border-color: var(--color-border-subtle);
-  color: var(--color-btn-ghost-text);
-  background: rgba(255, 255, 255, 0.45);
-  transition:
-    border-color 0.25s ease,
-    background-color 0.25s ease,
-    transform 0.25s ease;
-}
-
-.btn-calicon-ghost:hover {
-  border-color: var(--color-btn-ghost-hover-border);
-  background: var(--color-btn-ghost-hover-bg);
-  transform: translateY(-1px);
-}
 
 .btn-canvas-primary,
 .btn-canvas-ghost {
@@ -1214,12 +1088,6 @@ html.menu-visible .canvas-nav-trigger-float {
   line-height: 0;
 }
 
-.brand-logo--lockup {
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-}
-
 .brand-logo--horizontal {
   flex-direction: row;
   align-items: center;
@@ -1255,53 +1123,33 @@ html.menu-visible .canvas-nav-trigger-float {
     transform 0.35s var(--motion-ease, ease);
 }
 
-.brand-logo__wordmark {
-  display: block;
-  font-family: var(--font-sans);
-  font-size: var(--brand-wordmark-size, 0.7rem);
-  font-weight: 600;
-  letter-spacing: 0.28em;
-  line-height: 1;
-  text-indent: 0.28em; /* optical center with letter-spacing */
-  text-transform: uppercase;
-  color: var(--brand-wordmark-color, var(--color-text-strong));
-  transition: opacity 0.35s var(--motion-ease, ease), color 0.35s ease;
-}
-
 .brand-logo--sm {
   --brand-logo-h: 2.25rem;
-  --brand-wordmark-size: 0.55rem;
 }
 
 .brand-logo--md {
   --brand-logo-h: 3rem;
-  --brand-wordmark-size: 0.62rem;
 }
 
 .brand-logo--lg {
   --brand-logo-h: 4.5rem;
-  --brand-wordmark-size: 0.8rem;
 }
 
 .brand-logo--header {
   --brand-logo-h: 3.5rem;
-  --brand-wordmark-size: 0.68rem;
 }
 
 .brand-logo--footer {
   --brand-logo-h: 4rem;
-  --brand-wordmark-size: 0.75rem;
 }
 
 @media (max-width: 640px) {
   .brand-logo--header {
     --brand-logo-h: 2.85rem;
-    --brand-wordmark-size: 0.58rem;
   }
 
   .brand-logo--footer {
     --brand-logo-h: 3.25rem;
-    --brand-wordmark-size: 0.65rem;
   }
 }
 
@@ -1310,47 +1158,20 @@ html.menu-visible .canvas-nav-trigger-float {
   filter: drop-shadow(0 0 12px rgba(138, 171, 188, 0.22));
 }
 
-.brand-logo--on-dark .brand-logo__wordmark {
-  --brand-wordmark-color: #f5f5f3;
-}
-
 .brand-logo--on-light .brand-logo__img {
   filter: drop-shadow(0 1px 3px rgba(15, 23, 42, 0.16));
-}
-
-.brand-logo--on-light .brand-logo__wordmark {
-  --brand-wordmark-color: #0a1628;
 }
 
 .brand-logo--accent .brand-logo__img {
   filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-accent) 45%, transparent));
 }
 
-.brand-logo--accent .brand-logo__wordmark {
-  --brand-wordmark-color: var(--color-accent);
-}
-
-/* Calicon chrome */
-.brand-logo--calicon .brand-logo__img {
-  filter:
-    hue-rotate(158deg)
-    saturate(1.45)
-    brightness(1.02)
-    contrast(1.06)
-    drop-shadow(0 1px 3px rgba(107, 86, 20, 0.28))
-    drop-shadow(0 0 10px var(--color-logo-glow));
-}
-
-.brand-logo--calicon .brand-logo__wordmark {
-  --brand-wordmark-color: var(--color-gold-600);
-}
 
 .brand-logo-link {
   border-radius: 0.25rem;
 }
 
-.brand-logo-link:hover .brand-logo__img,
-.brand-logo-link:hover .brand-logo__wordmark {
+.brand-logo-link:hover .brand-logo__img {
   opacity: 0.88;
 }
 
@@ -1394,92 +1215,9 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 }
 
-/* ========== Calicon header polish ========== */
-
-.calicon-header {
-  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
-}
 
 /* Sticky bar: mark + wordmark side-by-side so the lockup fits the header */
-.calicon-header-brand .brand-logo--lockup {
-  flex-direction: row;
-  align-items: center;
-  gap: 0.55rem;
-}
 
-.calicon-header-brand .brand-logo--header {
-  --brand-logo-h: 2.35rem;
-  --brand-wordmark-size: 0.72rem;
-}
-
-.calicon-header-brand .brand-logo__wordmark {
-  letter-spacing: 0.22em;
-  text-indent: 0.22em;
-}
-
-@media (max-width: 640px) {
-  .calicon-header-brand .brand-logo--header {
-    --brand-logo-h: 2rem;
-    --brand-wordmark-size: 0.62rem;
-  }
-}
-
-.calicon-footer-brand .brand-logo--footer {
-  --brand-logo-h: 3.5rem;
-  --brand-wordmark-size: 0.72rem;
-}
-
-.calicon-header-accent {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(184, 148, 42, 0.55) 20%,
-    rgba(184, 148, 42, 0.15) 55%,
-    transparent 100%
-  );
-  pointer-events: none;
-}
-
-.calicon-nav-link {
-  position: relative;
-}
-
-.calicon-nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0.65rem;
-  right: 0.65rem;
-  bottom: 0.35rem;
-  height: 1px;
-  background: var(--color-accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-.calicon-nav-link:hover::after {
-  transform: scaleX(1);
-}
-
-[data-theme="calicon"] .surface-card {
-  transition:
-    border-color 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.3s ease;
-}
-
-[data-theme="calicon"] a.surface-card:hover,
-[data-theme="calicon"] .group.surface-card:hover {
-  border-color: rgba(184, 148, 42, 0.28);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.8) inset,
-    0 16px 40px rgba(15, 23, 42, 0.1);
-}
 
 /* ========== Canvas home entrance ========== */
 
@@ -1522,11 +1260,6 @@ html.menu-visible .canvas-nav-trigger-float {
   }
 }
 
-.canvas-footer {
-  display: none;
-}
-
-.site-footer-shell,
 .canvas-site-footer {
   /* Match FAB bottom offset so legal bar + floater share one baseline */
   padding-bottom: var(--fab-offset-y);
@@ -1589,8 +1322,7 @@ html.menu-visible .canvas-nav-trigger-float {
 }
 
 .canvas-site-footer .brand-logo-link,
-.canvas-site-footer .btn-canvas,
-.canvas-site-footer .btn-calicon {
+.canvas-site-footer .btn-canvas {
   min-height: 44px;
 }
 
@@ -1792,12 +1524,6 @@ html.menu-visible .canvas-nav-trigger-float {
   transform: translateZ(0);
 }
 
-[data-theme="calicon"] .work-flip__scene {
-  border-radius: 1rem;
-  box-shadow:
-    0 0 0 1px var(--color-card-inset) inset,
-    0 10px 28px var(--color-card-shadow);
-}
 
 [data-theme="canvas"] .work-flip__scene {
   border-radius: 0;
@@ -1848,9 +1574,6 @@ html.menu-visible .canvas-nav-trigger-float {
   will-change: transform;
 }
 
-[data-theme="calicon"] .work-flip__shade {
-  background: color-mix(in srgb, #334155 78%, transparent);
-}
 
 [data-theme="canvas"] .work-flip__shade {
   background: color-mix(in srgb, #12141a 86%, #8aabbc 3%);
@@ -1987,9 +1710,6 @@ html.menu-visible .canvas-nav-trigger-float {
     0 0 0 4px var(--color-accent);
 }
 
-[data-theme="calicon"] .work-flip.is-open .work-flip__scene {
-  border-color: color-mix(in srgb, var(--color-accent) 35%, var(--color-border-subtle));
-}
 
 [data-theme="canvas"] .work-flip.is-open .work-flip__scene {
   border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border-subtle));
@@ -2059,12 +1779,11 @@ html.menu-visible .canvas-nav-trigger-float {
 }
 
 /*
- * Global text safety (both themes):
+ * Global text safety:
  * containers use available width; readable text wraps instead of clipping.
  */
 .canvas-text-safe,
-[data-theme="canvas"] .canvas-main-inner :is(h1, h2, h3, p, li, .canvas-wrap-heading, [data-canvas-authored]),
-[data-theme="calicon"] :is(main, article) :is(h1, h2, h3, p, li) {
+[data-theme="canvas"] .canvas-main-inner :is(h1, h2, h3, p, li, .canvas-wrap-heading, [data-canvas-authored]) {
   max-width: 100%;
   min-width: 0;
 }
@@ -2135,7 +1854,6 @@ html.menu-visible .canvas-nav-trigger-float {
       color-mix(in srgb, var(--color-surface) 88%, #0a0c0e) 100%
     );
   overflow: visible;
-  border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
 }
 
 .canvas-impact::before {
@@ -3156,8 +2874,7 @@ html.menu-visible .canvas-nav-trigger-float {
 }
 
 /* Keep About copy / chrome above the portaled map */
-.canvas-main,
-.canvas-footer {
+.canvas-main {
   position: relative;
   z-index: 2;
 }
@@ -3777,27 +3494,6 @@ html.menu-visible .canvas-menu-item {
   border-radius: 0 !important;
 }
 
-.calicon-reveal {
-  opacity: 0;
-  transform: translate3d(0, 16px, 0);
-  transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.calicon-reveal-in {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .calicon-reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -3824,8 +3520,6 @@ html.menu-visible .canvas-menu-item {
     transition: none;
   }
 
-  .btn-calicon-primary:hover,
-  .btn-calicon-ghost:hover,
   .canvas-main-inner a.surface-card:hover,
   .canvas-main-inner .group.surface-card:hover {
     transform: none;
@@ -4050,40 +3744,7 @@ html.menu-visible .canvas-menu-item {
   }
 }
 
-/* Calicon About stats — same column rhythm */
-@media (min-width: 640px) {
-  .calicon-about-stats__col {
-    border-top: 0;
-    border-left: 1px solid var(--color-border-subtle);
-  }
 
-  .calicon-about-stats__col:nth-child(odd) {
-    border-left: 0;
-  }
-
-  .calicon-about-stats__col:nth-child(n + 3) {
-    border-top: 1px solid var(--color-border-subtle);
-  }
-}
-
-@media (min-width: 1024px) {
-  .calicon-about-stats__col {
-    border-top: 0;
-    border-left: 1px solid var(--color-border-subtle);
-  }
-
-  .calicon-about-stats__col:nth-child(odd) {
-    border-left: 1px solid var(--color-border-subtle);
-  }
-
-  .calicon-about-stats__col:first-child {
-    border-left: 0;
-  }
-
-  .calicon-about-stats__col:nth-child(n + 3) {
-    border-top: 0;
-  }
-}
 /* ==========================================================================
    Outcomes circuit board
    ========================================================================== */
@@ -5125,295 +4786,6 @@ html.menu-visible .canvas-menu-item {
   }
 }
 
-/* ========== FAQ page — Calicon ========== */
-
-.calicon-faq__toolbar {
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
-  margin-bottom: 1.5rem;
-}
-
-.calicon-faq__search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  border: 1px solid var(--color-border-subtle);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-surface-elevated) 80%, white);
-  padding: 0.8rem 1.1rem;
-}
-
-.calicon-faq__search:focus-within {
-  border-color: color-mix(in srgb, var(--color-gold-500) 45%, var(--color-border-subtle));
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-gold-400) 18%, transparent);
-}
-
-.calicon-faq__search-icon {
-  width: 1rem;
-  height: 1rem;
-  flex-shrink: 0;
-  color: var(--color-gold-600);
-}
-
-.calicon-faq__search-input {
-  flex: 1;
-  min-width: 0;
-  border: 0;
-  background: transparent;
-  color: #0f172a;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  outline: none;
-}
-
-.calicon-faq__search-input::placeholder {
-  color: #64748b;
-}
-
-.calicon-faq__search-input::-webkit-search-cancel-button {
-  display: none;
-}
-
-.calicon-faq__search-clear {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  flex-shrink: 0;
-  border: 0;
-  background: transparent;
-  color: var(--color-gold-700);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.calicon-faq__search-clear:hover {
-  color: #0f172a;
-}
-
-.calicon-faq__cats {
-  display: flex;
-  gap: 0.5rem;
-  overflow-x: auto;
-  padding-bottom: 0.1rem;
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
-}
-
-.calicon-faq__cat {
-  flex: 0 0 auto;
-  border: 1px solid var(--color-border-subtle);
-  border-radius: 999px;
-  background: transparent;
-  color: #475569;
-  padding: 0.5rem 0.95rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    color 160ms ease,
-    border-color 160ms ease,
-    background-color 160ms ease;
-}
-
-.calicon-faq__cat:hover {
-  color: #0f172a;
-  border-color: color-mix(in srgb, var(--color-gold-500) 35%, var(--color-border-subtle));
-}
-
-.calicon-faq__cat--active {
-  color: #0f172a;
-  border-color: color-mix(in srgb, var(--color-gold-500) 50%, var(--color-border-subtle));
-  background: color-mix(in srgb, var(--color-gold-100) 70%, white);
-}
-
-.calicon-faq__cat:focus-visible,
-.calicon-faq__search-clear:focus-visible,
-.calicon-faq__trigger:focus-visible,
-.calicon-faq__empty-clear:focus-visible {
-  outline: 2px solid var(--color-gold-500);
-  outline-offset: 2px;
-}
-
-.calicon-faq__count {
-  margin: 0;
-  font-size: 0.85rem;
-  color: #64748b;
-}
-
-.calicon-faq__list {
-  border-top: 1px solid var(--color-border-subtle);
-}
-
-.calicon-faq__item {
-  border-bottom: 1px solid var(--color-border-subtle);
-}
-
-.calicon-faq__item--open {
-  background: color-mix(in srgb, var(--color-surface-elevated) 55%, transparent);
-}
-
-.calicon-faq__question {
-  margin: 0;
-  font-size: inherit;
-  font-weight: inherit;
-}
-
-.calicon-faq__trigger {
-  display: flex;
-  width: 100%;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  border: 0;
-  background: transparent;
-  padding: 1.1rem 0.1rem 1.1rem 0;
-  text-align: left;
-  color: #0f172a;
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  line-height: 1.35;
-  cursor: pointer;
-}
-
-.calicon-faq__trigger:hover {
-  color: color-mix(in srgb, #0f172a 88%, var(--color-gold-600));
-}
-
-.calicon-faq__icon {
-  width: 1.05rem;
-  height: 1.05rem;
-  flex-shrink: 0;
-  margin-top: 0.2rem;
-  color: var(--color-gold-600);
-}
-
-.calicon-faq__panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 260ms ease;
-}
-
-.calicon-faq__item--open .calicon-faq__panel {
-  grid-template-rows: 1fr;
-}
-
-.calicon-faq__panel-inner {
-  overflow: hidden;
-  min-height: 0;
-}
-
-.calicon-faq__answer {
-  padding: 0 1.5rem 1.15rem 0;
-  max-width: 40rem;
-  font-size: 0.975rem;
-  line-height: 1.7;
-  color: #475569;
-}
-
-.calicon-faq__answer p {
-  margin: 0;
-}
-
-.calicon-faq__empty {
-  border: 1px solid var(--color-border-subtle);
-  border-radius: 1rem;
-  padding: 1.75rem 1.25rem;
-  background: color-mix(in srgb, var(--color-surface-elevated) 60%, white);
-}
-
-.calicon-faq__empty-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #0f172a;
-}
-
-.calicon-faq__empty-body {
-  margin: 0.55rem 0 0;
-  max-width: 28rem;
-  font-size: 0.925rem;
-  line-height: 1.65;
-  color: #64748b;
-}
-
-.calicon-faq__empty-clear {
-  margin-top: 1.15rem;
-  border: 1px solid var(--color-border-subtle);
-  border-radius: 999px;
-  background: transparent;
-  padding: 0.55rem 1rem;
-  color: var(--color-gold-700);
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.calicon-faq__empty-clear:hover {
-  border-color: color-mix(in srgb, var(--color-gold-500) 40%, var(--color-border-subtle));
-  background: color-mix(in srgb, var(--color-gold-100) 55%, white);
-}
-
-.calicon-faq__related {
-  margin-top: 3rem;
-  border-top: 1px solid var(--color-border-subtle);
-  padding-top: 2.25rem;
-}
-
-.calicon-faq__related-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: #0f172a;
-}
-
-.calicon-faq__related-body {
-  margin: 0.7rem 0 0;
-  max-width: 32rem;
-  font-size: 1rem;
-  line-height: 1.65;
-  color: #475569;
-}
-
-.calicon-faq__related-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.35rem;
-  margin: 1.2rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.calicon-faq__related-links a {
-  color: var(--color-gold-700);
-  font-size: 0.925rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.calicon-faq__related-links a:hover,
-.calicon-faq__related-links a:focus-visible {
-  color: #0f172a;
-}
-
-.calicon-faq__related-links a:focus-visible {
-  outline: 2px solid var(--color-gold-500);
-  outline-offset: 3px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .calicon-faq__panel,
-  .calicon-faq__cat {
-    transition: none;
-  }
-}
 
 /* ========== Privacy Policy — Canvas ========== */
 
@@ -5601,147 +4973,10 @@ html.menu-visible .canvas-menu-item {
   }
 }
 
-/* ========== Privacy Policy — Calicon ========== */
-
-.calicon-privacy__banner {
-  margin-top: 1.75rem;
-  border: 1px solid color-mix(in srgb, var(--color-gold-500) 35%, var(--color-border-subtle));
-  border-radius: 1rem;
-  background: color-mix(in srgb, var(--color-gold-100) 55%, white);
-  padding: 1.15rem 1.25rem;
-}
-
-.calicon-privacy__banner-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: #0f172a;
-}
-
-.calicon-privacy__banner-body {
-  margin: 0.45rem 0 0;
-  max-width: 46rem;
-  font-size: 0.925rem;
-  line-height: 1.65;
-  color: #475569;
-}
-
-.calicon-privacy__layout {
-  display: grid;
-  gap: 2.25rem;
-}
-
-@media (min-width: 960px) {
-  .calicon-privacy__layout {
-    grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
-    gap: 3rem;
-    align-items: start;
-  }
-}
-
-.calicon-privacy__toc {
-  position: sticky;
-  top: 5.5rem;
-}
-
-.calicon-privacy__toc-label {
-  margin: 0 0 0.85rem;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-gold-700);
-}
-
-.calicon-privacy__toc-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.calicon-privacy__toc-list a {
-  color: #475569;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  text-decoration: none;
-}
-
-.calicon-privacy__toc-list a:hover,
-.calicon-privacy__toc-list a:focus-visible {
-  color: #0f172a;
-}
-
-.calicon-privacy__toc-list a:focus-visible,
-.calicon-privacy__sections a:focus-visible {
-  outline: 2px solid var(--color-gold-500);
-  outline-offset: 3px;
-}
-
-.calicon-privacy__section {
-  padding: 1.65rem 0;
-  border-top: 1px solid var(--color-border-subtle);
-  scroll-margin-top: 5.5rem;
-}
-
-.calicon-privacy__section:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
-.calicon-privacy__h2 {
-  margin: 0 0 0.95rem;
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: #0f172a;
-}
-
-.calicon-privacy__p,
-.calicon-privacy__note {
-  margin: 0 0 0.85rem;
-  max-width: 40rem;
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #475569;
-}
-
-.calicon-privacy__note {
-  padding-left: 0.9rem;
-  border-left: 2px solid color-mix(in srgb, var(--color-gold-500) 55%, transparent);
-}
-
-.calicon-privacy__list {
-  margin: 0 0 1rem;
-  padding: 0 0 0 1.2rem;
-  max-width: 40rem;
-  color: #475569;
-  font-size: 0.975rem;
-  line-height: 1.7;
-}
-
-.calicon-privacy__list li + li {
-  margin-top: 0.35rem;
-}
-
-.calicon-privacy__sections a {
-  color: var(--color-gold-700);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.calicon-privacy__sections a:hover {
-  color: #0f172a;
-}
 
 /* Shared legal-doc markers (Terms preliminary sections) */
 
-.canvas-legal__heading-row,
-.calicon-legal__heading-row {
+.canvas-legal__heading-row {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -5749,8 +4984,7 @@ html.menu-visible .canvas-menu-item {
   margin-bottom: 1rem;
 }
 
-.canvas-legal__heading-row .canvas-privacy__h2,
-.calicon-legal__heading-row .calicon-privacy__h2 {
+.canvas-legal__heading-row .canvas-privacy__h2 {
   margin-bottom: 0;
 }
 
@@ -5767,16 +5001,135 @@ html.menu-visible .canvas-menu-item {
   color: var(--color-accent);
 }
 
-.calicon-legal__prelim {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid color-mix(in srgb, var(--color-gold-500) 40%, var(--color-border-subtle));
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-gold-100) 65%, white);
-  padding: 0.25rem 0.65rem;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-gold-700);
+/* ── Contact page: floating messaging icons ───────────────────────────── */
+
+.canvas-contact {
+  position: relative;
+  isolation: isolate;
 }
+
+/* Ambient messaging field — same language as canvas-home signal (hairline, quiet) */
+.contact-float-field {
+  position: absolute;
+  inset: -3rem -6vw -4rem;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.contact-float-icon {
+  position: absolute;
+  display: flex;
+  /* Match CanvasSignal grid/plane strokes — near-white, not accent chrome */
+  color: rgba(242, 242, 240, 0.92);
+  will-change: transform;
+}
+
+.contact-float-icon svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+
+.contact-float-icon__drift {
+  display: flex;
+  width: 100%;
+  transform-origin: center center;
+}
+
+.contact-float-icon__drift--a {
+  animation: contact-float-roam-a 22s ease-in-out -3s infinite alternate;
+}
+
+.contact-float-icon__drift--b {
+  animation: contact-float-roam-b 28s ease-in-out -8s infinite alternate;
+}
+
+.contact-float-icon__drift--c {
+  animation: contact-float-roam-c 19s ease-in-out -12s infinite alternate;
+}
+
+/* Wide roaming paths so marks drift across the field, not bob in place */
+@keyframes contact-float-roam-a {
+  0% {
+    translate: 0 0;
+  }
+  25% {
+    translate: 72px -56px;
+  }
+  50% {
+    translate: -48px -96px;
+  }
+  75% {
+    translate: 88px -28px;
+  }
+  100% {
+    translate: -64px -80px;
+  }
+}
+
+@keyframes contact-float-roam-b {
+  0% {
+    translate: 0 0;
+  }
+  20% {
+    translate: -80px 44px;
+  }
+  45% {
+    translate: 56px -72px;
+  }
+  70% {
+    translate: -40px -108px;
+  }
+  100% {
+    translate: 68px 24px;
+  }
+}
+
+@keyframes contact-float-roam-c {
+  0% {
+    translate: 0 0;
+  }
+  33% {
+    translate: 52px 64px;
+  }
+  66% {
+    translate: -96px -28px;
+  }
+  100% {
+    translate: 36px -88px;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-float-field {
+    inset: -1.5rem -8vw -2rem;
+  }
+
+  /* Keep the field quiet on small screens */
+  .contact-float-icon:nth-child(n + 7) {
+    display: none;
+  }
+
+  .contact-float-icon {
+    opacity: 0.025 !important;
+  }
+
+  .contact-float-icon__drift--a,
+  .contact-float-icon__drift--b,
+  .contact-float-icon__drift--c {
+    animation-duration: 30s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-float-icon__drift--a,
+  .contact-float-icon__drift--b,
+  .contact-float-icon__drift--c {
+    animation: none !important;
+  }
+}
+
+
+

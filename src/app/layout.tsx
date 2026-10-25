@@ -1,29 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Fraunces, Outfit, Syne } from "next/font/google";
+import { Outfit, Syne } from "next/font/google";
 import "./globals.css";
 import { JsonLd } from "@/components/JsonLd";
 import { SiteShell } from "@/components/site-shell";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@/components/analytics";
-import { DEFAULT_THEME, THEME_STORAGE_KEY } from "@/lib/themes";
 import { rootMetadata } from "@/lib/seo";
 import {
   localBusinessJsonLd,
   organizationJsonLd,
   websiteJsonLd,
 } from "@/lib/structured-data";
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-dm-sans",
-  display: "swap",
-});
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-});
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -36,8 +22,6 @@ const syne = Syne({
   variable: "--font-syne",
   display: "swap",
 });
-
-const themeInitScript = `(function(){try{localStorage.setItem(${JSON.stringify(THEME_STORAGE_KEY)},${JSON.stringify(DEFAULT_THEME)});document.documentElement.setAttribute("data-theme",${JSON.stringify(DEFAULT_THEME)})}catch(e){document.documentElement.setAttribute("data-theme",${JSON.stringify(DEFAULT_THEME)})}})();`;
 
 export const metadata: Metadata = rootMetadata;
 
@@ -55,24 +39,21 @@ export default function RootLayout({
   return (
     <html
       lang="en-US"
-      className={`${dmSans.variable} ${fraunces.variable} ${outfit.variable} ${syne.variable}`}
-      data-theme={DEFAULT_THEME}
+      className={`${outfit.variable} ${syne.variable}`}
+      data-theme="canvas"
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <JsonLd
           data={[organizationJsonLd(), localBusinessJsonLd(), websiteJsonLd()]}
         />
       </head>
       <body className="min-h-dvh antialiased">
-        <ThemeProvider>
-          <Analytics />
-          <div className="calicon-noise noise-overlay" aria-hidden />
-          <div className="relative z-10 flex min-h-dvh flex-col">
-            <SiteShell>{children}</SiteShell>
-          </div>
-        </ThemeProvider>
+        <Analytics />
+        <div className="site-noise noise-overlay" aria-hidden />
+        <div className="relative z-10 flex min-h-dvh flex-col">
+          <SiteShell>{children}</SiteShell>
+        </div>
       </body>
     </html>
   );
