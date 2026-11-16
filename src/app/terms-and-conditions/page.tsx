@@ -8,8 +8,7 @@ export const metadata = pageMetadata({
   title: calicapTerms.metaTitle,
   description: calicapTerms.metaDescription,
   path: calicapTerms.path,
-  // Keep noIndex until TERMS_REVIEW_CHECKLIST is cleared and
-  // calicapTerms.requiresOwnerReview is set to false.
+  // Published terms stay indexable while requiresOwnerReview is false.
   noIndex: calicapTerms.requiresOwnerReview,
 });
 

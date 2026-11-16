@@ -8,8 +8,7 @@ export const metadata = pageMetadata({
   title: calicapPrivacyPolicy.metaTitle,
   description: calicapPrivacyPolicy.metaDescription,
   path: calicapPrivacyPolicy.path,
-  // Keep noIndex until PRIVACY_POLICY_REVIEW_CHECKLIST is cleared and
-  // calicapPrivacyPolicy.requiresOwnerReview is set to false.
+  // Published privacy notice stays indexable while requiresOwnerReview is false.
   noIndex: calicapPrivacyPolicy.requiresOwnerReview,
 });
 

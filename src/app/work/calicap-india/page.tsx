@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SiteImage } from "@/components/site-image";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -100,52 +100,44 @@ const delivered = [
 
 const snapshots = [
   {
-    src: "/images/case-studies/crm-login.jpg",
+    src: "/images/case-studies/crm-login.jpeg",
     alt: "CRM login — Quick Funding workspace sign-in",
     caption: "Secure workspace entry — branded sign-in into the loan operations CRM",
     label: "01 · Login",
-    width: 1024,
-    height: 571,
+    width: 1919,
+    height: 1079,
   },
   {
-    src: "/images/case-studies/crm-dashboard.jpg",
+    src: "/images/case-studies/crm-dashboard.png",
     alt: "CRM analytics dashboard — pipeline snapshot and team performance",
     caption: "Overview dashboard — pipeline snapshot, settlements, and team performance at a glance",
     label: "02 · Dashboard",
-    width: 1024,
-    height: 571,
+    width: 1898,
+    height: 1079,
   },
   {
-    src: "/images/case-studies/crm-deals.jpg",
+    src: "/images/case-studies/crm-deals.jpeg",
     alt: "Deals pipeline board — Open, Closed Won, Deferred, Closed Lost",
     caption: "Deals board — Open, Closed Won, Deferred, and Closed Lost without hunting for status",
     label: "03 · Pipeline",
-    width: 1024,
-    height: 571,
+    width: 2841,
+    height: 1612,
   },
   {
-    src: "/images/case-studies/crm-deal-detail.jpg",
+    src: "/images/case-studies/crm-deal-detail.jpeg",
     alt: "CRM deal detail — loan stage workflow from lead through application",
     caption: "Deal detail — stage-by-stage loan workflow from lead through application",
     label: "04 · Deal detail",
-    width: 1024,
-    height: 571,
+    width: 4692,
+    height: 2132,
   },
   {
-    src: "/images/case-studies/crm-admin.jpg",
+    src: "/images/case-studies/crm-admin.png",
     alt: "CRM control center for users, workflow, lenders, and communications",
     caption: "Control center — users, stage checks, lenders, email, and message templates in one admin surface",
     label: "05 · Admin",
-    width: 1024,
-    height: 571,
-  },
-  {
-    src: "/images/case-studies/crm-incentives.jpg",
-    alt: "CRM user incentives — current-month totals by role",
-    caption: "User incentives — current-month totals by role, expandable to deal-level detail",
-    label: "06 · Incentives",
-    width: 1024,
-    height: 571,
+    width: 1898,
+    height: 1017,
   },
 ] as const;
 
@@ -177,13 +169,13 @@ export default function CalicapIndiaCasePage() {
         Work
       </Link>
 
-      <div className="relative mb-10 mt-8 aspect-[1024/571] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
-        <Image
-          src="/images/case-studies/crm-dashboard.jpg"
+      <div className="relative mb-10 mt-8 aspect-[1898/1079] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
+        <SiteImage
+          src="/images/case-studies/crm-dashboard.png"
           alt="Calicap India CRM dashboard — pipeline snapshot and team performance"
           fill
           className="object-contain object-center"
-          sizes="(max-width: 768px) 100vw, 720px"
+          sizes="(max-width: 768px) 100vw, 1200px"
           priority
         />
       </div>
@@ -381,8 +373,8 @@ export default function CalicapIndiaCasePage() {
         Product snapshots
       </h2>
       <p className="mt-4 text-base leading-relaxed text-slate-600">
-        Captures from the live Quick Funding CRM — login through pipeline, deal
-        detail, and admin. For a full walkthrough of the product,{" "}
+        Captures from the live Quick Funding CRM — login through dashboard,
+        pipeline, deal detail, and admin. For a full walkthrough of the product,{" "}
         <a
           href={productGuideHref}
           target="_blank"
@@ -401,13 +393,13 @@ export default function CalicapIndiaCasePage() {
               {shot.label}
             </p>
             <div className="relative overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
-              <Image
+              <SiteImage
                 src={shot.src}
                 alt={shot.alt}
                 width={shot.width}
                 height={shot.height}
                 className="h-auto w-full object-contain object-center"
-                sizes="(max-width: 768px) 100vw, 720px"
+                sizes="(max-width: 768px) 100vw, 1200px"
               />
             </div>
             <figcaption className="mt-3 text-sm leading-relaxed text-slate-600">

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SiteImage } from "@/components/site-image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
@@ -178,12 +178,12 @@ function CanvasCase() {
             animate={{ clipPath: "inset(0 0% 0 0)" }}
             transition={{ duration: canvasDur.slow, ease: canvasEase, delay: 0.2 }}
           >
-            <Image
+            <SiteImage
               src={studyImage.src}
               alt={studyImage.alt}
               fill
               className="object-contain object-center"
-              sizes="(max-width: 960px) 100vw, 920px"
+              sizes="(max-width: 960px) 100vw, 1200px"
               priority
             />
           </motion.div>
@@ -382,12 +382,12 @@ function CanvasCase() {
         </CanvasReveal>
         <CanvasReveal variant="rise" delay={0.1} className="mt-10">
           <div className="relative aspect-[1024/470] overflow-hidden border border-[var(--color-border-subtle)]">
-            <Image
+            <SiteImage
               src={portfolioImage.src}
               alt={portfolioImage.alt}
               fill
               className="object-contain object-center"
-              sizes="(max-width: 960px) 100vw, 920px"
+              sizes="(max-width: 960px) 100vw, 1200px"
             />
           </div>
           <p className="mt-3 text-xs uppercase tracking-[0.16em] text-[var(--color-text-muted)]">

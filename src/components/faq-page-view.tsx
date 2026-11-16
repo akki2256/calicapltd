@@ -4,12 +4,11 @@ import Link from "next/link";
 import { useId, useMemo, useState } from "react";
 import { Minus, Plus, Search, X } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
-import { CanvasNodeMesh } from "@/components/canvas/canvas-node-mesh";
+import { CanvasLegalBackdrop } from "@/components/canvas/canvas-legal-backdrop";
 import {
   CanvasReveal,
   CanvasStagger,
   CanvasStaggerItem,
-  CanvasTextRevealInView,
 } from "@/components/canvas/motion";
 import {
   FAQ_CATEGORIES,
@@ -289,35 +288,27 @@ export function FaqPageView() {
 
   return (
     <article className="canvas-faq w-full min-w-0 pt-4 pb-0" data-canvas-authored="">
-      <div className="canvas-faq__backdrop" aria-hidden>
-        <div className="canvas-faq__mesh">
-          <CanvasNodeMesh intensity={0.55} />
-        </div>
-      </div>
+      <CanvasLegalBackdrop />
 
       <div className="canvas-faq__content">
-        <section className="canvas-faq__hero">
+        <header className="canvas-faq__hero">
           <CanvasReveal variant="riseSoft" immediate>
             <p className="canvas-micro text-[var(--color-accent)]">{hero.eyebrow}</p>
           </CanvasReveal>
-          <div className="mt-6">
-            <CanvasTextRevealInView
-              as="h1"
-              lines={["Questions?", "Let's clear things up."]}
-              className="max-w-3xl font-[family-name:var(--font-display)] text-[clamp(2.25rem,6vw,4rem)] font-medium leading-[1.05] tracking-[-0.04em] text-[var(--color-text-strong)]"
-            />
-          </div>
-          <CanvasReveal variant="blurIn" delay={0.1} className="mt-6 max-w-xl">
+          <CanvasReveal variant="riseSoft" delay={0.04} immediate>
+            <h1 className="canvas-faq__title">{hero.title}</h1>
+          </CanvasReveal>
+          <CanvasReveal variant="blurIn" delay={0.08} className="mt-5 max-w-2xl">
             <p className="text-[15px] leading-[1.75] text-[var(--color-text-muted)]">
               {hero.intro}
             </p>
           </CanvasReveal>
-          <CanvasReveal variant="riseSoft" delay={0.14} className="mt-8">
+          <CanvasReveal variant="riseSoft" delay={0.12} className="mt-8">
             <ButtonLink href={hero.ctaHref}>{hero.ctaLabel}</ButtonLink>
           </CanvasReveal>
-        </section>
+        </header>
 
-        <div className="border-t border-[var(--color-border-subtle)] pt-10">
+        <div className="mt-10">
           <FaqExplorer />
         </div>
 

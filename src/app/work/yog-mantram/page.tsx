@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SiteImage } from "@/components/site-image";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -147,12 +147,12 @@ export default function YogMantramCasePage() {
       </Link>
 
       <div className="relative mb-10 mt-8 aspect-[1024/571] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
-        <Image
+        <SiteImage
           src={studyImage.src}
           alt={studyImage.alt}
           fill
           className="object-contain object-center"
-          sizes="(max-width: 768px) 100vw, 720px"
+          sizes="(max-width: 768px) 100vw, 1200px"
           priority
         />
       </div>
@@ -341,13 +341,13 @@ export default function YogMantramCasePage() {
               {shot.label}
             </p>
             <div className="relative overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/80">
-              <Image
+              <SiteImage
                 src={shot.src}
                 alt={shot.alt}
                 width={shot.width}
                 height={shot.height}
                 className="h-auto w-full object-contain"
-                sizes="(max-width: 768px) 100vw, 720px"
+                sizes="(max-width: 768px) 100vw, 1200px"
               />
             </div>
             <figcaption className="mt-3 text-sm leading-relaxed text-slate-600">

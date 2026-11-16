@@ -1,23 +1,61 @@
 "use client";
 
 import Link from "next/link";
+import {
+  Baby,
+  Cookie,
+  Database,
+  Globe2,
+  Info,
+  Mail,
+  RefreshCw,
+  ScrollText,
+  Server,
+  Share2,
+  Shield,
+  ShieldCheck,
+  UserRoundSearch,
+  type LucideIcon,
+} from "lucide-react";
+import { CanvasIconMatrix } from "@/components/canvas/canvas-icon-matrix";
+import { CanvasLegalBackdrop } from "@/components/canvas/canvas-legal-backdrop";
 import { CanvasReveal } from "@/components/canvas/motion";
 import {
   PRIVACY_POLICY_SECTIONS,
   calicapPrivacyPolicy,
 } from "@/lib/calicap-privacy-policy";
 
+const PRIVACY_TOC_ICONS: Record<
+  (typeof PRIVACY_POLICY_SECTIONS)[number]["id"],
+  LucideIcon
+> = {
+  introduction: ScrollText,
+  "information-collected": UserRoundSearch,
+  "technical-attribution": Info,
+  "how-we-use": Database,
+  "hosting-providers": Server,
+  cookies: Cookie,
+  "sharing-transfers": Share2,
+  retention: Globe2,
+  security: ShieldCheck,
+  rights: Shield,
+  children: Baby,
+  updates: RefreshCw,
+  contact: Mail,
+};
+
 function PolicyToc() {
   return (
-    <nav className="canvas-privacy__toc" aria-label="Privacy Policy sections">
+    <nav aria-label="Privacy Policy sections">
       <p className="canvas-privacy__toc-label">On this page</p>
-      <ol className="canvas-privacy__toc-list">
-        {PRIVACY_POLICY_SECTIONS.map((section) => (
-          <li key={section.id}>
-            <a href={`#${section.id}`}>{section.title}</a>
-          </li>
-        ))}
-      </ol>
+      <CanvasIconMatrix
+        items={PRIVACY_POLICY_SECTIONS.map((section) => ({
+          key: section.id,
+          label: section.title,
+          href: `#${section.id}`,
+          icon: PRIVACY_TOC_ICONS[section.id],
+        }))}
+      />
     </nav>
   );
 }
@@ -72,27 +110,12 @@ function PolicySections() {
   );
 }
 
-function ReviewBanner() {
-  if (!calicapPrivacyPolicy.requiresOwnerReview) return null;
-  const banner = calicapPrivacyPolicy.reviewBanner;
-
-  return (
-    <aside
-      className="canvas-privacy__banner"
-      role="note"
-      aria-label={banner.title}
-    >
-      <p className="canvas-privacy__banner-title">{banner.title}</p>
-      <p className="canvas-privacy__banner-body">{banner.body}</p>
-    </aside>
-  );
-}
-
 export function PrivacyPolicyPageView() {
   const page = calicapPrivacyPolicy;
 
   return (
     <article className="canvas-privacy w-full min-w-0 pt-4 pb-0" data-canvas-authored="">
+      <CanvasLegalBackdrop />
       <div className="canvas-privacy__content">
         <header className="canvas-privacy__hero">
           <CanvasReveal variant="riseSoft" immediate>
@@ -111,12 +134,12 @@ export function PrivacyPolicyPageView() {
               Last updated: {page.lastUpdatedLabel}
             </p>
           </CanvasReveal>
+          <CanvasReveal variant="riseSoft" delay={0.14} className="mt-8">
+            <PolicyToc />
+          </CanvasReveal>
         </header>
 
-        <ReviewBanner />
-
-        <div className="canvas-privacy__layout">
-          <PolicyToc />
+        <div className="canvas-privacy__sections-wrap mt-10">
           <PolicySections />
         </div>
 

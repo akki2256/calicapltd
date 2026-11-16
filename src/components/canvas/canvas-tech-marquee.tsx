@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SiteImage } from "@/components/site-image";
 import { useEffect, useRef } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
@@ -62,7 +62,7 @@ function MarqueeTrack({ ariaHidden }: { ariaHidden?: boolean }) {
             <span className="canvas-tech-marquee__wordmark">{tech.name}</span>
           ) : (
             <>
-                <Image
+                <SiteImage
                   src={tech.src}
                   alt=""
                   width={tech.variant === "lockup" ? 180 : 56}

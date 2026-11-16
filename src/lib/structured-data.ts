@@ -96,7 +96,8 @@ export const STATIC_SITEMAP_PATHS = [
   "/about",
   "/contact",
   "/faqs",
-  // /privacy-policy stays out of the sitemap until owner review clears noIndex.
+  "/terms-and-conditions",
+  "/privacy-policy",
 ] as const;
 
 export function allSitemapPaths(): string[] {
