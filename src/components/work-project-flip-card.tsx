@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SiteImage } from "@/components/site-image";
 import Link from "next/link";
 import {
   useCallback,
@@ -176,7 +176,7 @@ export function WorkProjectFlipCard({
     >
       <div className={`work-flip__scene ${aspectClassName}`.trim()}>
         <div className="work-flip__media-wrap" aria-hidden="true">
-          <Image
+          <SiteImage
             src={image.src}
             alt=""
             fill

@@ -1,20 +1,61 @@
 "use client";
 
 import Link from "next/link";
+import {
+  BadgeCheck,
+  Ban,
+  Briefcase,
+  Building2,
+  CircleDollarSign,
+  Copyright,
+  FileText,
+  Globe,
+  Mail,
+  Plug,
+  RefreshCw,
+  Scale,
+  ScrollText,
+  Shield,
+  Users,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
+import { CanvasIconMatrix } from "@/components/canvas/canvas-icon-matrix";
+import { CanvasLegalBackdrop } from "@/components/canvas/canvas-legal-backdrop";
 import { CanvasReveal } from "@/components/canvas/motion";
 import { TERMS_SECTIONS, calicapTerms } from "@/lib/calicap-terms";
 
+const TERMS_TOC_ICONS: Record<(typeof TERMS_SECTIONS)[number]["id"], LucideIcon> = {
+  introduction: ScrollText,
+  "about-calicon": Building2,
+  "website-use": Globe,
+  "services-agreements": Briefcase,
+  "quotes-pricing": CircleDollarSign,
+  "intellectual-property": Copyright,
+  "client-responsibilities": Users,
+  "third-party": Plug,
+  "maintenance-support": Wrench,
+  "confidentiality-privacy": Shield,
+  warranties: BadgeCheck,
+  liability: Scale,
+  suspension: Ban,
+  changes: RefreshCw,
+  "governing-law": FileText,
+  contact: Mail,
+};
+
 function TermsToc() {
   return (
-    <nav className="canvas-privacy__toc" aria-label="Terms & Conditions sections">
+    <nav aria-label="Terms & Conditions sections">
       <p className="canvas-privacy__toc-label">On this page</p>
-      <ol className="canvas-privacy__toc-list">
-        {TERMS_SECTIONS.map((section) => (
-          <li key={section.id}>
-            <a href={`#${section.id}`}>{section.title}</a>
-          </li>
-        ))}
-      </ol>
+      <CanvasIconMatrix
+        items={TERMS_SECTIONS.map((section) => ({
+          key: section.id,
+          label: section.title,
+          href: `#${section.id}`,
+          icon: TERMS_TOC_ICONS[section.id],
+        }))}
+      />
     </nav>
   );
 }
@@ -66,9 +107,6 @@ function TermsSections() {
             <h2 id={`${section.id}-title`} className="canvas-privacy__h2">
               {section.title}
             </h2>
-            {section.preliminary ? (
-              <span className="canvas-legal__prelim">Preliminary — legal review</span>
-            ) : null}
           </div>
           {section.paragraphs.map((paragraph) => (
             <p key={paragraph.slice(0, 48)} className="canvas-privacy__p">
@@ -91,32 +129,20 @@ function TermsSections() {
   );
 }
 
-function ReviewBanner() {
-  if (!calicapTerms.requiresOwnerReview) return null;
-  const banner = calicapTerms.reviewBanner;
-
-  return (
-    <aside
-      className="canvas-privacy__banner"
-      role="note"
-      aria-label={banner.title}
-    >
-      <p className="canvas-privacy__banner-title">{banner.title}</p>
-      <p className="canvas-privacy__banner-body">{banner.body}</p>
-    </aside>
-  );
-}
-
 export function TermsPageView() {
   const page = calicapTerms;
 
   return (
-    <article className="canvas-privacy w-full min-w-0 pt-4 pb-0" data-canvas-authored="">
+    <article
+      className="canvas-privacy canvas-privacy--terms w-full min-w-0 pt-4 pb-0"
+      data-canvas-authored=""
+    >
+      <CanvasLegalBackdrop />
       <div className="canvas-privacy__content">
         <header className="canvas-privacy__hero">
-          <CanvasReveal variant="riseSoft" immediate>
+          {/* <CanvasReveal variant="riseSoft" immediate>
             <p className="canvas-micro text-[var(--color-accent)]">{page.hero.eyebrow}</p>
-          </CanvasReveal>
+          </CanvasReveal> */}
           <CanvasReveal variant="riseSoft" delay={0.04} immediate>
             <h1 className="canvas-privacy__title">{page.hero.title}</h1>
           </CanvasReveal>
@@ -130,23 +156,23 @@ export function TermsPageView() {
               Last updated: {page.lastUpdatedLabel}
             </p>
           </CanvasReveal>
+          <CanvasReveal variant="riseSoft" delay={0.14} className="mt-8">
+            <TermsToc />
+          </CanvasReveal>
         </header>
 
-        <ReviewBanner />
-
-        <div className="canvas-privacy__layout">
-          <TermsToc />
+        <div className="canvas-privacy__sections-wrap mt-10">
           <TermsSections />
         </div>
 
-        <p className="canvas-privacy__related">
+        {/* <p className="canvas-privacy__related">
           Related:{" "}
           <Link href="/privacy-policy">Privacy Policy</Link>
           {" · "}
           <Link href="/contact">Contact</Link>
           {" · "}
           <Link href="/faqs">FAQs</Link>
-        </p>
+        </p> */}
       </div>
     </article>
   );

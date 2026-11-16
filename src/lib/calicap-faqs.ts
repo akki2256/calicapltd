@@ -1,5 +1,5 @@
 /**
- * FAQ page content — single source for Canvas and Calicon themes.
+ * FAQ page content — single source for the Canvas site.
  * Do not invent policies, prices, guarantees, or client claims here.
  */
 
@@ -43,7 +43,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "general",
     question: "What does Calicon do?",
     answer:
-      "Calicon helps businesses solve operational and technology challenges through websites, applications, custom software, business systems, AI solutions, integrations, and automation.",
+      "Calicon builds business technology and digital solutions — websites, applications, custom software, business systems, AI and automation, integrations, and the support that keeps them running after launch.",
     keywords: ["overview", "company", "offerings", "digital products"],
   },
   {
@@ -51,7 +51,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "general",
     question: "What types of businesses do you work with?",
     answer:
-      "We work with businesses at different stages of growth — from those establishing a digital presence to those improving existing systems or building more advanced solutions.",
+      "We work with organisations that need a clear digital product or operating system — from establishing a public presence to modernising existing tools or building something purpose-built for how they work.",
     keywords: ["clients", "industries", "startups", "enterprises"],
   },
   {
@@ -59,23 +59,23 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "general",
     question: "Do I need to know exactly what technology I need?",
     answer:
-      "No. You can start with your business problem, goal, or idea. We help understand your requirements and identify a suitable approach.",
+      "No. Start with the business problem, goal, or opportunity. We help translate that into requirements and a practical technical approach.",
     keywords: ["unsure", "requirements", "discovery", "advice"],
   },
   {
     id: "where-is-calicon-available",
     categoryId: "general",
-    question: "Where is Calicon available?",
+    question: "Where is Calicon based, and who do you work with?",
     answer:
-      "Calicon works with businesses looking for technology solutions across different markets. Use the Contact page to discuss your location and project requirements.",
-    keywords: ["location", "remote", "markets", "geography"],
+      "Calicon operates from Noida, India, and works with businesses that need technology solutions across different markets. Use the Contact page to discuss your location and project requirements.",
+    keywords: ["location", "remote", "markets", "geography", "noida"],
   },
   {
     id: "what-services",
     categoryId: "services",
     question: "What services does Calicon offer?",
     answer:
-      "Our services include web development, mobile applications, custom software, business management systems, AI and automation, API and system integration, UI/UX design, technology consulting, and maintenance and support.",
+      "Core capabilities include web development, mobile applications, custom software, business management systems, AI and automation, API and system integration, UI/UX design, technology consulting, and maintenance and support. What is in scope for a given engagement is agreed in writing for that project.",
     keywords: ["catalogue", "capabilities", "web", "mobile", "ai"],
   },
   {
@@ -83,7 +83,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "services",
     question: "Can you improve or replace an existing website or application?",
     answer:
-      "Yes. We can review your current solution and discuss improvements, redesigns, new functionality, integrations, or replacement options based on your needs.",
+      "Yes. We review the current product, identify what should stay, change, or be replaced, and then plan improvements, redesign, new functionality, integrations, or a rebuild around your priorities.",
     keywords: ["redesign", "rebuild", "modernize", "legacy"],
   },
   {
@@ -91,7 +91,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "services",
     question: "Can you work with an idea that is still being developed?",
     answer:
-      "Yes. We can help clarify the requirements, explore possible approaches, and define a practical direction before development begins.",
+      "Yes. Early work often starts with clarifying the problem, users, and success criteria, then shaping a practical direction before full development begins.",
     keywords: ["concept", "early stage", "scoping", "discovery"],
   },
   {
@@ -99,7 +99,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "services",
     question: "Do you build custom software or use existing platforms?",
     answer:
-      "The approach depends on the problem. We can use existing platforms, customize and integrate available tools, or develop a custom solution when it makes sense.",
+      "We choose the approach that fits the problem. That can mean configuring and integrating existing platforms, extending tools you already use, or building a custom solution when the workflow needs something shaped to your process.",
     keywords: ["wordpress", "saas", "bespoke", "off the shelf"],
   },
   {
@@ -107,7 +107,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "services",
     question: "Can you integrate different systems?",
     answer:
-      "Yes. We can help connect applications, APIs, and business systems so information and processes work together more effectively.",
+      "Yes. We connect applications, APIs, and business systems so records, workflows, and handoffs move between tools without constant manual re-entry.",
     keywords: ["api", "integrations", "connect", "sync"],
   },
   {
@@ -115,7 +115,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "projects",
     question: "How does a project get started?",
     answer:
-      "Start by sharing your goals, challenges, or project idea through our Contact page. We can then discuss the requirements, possible approach, scope, and next steps.",
+      "Share your goals, challenges, or project idea through the Contact page. From there we clarify requirements, outline a suitable approach, discuss scope and timeline, and agree next steps in writing before work begins.",
     keywords: ["kickoff", "onboarding", "enquiry", "begin"],
   },
   {
@@ -123,7 +123,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "projects",
     question: "What if my requirements are not fully defined?",
     answer:
-      "That is fine. We can work through your current situation, identify what needs to be solved, and help clarify the requirements.",
+      "That is a common starting point. We work from your current situation, identify what needs to be solved, and help turn that into a clear scope before build decisions are locked in.",
     keywords: ["unclear", "discovery", "scoping"],
   },
   {
@@ -131,7 +131,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "projects",
     question: "How long does a project take?",
     answer:
-      "Timelines depend on the scope, complexity, requirements, and integrations involved. We discuss the expected timeline once we understand the project.",
+      "Timelines depend on scope, complexity, dependencies, and integrations. Once we understand the work, we share an expected timeline as part of the project discussion — not a generic estimate from this page.",
     keywords: ["timeline", "duration", "schedule", "delivery"],
   },
   {
@@ -139,7 +139,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "projects",
     question: "Will I be involved throughout the project?",
     answer:
-      "We believe clear communication and collaboration are important. Project discussions, reviews, and feedback help keep the work aligned with your requirements.",
+      "Yes. Clear communication matters. We plan for reviews, decisions, and feedback at the points that keep the work aligned with your requirements.",
     keywords: ["collaboration", "updates", "reviews", "feedback"],
   },
   {
@@ -147,7 +147,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "projects",
     question: "Can you work with an existing team?",
     answer:
-      "We can discuss your current team, systems, and workflow to determine how our services can fit into your existing setup.",
+      "Yes. We can fit around your current team, systems, and handoffs — as a delivery partner, a specialist build team, or support for an internal group — depending on what the engagement needs.",
     keywords: ["partnership", "augment", "collaborate", "in-house"],
   },
   {
@@ -155,7 +155,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "pricing",
     question: "How much does a project cost?",
     answer:
-      "Costs depend on the scope, functionality, complexity, and delivery requirements. Contact us with your needs so we can discuss the appropriate approach and estimate.",
+      "Cost depends on scope, functionality, complexity, and delivery requirements. Share what you need through the Contact page and we will discuss a suitable approach and estimate for that work.",
     keywords: ["budget", "price", "cost", "quote"],
   },
   {
@@ -163,7 +163,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "pricing",
     question: "Do you offer fixed-price projects?",
     answer:
-      "The pricing model depends on the project requirements and how clearly the scope can be defined. We discuss suitable arrangements before work begins.",
+      "When scope is clear enough, we can work on a fixed-price basis. Where requirements are still evolving, we may recommend a phased or time-based arrangement. The model is agreed before work begins.",
     keywords: ["fixed bid", "time and materials", "retainer"],
   },
   {
@@ -171,7 +171,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "pricing",
     question: "Can the project be delivered in phases?",
     answer:
-      "Where appropriate, we can discuss dividing a project into manageable phases based on priorities, dependencies, and requirements.",
+      "Yes. Many engagements ship in phases — for example an initial release followed by integrations, automation, or further product work — based on priorities and dependencies.",
     keywords: ["milestones", "mvp", "stages", "incremental"],
   },
   {
@@ -179,7 +179,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "pricing",
     question: "How do I get a project estimate?",
     answer:
-      "Share your idea, existing system, key requirements, and desired outcome through the Contact page. The more context you provide, the easier it is to assess the work involved.",
+      "Use the Contact page and include your idea or existing system, key requirements, constraints, and the outcome you want. More context makes a meaningful estimate possible.",
     keywords: ["quote", "proposal", "estimate", "budget"],
   },
   {
@@ -187,7 +187,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "technology",
     question: "Which technologies do you work with?",
     answer:
-      "Technology choices depend on the project's requirements, existing systems, performance needs, and long-term goals. We select an appropriate approach based on those factors.",
+      "We select the stack from the project’s requirements, existing systems, performance needs, and long-term maintainability — not from a fixed list published for every engagement.",
     keywords: ["stack", "react", "node", "tech", "framework"],
   },
   {
@@ -195,7 +195,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "technology",
     question: "Can you work with our existing software and tools?",
     answer:
-      "We can assess your existing tools and systems to understand whether they can be integrated, improved, extended, or replaced.",
+      "Yes. We assess what you already use, then decide whether to integrate, extend, improve, or replace parts of that stack based on fit and risk.",
     keywords: ["legacy", "tools", "stack", "compatibility"],
   },
   {
@@ -203,7 +203,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "technology",
     question: "Can AI be incorporated into an existing business process?",
     answer:
-      "Potentially, yes. We can explore AI applications, chatbot development, AI integration, and workflow automation based on your use case and practical requirements.",
+      "Yes, where the use case is clear and practical. That can include assistants and chatbots, AI-assisted workflows, or integrating models into an existing product — scoped to the process that needs to improve.",
     keywords: ["artificial intelligence", "chatbot", "automation", "ml"],
   },
   {
@@ -211,7 +211,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "technology",
     question: "Will the solution be scalable as our business grows?",
     answer:
-      "We consider anticipated growth, maintainability, and future requirements when planning a solution. The appropriate architecture depends on the specific project.",
+      "We design with growth, maintainability, and future change in mind. The right architecture still depends on the product, the expected load, and how you plan to operate it.",
     keywords: ["scale", "growth", "architecture", "future"],
   },
   {
@@ -219,7 +219,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "maintenance",
     question: "Do you provide ongoing maintenance and support?",
     answer:
-      "Yes. We offer website and application maintenance, annual maintenance contracts (AMC), ongoing improvements, and continued development where required.",
+      "Yes. We offer website and application maintenance, annual maintenance contracts (AMC), ongoing improvements, and continued development when that support is agreed separately from the original delivery.",
     keywords: ["amc", "support", "updates", "hosting"],
   },
   {
@@ -227,7 +227,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "maintenance",
     question: "Can you maintain software developed by another team?",
     answer:
-      "We can assess an existing application or website to understand its structure, condition, and maintenance requirements before determining the appropriate next steps.",
+      "Yes, after an assessment. We review structure, condition, access, and risk first, then recommend the right maintenance or remediation path.",
     keywords: ["takeover", "handover", "third party", "legacy"],
   },
   {
@@ -235,7 +235,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "maintenance",
     question: "Can we continue improving the solution after launch?",
     answer:
-      "Yes. We can discuss further features, integrations, optimizations, and enhancements as your business needs evolve.",
+      "Yes. After launch we can continue with features, integrations, performance work, and enhancements as your priorities evolve.",
     keywords: ["iterate", "roadmap", "enhancements", "post-launch"],
   },
   {
@@ -243,7 +243,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     categoryId: "maintenance",
     question: "How do we get support for an existing solution?",
     answer:
-      "Contact us with details of the solution, the issue or improvement required, and any relevant technical information. We can discuss the next steps.",
+      "Contact us with the product or site involved, what needs attention, and any relevant technical context. We will confirm the next steps and whether support falls under an existing arrangement or a new engagement.",
     keywords: ["help", "issue", "bug", "support ticket"],
   },
 ] as const;
@@ -251,14 +251,14 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
 export const calicapFaqs = {
   metaTitle: "FAQs",
   metaDescription:
-    "Answers about Calicon's services, project process, technology approach, pricing discussions, and ongoing maintenance — before you get in touch.",
+    "Answers about Calicon’s services, project process, technology approach, pricing discussions, and ongoing maintenance.",
   path: "/faqs",
   hero: {
-    eyebrow: "Frequently asked questions",
-    title: "Questions? Let's clear things up.",
+    eyebrow: "FAQs",
+    title: "Frequently asked questions",
     intro:
-      "Find answers about our services, how we work, and what it takes to get your project started.",
-    ctaLabel: "Still have questions?",
+      "Clear answers about our services, how projects start, technology choices, pricing discussions, and support after launch.",
+    ctaLabel: "Contact Calicon",
     ctaHref: "/contact",
   },
   search: {
@@ -279,11 +279,13 @@ export const calicapFaqs = {
   },
   related: {
     title: "Looking for something else?",
-    body: "Explore what we deliver, how we work, or get in touch directly.",
+    body: "Explore what we deliver, how we work, or read the legal notices that apply to this website.",
     links: [
       { href: "/services", label: "Services" },
       { href: "/about", label: "About" },
       { href: "/contact", label: "Contact" },
+      { href: "/terms-and-conditions", label: "Terms & Conditions" },
+      { href: "/privacy-policy", label: "Privacy Policy" },
     ] as const,
   },
 } as const;

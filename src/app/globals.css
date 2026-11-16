@@ -4441,37 +4441,6 @@ html.menu-visible .canvas-menu-item {
   isolation: isolate;
 }
 
-.canvas-faq__backdrop {
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: min(42rem, 85vh);
-  z-index: 0;
-  overflow: hidden;
-}
-
-.canvas-faq__mesh {
-  position: absolute;
-  inset: 0;
-  opacity: 0.4;
-  mask-image: radial-gradient(
-    ellipse 90% 75% at 55% 30%,
-    black 0%,
-    black 40%,
-    rgba(0, 0, 0, 0.45) 68%,
-    transparent 100%
-  );
-  -webkit-mask-image: radial-gradient(
-    ellipse 90% 75% at 55% 30%,
-    black 0%,
-    black 40%,
-    rgba(0, 0, 0, 0.45) 68%,
-    transparent 100%
-  );
-}
-
 .canvas-faq__content {
   position: relative;
   z-index: 1;
@@ -4481,6 +4450,18 @@ html.menu-visible .canvas-menu-item {
 
 .canvas-faq__hero {
   padding-bottom: 2.75rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.canvas-faq__title {
+  margin: 1.25rem 0 0;
+  max-width: 18ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--color-text-strong);
 }
 
 .canvas-faq__toolbar {
@@ -4787,7 +4768,98 @@ html.menu-visible .canvas-menu-item {
 }
 
 
-/* ========== Privacy Policy — Canvas ========== */
+/* ========== Case study details — Canvas ========== */
+
+/*
+ * Portaled to document.body.
+ * Fixed full-viewport dot-wave backdrop for every /work/[slug] detail scroll
+ * (same pattern as About & Services).
+ */
+.canvas-case__backdrop {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.canvas-case-field {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  animation: canvas-case-field-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards;
+}
+
+.canvas-case-field__stage {
+  position: absolute;
+  inset: 0;
+}
+
+@keyframes canvas-case-field-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.58;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas-case-field {
+    animation: none;
+    opacity: 0.45;
+  }
+}
+
+/* ========== Terms & Privacy Policy — Canvas ========== */
+
+/*
+ * Portaled to document.body.
+ * Fixed full-viewport architectural folio grid for legal pages.
+ */
+.canvas-legal__backdrop {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.canvas-legal-field {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  animation: canvas-legal-field-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.06s forwards;
+}
+
+.canvas-legal-field__stage {
+  position: absolute;
+  inset: 0;
+}
+
+@keyframes canvas-legal-field-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas-legal-field {
+    animation: none;
+    opacity: 0.82;
+  }
+}
 
 .canvas-privacy__content {
   position: relative;
@@ -4843,25 +4915,6 @@ html.menu-visible .canvas-menu-item {
   color: var(--color-text-muted);
 }
 
-.canvas-privacy__layout {
-  display: grid;
-  gap: 2.5rem;
-  margin-top: 2.5rem;
-}
-
-@media (min-width: 960px) {
-  .canvas-privacy__layout {
-    grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
-    gap: 3rem;
-    align-items: start;
-  }
-}
-
-.canvas-privacy__toc {
-  position: sticky;
-  top: 5.5rem;
-}
-
 .canvas-privacy__toc-label {
   margin: 0 0 0.85rem;
   font-size: 10px;
@@ -4871,29 +4924,6 @@ html.menu-visible .canvas-menu-item {
   color: var(--color-accent);
 }
 
-.canvas-privacy__toc-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-}
-
-.canvas-privacy__toc-list a {
-  color: var(--color-text-muted);
-  font-size: 13px;
-  line-height: 1.4;
-  text-decoration: none;
-  transition: color 160ms var(--motion-ease);
-}
-
-.canvas-privacy__toc-list a:hover,
-.canvas-privacy__toc-list a:focus-visible {
-  color: var(--color-text-strong);
-}
-
-.canvas-privacy__toc-list a:focus-visible,
 .canvas-privacy__sections a:focus-visible,
 .canvas-privacy__related a:focus-visible {
   outline: 2px solid var(--color-accent);
@@ -4966,13 +4996,6 @@ html.menu-visible .canvas-menu-item {
   font-size: 13px;
   color: var(--color-text-muted);
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .canvas-privacy__toc-list a {
-    transition: none;
-  }
-}
-
 
 /* Shared legal-doc markers (Terms preliminary sections) */
 

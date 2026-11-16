@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SiteImage } from "@/components/site-image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
@@ -59,12 +59,12 @@ export function CanvasServiceDetail({ detail }: Props) {
       </div>
 
       <div className="relative mt-12 aspect-[16/8] w-full overflow-hidden border border-[var(--color-border-subtle)]">
-        <Image
+        <SiteImage
           src={image.src}
           alt={image.alt}
           fill
           className="object-cover"
-          sizes="(max-width: 1024px) 100vw, 1100px"
+          sizes="(max-width: 1024px) 100vw, 1400px"
           priority
         />
       </div>

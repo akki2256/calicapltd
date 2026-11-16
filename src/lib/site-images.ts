@@ -36,7 +36,7 @@ export const siteImages = {
     alt: "Planning session with notes and sticky walls",
   },
   calicapIndiaCrmLogin: {
-    src: "/images/case-studies/crm-login.jpg",
+    src: "/images/case-studies/crm-login.jpeg",
     alt: "Calicap India CRM login — Quick Funding workspace sign-in",
   },
   yogMantramHero: {
