@@ -1,6 +1,6 @@
 # Calicon marketing site
 
-Next.js (App Router) + MDX + Tailwind — optimised for **local development** and **Vercel**.
+Next.js (App Router) + Tailwind — optimised for **local development** and **Vercel**.
 
 ## Prerequisites
 
@@ -28,13 +28,9 @@ npm start
 2. Import the project in Vercel (framework preset: **Next.js**).
 3. Add **`NEXT_PUBLIC_SITE_URL`** in Vercel → Settings → Environment Variables to your live URL (no trailing slash), e.g. `https://your-project.vercel.app`. Redeploy after saving.
 
-## MDX
-
-Case studies and the privacy page live as `page.mdx` routes. Shared MDX styles are in `src/mdx-components.tsx`.
-
 ## Contact form
 
-Submissions are logged server-side in development. Wire `src/app/actions/contact.ts` to Resend, a webhook, or your backend before going live.
+Requires `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `CONTACT_INBOX_EMAIL`. The form fails closed when delivery is not configured.
 
 ## Customisation
 
