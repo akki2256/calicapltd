@@ -27,7 +27,7 @@ UI:            React 19 + TypeScript
 Styling:       Tailwind CSS v4 + CSS variables per data-theme
 Icons:         lucide-react
 Forms/email:   Server Actions → validation → Resend HTTP API (console fallback)
-Content:       Typed TS modules; MDX enabled for case-study layouts
+Content:       Typed TS modules; case studies as Canvas case-view components
 Deploy:        Vercel (or any Next.js host)
 ```
 

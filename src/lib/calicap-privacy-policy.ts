@@ -179,61 +179,65 @@ export const PRIVACY_POLICY_SECTIONS: readonly PrivacySection[] = [
   },
 ] as const;
 
-/** Internal only — not rendered on the public page. */
+/**
+ * Internal only — not rendered on the public page.
+ * Reviewed against the repo (Nov 2026): contact form, analytics, attribution,
+ * sitemap, Canvas-only storage, and publish flags.
+ */
 export const PRIVACY_POLICY_REVIEW_CHECKLIST = [
   {
     id: "legal-entity",
     status: "unresolved" as const,
-    item: "Confirm the exact registered legal entity name for Calicon (brand only is verified today).",
+    item: "Confirm the exact registered legal entity name. Published copy and NAP use brand “Calicon” only — no invented company suffix.",
   },
   {
     id: "address",
     status: "owner-provided" as const,
-    item: "Confirm the Noida address presentation (postal/country lines) and entity match.",
+    item: "Noida address matches Privacy, Terms, and Contact (501–502, Tower A, Corporate Park, Sector 136, Noida, India). Still confirm entity match once legal entity is finalized.",
   },
   {
     id: "privacy-email",
     status: "owner-provided" as const,
-    item: "Confirm communications@calicon.in is monitored for privacy requests and public contact.",
+    item: "communications@calicon.in is the public privacy/contact email across Privacy, Terms, Contact, and footer. Confirm the inbox is monitored for privacy requests.",
   },
   {
     id: "contact-fields",
     status: "verified-in-code" as const,
-    item: "Contact form fields and Resend payload match this notice (name, email, company, optional phone, message/discovery content, attribution fields).",
+    item: "Re-verified: Contact form + Resend payload cover name, email, company (required), phone (optional E.164), message/discovery answers, and attribution (source/medium/campaign/landingPath).",
   },
   {
     id: "analytics",
     status: "verified-in-code" as const,
-    item: "Production loads Google Analytics when NEXT_PUBLIC_GA_MEASUREMENT_ID is set. Events exclude form contents and direct personal details. Script stays off when Do Not Track is enabled.",
+    item: "Re-verified: GA loads only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set; events exclude form contents/PII; script stays off when Do Not Track is enabled.",
   },
   {
     id: "cookies-storage",
     status: "verified-in-code" as const,
-    item: "Code uses sessionStorage for attribution. Theme localStorage was removed with dual-theme support. Confirm live-domain Set-Cookie headers from Vercel/Next as needed.",
+    item: "Re-verified: app code uses sessionStorage for campaign attribution only; dual-theme localStorage is gone (Canvas-only). Still spot-check live Set-Cookie headers from Vercel/Next/GA when analytics is on.",
   },
   {
     id: "providers",
     status: "partial" as const,
-    item: "Confirm Calicon’s Vercel and Resend account regions, DPAs/subprocessor lists, and whether enquiry emails are retained in Resend logs.",
+    item: "Code/providers named in the notice: Vercel (host) and Resend (enquiry email). Still confirm account regions, DPAs/subprocessor lists, and whether enquiry emails are retained in Resend logs.",
   },
   {
     id: "transfers",
     status: "unresolved" as const,
-    item: "Confirm international transfer posture for India-based business customers if stronger transfer language is later required.",
+    item: "Published language notes hosting/email may process outside India. Confirm stronger transfer wording only if counsel requires it for India-based B2B customers.",
   },
   {
     id: "retention",
     status: "unresolved" as const,
-    item: "Approve concrete retention periods and deletion procedures for inactive enquiries if fixed durations should be published later.",
+    item: "Published retention is purpose-based (no fixed years). Approve concrete periods and deletion procedures before publishing fixed durations.",
   },
   {
     id: "dpdp",
     status: "unresolved" as const,
-    item: "Legal review of Digital Personal Data Protection Act, 2023 applicability before claiming formal compliance.",
+    item: "Notice mentions DPDP 2023 carefully without a formal compliance claim. Legal review before claiming compliance or adding rights language.",
   },
   {
     id: "publish-gate",
     status: "done" as const,
-    item: "Published: requiresOwnerReview is false, the route is indexable, and /privacy-policy is in the sitemap.",
+    item: "Published: requiresOwnerReview is false, /privacy-policy is indexable, listed in the sitemap, and /privacy redirects permanently to it.",
   },
 ] as const;

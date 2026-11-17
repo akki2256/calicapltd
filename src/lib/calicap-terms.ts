@@ -181,51 +181,55 @@ export const TERMS_SECTIONS: readonly TermsSection[] = [
   },
 ] as const;
 
-/** Internal only — not rendered on the public page. */
+/**
+ * Internal only — not rendered on the public page.
+ * Reviewed against the repo (Nov 2026): published Terms copy, Privacy cross-links,
+ * /terms redirect, and sitemap.
+ */
 export const TERMS_REVIEW_CHECKLIST = [
   {
     id: "legal-entity",
     status: "unresolved" as const,
-    item: "Confirm the exact registered legal entity name for Calicon (brand only is verified today).",
+    item: "Confirm the exact registered legal entity name. Published Terms use brand “Calicon” only — no invented company suffix.",
   },
   {
     id: "address",
     status: "owner-provided" as const,
-    item: "Confirm the Noida address presentation (postal/country lines) and entity match.",
+    item: "Noida address matches Privacy and Contact. Still confirm entity match once legal entity is finalized.",
   },
   {
     id: "governing-law",
-    status: "unresolved" as const,
-    item: "Approve governing law, jurisdiction, and dispute-resolution wording; do not publish exclusive venue until confirmed.",
+    status: "partial" as const,
+    item: "Published: website Terms are governed by the laws of India; project disputes follow the written agreement. No exclusive court venue is claimed — counsel should approve before adding venue language.",
   },
   {
     id: "warranties-liability",
     status: "unresolved" as const,
-    item: "Legal review of warranty disclaimers and any limitation of liability for Site use and coordination with project contracts.",
+    item: "Published Site disclaimers are conservative and point liability for project work to written agreements. Still needs legal review for Site use and coordination with contract templates.",
   },
   {
     id: "ip-ownership",
     status: "unresolved" as const,
-    item: "Confirm default ownership/licensing approach for client deliverables and source code (to be reflected in templates and, if needed, a short Site statement).",
+    item: "Published copy correctly avoids assigning automatic exclusive ownership. Confirm default ownership/licensing for deliverables/source in service-agreement templates (and only then tighten Site wording if needed).",
   },
   {
     id: "commercial-terms",
-    status: "unresolved" as const,
-    item: "Confirm whether any payments, cancellations, refunds, or termination rules should ever appear on the Site vs remaining contract-only.",
+    status: "partial" as const,
+    item: "Published stance: payments, cancellations, refunds, and termination stay contract-only — Site does not define them. Confirm that remains the intended long-term policy.",
   },
   {
     id: "terms-acceptance",
-    status: "unresolved" as const,
-    item: "Confirm notice/acceptance mechanism for updated website Terms (posting only vs additional notice).",
+    status: "partial" as const,
+    item: "Published mechanism: posting updated Terms + continued use. Confirm whether any additional notice (email/banner) is ever required for material changes.",
   },
   {
     id: "consistency",
     status: "partial" as const,
-    item: "Align final Terms with actual service-agreement templates and the Privacy Policy after both are reviewed.",
+    item: "Privacy and Terms are both published, cross-linked, and share NAP/email. Still align with live service-agreement templates after counsel review.",
   },
   {
     id: "publish-gate",
     status: "done" as const,
-    item: "Published: requiresOwnerReview is false, the route is indexable, and /terms-and-conditions is in the sitemap. Keep the /terms redirect.",
+    item: "Published: requiresOwnerReview is false, /terms-and-conditions is indexable, listed in the sitemap, and /terms redirects permanently to it.",
   },
 ] as const;

@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
-import createMDX from "@next/mdx";
 
 const nextConfig: NextConfig = {
-  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  pageExtensions: ["js", "jsx", "ts", "tsx"],
   images: {
     // Allow sharper derivatives than Next's default 75 (SiteImage defaults to 95).
     qualities: [75, 90, 92, 95, 100],
@@ -32,6 +31,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withMDX = createMDX({});
-
-export default withMDX(nextConfig);
+export default nextConfig;
